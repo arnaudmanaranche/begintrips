@@ -18,7 +18,7 @@ describe("groupedExpenses", () => {
         endDate: new Date(),
       },
       {
-        name: "Concert",
+        name: "Restaurant 1",
         amount: 10,
         category: "restaurant",
         startDate: new Date(),
@@ -44,15 +44,15 @@ describe("groupedExpenses", () => {
           startDate: new Date(),
           endDate: new Date(),
         },
+      ],
+      restaurant: [
         {
-          name: "Concert",
+          name: "Restaurant 1",
           amount: 10,
           category: "restaurant",
           startDate: new Date(),
           endDate: new Date(),
         },
-      ],
-      restaurant: [
         {
           name: "Restaurant",
           amount: 20,
