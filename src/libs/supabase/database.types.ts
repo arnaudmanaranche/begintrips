@@ -135,6 +135,9 @@ export type Database = {
         | "sport"
         | "event"
         | "other"
+        | "museum"
+        | "monument"
+        | "culture"
     }
     CompositeTypes: {
       [_ in never]: never

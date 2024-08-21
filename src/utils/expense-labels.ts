@@ -8,16 +8,22 @@ const emojisAssociated: Record<ExpenseCategoryEnum, string> = {
   restaurant: '🍲',
   sport: '🏀',
   transport: '🚌',
+  museum: '🖼️',
+  monument: '🗿',
+  culture: '🎭',
 }
 
 export const colorsAssociated: Record<ExpenseCategoryEnum, string> = {
   concert: '#9CA3AF',
-  event: '#8C5A62',
+  event: '#B55A5A',
   hotel: '#6B7280',
-  other: '#A68B7C',
+  other: '#D4A373',
   restaurant: '#556B2F',
-  sport: '#7B8A8B',
+  sport: '#4E7A73',
   transport: '#4C6A92',
+  museum: '#9B6A6C',
+  monument: '#737C94',
+  culture: '#B58E4F',
 }
 
 export const mappedExpensesWithEmojis = (
