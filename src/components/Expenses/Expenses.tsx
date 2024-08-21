@@ -36,8 +36,12 @@ export function Expenses({ expenses: initialExpenses }: ExpensesProps) {
 
   return (
     <div className="space-y-2">
+      <h2
+        className={clsx(alata.className, 'sticky top-0 bg-white pb-4 text-3xl')}
+      >
+        Expenses
+      </h2>
       <ExpensesCharts expensesByCategory={expensesByCategory} />
-      <h2 className={clsx(alata.className, 'text-2xl')}>Expenses</h2>
       {expensesByCategory && Object.keys(expensesByCategory).length === 0 ? (
         <p>No expenses yet</p>
       ) : (

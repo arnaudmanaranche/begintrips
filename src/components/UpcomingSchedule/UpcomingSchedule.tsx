@@ -33,7 +33,7 @@ export function UpcomingSchedule({
   }
 
   return (
-    <div className="max-h-[500px] overflow-y-scroll" id="calendar">
+    <div className="max-h-[500px] overflow-y-scroll">
       <div className="space-y-4">
         {expensesByDay &&
           Object.keys(expensesByDay).map((_, index) => {

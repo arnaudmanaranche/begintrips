@@ -1,11 +1,11 @@
-import type { Journey, Expense, Day } from '@/types'
+import type { Journey, AddJourney, Expense, Day } from '@/types'
 import { apiInstance } from '../config'
 
 export const deleteJourney = async (id: string) => {
   return apiInstance.delete(`/journeys/${id}`)
 }
 
-export const createJourney = async (journey: Journey) => {
+export const createJourney = async (journey: AddJourney) => {
   const { data } = await apiInstance.post('/journeys', journey)
 
   return data

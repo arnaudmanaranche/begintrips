@@ -11,7 +11,7 @@ import { Alata } from 'next/font/google'
 const alata = Alata({ weight: '400', subsets: ['latin'] })
 
 export default function WelcomePage() {
-  const [form, setForm] = useState<'login' | 'signup'>('login')
+  const [form, setForm] = useState<'login' | 'signup'>('signup')
 
   return (
     <main className="flex h-screen">
@@ -45,7 +45,7 @@ export default function WelcomePage() {
           </span>
         </div>
       </div>
-      <div className="hidden flex-1 bg-accent-light/20 lg:flex"></div>
+      <div className="hidden flex-1 bg-accent-light/20 lg:flex" />
     </main>
   )
 }

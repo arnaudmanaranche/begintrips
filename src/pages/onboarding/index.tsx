@@ -20,7 +20,8 @@ const ONBOARDING_STEPS = [1, 2, 3]
 export default function Onboarding() {
   const [currentStep, setCurrentStep] = useState(0)
   const router = useRouter()
-  const { journey, setError } = useOnboardingStore()
+  const [error, setError] = useState('')
+  const { journey } = useOnboardingStore()
   const { mutateAsync, isPending, isSuccess } = useMutation({
     mutationFn: () => createJourney(journey),
   })
@@ -73,7 +74,7 @@ export default function Onboarding() {
         </div>
         <div className="mx-auto flex flex-col">
           <div className="flex px-10 py-6 lg:px-0">
-            <Steps step={currentStep} />
+            <Steps step={currentStep} error={error} />
           </div>
           <div className="flex justify-end border-t border-gray-200 py-6">
             <div className="flex w-full flex-col space-y-4 px-6 md:flex-row md:justify-end md:space-x-4 md:space-y-0 md:px-0 md:pr-6">
@@ -110,11 +111,11 @@ export default function Onboarding() {
   )
 }
 
-function Steps({ step }: { step: number }) {
+function Steps({ step, error }: { step: number; error: string }) {
   const stepComponents = [
-    <Step1 key="step1" />,
-    <Step2 key="step2" />,
-    <Step3 key="step3" />,
+    <Step1 key="step1" error={error} />,
+    <Step2 key="step2" error={error} />,
+    <Step3 key="step3" error={error} />,
   ]
   return stepComponents[step] || <p>Oops...</p>
 }
@@ -143,8 +144,8 @@ function Step({ children, title, subtitle }: StepProps) {
   )
 }
 
-function Step1() {
-  const { journey, updateJourney, error } = useOnboardingStore()
+function Step1({ error }: { error: string }) {
+  const { journey, updateJourney } = useOnboardingStore()
 
   return (
     <Step title="Let's plan your next trip" subtitle="1. Destination">
@@ -175,8 +176,8 @@ function Step1() {
   )
 }
 
-function Step2() {
-  const { journey, updateJourney, error } = useOnboardingStore()
+function Step2({ error }: { error: string }) {
+  const { journey, updateJourney } = useOnboardingStore()
 
   return (
     <Step
@@ -230,8 +231,8 @@ function Step2() {
   )
 }
 
-function Step3() {
-  const { journey, updateJourney, error } = useOnboardingStore()
+function Step3({ error }: { error: string }) {
+  const { journey, updateJourney } = useOnboardingStore()
 
   return (
     <Step
