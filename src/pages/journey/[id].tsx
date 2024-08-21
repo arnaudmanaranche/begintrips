@@ -50,7 +50,10 @@ export default function Journey({
         <title>Planner.so</title>
       </Head>
       <nav className="flex items-center justify-between px-10 pt-6">
-        <div className=" text-2xl text-black">Planner.so</div>
+        <span className={clsx(alata.className, 'text-3xl')}>
+          Planner
+          <span className="text-accent">.so</span>
+        </span>
         <div className="rounded-2xl p-4">
           <Button onClick={() => router.push('/account')}>My account</Button>
         </div>
@@ -135,7 +138,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   if (error || !data) {
     return {
       redirect: {
-        destination: '/',
+        destination: '/welcome',
         permanent: false,
       },
     }

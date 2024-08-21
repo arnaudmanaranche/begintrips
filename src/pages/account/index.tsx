@@ -58,7 +58,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   if (error || !data) {
     return {
       redirect: {
-        destination: '/',
+        destination: '/welcome',
         permanent: false,
       },
     }

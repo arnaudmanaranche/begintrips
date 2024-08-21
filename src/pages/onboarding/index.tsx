@@ -66,9 +66,10 @@ export default function Onboarding() {
       </div>
       <div className="mt-20 flex flex-col">
         <div className="flex justify-center">
-          <h1 className={clsx('text-6xl text-black', alata.className)}>
-            Planner.so
-          </h1>
+          <span className={clsx(alata.className, 'text-6xl')}>
+            Planner
+            <span className="text-accent">.so</span>
+          </span>
         </div>
         <div className="mx-auto flex flex-col">
           <div className="flex px-10 py-6 lg:px-0">
@@ -267,7 +268,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   if (error || !data) {
     return {
       redirect: {
-        destination: '/',
+        destination: '/welcome',
         permanent: false,
       },
     }
