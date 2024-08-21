@@ -47,10 +47,9 @@ export default async function handler(
       return
     }
     // 3. Save days
-    const journeyLength = differenceInDays(
-      new Date(journey.returnDate),
-      new Date(journey.departureDate)
-    )
+    //  differenceInDays function typically calculates the difference between two dates, not including the end date
+    const journeyLength =
+      differenceInDays(new Date('2024-06-10'), new Date('2024-06-01')) + 1
 
     const days: AddDay[] = Array.from({ length: journeyLength }, (_, index) => {
       const date = addDays(new Date(journey.departureDate), index)
