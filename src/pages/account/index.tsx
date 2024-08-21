@@ -23,7 +23,7 @@ export default function AccountPage({
 
   const handleLogout = async () => {
     await supabase.auth.signOut()
-    router.push('/')
+    router.push('/welcome')
   }
 
   return (
@@ -58,7 +58,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   if (error || !data) {
     return {
       redirect: {
-        destination: '/',
+        destination: '/welcome',
         permanent: false,
       },
     }
