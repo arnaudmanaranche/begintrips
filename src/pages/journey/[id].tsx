@@ -20,7 +20,6 @@ import { type GetServerSidePropsContext } from 'next'
 import { Alata } from 'next/font/google'
 import Head from 'next/head'
 import Image from 'next/image'
-import Link from 'next/link'
 import router from 'next/router'
 import { useMemo } from 'react'
 
