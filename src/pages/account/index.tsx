@@ -23,7 +23,7 @@ export default function AccountPage({
 
   const handleLogout = async () => {
     await supabase.auth.signOut()
-    router.push('/welcome')
+    router.push('/')
   }
 
   return (

@@ -20,6 +20,7 @@ import { type GetServerSidePropsContext } from 'next'
 import { Alata } from 'next/font/google'
 import Head from 'next/head'
 import Image from 'next/image'
+import Link from 'next/link'
 import router from 'next/router'
 import { useMemo } from 'react'
 
@@ -50,7 +51,10 @@ export default function Journey({
         <title>Planner.so</title>
       </Head>
       <nav className="flex items-center justify-between px-10 pt-6">
-        <div className=" text-2xl text-black">Planner.so</div>
+        <span className={clsx(alata.className, 'text-3xl')}>
+          Planner
+          <span className="text-accent">.so</span>
+        </span>
         <div className="rounded-2xl p-4">
           <Button onClick={() => router.push('/account')}>My account</Button>
         </div>

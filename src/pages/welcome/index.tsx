@@ -1,9 +1,14 @@
 import { LogInForm } from '@/components/LogInForm/LogInForm'
 import { SignUpForm } from '@/components/SignUpForm/SignInForm'
 import { createClient } from '@/libs/supabase/server-props'
+import clsx from 'clsx'
 import type { GetServerSidePropsContext } from 'next'
 import Head from 'next/head'
+import Link from 'next/link'
 import { useState } from 'react'
+import { Alata } from 'next/font/google'
+
+const alata = Alata({ weight: '400', subsets: ['latin'] })
 
 export default function WelcomePage() {
   const [form, setForm] = useState<'login' | 'signup'>('login')
@@ -15,9 +20,16 @@ export default function WelcomePage() {
       </Head>
       <div className="flex-1 bg-white">
         <div className="relative mx-auto flex h-full flex-col items-center justify-center space-y-10">
-          <h1 className="absolute left-10 top-8 text-2xl font-bold">
-            Planner.so
-          </h1>
+          <Link
+            href="/"
+            className={clsx(
+              alata.className,
+              'absolute left-10 top-8 text-3xl font-bold'
+            )}
+          >
+            Planner
+            <span className="text-accent">.so</span>
+          </Link>
           <h2 className="flex gap-2 text-4xl">
             {form === 'signup' ? 'Plan your next trip' : 'Welcome back'}
           </h2>
