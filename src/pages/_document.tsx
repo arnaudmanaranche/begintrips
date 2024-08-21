@@ -23,7 +23,6 @@ export default function Document() {
         />
         <link rel="manifest" href="/site.webmanifest" />
       </Head>
-      <head></head>
       <body>
         <Main />
         <NextScript />
