@@ -12,6 +12,7 @@ import type { GetServerSidePropsContext } from 'next'
 import { Alata } from 'next/font/google'
 import Head from 'next/head'
 import Link from 'next/link'
+import { useSearchParams } from 'next/navigation'
 import { useRouter } from 'next/router'
 import type { ReactNode } from 'react'
 import { useState } from 'react'
@@ -20,10 +21,13 @@ const alata = Alata({ weight: '400', subsets: ['latin'] })
 const ONBOARDING_STEPS = [1, 2, 3]
 
 export default function Onboarding() {
-  const [currentStep, setCurrentStep] = useState(0)
+  const searchParams = useSearchParams()
+  const step = searchParams.get('step')
+
+  const [currentStep, setCurrentStep] = useState(step ? parseInt(step) : 0)
   const router = useRouter()
   const [error, setError] = useState('')
-  const { journey } = useOnboardingStore()
+  const { journey, resetJourney } = useOnboardingStore()
   const { mutateAsync, isPending, isSuccess } = useMutation({
     mutationFn: () => createJourney(journey),
   })
@@ -31,6 +35,7 @@ export default function Onboarding() {
   const handleSubmit = async () => {
     try {
       const data = await mutateAsync()
+      resetJourney()
       router.push(`/journey/${data.journeyId}`)
     } catch (error) {
       setError(

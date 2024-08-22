@@ -3,6 +3,7 @@ import { Button } from '@/components/Button/Button'
 import MyJourneys from '@/components/MyJourneys/MyJourneys'
 import { createClient } from '@/libs/supabase/client'
 import { createClient as createClientServerProps } from '@/libs/supabase/server-props'
+import { useOnboardingStore } from '@/stores/onboarding.store'
 import type { Journey } from '@/types'
 import type { User } from '@supabase/supabase-js'
 import type { GetServerSidePropsContext } from 'next'
@@ -20,9 +21,11 @@ export default function AccountPage({
 }: AccountPageProps) {
   const supabase = createClient()
   const router = useRouter()
+  const { resetJourney } = useOnboardingStore()
 
   const handleLogout = async () => {
     await supabase.auth.signOut()
+    resetJourney()
     router.push('/')
   }
 

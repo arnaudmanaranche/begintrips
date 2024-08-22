@@ -4,6 +4,7 @@ import { motion } from 'framer-motion'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
 import { Callout } from '../Callout/Callout'
+import { Input } from '../Input/Input'
 
 export function SignUpForm() {
   const router = useRouter()
@@ -14,7 +15,7 @@ export function SignUpForm() {
   const [error, setError] = useState('')
   const [isLoading, setIsLoading] = useState(false)
 
-  async function signUp(e: React.MouseEvent<HTMLButtonElement>) {
+  async function handleSignUp(e: React.MouseEvent<HTMLButtonElement>) {
     e.preventDefault()
     setIsLoading(true)
 
@@ -39,45 +40,33 @@ export function SignUpForm() {
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      className="space-y-4"
+      className="w-full space-y-4"
     >
       {error ? <Callout>{error}</Callout> : null}
       <form className="flex flex-col space-y-4">
         <div className="flex flex-col">
-          <label className="text-sm font-medium" htmlFor="email">
-            Email
-          </label>
-          <input
-            className="rounded-md border-2 border-gray-100 bg-slate-50 px-10 py-4 outline-none transition-all placeholder:text-black/50 focus:border-neutral-dark focus:outline-none"
+          <Input
+            label="Email"
             id="email"
             type="email"
-            placeholder="name@email.com"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
         </div>
         <div className="flex flex-col">
-          <label className="text-sm font-medium" htmlFor="password">
-            Password
-          </label>
-          <input
+          <Input
+            label="Password"
             id="password"
-            className="rounded-md border-2 border-gray-100 bg-slate-50 px-10 py-4 outline-none transition-all placeholder:text-black/50 focus:border-neutral-dark focus:outline-none"
             type="password"
-            placeholder="•••••••"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
         </div>
         <div className="flex flex-col">
-          <label className="text-sm font-medium" htmlFor="confirm-password">
-            Confirm password
-          </label>
-          <input
+          <Input
+            label="Confirm password"
             id="confirm-password"
-            className="rounded-md border-2 border-gray-100 bg-slate-50 px-10 py-4 outline-none transition-all placeholder:text-black/50 focus:border-neutral-dark focus:outline-none"
             type="password"
-            placeholder="•••••••"
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
           />
@@ -85,7 +74,7 @@ export function SignUpForm() {
         <Button
           stretch
           onClick={async (e: React.MouseEvent<HTMLButtonElement>) =>
-            await signUp(e)
+            await handleSignUp(e)
           }
           isDisabled={isLoading}
         >
