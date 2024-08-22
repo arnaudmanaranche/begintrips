@@ -56,5 +56,6 @@
     "tailwindcss": "3.4.1",
     "ts-node": "10.9.1",
     "typescript": "5"
-  }
+  },
+  "packageManager": "yarn@4.4.0"
 }
