@@ -1,6 +1,7 @@
 import { createJourney } from '@/api/calls/journeys'
 import { Button } from '@/components/Button/Button'
 import { Callout } from '@/components/Callout/Callout'
+import { DestinationSearchContainer } from '@/components/DestinationSearch/DestinationSearch.Container'
 import { createClient as createServerClient } from '@/libs/supabase/server-props'
 import { useOnboardingStore } from '@/stores/onboarding.store'
 import { isInvalidDate, stripTime } from '@/utils/date'
@@ -74,7 +75,7 @@ export default function Onboarding() {
   const progressWidth = `${((currentStep + 1) / ONBOARDING_STEPS.length) * 100}%`
 
   return (
-    <div>
+    <>
       <Head>
         <title>Planner.so | Onboarding</title>
       </Head>
@@ -84,7 +85,7 @@ export default function Onboarding() {
           style={{ width: progressWidth }}
         />
       </div>
-      <div className="mt-20 flex flex-col">
+      <div className="flex min-h-screen flex-col pt-20">
         <div className="flex justify-center">
           <Link href="/account">
             <span className={clsx(alata.className, 'text-6xl')}>
@@ -93,42 +94,43 @@ export default function Onboarding() {
             </span>
           </Link>
         </div>
-        <div className="mx-auto flex flex-col">
-          <div className="flex px-10 py-6 lg:px-0">
-            <Steps step={currentStep} error={error} />
-          </div>
-          <div className="flex justify-end border-t border-gray-200 py-6">
-            <div className="flex w-full flex-col space-y-4 px-6 md:flex-row md:justify-end md:space-x-4 md:space-y-0 md:px-0 md:pr-6">
-              {currentStep > 0 && (
-                <Button
-                  onClick={() => setCurrentStep((prev) => prev - 1)}
-                  variant="ghost"
-                >
-                  {currentStep === 1 ? 'Change destination' : 'Change dates'}
-                </Button>
-              )}
+        <div className="flex flex-grow px-10 py-6 md:justify-center lg:px-0">
+          <Steps step={currentStep} error={error} />
+        </div>
+        <div className="flex justify-end border-t border-gray-200 py-6">
+          <div className="flex w-full flex-col space-y-4 px-6 md:flex-row md:justify-end md:space-x-4 md:space-y-0 md:px-0 md:pr-6">
+            {currentStep > 0 && (
               <Button
-                className={clsx(
-                  (isPending || isSuccess) && 'cursor-not-allowed bg-black/30'
-                )}
-                onClick={
-                  currentStep === ONBOARDING_STEPS.length - 1
-                    ? handleSubmit
-                    : handleNextStep
-                }
-                isDisabled={isPending || isSuccess}
+                onClick={() => {
+                  setCurrentStep((prev) => prev - 1)
+                  setError('')
+                }}
+                variant="ghost"
               >
-                {isPending || isSuccess
-                  ? 'Creating your journey...'
-                  : currentStep === ONBOARDING_STEPS.length - 1
-                    ? "Let's go!"
-                    : 'Next'}
+                {currentStep === 1 ? 'Change destination' : 'Change dates'}
               </Button>
-            </div>
+            )}
+            <Button
+              className={clsx(
+                (isPending || isSuccess) && 'cursor-not-allowed bg-black/30'
+              )}
+              onClick={
+                currentStep === ONBOARDING_STEPS.length - 1
+                  ? handleSubmit
+                  : handleNextStep
+              }
+              isDisabled={isPending || isSuccess}
+            >
+              {isPending || isSuccess
+                ? 'Creating your journey...'
+                : currentStep === ONBOARDING_STEPS.length - 1
+                  ? "Let's go!"
+                  : 'Next'}
+            </Button>
           </div>
         </div>
       </div>
-    </div>
+    </>
   )
 }
 
@@ -158,7 +160,7 @@ function Step({ children, title, subtitle }: StepProps) {
     >
       <div className="space-y-2">
         <p className="text-base text-gray-500">{subtitle}</p>
-        <h2 className="text-4xl font-bold">{title}</h2>
+        <h2 className="max-w-2xl text-4xl font-bold">{title}</h2>
       </div>
       <div className="pb-2 pt-4">{children}</div>
     </motion.div>
@@ -166,8 +168,6 @@ function Step({ children, title, subtitle }: StepProps) {
 }
 
 function Step1({ error }: { error: string }) {
-  const { journey, updateJourney } = useOnboardingStore()
-
   return (
     <Step title="Let's plan your next journey" subtitle="1. Destination">
       <div className="space-y-4">
@@ -182,15 +182,7 @@ function Step1({ error }: { error: string }) {
           </motion.div>
         )}
         <div className="flex flex-col justify-start space-y-2">
-          <label htmlFor="destination">Destination</label>
-          <input
-            id="destination"
-            onChange={(e) => updateJourney({ destination: e.target.value })}
-            defaultValue={journey.destination}
-            type="text"
-            placeholder="e.g New York"
-            className="rounded-md border-2 border-gray-100 bg-slate-50 px-10 py-4 outline-none transition-all placeholder:text-black/50 focus:border-neutral-dark"
-          />
+          <DestinationSearchContainer />
         </div>
       </div>
     </Step>
@@ -217,7 +209,7 @@ function Step2({ error }: { error: string }) {
             <Callout.Danger>{error}</Callout.Danger>
           </motion.div>
         )}
-        <div className="flex flex-col space-x-0 md:flex-row md:space-x-4">
+        <div className="flex flex-col place-content-between space-x-0 md:flex-row md:space-x-4">
           <div className="flex flex-col justify-start space-y-2">
             <label htmlFor="start">Departure date</label>
             <input

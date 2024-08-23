@@ -7,5 +7,7 @@ namespace NodeJS {
     SUPABASE_PROJECT_ID: string
     // Unsplash
     UNSPLASH_ACCESS_KEY: string
+    // Mapbox
+    NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN: string
   }
 }
