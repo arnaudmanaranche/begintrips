@@ -3,13 +3,15 @@ import { Button } from '@/components/Button/Button'
 import { Callout } from '@/components/Callout/Callout'
 import { createClient as createServerClient } from '@/libs/supabase/server-props'
 import { useOnboardingStore } from '@/stores/onboarding.store'
+import { stripTime } from '@/utils/date'
 import { useMutation } from '@tanstack/react-query'
 import clsx from 'clsx'
-import { formatISO, isPast } from 'date-fns'
+import { formatISO, isPast, isToday } from 'date-fns'
 import { motion } from 'framer-motion'
 import type { GetServerSidePropsContext } from 'next'
 import { Alata } from 'next/font/google'
 import Head from 'next/head'
+import Link from 'next/link'
 import { useRouter } from 'next/router'
 import type { ReactNode } from 'react'
 import { useState } from 'react'
@@ -38,18 +40,33 @@ export default function Onboarding() {
   }
 
   const handleNextStep = () => {
-    if (
-      currentStep === 1 &&
-      (isPast(new Date(journey.departureDate)) ||
-        isPast(new Date(journey.returnDate)))
-    ) {
-      setError('You need to set a start and end date')
-    } else if (currentStep === 0 && !journey.destination) {
-      setError('You need to set a destination')
-    } else {
-      setError('')
-      setCurrentStep((prev) => prev + 1)
+    const isInvalidDate = (date: Date) =>
+      isPast(stripTime(date)) && !isToday(stripTime(date))
+
+    if (currentStep === 0) {
+      if (!journey.destination) {
+        setError('You need to set a destination')
+        return
+      }
+    } else if (currentStep === 1) {
+      const departureDate = new Date(journey.departureDate)
+      const returnDate = new Date(journey.returnDate)
+
+      if (isToday(stripTime(departureDate))) {
+        setError('')
+        setCurrentStep((prev) => prev + 1)
+        return
+      }
+
+      if (isInvalidDate(departureDate) || isInvalidDate(returnDate)) {
+        setError('You need to set a valid start and end date')
+        return
+      }
     }
+
+    // If no errors, clear the error and move to the next step
+    setError('')
+    setCurrentStep((prev) => prev + 1)
   }
 
   const progressWidth = `${((currentStep + 1) / ONBOARDING_STEPS.length) * 100}%`
@@ -67,10 +84,12 @@ export default function Onboarding() {
       </div>
       <div className="mt-20 flex flex-col">
         <div className="flex justify-center">
-          <span className={clsx(alata.className, 'text-6xl')}>
-            Planner
-            <span className="text-accent">.so</span>
-          </span>
+          <Link href="/account">
+            <span className={clsx(alata.className, 'text-6xl')}>
+              Planner
+              <span className="text-accent">.so</span>
+            </span>
+          </Link>
         </div>
         <div className="mx-auto flex flex-col">
           <div className="flex px-10 py-6 lg:px-0">

@@ -44,7 +44,10 @@ export default function MyJourneys({
   ) : (
     <div className="flex flex-col space-y-4">
       {journeys.map((journey) => (
-        <div key={journey.id} className="flex items-center justify-between">
+        <div
+          key={journey.id}
+          className="flex flex-col justify-between space-y-4 md:flex-row md:items-center md:space-y-0"
+        >
           <div className="flex flex-col space-y-1">
             <span>Destination: {journey.destination}</span>
             <span>
@@ -52,12 +55,12 @@ export default function MyJourneys({
               {format(new Date(journey.returnDate), 'dd/MM/yyyy')}
             </span>
           </div>
-          <div className="space-x-2">
+          <div className="flex space-x-2">
             <Button
               variant="ghost"
               onClick={() => router.push(`/journey/${journey.id}`)}
             >
-              Edit
+              Visit
             </Button>
             <Button
               variant="ghost"

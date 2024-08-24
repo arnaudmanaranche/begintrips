@@ -38,6 +38,7 @@ export function AddNewExpenseView({
     mutateAsync: handleCreateExpense,
     isPending,
     isError,
+    error,
   } = useMutation({
     mutationFn: () => createExpense(newExpense),
     onSuccess() {
@@ -82,9 +83,7 @@ export function AddNewExpenseView({
               animate={{ opacity: 1 }}
               className="transition-opacity"
             >
-              <Callout>
-                An error occurred while adding the expense. Please try again.
-              </Callout>
+              <Callout>{error?.message}</Callout>
             </motion.div>
           ) : null}
           <div className="flex flex-col space-y-1">
@@ -94,7 +93,7 @@ export function AddNewExpenseView({
               className="rounded-md border-2 border-gray-100 bg-slate-50 px-10 py-4 outline-none transition-all placeholder:text-black/50 focus:border-neutral-dark focus:outline-none"
               type="text"
               placeholder="Taylor Swift concert"
-              value={newExpense.name}
+              defaultValue={newExpense.name}
               onChange={(e) =>
                 setNewExpense({ ...newExpense, name: e.target.value })
               }
@@ -107,7 +106,7 @@ export function AddNewExpenseView({
               className="rounded-md border-2 border-gray-100 bg-slate-50 px-10 py-4 outline-none transition-all placeholder:text-black/50 focus:border-neutral-dark focus:outline-none"
               type="number"
               placeholder="3000"
-              value={newExpense.amount}
+              defaultValue={newExpense.amount}
               onChange={(e) =>
                 setNewExpense({
                   ...newExpense,
@@ -120,14 +119,18 @@ export function AddNewExpenseView({
           <select
             id="expense-day"
             className="rounded-md border-2 border-gray-100 bg-slate-50 px-2 py-4 outline-none transition-all placeholder:text-black/50 focus:border-neutral-dark focus:outline-none"
-            onChange={(e) =>
+            onChange={(e) => {
+              const selectedDay = JSON.parse(e.target.value)
               setNewExpense((prev) => ({
                 ...prev,
-                dayId: JSON.parse(e.target.value).id,
-                startDate: JSON.parse(e.target.value).startDate,
+                dayId: selectedDay.id,
+                startDate: selectedDay.startDate,
               }))
-            }
-            defaultValue="Select a day"
+            }}
+            defaultValue={JSON.stringify({
+              id: newExpense.dayId,
+              startDate: newExpense.startDate,
+            })}
           >
             <option disabled value="Select a day">
               Select a day
