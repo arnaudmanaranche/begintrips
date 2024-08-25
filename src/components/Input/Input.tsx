@@ -1,10 +1,10 @@
+import clsx from 'clsx'
 import { useState } from 'react'
 
-export interface InputProps {
+export interface InputProps
+  extends React.InputHTMLAttributes<HTMLInputElement> {
   label: string
   id: string
-  type?: string
-  value: string
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
   min?: string
 }
@@ -37,8 +37,12 @@ export const Input = ({
       />
       <label
         htmlFor={id}
-        className={`duration-400 absolute left-4 top-1/2 -translate-y-1/2 transform px-1 text-sm transition-all ease-in-out
-        ${isFocused || value ? 'left-3 top-[-0.75rem] text-xs text-accent' : 'text-black/50'}`}
+        className={clsx(
+          'duration-400 absolute left-4 top-1/2 -translate-y-1/2 transform px-1 text-sm transition-all ease-in-out',
+          isFocused || value
+            ? 'left-3 top-[-0.75rem] text-xs text-accent'
+            : 'text-black/50'
+        )}
       >
         {label}
       </label>

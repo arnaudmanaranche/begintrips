@@ -1,4 +1,4 @@
-import { CalloutInfo } from '@/components/Callout/Callout.Info'
+import { Callout } from '@/components/Callout/Callout'
 import { LogInForm } from '@/components/LogInForm/LogInForm'
 import { SignUpForm } from '@/components/SignUpForm/SignInForm'
 import { createClient } from '@/libs/supabase/server-props'
@@ -38,9 +38,9 @@ export default function WelcomePage() {
               {form === 'signup' ? 'Create your account' : 'Welcome back'}
             </h2>
             {journey.destination ? (
-              <CalloutInfo>
+              <Callout.Info>
                 You can change your journey details later in your account.
-              </CalloutInfo>
+              </Callout.Info>
             ) : null}
 
             <div className="flex flex-col justify-between space-y-10 md:flex-row md:space-y-0">
