@@ -77,80 +77,80 @@ export default function HomePage({ user }: { user: User }) {
               Your Ultimate <br /> Travel Companion
             </h1>
           </div>
-          <div>
-            <div className="space-y-0 md:space-y-4">
-              {error ? (
-                <div className="w-full px-6 md:bottom-0 md:ml-10 md:mr-0 md:w-fit md:flex-row md:space-x-10 md:px-0 xl:ml-0">
-                  <Callout>{error}</Callout>
-                </div>
-              ) : null}
-              <div className="absolute bottom-[calc(100vh-63rem)] left-0 right-0 ml-auto mr-auto flex w-[calc(100%-2rem)] flex-col space-x-0 rounded-2xl bg-white shadow-lg md:relative md:bottom-0 md:ml-10 md:mr-0 md:w-fit md:flex-row md:space-x-10 xl:ml-0">
-                <div className="flex flex-col py-4">
-                  <label
-                    className="flex-1 px-10 text-sm text-black/80"
-                    htmlFor="destination"
-                  >
-                    Destination
-                  </label>
-                  <input
-                    type="text"
-                    id="destination"
-                    className="py-4 pl-10 outline-none transition-all placeholder:text-black/50 focus:border-neutral-dark focus:outline-none"
-                    placeholder="New York"
-                    defaultValue={journey.destination}
-                    onChange={(e) =>
-                      updateJourney({ destination: e.target.value })
-                    }
-                  />
-                </div>
-                <div className="flex flex-col py-4">
-                  <label
-                    className="px-10 text-sm text-black/80"
-                    htmlFor="departureDate"
-                  >
-                    Departure date
-                  </label>
-                  <input
-                    placeholder="Departure date"
-                    className="border-gray-100 py-4 pl-10 outline-none transition-all placeholder:text-black/50 focus:border-neutral-dark focus:outline-none"
-                    id="departureDate"
-                    defaultValue={journey.departureDate}
-                    type="date"
-                    min={journey.departureDate}
-                    onChange={handleDepartureDateChange}
-                  />
-                </div>
-                <div className="flex flex-col py-4">
-                  <label
-                    className="px-10 text-sm text-black/80"
-                    htmlFor="returnDate"
-                  >
-                    Return date
-                  </label>
-                  <input
-                    placeholder="Return date"
-                    className="border-gray-100 py-4 pl-10 outline-none transition-all placeholder:text-black/50 focus:border-neutral-dark focus:outline-none"
-                    id="returnDate"
-                    type="date"
-                    value={journey.returnDate}
-                    min={journey.departureDate}
-                    onChange={handleReturnDateChange}
-                  />
-                </div>
-                <button
-                  className="flex items-center justify-center rounded-b-2xl bg-accent-light px-4 py-4 text-xl text-black/80 transition-colors hover:bg-accent md:rounded-b-none md:rounded-br-2xl md:rounded-tr-2xl"
-                  onClick={handleSubmit}
-                >
-                  <ChevronRightIcon className="hidden h-6 w-6 text-black/50 md:block" />
-                  <span className="block md:hidden">Plan my trip</span>
-                </button>
+
+          <div className="space-y-0 md:space-y-4">
+            {error ? (
+              <div className="w-full px-6 md:bottom-0 md:ml-10 md:mr-0 md:w-fit md:flex-row md:space-x-10 md:px-0 xl:ml-0">
+                <Callout>{error}</Callout>
               </div>
+            ) : null}
+            <div className="absolute bottom-[calc(100vh-63rem)] left-0 right-0 ml-auto mr-auto flex w-[calc(100%-2rem)] flex-col space-x-0 rounded-2xl bg-white shadow-lg md:relative md:bottom-0 md:ml-10 md:mr-0 md:w-fit md:flex-row md:space-x-10 xl:ml-0">
+              <div className="flex flex-col py-4">
+                <label
+                  className="flex-1 px-10 text-sm text-black/80"
+                  htmlFor="destination"
+                >
+                  Destination
+                </label>
+                <input
+                  type="text"
+                  id="destination"
+                  className="py-4 pl-10 outline-none transition-all placeholder:text-black/50 focus:border-neutral-dark focus:outline-none"
+                  placeholder="New York"
+                  defaultValue={journey.destination}
+                  onChange={(e) =>
+                    updateJourney({ destination: e.target.value })
+                  }
+                />
+              </div>
+              <div className="flex flex-col py-4">
+                <label
+                  className="px-10 text-sm text-black/80"
+                  htmlFor="departureDate"
+                >
+                  Departure date
+                </label>
+                <input
+                  placeholder="Departure date"
+                  className="w-full border-gray-100 py-4 pl-10 outline-none transition-all placeholder:text-black/50 focus:border-neutral-dark focus:outline-none"
+                  id="departureDate"
+                  defaultValue={journey.departureDate}
+                  type="date"
+                  min={journey.departureDate}
+                  onChange={handleDepartureDateChange}
+                />
+              </div>
+              <div className="flex flex-col py-4">
+                <label
+                  className="px-10 text-sm text-black/80"
+                  htmlFor="returnDate"
+                >
+                  Return date
+                </label>
+                <input
+                  placeholder="Return date"
+                  className="w-full border-gray-100 py-4 pl-10 outline-none transition-all placeholder:text-black/50 focus:border-neutral-dark focus:outline-none"
+                  id="returnDate"
+                  type="date"
+                  value={journey.returnDate}
+                  min={journey.departureDate}
+                  onChange={handleReturnDateChange}
+                />
+              </div>
+              <button
+                className="flex items-center justify-center rounded-b-2xl bg-accent-light px-4 py-4 text-xl text-black/80 transition-colors hover:bg-accent md:rounded-b-none md:rounded-br-2xl md:rounded-tr-2xl"
+                onClick={handleSubmit}
+              >
+                <ChevronRightIcon className="hidden h-6 w-6 text-black/50 md:block" />
+                <span className="block md:hidden">Plan my trip</span>
+              </button>
             </div>
           </div>
         </div>
+
         <Map />
       </section>
-      <section className="bg-white pt-[calc(100vh-55rem)] md:py-20">
+      <section className="bg-white pt-72 md:py-20">
         <div className="mx-auto flex max-w-screen-xl flex-col">
           <h2 className={clsx(alata.className, 'mb-8 text-center text-4xl')}>
             Why Choose Planner.so?
