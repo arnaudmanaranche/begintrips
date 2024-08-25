@@ -55,7 +55,7 @@ export default function AccountPage({
       <div className="flex flex-col space-y-5 md:flex-row md:justify-between md:space-y-0">
         {journeys?.length === 0 ? (
           <Button onClick={() => router.push('/onboarding')}>
-            Plan a new trip
+            Plan a new journey
           </Button>
         ) : null}
 

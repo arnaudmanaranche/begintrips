@@ -172,7 +172,7 @@ function Step1({ error }: { error: string }) {
   const { journey, updateJourney } = useOnboardingStore()
 
   return (
-    <Step title="Let's plan your next trip" subtitle="1. Destination">
+    <Step title="Let's plan your next journey" subtitle="1. Destination">
       <div className="space-y-4">
         {error && (
           <motion.div
@@ -260,7 +260,7 @@ function Step3({ error }: { error: string }) {
 
   return (
     <Step
-      title="How much money do you plan to spend on your next trip?"
+      title="How much money do you plan to spend on your next journey?"
       subtitle="3. Budget"
     >
       <div className="space-y-4">
