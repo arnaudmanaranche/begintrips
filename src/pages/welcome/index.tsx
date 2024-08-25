@@ -37,31 +37,38 @@ export default function WelcomePage() {
             <h2 className="flex text-4xl">
               {form === 'signup' ? 'Create your account' : 'Welcome back'}
             </h2>
-            <CalloutInfo>
-              You can change your journey details later in your account.
-            </CalloutInfo>
+            {journey.destination ? (
+              <CalloutInfo>
+                You can change your journey details later in your account.
+              </CalloutInfo>
+            ) : null}
+
             <div className="flex flex-col justify-between space-y-10 md:flex-row md:space-y-0">
-              <div className="flex flex-1 flex-col space-y-8">
-                <div className="flex flex-col justify-center space-y-4">
-                  <h2 className="text-2xl">Recap your journey</h2>
-                  <ul className="flex flex-col space-y-4">
-                    <li className="flex flex-col space-y-1 text-base font-medium">
-                      <span>Destination</span>
-                      <span className="font-light">{journey.destination}</span>
-                    </li>
-                    <li className="flex flex-col space-y-1 text-base font-medium">
-                      <span>Departure date</span>
-                      <span className="font-light">
-                        {journey.departureDate}
-                      </span>
-                    </li>
-                    <li className="flex flex-col space-y-1 text-base font-medium">
-                      <span>Return date</span>
-                      <span className="font-light">{journey.returnDate}</span>
-                    </li>
-                  </ul>
+              {journey.destination ? (
+                <div className="flex flex-1 flex-col space-y-8">
+                  <div className="flex flex-col justify-center space-y-4">
+                    <h2 className="text-2xl">Recap your journey</h2>
+                    <ul className="flex flex-col space-y-4">
+                      <li className="flex flex-col space-y-1 text-base font-medium">
+                        <span>Destination</span>
+                        <span className="font-light">
+                          {journey.destination}
+                        </span>
+                      </li>
+                      <li className="flex flex-col space-y-1 text-base font-medium">
+                        <span>Departure date</span>
+                        <span className="font-light">
+                          {journey.departureDate}
+                        </span>
+                      </li>
+                      <li className="flex flex-col space-y-1 text-base font-medium">
+                        <span>Return date</span>
+                        <span className="font-light">{journey.returnDate}</span>
+                      </li>
+                    </ul>
+                  </div>
                 </div>
-              </div>
+              ) : null}
               <div className="flex flex-1 flex-col items-center justify-center space-y-4 pb-10 md:space-y-10 md:pb-0">
                 {form === 'signup' ? <SignUpForm /> : <LogInForm />}
                 <span className="flex gap-1 text-sm">
