@@ -50,7 +50,7 @@ export default function HomePage({ user }: { user: User }) {
   return (
     <main>
       <Head>
-        <title>Planner.so | Plan your next trip</title>
+        <title>Planner.so | Plan your next journey</title>
       </Head>
       <section className="relative z-10 h-[calc(100vh-10rem)] bg-accent-light/20 md:h-[calc(100vh-20rem)] md:overflow-hidden">
         <div className="mx-auto flex max-w-screen-xl flex-col justify-start space-y-16 pt-10">
@@ -142,7 +142,7 @@ export default function HomePage({ user }: { user: User }) {
                 onClick={handleSubmit}
               >
                 <ChevronRightIcon className="hidden h-6 w-6 text-black/50 md:block" />
-                <span className="block md:hidden">Plan my trip</span>
+                <span className="block md:hidden">Plan my journey</span>
               </button>
             </div>
           </div>
@@ -161,8 +161,8 @@ export default function HomePage({ user }: { user: User }) {
                 Easy Planning
               </h2>
               <p className="text-black/70">
-                Streamline your trip planning process with our intuitive tools
-                and interfaces.
+                Streamline your journey planning process with our intuitive
+                tools and interfaces.
               </p>
             </div>
             <div className="cursor-default rounded-lg p-6 text-center transition-colors hover:border-accent hover:bg-accent-light/10">
