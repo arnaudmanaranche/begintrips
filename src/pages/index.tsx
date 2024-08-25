@@ -112,7 +112,7 @@ export default function HomePage({ user }: { user: User }) {
                 </label>
                 <input
                   placeholder="Departure date"
-                  className="w-full border-gray-100 py-4 pl-10 outline-none transition-all placeholder:text-black/50 focus:border-neutral-dark focus:outline-none"
+                  className="w-full flex-1 border-gray-100 bg-transparent py-4 pl-10 outline-none transition-all placeholder:text-black/50 focus:border-neutral-dark focus:outline-none"
                   id="departureDate"
                   defaultValue={journey.departureDate}
                   type="date"
@@ -129,7 +129,7 @@ export default function HomePage({ user }: { user: User }) {
                 </label>
                 <input
                   placeholder="Return date"
-                  className="w-full border-gray-100 py-4 pl-10 outline-none transition-all placeholder:text-black/50 focus:border-neutral-dark focus:outline-none"
+                  className="w-full flex-1 border-gray-100 bg-transparent py-4 pl-10 outline-none transition-all placeholder:text-black/50 focus:border-neutral-dark focus:outline-none"
                   id="returnDate"
                   type="date"
                   value={journey.returnDate}
