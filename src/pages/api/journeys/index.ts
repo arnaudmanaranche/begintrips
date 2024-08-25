@@ -1,7 +1,7 @@
 import createClient from '@/libs/supabase/api'
 import type { AddJourney, AddDay } from '@/types'
 import { unsplash } from '@/libs/unsplash'
-import { addDays, differenceInDays } from 'date-fns'
+import { addDays, differenceInDays, format } from 'date-fns'
 import type { NextApiRequest, NextApiResponse } from 'next'
 
 async function createJourney(data: AddJourney): Promise<AddJourney> {
@@ -54,10 +54,13 @@ export default async function handler(
       ) + 1
 
     const days: AddDay[] = Array.from({ length: journeyLength }, (_, index) => {
-      const date = addDays(new Date(journey.departureDate), index)
+      const date = format(
+        addDays(new Date(journey.departureDate), index),
+        'yyyy-MM-dd'
+      )
 
       return {
-        startDate: date.toISOString(),
+        startDate: date,
         journeyId: data.id,
       }
     })

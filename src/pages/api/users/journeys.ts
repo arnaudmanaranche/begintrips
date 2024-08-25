@@ -7,15 +7,11 @@ export default async function handler(
 ) {
   const supabase = createClient(req, res)
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
-
   if (req.method === 'GET') {
     const { data } = await supabase
       .from('journeys')
       .select('*')
-      .eq('userId', user?.id as string)
+      .eq('userId', req.query.userId!)
 
     res.status(200).json(data)
   } else {

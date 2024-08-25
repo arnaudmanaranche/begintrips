@@ -1,8 +1,4 @@
-import {
-  getJourney,
-  getJourneyDays,
-  getJourneyExpenses,
-} from '@/api/calls/journeys'
+import { getJourney } from '@/api/calls/journeys'
 import { AddNewExpense } from '@/components/AddNewExpense/AddNewExpense'
 import { Button } from '@/components/Button/Button'
 import { Expenses } from '@/components/Expenses/Expenses'
@@ -38,6 +34,7 @@ export default function Journey({
   expensesByCategory,
   days,
   expensesByDay,
+  user,
 }: JourneyProps) {
   const daysLeftBeforeJourneyBegins = useMemo(
     () => differenceInDays(new Date(journey.departureDate), new Date()),
@@ -99,6 +96,7 @@ export default function Journey({
                   Calendar
                 </h2>
                 <UpcomingSchedule
+                  userId={user.id}
                   expensesByDay={expensesByDay}
                   departureDate={journey.departureDate}
                 />
@@ -121,7 +119,7 @@ export default function Journey({
               <AddNewExpense days={days} />
             </div>
             <div className="space-y-3 rounded-2xl border-2 bg-white p-4">
-              <Expenses expenses={expensesByCategory} />
+              <Expenses expenses={expensesByCategory} userId={user.id} />
             </div>
           </div>
         </div>
@@ -144,11 +142,10 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
     }
   }
 
-  const [journey, days, expenses] = await Promise.all([
-    getJourney({ journeyId: context.query.id as string }),
-    getJourneyDays({ journeyId: context.query.id as string }),
-    getJourneyExpenses({ journeyId: context.query.id as string }),
-  ])
+  const { journey, expenses, days } = await getJourney({
+    journeyId: context.params?.id as string,
+    userId: data.user.id,
+  })
 
   const expensesByCategory = groupedExpensesByCategory({
     expenses,

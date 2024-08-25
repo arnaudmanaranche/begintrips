@@ -6,6 +6,7 @@ import { createClient as createClientServerProps } from '@/libs/supabase/server-
 import { useOnboardingStore } from '@/stores/onboarding.store'
 import type { Journey } from '@/types'
 import type { User } from '@supabase/supabase-js'
+import { useQuery } from '@tanstack/react-query'
 import type { GetServerSidePropsContext } from 'next'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
@@ -29,6 +30,12 @@ export default function AccountPage({
     router.push('/')
   }
 
+  const { data: journeys, isFetching } = useQuery({
+    queryKey: [user.id, 'journeys'],
+    queryFn: () => getUserJourneys({ userId: user.id }),
+    initialData: initialJourneys,
+  })
+
   return (
     <div className="mx-auto mt-20 max-w-screen-sm px-10 lg:px-0">
       <Head>
@@ -38,13 +45,20 @@ export default function AccountPage({
         <h1 className="mb-10 text-2xl font-bold">Hello, {user.email}&nbsp;!</h1>
         <div className="space-y-5">
           <p className="text-xl">My journeys</p>
-          <MyJourneys userId={user.id} journeys={initialJourneys} />
+          <MyJourneys
+            userId={user.id}
+            journeys={journeys}
+            isLoading={isFetching}
+          />
         </div>
       </div>
       <div className="flex flex-col space-y-5 md:flex-row md:justify-between md:space-y-0">
-        <Button onClick={() => router.push('/onboarding')}>
-          Plan a new trip
-        </Button>
+        {journeys?.length === 0 ? (
+          <Button onClick={() => router.push('/onboarding')}>
+            Plan a new trip
+          </Button>
+        ) : null}
+
         <Button variant="ghost" onClick={() => handleLogout()}>
           Logout
         </Button>
@@ -67,7 +81,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
     }
   }
 
-  const journeys = await getUserJourneys()
+  const journeys = await getUserJourneys({ userId: data.user.id })
 
   return {
     props: {

@@ -10,14 +10,16 @@ const alata = Alata({ weight: '400', subsets: ['latin'] })
 
 export interface ExpensesProps {
   expenses: Record<string, Expense[]>
+  userId: string
 }
 
-export function Expenses({ expenses: initialExpenses }: ExpensesProps) {
+export function Expenses({ expenses: initialExpenses, userId }: ExpensesProps) {
   const { query } = useRouter()
 
   const { data: expensesByCategory, isFetching } = useQuery({
     queryKey: [query.id, 'expensesByCategory'],
-    queryFn: () => getExpensesByCategory({ journeyId: query.id as string }),
+    queryFn: () =>
+      getExpensesByCategory({ journeyId: query.id as string, userId }),
     initialData: initialExpenses,
   })
 
