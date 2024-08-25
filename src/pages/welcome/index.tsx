@@ -33,7 +33,7 @@ export default function WelcomePage() {
       </Link>
       <div className="mx-auto flex max-w-4xl flex-grow px-10 md:px-0">
         <div className="flex-1 bg-white">
-          <div className="relative flex h-full w-full flex-col justify-center space-y-10 pt-40 md:pt-0">
+          <div className="relative mt-40 flex h-full w-full flex-col justify-center space-y-10 md:pt-0">
             <h2 className="flex text-4xl">
               {form === 'signup' ? 'Create your account' : 'Welcome back'}
             </h2>

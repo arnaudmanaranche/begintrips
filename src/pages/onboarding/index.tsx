@@ -220,7 +220,7 @@ function Step2({ error }: { error: string }) {
             <Callout>{error}</Callout>
           </motion.div>
         )}
-        <div className="flex space-x-4">
+        <div className="flex flex-col space-x-0 md:flex-row md:space-x-4">
           <div className="flex flex-col justify-start space-y-2">
             <label htmlFor="start">Departure date</label>
             <input
