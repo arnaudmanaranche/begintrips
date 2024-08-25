@@ -1,35 +1,30 @@
 import { deleteJourney } from '@/api/calls/journeys'
-import { getUserJourneys } from '@/api/calls/users'
 import { Button } from '@/components/Button/Button'
 import type { Journey } from '@/types'
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { format } from 'date-fns'
 import router from 'next/router'
 
 export interface MyJourneysProps {
   userId: string
   journeys: Journey[]
+  isLoading: boolean
 }
 
 export default function MyJourneys({
   userId,
-  journeys: initialJourneys,
+  journeys,
+  isLoading,
 }: MyJourneysProps) {
   const queryClient = useQueryClient()
   const { mutateAsync: hanldeDeleteJourney } = useMutation({
-    mutationFn: deleteJourney,
+    mutationFn: (journeyId: string) => deleteJourney({ journeyId, userId }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [userId, 'journeys'] })
     },
   })
 
-  const { data: journeys, isFetching } = useQuery({
-    queryKey: [userId, 'journeys'],
-    queryFn: getUserJourneys,
-    initialData: initialJourneys,
-  })
-
-  if (isFetching) {
+  if (isLoading) {
     return (
       <div className="mx-auto mt-20 flex min-h-[500px] max-w-screen-sm flex-col space-y-4">
         <div className="h-[100px] w-full animate-pulse rounded-lg bg-slate-200" />
@@ -56,10 +51,7 @@ export default function MyJourneys({
             </span>
           </div>
           <div className="flex space-x-2">
-            <Button
-              variant="ghost"
-              onClick={() => router.push(`/journey/${journey.id}`)}
-            >
+            <Button onClick={() => router.push(`/journey/${journey.id}`)}>
               Visit
             </Button>
             <Button

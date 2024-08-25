@@ -9,16 +9,18 @@ import { EditExpense } from '../EditExpense/EditExpense'
 export type UpcomingScheduleProps = {
   expensesByDay: Record<string, Expense[]>
   departureDate: string
+  userId: string
 }
 
 export function UpcomingSchedule({
   expensesByDay: initialExpensesByDay,
   departureDate,
+  userId,
 }: UpcomingScheduleProps) {
   const { query } = useRouter()
   const { data: expensesByDay, isFetching } = useQuery({
     queryKey: [query.id, 'expensesByDay'],
-    queryFn: () => getExpensesByDay({ journeyId: query.id as string }),
+    queryFn: () => getExpensesByDay({ journeyId: query.id as string, userId }),
     initialData: initialExpensesByDay,
   })
 

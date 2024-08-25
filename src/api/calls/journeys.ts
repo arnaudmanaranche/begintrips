@@ -1,8 +1,16 @@
 import type { Journey, AddJourney, Expense, Day } from '@/types'
 import { apiInstance } from '../config'
 
-export const deleteJourney = async (id: string) => {
-  return apiInstance.delete(`/journeys/${id}`)
+export interface GetJourneyParams {
+  journeyId: string
+  userId: string
+}
+
+export const deleteJourney = async ({
+  journeyId,
+  userId,
+}: GetJourneyParams) => {
+  return apiInstance.delete(`/journeys/${journeyId}?userId=${userId}`)
 }
 
 export const createJourney = async (journey: AddJourney) => {
@@ -13,11 +21,10 @@ export const createJourney = async (journey: AddJourney) => {
 
 export const getExpensesByCategory = async ({
   journeyId,
-}: {
-  journeyId: string
-}) => {
+  userId,
+}: GetJourneyParams) => {
   const { data } = await apiInstance.get<Record<string, Expense[]>>(
-    `/journeys/${journeyId}/expenses-by-category`
+    `/journeys/${journeyId}/expenses-by-category?userId=${userId}`
   )
 
   return data
@@ -25,35 +32,20 @@ export const getExpensesByCategory = async ({
 
 export const getExpensesByDay = async ({
   journeyId,
-}: {
-  journeyId: string
-}) => {
+  userId,
+}: GetJourneyParams) => {
   const { data } = await apiInstance.get<Record<string, Expense[]>>(
-    `/journeys/${journeyId}/expenses-by-day`
+    `/journeys/${journeyId}/expenses-by-day?userId=${userId}`
   )
   return data
 }
 
-export const getJourney = async ({ journeyId }: { journeyId: string }) => {
-  const { data } = await apiInstance.get<Journey>(`/journeys/${journeyId}`)
-
-  return data
-}
-
-export const getJourneyDays = async ({ journeyId }: { journeyId: string }) => {
-  const { data } = await apiInstance.get<Day[]>(`/journeys/${journeyId}/days`)
-
-  return data
-}
-
-export const getJourneyExpenses = async ({
-  journeyId,
-}: {
-  journeyId: string
-}) => {
-  const { data } = await apiInstance.get<Expense[]>(
-    `/journeys/${journeyId}/expenses`
-  )
+export const getJourney = async ({ journeyId, userId }: GetJourneyParams) => {
+  const { data } = await apiInstance.get<{
+    journey: Journey
+    expenses: Expense[]
+    days: Day[]
+  }>(`/journeys/${journeyId}?userId=${userId}`)
 
   return data
 }
