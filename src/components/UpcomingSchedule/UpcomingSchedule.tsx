@@ -5,6 +5,7 @@ import { useQuery } from '@tanstack/react-query'
 import { addDays, format } from 'date-fns'
 import { useRouter } from 'next/router'
 import { EditExpense } from '../EditExpense/EditExpense'
+import { hasJourneyPassed } from '@/utils/has-journey-passed'
 
 export type UpcomingScheduleProps = {
   expensesByDay: Record<string, Expense[]>
@@ -69,9 +70,11 @@ export function UpcomingSchedule({
                             <span className="text-base">{expense.name}</span>
                             <ExpenseLabel expenseCategory={expense.category} />
                           </div>
-                          <div className="flex items-center space-x-2">
-                            <EditExpense expense={expense} />
-                          </div>
+                          {!hasJourneyPassed(new Date(departureDate)) ? (
+                            <div className="flex items-center space-x-2">
+                              <EditExpense expense={expense} />
+                            </div>
+                          ) : null}
                         </div>
                       )
                     )}

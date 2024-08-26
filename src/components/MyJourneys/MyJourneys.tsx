@@ -1,6 +1,7 @@
 import { deleteJourney } from '@/api/calls/journeys'
 import { Button } from '@/components/Button/Button'
 import type { Journey } from '@/types'
+import { hasJourneyPassed } from '@/utils/has-journey-passed'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { format } from 'date-fns'
 import router from 'next/router'
@@ -52,7 +53,9 @@ export default function MyJourneys({
           </div>
           <div className="flex space-x-2">
             <Button onClick={() => router.push(`/journey/${journey.id}`)}>
-              Visit
+              {hasJourneyPassed(new Date(journey.departureDate))
+                ? 'Visit'
+                : 'Edit'}
             </Button>
             <Button
               variant="ghost"
