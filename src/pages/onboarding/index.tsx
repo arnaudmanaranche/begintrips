@@ -3,10 +3,10 @@ import { Button } from '@/components/Button/Button'
 import { Callout } from '@/components/Callout/Callout'
 import { createClient as createServerClient } from '@/libs/supabase/server-props'
 import { useOnboardingStore } from '@/stores/onboarding.store'
-import { stripTime } from '@/utils/date'
+import { isInvalidDate, stripTime } from '@/utils/date'
 import { useMutation } from '@tanstack/react-query'
 import clsx from 'clsx'
-import { formatISO, isPast, isToday } from 'date-fns'
+import { formatISO, isToday } from 'date-fns'
 import { motion } from 'framer-motion'
 import type { GetServerSidePropsContext } from 'next'
 import { Alata } from 'next/font/google'
@@ -45,9 +45,6 @@ export default function Onboarding() {
   }
 
   const handleNextStep = () => {
-    const isInvalidDate = (date: Date) =>
-      isPast(stripTime(date)) && !isToday(stripTime(date))
-
     if (currentStep === 0) {
       if (!journey.destination) {
         setError('You need to set a destination')

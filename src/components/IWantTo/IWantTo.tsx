@@ -1,6 +1,7 @@
 import * as Dialog from '@radix-ui/react-dialog'
 import { useState } from 'react'
-import { AddNewExpenseView } from './AddNewExpense.View'
+import { IWantToView } from './IWantTo.View'
+import type { Journey } from '@/types'
 import { type Day } from '@/types'
 import {
   ArrowLeftIcon,
@@ -8,15 +9,20 @@ import {
   Cross2Icon,
 } from '@radix-ui/react-icons'
 
-export type AddNewExpenseStep = 'Select category' | 'Fill information'
+export type IWantToStep =
+  | 'Select action'
+  | 'Change dates'
+  | 'Change destination'
+  | 'Select category'
+  | 'Add manually expense'
 
-export interface AddNewExpenseProps {
+export interface IWantToProps {
   days: Day[]
+  journey: Journey
 }
 
-export function AddNewExpense({ days }: AddNewExpenseProps) {
-  const [currentStep, setCurrentStep] =
-    useState<AddNewExpenseStep>('Select category')
+export function IWantTo({ days, journey }: IWantToProps) {
+  const [currentStep, setCurrentStep] = useState<IWantToStep>('Select action')
   const [open, setOpen] = useState(false)
 
   return (
@@ -25,7 +31,7 @@ export function AddNewExpense({ days }: AddNewExpenseProps) {
       onOpenChange={() => {
         if (!open) {
           setOpen(true)
-          setCurrentStep('Select category')
+          setCurrentStep('Select action')
         } else {
           setOpen(false)
         }
@@ -54,10 +60,10 @@ export function AddNewExpense({ days }: AddNewExpenseProps) {
         >
           <div className="mb-5 flex flex-col">
             <div className="mb-6 flex items-center justify-between">
-              {currentStep === 'Fill information' ? (
+              {currentStep !== 'Select action' ? (
                 <ArrowLeftIcon
                   className="cursor-pointer"
-                  onClick={() => setCurrentStep('Select category')}
+                  onClick={() => setCurrentStep('Select action')}
                 />
               ) : (
                 <div />
@@ -71,13 +77,14 @@ export function AddNewExpense({ days }: AddNewExpenseProps) {
                 </button>
               </Dialog.Close>
             </div>
-            <Dialog.Title className="text-xl">Add a new expense</Dialog.Title>
+            <Dialog.Title className="text-xl">{currentStep}</Dialog.Title>
           </div>
-          <AddNewExpenseView
+          <IWantToView
             setOpen={setOpen}
             currentStep={currentStep}
             setCurrentStep={setCurrentStep}
             days={days}
+            journey={journey}
           />
         </Dialog.Content>
       </Dialog.Portal>

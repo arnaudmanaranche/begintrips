@@ -1,7 +1,11 @@
-import { getJourney } from '@/api/calls/journeys'
-import { AddNewExpense } from '@/components/AddNewExpense/AddNewExpense'
+import {
+  getJourney,
+  getJourneyDays,
+  getJourneyDetails,
+} from '@/api/calls/journeys'
 import { Button } from '@/components/Button/Button'
 import { Expenses } from '@/components/Expenses/Expenses'
+import { IWantTo } from '@/components/IWantTo/IWantTo'
 import { UpcomingSchedule } from '@/components/UpcomingSchedule/UpcomingSchedule'
 import { createClient } from '@/libs/supabase/server-props'
 import type { Day, Expense, Journey } from '@/types'
@@ -10,6 +14,7 @@ import {
   groupedExpensesByDay,
 } from '@/utils/groupe-expenses'
 import type { User } from '@supabase/supabase-js'
+import { useQuery } from '@tanstack/react-query'
 import clsx from 'clsx'
 import { differenceInDays, format } from 'date-fns'
 import { type GetServerSidePropsContext } from 'next'
@@ -30,12 +35,25 @@ export interface JourneyProps {
 }
 
 export default function Journey({
-  journey,
+  journey: initialJourney,
   expensesByCategory,
-  days,
+  days: initialDays,
   expensesByDay,
   user,
 }: JourneyProps) {
+  const { data: days } = useQuery({
+    queryKey: ['journey', 'days', initialJourney.id],
+    queryFn: () => getJourneyDays({ journeyId: initialJourney.id }),
+    initialData: initialDays,
+  })
+
+  const { data: journey } = useQuery({
+    queryKey: ['journey', initialJourney.id],
+    queryFn: () =>
+      getJourneyDetails({ journeyId: initialJourney.id, userId: user.id }),
+    initialData: initialJourney,
+  })
+
   const daysLeftBeforeJourneyBegins = useMemo(
     () => differenceInDays(new Date(journey.departureDate), new Date()),
     [journey.departureDate]
@@ -118,7 +136,7 @@ export default function Journey({
                 </span>{' '}
                 {daysLeftBeforeJourneyBegins > 1 ? 'days' : 'day'} to go
               </h1>
-              <AddNewExpense days={days} />
+              <IWantTo days={days} journey={journey} />
             </div>
             <div className="space-y-3 rounded-2xl border-2 bg-white p-4">
               <Expenses expenses={expensesByCategory} userId={user.id} />

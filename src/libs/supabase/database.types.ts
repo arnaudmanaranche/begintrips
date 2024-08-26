@@ -124,7 +124,14 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      update_journey_dates: {
+        Args: {
+          start_date: string
+          end_date: string
+          journey_id: string
+        }
+        Returns: undefined
+      }
     }
     Enums: {
       expense_category:
