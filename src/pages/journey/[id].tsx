@@ -112,7 +112,9 @@ export default function Journey({
             >
               <h1 className="text-center text-5xl leading-snug text-black">
                 <span className="text-accent">
-                  {daysLeftBeforeJourneyBegins}
+                  {daysLeftBeforeJourneyBegins < 0
+                    ? '0'
+                    : daysLeftBeforeJourneyBegins}
                 </span>{' '}
                 {daysLeftBeforeJourneyBegins > 1 ? 'days' : 'day'} to go
               </h1>
