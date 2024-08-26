@@ -1,12 +1,11 @@
 import { updateJourneyDates } from '@/api/calls/journeys'
-import * as Dialog from '@radix-ui/react-dialog'
 import { Button } from '@/components/Button/Button'
 import { Callout } from '@/components/Callout/Callout'
 import { Input } from '@/components/Input/Input'
+import type { Journey } from '@/types'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useParams } from 'next/navigation'
 import { useMemo, useState } from 'react'
-import type { Journey } from '@/types'
 
 export interface ChangeDatesProps {
   departureDate: string
