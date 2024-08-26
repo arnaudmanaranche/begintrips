@@ -47,6 +47,7 @@ export function IWantToView({
         <ChangeDates
           departureDate={journey.departureDate}
           returnDate={journey.returnDate}
+          setOpen={setOpen}
         />
       )
     case 'Change destination':

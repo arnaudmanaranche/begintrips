@@ -10,11 +10,13 @@ import { useMemo, useState } from 'react'
 export interface ChangeDatesProps {
   departureDate: string
   returnDate: string
+  setOpen: (open: boolean) => void
 }
 
 export function ChangeDates({
   departureDate: initialDepartureDate,
   returnDate: initialReturnDate,
+  setOpen,
 }: ChangeDatesProps) {
   const [departureDate, setDepartureDate] = useState(initialDepartureDate)
   const [returnDate, setReturnDate] = useState(initialReturnDate)
@@ -64,6 +66,7 @@ export function ChangeDates({
       queryClient.invalidateQueries({
         queryKey: ['journey', 'days', journeyId],
       })
+      setOpen(false)
     },
     onMutate: async () => {
       const previousJourney = queryClient.getQueryData<Journey>([
@@ -108,7 +111,7 @@ export function ChangeDates({
           onChange={(e) => handleDepartureDateChange(e)}
         />
         <Input
-          value={returnDate}
+          value={returnDate || new Date().toISOString().split('T')[0]}
           id="returnDate"
           label="Return date"
           type="date"
