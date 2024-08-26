@@ -3,7 +3,8 @@ import clsx from 'clsx'
 
 export interface ButtonProps {
   children: ReactNode
-  onClick: (e: React.MouseEvent<HTMLButtonElement>) => void
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  onClick: (...args: any[]) => void
   className?: string
   isDisabled?: boolean
   variant?: 'primary' | 'ghost'

@@ -51,13 +51,13 @@ export function UpcomingSchedule({
                     {format(date, 'EEEE dd MMMM')}
                   </span>
                   <span className="text-sm text-accent">
-                    {expensesByDay[format(date, 'yyyy-MM-dd')].length}{' '}
-                    {expensesByDay[format(date, 'yyyy-MM-dd')].length > 1
+                    {expensesByDay[format(date, 'yyyy-MM-dd')]?.length}{' '}
+                    {expensesByDay[format(date, 'yyyy-MM-dd')]?.length > 1
                       ? 'expenses'
                       : 'expense'}
                   </span>
                 </div>
-                {expensesByDay[format(date, 'yyyy-MM-dd')].length > 0 ? (
+                {expensesByDay[format(date, 'yyyy-MM-dd')]?.length > 0 ? (
                   <ul className="flex w-full flex-col space-y-2 px-4 pb-4">
                     {expensesByDay[format(date, 'yyyy-MM-dd')].map(
                       (expense) => (

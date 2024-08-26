@@ -1,5 +1,6 @@
 import type { Journey, AddJourney, Expense, Day } from '@/types'
 import { apiInstance } from '../config'
+import { isInvalidDate } from '@/utils/date'
 
 export interface GetJourneyParams {
   journeyId: string
@@ -46,6 +47,64 @@ export const getJourney = async ({ journeyId, userId }: GetJourneyParams) => {
     expenses: Expense[]
     days: Day[]
   }>(`/journeys/${journeyId}?userId=${userId}`)
+
+  return data
+}
+
+export const getJourneyDays = async ({ journeyId }: { journeyId: string }) => {
+  const { data } = await apiInstance.get<Day[]>(`/journeys/${journeyId}/days`)
+
+  return data
+}
+
+export const getJourneyDetails = async ({
+  journeyId,
+  userId,
+}: GetJourneyParams) => {
+  const { data } = await apiInstance.get<Journey>(
+    `/journeys/${journeyId}/details?userId=${userId}`
+  )
+
+  return data
+}
+
+export const updateJourneyDates = async ({
+  journeyId,
+  departureDate,
+  returnDate,
+}: {
+  journeyId: string
+  departureDate: string
+  returnDate: string
+}) => {
+  if (
+    isInvalidDate(new Date(departureDate)) ||
+    isInvalidDate(new Date(returnDate))
+  ) {
+    throw new Error('You need to set a valid start and end date')
+  }
+
+  const { data } = await apiInstance.patch(`/journeys/${journeyId}/dates`, {
+    departureDate,
+    returnDate,
+  })
+
+  return data
+}
+
+export const updateJourneyDestination = async ({
+  journeyId,
+  destination,
+}: {
+  journeyId: string
+  destination: string
+}) => {
+  const { data } = await apiInstance.patch(
+    `/journeys/${journeyId}/destination`,
+    {
+      destination,
+    }
+  )
 
   return data
 }

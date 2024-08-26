@@ -1,26 +1,20 @@
 import createClient from '@/libs/supabase/api'
-import type { AddJourney, AddDay } from '@/types'
-import { unsplash } from '@/libs/unsplash'
+import { getRandomImageCover } from '@/libs/unsplash/getRandomImageCover'
+import type { AddDay, AddJourney } from '@/types'
 import { addDays, differenceInDays, format } from 'date-fns'
 import type { NextApiRequest, NextApiResponse } from 'next'
 
 async function createJourney(data: AddJourney): Promise<AddJourney> {
   const { departureDate, returnDate, destination, budget } = data
 
-  const imageCover = await unsplash.photos.getRandom({
-    query: destination,
-    orientation: 'landscape',
-    count: 1,
-  })
+  const imageCover = await getRandomImageCover({ destination })
 
   return {
     departureDate,
     returnDate,
     destination: destination ?? '',
     budget: budget ?? 0,
-    image_cover: Array.isArray(imageCover.response)
-      ? (imageCover.response[0]?.urls?.regular ?? null)
-      : (imageCover.response?.urls?.regular ?? null ?? ''),
+    image_cover: imageCover,
   }
 }
 
