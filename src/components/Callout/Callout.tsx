@@ -1,5 +1,5 @@
 import { ExclamationTriangleIcon, InfoCircledIcon } from '@radix-ui/react-icons'
-import { ReactNode } from 'react'
+import type { ReactNode } from 'react'
 
 export interface CalloutProps {
   type: 'danger' | 'info'

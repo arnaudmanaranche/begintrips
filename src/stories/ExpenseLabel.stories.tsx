@@ -1,7 +1,6 @@
 import { ExpenseLabel } from '@/components/ExpenseLabel/ExpenseLabel'
-import type { Meta, StoryObj } from '@storybook/react'
-import { ExpenseCategoryEnum } from '@/types'
 import { mappedExpensesWithColors } from '@/utils/expense-labels'
+import type { Meta, StoryObj } from '@storybook/react'
 
 const meta = {
   title: 'Expense Label',
@@ -19,7 +18,11 @@ export const Basic: Story = {
     return (
       <div className="flex flex-wrap gap-2">
         {mappedExpensesWithColors.map((expense) => (
-          <ExpenseLabel {...args} expenseCategory={expense.category} />
+          <ExpenseLabel
+            key={expense.category}
+            {...args}
+            expenseCategory={expense.category}
+          />
         ))}
       </div>
     )
