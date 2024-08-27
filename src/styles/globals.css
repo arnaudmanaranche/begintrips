@@ -1,35 +1,29 @@
+:root {
+  --font-open-sans: 'Open Sans', sans-serif;
+  --font-playfair: 'Playfair Display', serif;
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-body {
-  --sb-track-color: #ffffff;
-  --sb-thumb-color: #ffffff;
-  --sb-size: 1px;
+* {
+  @apply font-sans;
 }
 
-#calendar::-webkit-scrollbar {
-  width: var(--sb-size);
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  @apply font-serif;
 }
 
-#calendar::-webkit-scrollbar-track {
-  background: var(--sb-track-color);
-  border-radius: 3px;
+::-webkit-scrollbar {
+  width: 0;
 }
 
-#calendar::-webkit-scrollbar-thumb {
-  background: var(--sb-thumb-color);
-  border-radius: 3px;
-}
-
-@supports not selector(::-webkit-scrollbar) {
-  #calendar {
-    scrollbar-color: var(--sb-thumb-color) var(--sb-track-color);
-  }
-}
-
-input::-webkit-datetime-edit-day-field:focus,
-input::-webkit-datetime-edit-month-field:focus,
-input::-webkit-datetime-edit-year-field:focus {
-  background-color: #fdba74;
+::-webkit-scrollbar-track {
+  background: transparent;
 }

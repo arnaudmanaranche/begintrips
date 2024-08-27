@@ -124,6 +124,14 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      process_days: {
+        Args: {
+          start_date: string
+          end_date: string
+          journey_id: string
+        }
+        Returns: undefined
+      }
       update_journey_dates: {
         Args: {
           start_date: string
@@ -145,6 +153,23 @@ export type Database = {
         | "museum"
         | "monument"
         | "culture"
+        | "bike"
+        | "bus"
+        | "car"
+        | "taxi"
+        | "metro"
+        | "train"
+        | "shopping"
+        | "attraction"
+        | "bar"
+        | "coffee"
+        | "food"
+        | "gas"
+        | "grocery"
+        | "movie"
+        | "parking"
+        | "ferry"
+        | "flight"
     }
     CompositeTypes: {
       [_ in never]: never

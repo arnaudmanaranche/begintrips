@@ -1,20 +1,18 @@
 import createClient from '@/libs/supabase/api'
-import { getRandomImageCover } from '@/libs/unsplash/getRandomImageCover'
 import type { AddDay, AddJourney } from '@/types'
-import { addDays, differenceInDays, format } from 'date-fns'
+import { formatDate } from '@/utils/date'
+import { addDays, differenceInDays } from 'date-fns'
 import type { NextApiRequest, NextApiResponse } from 'next'
 
 async function createJourney(data: AddJourney): Promise<AddJourney> {
   const { departureDate, returnDate, destination, budget } = data
-
-  const imageCover = await getRandomImageCover({ destination })
 
   return {
     departureDate,
     returnDate,
     destination: destination ?? '',
     budget: budget ?? 0,
-    image_cover: imageCover,
+    image_cover: '',
   }
 }
 
@@ -48,7 +46,7 @@ export default async function handler(
       ) + 1
 
     const days: AddDay[] = Array.from({ length: journeyLength }, (_, index) => {
-      const date = format(
+      const date = formatDate(
         addDays(new Date(journey.departureDate), index),
         'yyyy-MM-dd'
       )

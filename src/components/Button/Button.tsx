@@ -2,13 +2,15 @@ import type { ReactNode } from 'react'
 import clsx from 'clsx'
 
 export interface ButtonProps {
-  children: ReactNode
+  children?: ReactNode
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   onClick: (...args: any[]) => void
   className?: string
   isDisabled?: boolean
   variant?: 'primary' | 'ghost'
   stretch?: boolean
+  isRounded?: boolean
+  icon?: ReactNode
 }
 
 export function Button({
@@ -18,6 +20,8 @@ export function Button({
   isDisabled,
   variant = 'primary',
   stretch = false,
+  isRounded = false,
+  icon,
 }: ButtonProps) {
   const variantClasses = {
     primary: clsx(
@@ -32,13 +36,31 @@ export function Button({
     ),
   }
 
+  if (icon) {
+    return (
+      <button
+        className={clsx(
+          'flex h-12 w-12 items-center justify-center rounded-full outline-none transition-colors',
+          variantClasses[variant],
+          className,
+          stretch && 'w-full'
+        )}
+        onClick={onClick}
+        disabled={isDisabled}
+      >
+        {icon}
+      </button>
+    )
+  }
+
   return (
     <button
       className={clsx(
-        'rounded-md px-10 py-3 outline-none transition-colors',
+        'outline-none transition-colors',
         variantClasses[variant],
         className,
-        stretch && 'w-full'
+        stretch && 'w-full',
+        isRounded ? 'h-12 w-12 rounded-full' : 'rounded-md px-10 py-3'
       )}
       onClick={onClick}
       disabled={isDisabled}

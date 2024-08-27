@@ -1,10 +1,11 @@
+import { deleteExpense, updateExpense } from '@/api/calls/expenses'
 import type { Expense, ExpenseCategoryEnum } from '@/types'
 import { mappedExpensesWithEmojis } from '@/utils/expense-labels'
-import { Button } from '../Button/Button'
-import { deleteExpense, updateExpense } from '@/api/calls/expenses'
-import { useQueryClient, useMutation } from '@tanstack/react-query'
-import { useState } from 'react'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useRouter } from 'next/router'
+import { useState } from 'react'
+import { Button } from '../Button/Button'
+import { Input } from '../Input/Input'
 
 export interface EditExpenseViewProps {
   expense: Expense
@@ -16,7 +17,7 @@ export const EditExpenseView = ({ expense, setOpen }: EditExpenseViewProps) => {
   const { query } = useRouter()
   const queryClient = useQueryClient()
 
-  const { mutateAsync: updatteExpense, isPending: isPendingUpdate } =
+  const { mutateAsync: handleUpdateExpense, isPending: isPendingUpdate } =
     useMutation({
       mutationFn: updateExpense,
       onSuccess() {
@@ -27,6 +28,32 @@ export const EditExpenseView = ({ expense, setOpen }: EditExpenseViewProps) => {
           queryKey: [query.id, 'expensesByCategory'],
         })
         setOpen(false)
+      },
+      onMutate: async () => {
+        const previousBudgetSpent = queryClient.getQueryData<number>([
+          'journey',
+          query.id,
+          'budgetSpent',
+        ])
+
+        queryClient.setQueryData(
+          ['journey', query.id, 'budgetSpent'],
+          newExpense.amount
+        )
+
+        return { previousBudgetSpent }
+      },
+      onError: (err, newTodo, context) => {
+        queryClient.setQueryData(
+          ['journey', query.id, 'budgetSpent'],
+          context?.previousBudgetSpent
+        )
+        // @TODO: Add toast error
+      },
+      onSettled: () => {
+        queryClient.invalidateQueries({
+          queryKey: ['journey', query.id, 'budgetSpent'],
+        })
       },
     })
 
@@ -40,50 +67,42 @@ export const EditExpenseView = ({ expense, setOpen }: EditExpenseViewProps) => {
         queryClient.invalidateQueries({
           queryKey: [query.id, 'expensesByCategory'],
         })
+        queryClient.invalidateQueries({
+          queryKey: ['journey', query.id, 'budgetSpent'],
+        })
+        queryClient.invalidateQueries({
+          queryKey: ['journey', query.id],
+        })
         setOpen(false)
       },
     })
 
   return (
-    <div className="flex flex-col space-y-4">
-      <div className="flex flex-col space-y-2">
-        <label htmlFor="expense-name">Name</label>
-        <input
-          id="expense-name"
-          className="rounded-md border-2 border-gray-100 bg-slate-50 px-10 py-4 outline-none transition-all placeholder:text-black/50 focus:border-neutral-dark focus:outline-none"
-          type="text"
-          placeholder="Taylor Swift concert"
-          defaultValue={expense.name}
-          onChange={(e) =>
-            setNewExpense({ ...newExpense, name: e.target.value })
-          }
-        />
-      </div>
-      <div className="flex flex-col space-y-1">
-        <label htmlFor="expense-amount">Amount</label>
-        <input
-          id="expense-amount"
-          className="rounded-md border-2 border-gray-100 bg-slate-50 px-10 py-4 outline-none transition-all placeholder:text-black/50 focus:border-neutral-dark focus:outline-none"
-          type="number"
-          placeholder="Taylor Swift concert"
-          defaultValue={expense.amount}
-          onChange={(e) =>
-            setNewExpense({ ...newExpense, amount: parseInt(e.target.value) })
-          }
-        />
-      </div>
-      <div className="flex flex-col space-y-1">
-        <label htmlFor="expense-date">Date</label>
-        <input
-          id="expense-date"
-          type="date"
-          className="rounded-md border-2 border-gray-100 bg-slate-50 px-10 py-4 outline-none transition-all placeholder:text-black/50 focus:border-neutral-dark focus:outline-none"
-          defaultValue={expense.startDate}
-          onChange={(e) =>
-            setNewExpense({ ...newExpense, startDate: e.target.value })
-          }
-        />
-      </div>
+    <div className="flex flex-col space-y-6">
+      <Input
+        id="expense-name"
+        label="Name"
+        value={newExpense.name}
+        onChange={(e) => setNewExpense({ ...newExpense, name: e.target.value })}
+      />
+      <Input
+        id="expense-amount"
+        type="number"
+        label="Amount"
+        value={newExpense.amount}
+        onChange={(e) =>
+          setNewExpense({ ...newExpense, amount: parseInt(e.target.value) })
+        }
+      />
+      <Input
+        id="expense-date"
+        type="date"
+        label="Date"
+        value={newExpense.startDate}
+        onChange={(e) =>
+          setNewExpense({ ...newExpense, startDate: e.target.value })
+        }
+      />
       <div className="flex flex-col space-y-1">
         <label htmlFor="expense-category">Category</label>
         <select
@@ -116,9 +135,11 @@ export const EditExpenseView = ({ expense, setOpen }: EditExpenseViewProps) => {
         </Button>
         <Button
           onClick={() => {
-            updatteExpense({ expense: newExpense })
+            handleUpdateExpense({ expense: newExpense })
           }}
-          isDisabled={isPendingUpdate || isPendingDelete}
+          isDisabled={
+            isPendingUpdate || isPendingDelete || newExpense === expense
+          }
         >
           {isPendingUpdate ? 'Saving expense...' : 'Edit expense'}
         </Button>

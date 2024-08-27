@@ -5,6 +5,7 @@ import { Input } from '@/components/Input/Input'
 import type { Journey } from '@/types'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useParams } from 'next/navigation'
+import type { ChangeEvent } from 'react'
 import { useMemo, useState } from 'react'
 
 export interface ChangeDatesProps {
@@ -29,9 +30,7 @@ export function ChangeDates({
     )
   }, [departureDate, initialDepartureDate, initialReturnDate, returnDate])
 
-  const handleDepartureDateChange = (
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => {
+  const handleDepartureDateChange = (e: ChangeEvent<HTMLInputElement>) => {
     const selectedDepartureDate = e.target.value
 
     setDepartureDate(selectedDepartureDate)
@@ -41,7 +40,7 @@ export function ChangeDates({
     }
   }
 
-  const handleReturnDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleReturnDateChange = (e: ChangeEvent<HTMLInputElement>) => {
     setReturnDate(e.target.value)
   }
 

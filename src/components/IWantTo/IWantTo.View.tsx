@@ -7,6 +7,7 @@ import { ChangeDates } from './views/ChangeDates'
 import { ChangeDestination } from './views/ChangeDestination'
 import { SelectAction } from './views/SelectAction'
 import { SelectCategory } from './views/SelectCategory'
+import { UpdateBudget } from './views/UpdateBudget'
 
 export interface IWantToViewProps {
   currentStep: IWantToStep
@@ -27,14 +28,19 @@ export function IWantToView({
     category: 'other',
     name: '',
     amount: 0,
-    dayId: '',
+    dayId: days[0].id,
     journeyId: journey.id,
-    startDate: '',
+    startDate: days[0].startDate,
   })
 
   switch (currentStep) {
     case 'Select action':
-      return <SelectAction setCurrentStep={setCurrentStep} />
+      return (
+        <SelectAction
+          setCurrentStep={setCurrentStep}
+          departureDate={journey.departureDate}
+        />
+      )
     case 'Select category':
       return (
         <SelectCategory
@@ -52,6 +58,10 @@ export function IWantToView({
       )
     case 'Change destination':
       return <ChangeDestination destination={journey.destination} />
+    case 'Update budget':
+      return (
+        <UpdateBudget budget={journey.budget as number} setOpen={setOpen} />
+      )
     default:
       return (
         <AddManuallyExpense

@@ -1,23 +1,23 @@
 import { createJourney } from '@/api/calls/journeys'
 import { Button } from '@/components/Button/Button'
 import { Callout } from '@/components/Callout/Callout'
+import { Input } from '@/components/Input/Input'
+import { useSearchDestination } from '@/hooks/useSearchDestination'
 import { createClient as createServerClient } from '@/libs/supabase/server-props'
 import { useOnboardingStore } from '@/stores/onboarding.store'
 import { isInvalidDate, stripTime } from '@/utils/date'
+import type { SearchBoxSuggestion, SessionToken } from '@mapbox/search-js-core'
 import { useMutation } from '@tanstack/react-query'
 import clsx from 'clsx'
-import { formatISO, isToday } from 'date-fns'
+import { isToday } from 'date-fns'
 import { motion } from 'framer-motion'
 import type { GetServerSidePropsContext } from 'next'
-import { Alata } from 'next/font/google'
-import Head from 'next/head'
 import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
 import { useRouter } from 'next/router'
-import type { ReactNode } from 'react'
+import type { ChangeEvent, ReactNode } from 'react'
 import { useState } from 'react'
 
-const alata = Alata({ weight: '400', subsets: ['latin'] })
 const ONBOARDING_STEPS = [1, 2, 3]
 
 export default function Onboarding() {
@@ -74,20 +74,17 @@ export default function Onboarding() {
   const progressWidth = `${((currentStep + 1) / ONBOARDING_STEPS.length) * 100}%`
 
   return (
-    <div>
-      <Head>
-        <title>Planner.so | Onboarding</title>
-      </Head>
+    <div className="text-black">
       <div className="absolute left-0 top-0 h-2 w-full transition-all duration-500">
         <div
-          className="absolute left-0 top-0 z-10 h-2 bg-accent-light transition-all duration-500"
+          className="absolute left-0 top-0 z-10 h-2 bg-accent transition-all duration-500"
           style={{ width: progressWidth }}
         />
       </div>
       <div className="mt-20 flex flex-col">
         <div className="flex justify-center">
           <Link href="/account">
-            <span className={clsx(alata.className, 'text-6xl')}>
+            <span className="text-6xl">
               Planner
               <span className="text-accent">.so</span>
             </span>
@@ -144,20 +141,18 @@ function Steps({ step, error }: { step: number; error: string }) {
 interface StepProps {
   children: ReactNode
   title: ReactNode
-  subtitle: ReactNode
 }
 
-function Step({ children, title, subtitle }: StepProps) {
+function Step({ children, title }: StepProps) {
   return (
     <motion.div
-      className="flex flex-col space-y-4 transition-opacity"
+      className="flex flex-col space-y-6 transition-opacity"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.3 }}
     >
       <div className="space-y-2">
-        <p className="text-base text-gray-500">{subtitle}</p>
         <h2 className="text-4xl font-bold">{title}</h2>
       </div>
       <div className="pb-2 pt-4">{children}</div>
@@ -167,10 +162,63 @@ function Step({ children, title, subtitle }: StepProps) {
 
 function Step1({ error }: { error: string }) {
   const { journey, updateJourney } = useOnboardingStore()
+  const { searchBoxRef, sessionTokenRef } = useSearchDestination()
+  const [suggestions, setSuggestions] = useState<SearchBoxSuggestion[]>()
+
+  async function handleSearchDestination(e: ChangeEvent<HTMLInputElement>) {
+    updateJourney({ destination: e.target.value })
+
+    if (e.target.value.length >= 3) {
+      const response = await searchBoxRef.current?.suggest(e.target.value, {
+        sessionToken: sessionTokenRef.current as SessionToken,
+      })
+
+      if (response?.suggestions) {
+        setSuggestions(response.suggestions)
+      }
+    } else {
+      setSuggestions([])
+    }
+  }
 
   return (
-    <Step title="Let's plan your next journey" subtitle="1. Destination">
-      <div className="space-y-4">
+    <Step title="Let's plan your next journey">
+      <div className="relative space-y-4">
+        <Input
+          label="Destination"
+          id="destination"
+          value={journey.destination}
+          onChange={handleSearchDestination}
+        />
+        <motion.ul
+          className="absolute left-0 top-[100%] mt-2 max-h-[200px] w-full max-w-xl overflow-y-scroll rounded-md bg-white shadow-md"
+          animate={{
+            height: suggestions?.length ? 'auto' : 0,
+          }}
+        >
+          {suggestions?.length
+            ? suggestions.map((suggestion) => {
+                return (
+                  <li
+                    key={suggestion.mapbox_id}
+                    className="flex cursor-pointer flex-col px-4 py-2 text-start hover:bg-slate-100"
+                    tabIndex={-1}
+                    onClick={() => {
+                      updateJourney({
+                        destination: suggestion.name,
+                      })
+                      setSuggestions([])
+                    }}
+                  >
+                    <p className="text-black">{suggestion.name}</p>
+                    <span className="text-sm text-black/70">
+                      {suggestion.place_formatted}
+                    </span>
+                  </li>
+                )
+              })
+            : null}
+        </motion.ul>
         {error && (
           <motion.div
             initial={{ opacity: 0 }}
@@ -181,17 +229,6 @@ function Step1({ error }: { error: string }) {
             <Callout.Danger>{error}</Callout.Danger>
           </motion.div>
         )}
-        <div className="flex flex-col justify-start space-y-2">
-          <label htmlFor="destination">Destination</label>
-          <input
-            id="destination"
-            onChange={(e) => updateJourney({ destination: e.target.value })}
-            defaultValue={journey.destination}
-            type="text"
-            placeholder="e.g New York"
-            className="rounded-md border-2 border-gray-100 bg-slate-50 px-10 py-4 outline-none transition-all placeholder:text-black/50 focus:border-neutral-dark"
-          />
-        </div>
       </div>
     </Step>
   )
@@ -200,11 +237,21 @@ function Step1({ error }: { error: string }) {
 function Step2({ error }: { error: string }) {
   const { journey, updateJourney } = useOnboardingStore()
 
+  const handleDepartureDateChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const selectedDepartureDate = e.target.value
+    updateJourney({ departureDate: selectedDepartureDate })
+
+    if (journey.returnDate < selectedDepartureDate) {
+      updateJourney({ returnDate: selectedDepartureDate })
+    }
+  }
+
+  const handleReturnDateChange = (e: ChangeEvent<HTMLInputElement>) => {
+    updateJourney({ returnDate: e.target.value })
+  }
+
   return (
-    <Step
-      title={`When do you plan to go to ${journey.destination}?`}
-      subtitle="2. Dates"
-    >
+    <Step title={`When do you plan to go to ${journey.destination}?`}>
       <div className="space-y-4">
         {error && (
           <motion.div
@@ -217,35 +264,25 @@ function Step2({ error }: { error: string }) {
             <Callout.Danger>{error}</Callout.Danger>
           </motion.div>
         )}
-        <div className="flex flex-col space-x-0 md:flex-row md:space-x-4">
-          <div className="flex flex-col justify-start space-y-2">
-            <label htmlFor="start">Departure date</label>
-            <input
-              id="start"
-              onChange={(e) => updateJourney({ departureDate: e.target.value })}
-              type="date"
-              className="rounded-md border-2 border-gray-100 bg-slate-50 px-10 py-4 outline-none transition-all placeholder:text-black/50 focus:border-neutral-dark"
-              defaultValue={formatISO(new Date(journey.departureDate), {
-                representation: 'date',
-              })}
-              min={formatISO(new Date(), { representation: 'date' })}
-            />
-          </div>
-          <div className="flex flex-col justify-start space-y-2">
-            <label htmlFor="back">Return date</label>
-            <input
-              id="back"
-              className="rounded-md border-2 border-gray-100 bg-slate-50 px-10 py-4 outline-none transition-all placeholder:text-black/50 focus:border-neutral-dark"
-              onChange={(e) => updateJourney({ returnDate: e.target.value })}
-              defaultValue={formatISO(new Date(journey.returnDate), {
-                representation: 'date',
-              })}
-              min={formatISO(new Date(journey.departureDate), {
-                representation: 'date',
-              })}
-              type="date"
-            />
-          </div>
+        <div className="flex flex-col justify-around space-x-0 md:flex-row md:space-x-4">
+          <Input
+            value={
+              journey.departureDate || new Date().toISOString().split('T')[0]
+            }
+            id="departureDate"
+            label="Departure date"
+            type="date"
+            min={journey.departureDate}
+            onChange={handleDepartureDateChange}
+          />
+          <Input
+            value={journey.returnDate || new Date().toISOString().split('T')[0]}
+            id="departureDate"
+            label="Departure date"
+            type="date"
+            min={journey.departureDate}
+            onChange={handleReturnDateChange}
+          />
         </div>
       </div>
     </Step>
@@ -256,10 +293,7 @@ function Step3({ error }: { error: string }) {
   const { journey, updateJourney } = useOnboardingStore()
 
   return (
-    <Step
-      title="How much money do you plan to spend on your next journey?"
-      subtitle="3. Budget"
-    >
+    <Step title="How much do you plan to spend on your next journey?">
       <div className="space-y-4">
         {error ? (
           <motion.div
@@ -272,11 +306,12 @@ function Step3({ error }: { error: string }) {
             <Callout.Danger>{error}</Callout.Danger>
           </motion.div>
         ) : null}
-        <input
-          defaultValue={journey.budget ?? ''}
+        <Input
+          id="budget"
+          label="Budget"
+          value={journey.budget ?? ''}
           placeholder="e.g 3600$"
           onChange={(e) => updateJourney({ budget: parseInt(e.target.value) })}
-          className="rounded-md border-2 border-gray-100 bg-slate-50 px-10 py-4 outline-none transition-all placeholder:text-black/50 focus:border-neutral-dark"
         />
       </div>
     </Step>

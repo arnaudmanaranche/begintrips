@@ -1,30 +1,15 @@
-import { deleteJourney } from '@/api/calls/journeys'
 import { Button } from '@/components/Button/Button'
 import type { Journey } from '@/types'
+import { formatDate } from '@/utils/date'
 import { hasJourneyPassed } from '@/utils/has-journey-passed'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { format } from 'date-fns'
 import router from 'next/router'
 
 export interface MyJourneysProps {
-  userId: string
   journeys: Journey[]
   isLoading: boolean
 }
 
-export default function MyJourneys({
-  userId,
-  journeys,
-  isLoading,
-}: MyJourneysProps) {
-  const queryClient = useQueryClient()
-  const { mutateAsync: hanldeDeleteJourney } = useMutation({
-    mutationFn: (journeyId: string) => deleteJourney({ journeyId, userId }),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [userId, 'journeys'] })
-    },
-  })
-
+export default function MyJourneys({ journeys, isLoading }: MyJourneysProps) {
   if (isLoading) {
     return (
       <div className="mx-auto mt-20 flex min-h-[500px] max-w-screen-sm flex-col space-y-4">
@@ -47,8 +32,8 @@ export default function MyJourneys({
           <div className="flex flex-col space-y-1">
             <span>Destination: {journey.destination}</span>
             <span>
-              Dates: {format(new Date(journey.departureDate), 'dd/MM/yyyy')} -{' '}
-              {format(new Date(journey.returnDate), 'dd/MM/yyyy')}
+              Dates: {formatDate(journey.departureDate, 'dd/MM/yyyy')} -{' '}
+              {formatDate(journey.returnDate, 'dd/MM/yyyy')}
             </span>
           </div>
           <div className="flex space-x-2">
@@ -56,12 +41,6 @@ export default function MyJourneys({
               {hasJourneyPassed(new Date(journey.departureDate))
                 ? 'Visit'
                 : 'Edit'}
-            </Button>
-            <Button
-              variant="ghost"
-              onClick={() => hanldeDeleteJourney(journey.id)}
-            >
-              Delete
             </Button>
           </div>
         </div>

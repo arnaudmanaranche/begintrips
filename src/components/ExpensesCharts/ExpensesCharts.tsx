@@ -1,29 +1,14 @@
 import type { Expense, ExpenseCategoryEnum } from '@/types'
 import { colorsAssociated } from '@/utils/expense-labels'
-import type { ChartOptions } from 'chart.js'
-import {
-  BarElement,
-  CategoryScale,
-  Chart as ChartJS,
-  Legend,
-  LinearScale,
-  Title,
-  Tooltip,
-} from 'chart.js'
 import { useMemo } from 'react'
-import { Bar } from 'react-chartjs-2'
-
-ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend)
-
-const options: ChartOptions<'bar'> = {
-  responsive: true,
-  plugins: {
-    legend: {
-      display: false,
-    },
-  },
-  animation: false,
-}
+import {
+  Bar,
+  BarChart,
+  Cell,
+  ResponsiveContainer,
+  XAxis,
+  YAxis,
+} from 'recharts'
 
 export type ExpensesChartsProps = {
   expensesByCategory: Record<string, Expense[]>
@@ -38,39 +23,42 @@ export function ExpensesCharts({ expensesByCategory }: ExpensesChartsProps) {
   }, [expensesByCategory])
 
   const data = useMemo(() => {
-    return {
-      labels: expensesByCategory && Object.keys(expensesByCategory),
-      datasets: [
-        {
-          data:
-            expensesByCategory &&
-            Object.values(expensesByCategory)
-              .flat()
-              .reduce(
-                (acc: { amount: number; category: string }[], expense) => {
-                  const index = acc.findIndex(
-                    (item, i, arr) =>
-                      arr[i] && item.category === expense.category
-                  )
-                  if (index > -1) {
-                    acc[index].amount += expense.amount
-                  } else {
-                    acc.push({ ...expense })
-                  }
-                  return acc
-                },
-                []
-              )
-              .map((item) => item.amount),
-          backgroundColor: labelBackgroundColors,
-        },
-      ],
-    }
-  }, [expensesByCategory, labelBackgroundColors])
+    return (
+      expensesByCategory &&
+      Object.keys(expensesByCategory).map((category) => {
+        const totalAmount = expensesByCategory[category].reduce(
+          (sum, expense) => sum + expense.amount,
+          0
+        )
+
+        return {
+          name: category,
+          uv: totalAmount,
+        }
+      })
+    )
+  }, [expensesByCategory])
 
   return (
-    <div className="flex justify-center">
-      <Bar data={data} options={options} />
-    </div>
+    <ResponsiveContainer width="100%" height="100%">
+      <div className="flex justify-center">
+        <BarChart
+          width={Object.keys(expensesByCategory).length * 100}
+          height={200}
+          data={data}
+        >
+          <XAxis dataKey="name" />
+          <YAxis />
+          <Bar dataKey="uv" fill="black" height={400}>
+            {data.map((_, index) => (
+              <Cell
+                key={`cell-${index}`}
+                fill={labelBackgroundColors[index % 20]}
+              />
+            ))}
+          </Bar>
+        </BarChart>
+      </div>
+    </ResponsiveContainer>
   )
 }

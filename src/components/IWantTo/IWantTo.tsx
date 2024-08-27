@@ -11,6 +11,7 @@ import {
 
 export type IWantToStep =
   | 'Select action'
+  | 'Update budget'
   | 'Change dates'
   | 'Change destination'
   | 'Select category'
@@ -37,17 +38,12 @@ export function IWantTo({ days, journey }: IWantToProps) {
         }
       }}
     >
-      <Dialog.Trigger
-        asChild
-        className="mx-auto flex justify-center space-x-0 sm:space-x-2"
-      >
-        <div className="flex flex-col space-y-2 sm:flex-row sm:space-y-0">
-          <input
-            type="text"
-            placeholder="I want to..."
-            className="rounded-md border-2 border-gray-100 bg-slate-50 px-10 py-4 outline-none transition-all placeholder:text-black/50 focus:border-neutral-dark focus:outline-none"
-          />
-          <button className="flex items-center justify-center rounded-2xl bg-accent p-2 text-white">
+      <Dialog.Trigger asChild>
+        <div className="flex">
+          <div className="flex-1 cursor-pointer rounded-md bg-gray-50 p-4 text-black/50 outline-none transition-all">
+            I want to...
+          </div>
+          <button className="rounded-r-lg bg-accent text-white">
             <CaretRightIcon height={20} width={20} />
           </button>
         </div>
@@ -59,7 +55,7 @@ export function IWantTo({ days, journey }: IWantToProps) {
           aria-describedby={undefined}
         >
           <div className="mb-5 flex flex-col">
-            <div className="mb-6 flex items-center justify-between">
+            <div className="flex items-center justify-between">
               {currentStep !== 'Select action' ? (
                 <ArrowLeftIcon
                   className="cursor-pointer"
@@ -77,7 +73,9 @@ export function IWantTo({ days, journey }: IWantToProps) {
                 </button>
               </Dialog.Close>
             </div>
-            <Dialog.Title className="text-xl">{currentStep}</Dialog.Title>
+            <Dialog.Title asChild>
+              <h3 className="font-serif text-xl">{currentStep}</h3>
+            </Dialog.Title>
           </div>
           <IWantToView
             setOpen={setOpen}

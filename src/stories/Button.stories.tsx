@@ -1,4 +1,5 @@
 import { Button } from '@/components/Button/Button'
+import { PersonIcon } from '@radix-ui/react-icons'
 import type { Meta, StoryObj } from '@storybook/react'
 import { fn } from '@storybook/test'
 
@@ -30,6 +31,14 @@ export const Basic: Story = {
         <div className="space-y-4">
           <p className="text-4xl font-medium">Disabled</p>
           <Button {...args} isDisabled />
+        </div>
+        <div className="space-y-4">
+          <p className="text-4xl font-medium">Icon</p>
+          <Button {...args} icon={<PersonIcon />} />
+        </div>
+        <div className="space-y-4">
+          <p className="text-4xl font-medium">Icon - Ghost</p>
+          <Button {...args} icon={<PersonIcon />} variant="ghost" />
         </div>
       </div>
     )

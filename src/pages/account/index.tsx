@@ -8,7 +8,7 @@ import type { Journey } from '@/types'
 import type { User } from '@supabase/supabase-js'
 import { useQuery } from '@tanstack/react-query'
 import type { GetServerSidePropsContext } from 'next'
-import Head from 'next/head'
+import Link from 'next/link'
 import { useRouter } from 'next/router'
 
 export interface AccountPageProps {
@@ -32,36 +32,38 @@ export default function AccountPage({
 
   const { data: journeys, isFetching } = useQuery({
     queryKey: [user.id, 'journeys'],
-    queryFn: () => getUserJourneys({ userId: user.id }),
+    queryFn: () => getUserJourneys(),
     initialData: initialJourneys,
   })
 
   return (
-    <div className="mx-auto mt-20 max-w-screen-sm px-10 lg:px-0">
-      <Head>
-        <title>Planner.so | Account</title>
-      </Head>
-      <div className="min-h-[500px]">
-        <h1 className="mb-10 text-2xl font-bold">Hello, {user.email}&nbsp;!</h1>
-        <div className="space-y-5">
-          <p className="text-xl">My journeys</p>
-          <MyJourneys
-            userId={user.id}
-            journeys={journeys}
-            isLoading={isFetching}
-          />
-        </div>
+    <div>
+      <div className="mx-auto flex max-w-screen-xl px-10 pt-10 xl:px-0">
+        <Link href="/" className="text-3xl">
+          Planner
+          <span className="text-accent">.so</span>
+        </Link>
       </div>
-      <div className="flex flex-col space-y-5 md:flex-row md:justify-between md:space-y-0">
-        {journeys?.length === 0 ? (
-          <Button onClick={() => router.push('/onboarding')}>
-            Plan a new journey
+      <div className="mx-auto mt-20 max-w-screen-sm px-10 lg:px-0">
+        <div className="min-h-[500px]">
+          <h1 className="mb-10 text-2xl font-bold">
+            Hello, {user.email}&nbsp;!
+          </h1>
+          <div className="space-y-5">
+            <p className="text-xl">My journeys</p>
+            <MyJourneys journeys={journeys} isLoading={isFetching} />
+          </div>
+        </div>
+        <div className="flex flex-col space-y-5 md:flex-row md:justify-between md:space-y-0">
+          {journeys?.length === 0 ? (
+            <Button onClick={() => router.push('/onboarding')}>
+              Plan a new journey
+            </Button>
+          ) : null}
+          <Button variant="ghost" onClick={() => handleLogout()}>
+            Logout
           </Button>
-        ) : null}
-
-        <Button variant="ghost" onClick={() => handleLogout()}>
-          Logout
-        </Button>
+        </div>
       </div>
     </div>
   )
@@ -81,7 +83,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
     }
   }
 
-  const journeys = await getUserJourneys({ userId: data.user.id })
+  const journeys = await getUserJourneys()
 
   return {
     props: {

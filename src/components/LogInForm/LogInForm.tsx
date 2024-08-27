@@ -2,6 +2,7 @@ import { Button } from '@/components/Button/Button'
 import { createClient } from '@/libs/supabase/client'
 import { motion } from 'framer-motion'
 import { useRouter } from 'next/router'
+import type { MouseEvent } from 'react'
 import { useState } from 'react'
 import { Callout } from '../Callout/Callout'
 import { Input } from '../Input/Input'
@@ -16,7 +17,7 @@ export function LogInForm() {
   const [isLoading, setIsLoading] = useState(false)
   const { journey } = useOnboardingStore()
 
-  async function handleLogin(e: React.MouseEvent<HTMLButtonElement>) {
+  async function handleLogin(e: MouseEvent<HTMLButtonElement>) {
     e.preventDefault()
     setIsLoading(true)
 
@@ -45,8 +46,7 @@ export function LogInForm() {
       animate={{ opacity: 1 }}
       className="w-full space-y-4"
     >
-      {error ? <Callout.Danger>{error}</Callout.Danger> : null}
-      <form className="flex flex-col space-y-4">
+      <form className="flex flex-col space-y-6">
         <div className="flex flex-col">
           <Input
             label="Email"
@@ -62,15 +62,19 @@ export function LogInForm() {
             id="password"
             type="password"
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={(e) => {
+              setPassword(e.target.value)
+              setError('')
+            }}
           />
         </div>
+        {error ? <Callout.Danger>{error}</Callout.Danger> : null}
         <Button
           stretch
-          onClick={async (e: React.MouseEvent<HTMLButtonElement>) =>
+          onClick={async (e: MouseEvent<HTMLButtonElement>) =>
             await handleLogin(e)
           }
-          isDisabled={isLoading}
+          isDisabled={isLoading || (!email && !password) || error !== ''}
         >
           {isLoading ? 'Logging in...' : 'Login'}
         </Button>
