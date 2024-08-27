@@ -178,7 +178,7 @@ function Step1({ error }: { error: string }) {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
           >
-            <Callout>{error}</Callout>
+            <Callout.Danger>{error}</Callout.Danger>
           </motion.div>
         )}
         <div className="flex flex-col justify-start space-y-2">
@@ -214,7 +214,7 @@ function Step2({ error }: { error: string }) {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
           >
-            <Callout>{error}</Callout>
+            <Callout.Danger>{error}</Callout.Danger>
           </motion.div>
         )}
         <div className="flex flex-col space-x-0 md:flex-row md:space-x-4">
@@ -269,7 +269,7 @@ function Step3({ error }: { error: string }) {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
           >
-            <Callout>{error}</Callout>
+            <Callout.Danger>{error}</Callout.Danger>
           </motion.div>
         ) : null}
         <input

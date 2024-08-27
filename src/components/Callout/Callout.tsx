@@ -34,11 +34,19 @@ const Callout = ({ type, children }: CalloutProps) => {
   )
 }
 
-Callout.Danger = ({ children }: { children: ReactNode }) => (
+const Danger = ({ children }: { children: ReactNode }) => (
   <Callout type="danger">{children}</Callout>
 )
-Callout.Info = ({ children }: { children: ReactNode }) => (
+
+Danger.displayName = 'Callout.Danger'
+
+const Info = ({ children }: { children: ReactNode }) => (
   <Callout type="info">{children}</Callout>
 )
+
+Info.displayName = 'Callout.Info'
+
+Callout.Info = Info
+Callout.Danger = Danger
 
 export { Callout }

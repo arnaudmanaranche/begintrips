@@ -81,7 +81,7 @@ export default function HomePage({ user }: { user: User }) {
           <div className="space-y-0 md:space-y-4">
             {error ? (
               <div className="w-full px-6 md:bottom-0 md:ml-10 md:mr-0 md:w-fit md:flex-row md:space-x-10 md:px-0 xl:ml-0">
-                <Callout>{error}</Callout>
+                <Callout.Danger>{error}</Callout.Danger>
               </div>
             ) : null}
             <div className="absolute bottom-[calc(100vh-63rem)] left-0 right-0 ml-auto mr-auto flex w-[calc(100%-2rem)] flex-col space-x-0 rounded-2xl bg-white shadow-lg md:relative md:bottom-0 md:ml-10 md:mr-0 md:w-fit md:flex-row md:space-x-10 xl:ml-0">

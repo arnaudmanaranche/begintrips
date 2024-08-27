@@ -49,7 +49,7 @@ export function AddManuallyExpense({
           animate={{ opacity: 1 }}
           className="transition-opacity"
         >
-          <Callout>{error?.message}</Callout>
+          <Callout.Danger>{error?.message}</Callout.Danger>
         </motion.div>
       ) : null}
       <div className="flex flex-col space-y-1">

@@ -94,11 +94,11 @@ export function ChangeDates({
   return (
     <div className="flex flex-col space-y-10">
       {mutateError ? (
-        <Callout>{mutateError.message}</Callout>
+        <Callout.Danger>{mutateError.message}</Callout.Danger>
       ) : (
-        <Callout>
+        <Callout.Danger>
           If you delete days which have expenses, the expenses will be deleted.
-        </Callout>
+        </Callout.Danger>
       )}
 
       <div className="flex flex-col space-y-4">
