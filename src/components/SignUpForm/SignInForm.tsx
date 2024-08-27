@@ -42,7 +42,7 @@ export function SignUpForm() {
       animate={{ opacity: 1 }}
       className="w-full space-y-4"
     >
-      {error ? <Callout>{error}</Callout> : null}
+      {error ? <Callout.Danger>{error}</Callout.Danger> : null}
       <form className="flex flex-col space-y-4">
         <div className="flex flex-col">
           <Input

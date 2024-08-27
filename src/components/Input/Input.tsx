@@ -1,12 +1,13 @@
+import clsx from 'clsx'
 import { useState } from 'react'
 
-export interface InputProps {
+export interface InputProps
+  extends React.InputHTMLAttributes<HTMLInputElement> {
   label: string
   id: string
-  type?: string
-  value: string
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
   min?: string
+  isDisabled?: boolean
 }
 
 export const Input = ({
@@ -16,6 +17,7 @@ export const Input = ({
   value,
   onChange,
   min,
+  isDisabled,
 }: InputProps) => {
   const [isFocused, setIsFocused] = useState(false)
 
@@ -30,15 +32,20 @@ export const Input = ({
         value={value}
         onFocus={handleFocus}
         onBlur={handleBlur}
+        disabled={isDisabled}
         onChange={onChange}
         min={min}
         placeholder=" " // Keeps the placeholder space for the label
-        className="duration-400 w-full rounded-md border border-gray-100 bg-slate-50 px-4 py-3 transition-all ease-in-out focus:border-neutral-dark focus:outline-none"
+        className="duration-400 w-full rounded-md border border-gray-100 bg-slate-50 px-4 py-3 transition-all ease-in-out focus:border-neutral-dark focus:outline-none disabled:bg-gray-300 disabled:text-gray-500"
       />
       <label
         htmlFor={id}
-        className={`duration-400 absolute left-4 top-1/2 -translate-y-1/2 transform px-1 text-sm transition-all ease-in-out
-        ${isFocused || value ? 'left-3 top-[-0.75rem] text-xs text-accent' : 'text-black/50'}`}
+        className={clsx(
+          'duration-400 absolute left-3 top-1/2 -translate-y-1/2 transform px-1 text-sm transition-all ease-in-out',
+          isFocused || value
+            ? 'left-3 top-[-0.75rem] text-xs text-accent'
+            : 'text-black/50'
+        )}
       >
         {label}
       </label>
