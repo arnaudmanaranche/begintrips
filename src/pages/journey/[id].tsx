@@ -1,149 +1,200 @@
 import {
   getJourney,
+  getJourneyBudgetSpent,
   getJourneyDays,
-  getJourneyDetails,
 } from '@/api/calls/journeys'
+import { AISuggest } from '@/components/AISuggest/AISugges'
+import { BottomBar } from '@/components/BottomBar/BottomBar'
+import { Budget } from '@/components/Budget/Budget'
 import { Button } from '@/components/Button/Button'
+import { Checklist } from '@/components/Checklist/Checklist'
 import { Expenses } from '@/components/Expenses/Expenses'
 import { IWantTo } from '@/components/IWantTo/IWantTo'
+import { JourneyCard } from '@/components/JourneyCard/JourneyCard'
+import { SearchEvents } from '@/components/SearchEvents/SearchEvents'
+import { Sidebar } from '@/components/Sidebar/Sidebar'
 import { UpcomingSchedule } from '@/components/UpcomingSchedule/UpcomingSchedule'
 import { createClient } from '@/libs/supabase/server-props'
-import type { Day, Expense, Journey } from '@/types'
+import type { Day, Journey } from '@/types'
+import { formatDate } from '@/utils/date'
 import {
-  groupedExpensesByCategory,
-  groupedExpensesByDay,
-} from '@/utils/groupe-expenses'
+  BarChartIcon,
+  CalendarIcon,
+  SewingPinIcon,
+} from '@radix-ui/react-icons'
 import type { User } from '@supabase/supabase-js'
 import { useQuery } from '@tanstack/react-query'
-import clsx from 'clsx'
-import { differenceInDays, format } from 'date-fns'
+import { differenceInDays } from 'date-fns'
 import { type GetServerSidePropsContext } from 'next'
-import { Alata } from 'next/font/google'
-import Head from 'next/head'
-import Image from 'next/image'
-import router from 'next/router'
+import router, { useRouter } from 'next/router'
 import { useMemo } from 'react'
-
-const alata = Alata({ weight: '400', subsets: ['latin'] })
 
 export interface JourneyProps {
   user: User
-  journey: Journey
-  days: Day[]
-  expensesByDay: Record<string, Expense[]>
-  expensesByCategory: Record<string, Expense[]>
 }
 
-export default function Journey({
-  journey: initialJourney,
-  expensesByCategory,
-  days: initialDays,
-  expensesByDay,
-  user,
-}: JourneyProps) {
-  const { data: days } = useQuery({
-    queryKey: ['journey', 'days', initialJourney.id],
-    queryFn: () => getJourneyDays({ journeyId: initialJourney.id }),
-    initialData: initialDays,
+export default function Journey({ user }: JourneyProps) {
+  const { query } = useRouter()
+
+  const { data: days, isFetching: isFetchingDays } = useQuery({
+    queryKey: ['journey', 'days', query.id],
+    queryFn: () => getJourneyDays({ journeyId: query.id as string }),
   })
 
-  const { data: journey } = useQuery({
-    queryKey: ['journey', initialJourney.id],
-    queryFn: () =>
-      getJourneyDetails({ journeyId: initialJourney.id, userId: user.id }),
-    initialData: initialJourney,
+  const { data, isFetching: isFetchingJourney } = useQuery({
+    queryKey: ['journey', query.id],
+    queryFn: () => getJourney({ journeyId: query.id as string }),
+  })
+
+  const { data: budgetSpent, isFetching: isFetchingBudget } = useQuery({
+    queryKey: ['journey', query.id, 'budgetSpent'],
+    queryFn: () => getJourneyBudgetSpent({ journeyId: query.id as string }),
   })
 
   const daysLeftBeforeJourneyBegins = useMemo(
-    () => differenceInDays(new Date(journey.departureDate), new Date()),
-    [journey.departureDate]
+    () =>
+      differenceInDays(
+        new Date(data?.journey.departureDate as string),
+        new Date()
+      ) + 1,
+    [data?.journey.departureDate]
   )
 
   return (
-    <div>
-      <Head>
-        <title>Planner.so</title>
-      </Head>
-      <nav className="flex items-center justify-between px-10 pt-6">
-        <span className={clsx(alata.className, 'text-3xl')}>
-          Planner
-          <span className="text-accent">.so</span>
-        </span>
-        <div className="rounded-2xl p-4">
-          <Button onClick={() => router.push('/account')}>My account</Button>
-        </div>
-      </nav>
-      <div className="relative h-screen px-10 pt-6">
-        <div className="flex flex-col space-x-0 space-y-4 lg:flex-row lg:space-x-4 lg:space-y-0">
-          <div className="flex flex-1 flex-col">
-            <div className="max-h-full min-h-[800px] flex-1 rounded-2xl border-2 bg-white p-4">
-              <div className="relative min-h-[300px]">
-                {journey.image_cover ? (
-                  <Image
-                    className="rounded-2xl"
-                    src={journey.image_cover!}
-                    alt={`${journey.destination} photo`}
-                    style={{
-                      objectFit: 'cover',
-                    }}
-                    fill
-                    priority
-                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                  />
-                ) : (
-                  <div className="absolute inset-0 w-full rounded-2xl bg-accent" />
-                )}
-                <div className="absolute bottom-4 left-4 flex min-h-[130px] flex-col rounded-2xl bg-white p-4 drop-shadow-md">
-                  <p className={clsx(alata.className, 'text-xl')}>
-                    Traveling to{' '}
-                    <span className="text-accent">{journey.destination}</span>
-                  </p>
-                  <span>
-                    {format(new Date(journey.departureDate), 'dd LLL')} -{' '}
-                    {format(new Date(journey.returnDate), 'dd LLL')}
-                  </span>
-                </div>
-              </div>
-              <div className="mt-6">
-                <h2
-                  className={clsx(
-                    alata.className,
-                    'sticky top-0 bg-white pb-4 text-3xl'
-                  )}
-                >
-                  Calendar
-                </h2>
-                <UpcomingSchedule
-                  userId={user.id}
-                  expensesByDay={expensesByDay}
-                  departureDate={journey.departureDate}
-                />
-              </div>
-            </div>
+    <div className="relative flex">
+      <Sidebar />
+      <div className="flex flex-1 flex-col">
+        <nav className="relative hidden min-h-[70px] items-center justify-between border-b-[1px] px-10 lg:flex">
+          <div>
+            <h2 className="text-3xl font-thin">
+              Hello,{` `}
+              <span className="text-xl font-normal">
+                {user.email?.split('@')[0]}
+              </span>
+              !
+            </h2>
           </div>
-          <div className="flex flex-1 flex-col space-y-4">
-            <div
-              className={clsx(
-                alata.className,
-                'flex flex-col justify-center space-y-3 rounded-2xl border-2 bg-white p-4'
-              )}
+          {isFetchingJourney || isFetchingDays ? null : (
+            <SearchEvents
+              journey={data?.journey as Journey}
+              days={days as Day[]}
+            />
+          )}
+          <Button onClick={() => router.push('/account')} isRounded>
+            {user.email?.split('@')[0]?.slice(0, 2)}
+          </Button>
+        </nav>
+        <div className="grid h-full grid-cols-12 gap-6 bg-gray-50 px-6 lg:pb-0">
+          <div className="col-span-12 space-y-4 pt-4 lg:col-span-3">
+            <JourneyCard
+              title="Quick action"
+              isHiddenOnSmallScreens
+              isFetching={isFetchingDays || isFetchingJourney}
             >
-              <h1 className="text-center text-5xl leading-snug text-black">
-                <span className="text-accent">
-                  {daysLeftBeforeJourneyBegins < 0
-                    ? '0'
-                    : daysLeftBeforeJourneyBegins}
-                </span>{' '}
-                {daysLeftBeforeJourneyBegins > 1 ? 'days' : 'day'} to go
+              <IWantTo
+                days={data?.days as Day[]}
+                journey={data?.journey as Journey}
+              />
+            </JourneyCard>
+            <AISuggest />
+            <JourneyCard title="Budget" isFetching={isFetchingBudget}>
+              <Budget
+                totalBudget={data?.journey.budget ?? 0}
+                spentBudget={budgetSpent}
+              />
+            </JourneyCard>
+            <JourneyCard isHiddenOnSmallScreens title="Checklist">
+              <Checklist />
+            </JourneyCard>
+          </div>
+          <div className="col-span-12 rounded-lg px-2 lg:col-span-6 lg:h-screen lg:overflow-y-auto">
+            <div className="flex justify-center p-4">
+              <h1 className="flex  items-baseline space-x-4 text-6xl leading-snug text-black lg:text-7xl">
+                {isFetchingJourney ? (
+                  <div className="h-[20px] w-full animate-pulse rounded-lg bg-slate-200" />
+                ) : (
+                  <>
+                    <span className="font-serif text-8xl text-accent">
+                      {daysLeftBeforeJourneyBegins < 0
+                        ? '0'
+                        : daysLeftBeforeJourneyBegins}
+                    </span>
+                    <span className="font-serif">
+                      {daysLeftBeforeJourneyBegins > 1 ? 'days' : 'day'} to go
+                    </span>
+                  </>
+                )}
               </h1>
-              <IWantTo days={days} journey={journey} />
             </div>
-            <div className="space-y-3 rounded-2xl border-2 bg-white p-4">
-              <Expenses expenses={expensesByCategory} userId={user.id} />
+            <div className="mb-4 space-y-10 rounded-lg p-4">
+              <h3 className="mb-2 text-3xl">Overview</h3>
+              {isFetchingJourney || !data ? (
+                'loading'
+              ) : (
+                <div className="flex flex-col space-y-6 md:space-y-0 lg:flex-row lg:items-center lg:space-x-10">
+                  <div className="flex items-center space-x-2">
+                    <div className="rounded-full bg-slate-200 p-2">
+                      <SewingPinIcon className="h-5 w-5 text-accent" />
+                    </div>
+                    <div className="flex flex-col">
+                      <span className="text-sm text-gray-600">Destination</span>
+                      <span className="text-black">
+                        {data?.journey.destination}
+                      </span>
+                    </div>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <div className="rounded-full bg-slate-200 p-2">
+                      <CalendarIcon className="h-5 w-5 text-accent" />
+                    </div>
+                    <div className="flex flex-col">
+                      <span className="text-sm text-gray-600">
+                        Departure date
+                      </span>
+                      <span className="text-black">
+                        {formatDate(
+                          new Date(data.journey.departureDate),
+                          'dd MMMM yyyy',
+                          false
+                        )}
+                        {` `}-{' '}
+                        {formatDate(
+                          new Date(data.journey.returnDate),
+                          'dd MMMM yyyy',
+                          false
+                        )}
+                      </span>
+                    </div>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <div className="rounded-full bg-slate-200 p-2">
+                      <BarChartIcon className="h-5 w-5 text-accent" />
+                    </div>
+                    <div className="flex flex-col">
+                      <span className="text-sm text-gray-600">Budget</span>
+                      <span className="text-black">{data.journey.budget}$</span>
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
+            <JourneyCard title="Expenses" isFetching={isFetchingJourney}>
+              <Expenses />
+            </JourneyCard>
+          </div>
+          <div className="col-span-12 pt-4 lg:col-span-3">
+            <JourneyCard
+              title="Events by day"
+              isFetching={isFetchingJourney || !data}
+            >
+              <UpcomingSchedule
+                departureDate={data?.journey.departureDate as string}
+              />
+            </JourneyCard>
           </div>
         </div>
       </div>
+      <BottomBar />
     </div>
   )
 }
@@ -162,27 +213,9 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
     }
   }
 
-  const { journey, expenses, days } = await getJourney({
-    journeyId: context.params?.id as string,
-    userId: data.user.id,
-  })
-
-  const expensesByCategory = groupedExpensesByCategory({
-    expenses,
-  })
-
-  const expensesByDay = groupedExpensesByDay({
-    days,
-    expenses,
-  })
-
   return {
     props: {
       user: data.user,
-      journey,
-      expensesByCategory,
-      expensesByDay,
-      days,
     },
   }
 }

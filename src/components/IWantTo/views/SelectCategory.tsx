@@ -13,7 +13,7 @@ export function SelectCategory({
   setNewExpense,
 }: SelectCategoryProps) {
   return (
-    <div className="mt-10 grid grid-cols-2 gap-5">
+    <div className="mt-10 grid max-h-[500px] grid-cols-2 gap-5 overflow-y-scroll">
       {mappedExpensesWithEmojis.map((mappedExpense) => (
         <div
           key={mappedExpense.name}

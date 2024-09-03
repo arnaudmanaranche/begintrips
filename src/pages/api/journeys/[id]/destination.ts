@@ -1,5 +1,4 @@
 import createClient from '@/libs/supabase/api'
-import { getRandomImageCover } from '@/libs/unsplash/getRandomImageCover'
 import type { NextApiRequest, NextApiResponse } from 'next'
 
 export default async function handler(
@@ -21,11 +20,9 @@ export default async function handler(
       })
     }
 
-    const imageCover = await getRandomImageCover({ destination })
-
     const { error } = await supabase
       .from('journeys')
-      .update({ destination, image_cover: imageCover })
+      .update({ destination })
       .eq('id', id!)
       .eq('userId', user?.id as string)
       .select('*')

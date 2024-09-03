@@ -6,12 +6,15 @@ export default async function handler(
   res: NextApiResponse
 ) {
   const supabase = createClient(req, res)
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
 
   if (req.method === 'GET') {
     const { data } = await supabase
       .from('journeys')
       .select('*')
-      .eq('userId', req.query.userId!)
+      .eq('userId', user?.id as string)
 
     res.status(200).json(data)
   } else {

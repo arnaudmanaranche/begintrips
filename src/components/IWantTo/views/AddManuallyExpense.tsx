@@ -1,11 +1,10 @@
-import { createExpense } from '@/api/calls/days'
+import { useCreateExpense } from '@/api/hooks/createExpense'
 import { Button } from '@/components/Button/Button'
 import { Callout } from '@/components/Callout/Callout'
+import { Input } from '@/components/Input/Input'
 import type { AddExpense, Day } from '@/types'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { format } from 'date-fns'
+import { formatDate } from '@/utils/date'
 import { motion } from 'framer-motion'
-import { useParams } from 'next/navigation'
 import type { Dispatch, SetStateAction } from 'react'
 
 export interface AddManuallyExpenseProps {
@@ -21,28 +20,14 @@ export function AddManuallyExpense({
   days,
   setOpen,
 }: AddManuallyExpenseProps) {
-  const queryClient = useQueryClient()
-  const { id: journeyId } = useParams()
-  const {
-    mutateAsync: handleCreateExpense,
-    isPending,
-    isError,
-    error,
-  } = useMutation({
-    mutationFn: () => createExpense(newExpense),
-    onSuccess() {
-      queryClient.invalidateQueries({
-        queryKey: [journeyId, 'expensesByDay'],
-      })
-      queryClient.invalidateQueries({
-        queryKey: [journeyId, 'expensesByCategory'],
-      })
+  const { handleCreateExpense, isPending, isError, error } = useCreateExpense({
+    onSuccessCallback: () => {
       setOpen(false)
     },
   })
 
   return (
-    <div className="flex flex-col space-y-4">
+    <div className="flex flex-col space-y-6">
       {isError ? (
         <motion.div
           initial={{ opacity: 0 }}
@@ -52,36 +37,26 @@ export function AddManuallyExpense({
           <Callout.Danger>{error?.message}</Callout.Danger>
         </motion.div>
       ) : null}
-      <div className="flex flex-col space-y-1">
-        <label htmlFor="expense-name">Name</label>
-        <input
-          id="expense-name"
-          className="rounded-md border-2 border-gray-100 bg-slate-50 px-10 py-4 outline-none transition-all placeholder:text-black/50 focus:border-neutral-dark focus:outline-none"
-          type="text"
-          placeholder="Taylor Swift concert"
-          defaultValue={newExpense.name}
-          onChange={(e) =>
-            setNewExpense({ ...newExpense, name: e.target.value })
-          }
-        />
-      </div>
-      <div className="flex flex-col space-y-1">
-        <label htmlFor="expense-amount">Amount</label>
-        <input
-          id="expense-amount"
-          className="rounded-md border-2 border-gray-100 bg-slate-50 px-10 py-4 outline-none transition-all placeholder:text-black/50 focus:border-neutral-dark focus:outline-none"
-          type="number"
-          placeholder="3000"
-          defaultValue={newExpense.amount}
-          onChange={(e) =>
-            setNewExpense({
-              ...newExpense,
-              amount: parseFloat(e.target.value),
-            })
-          }
-        />
-      </div>
-      <label htmlFor="expense-day">Day</label>
+      <Input
+        id="expense-name"
+        type="text"
+        label="Name"
+        value={newExpense.name}
+        onChange={(e) => setNewExpense({ ...newExpense, name: e.target.value })}
+      />
+      <Input
+        id="expense-amount"
+        label="Amount"
+        type="number"
+        value={newExpense.amount}
+        onChange={(e) =>
+          setNewExpense({
+            ...newExpense,
+            amount: parseFloat(e.target.value),
+          })
+        }
+      />
+      <label htmlFor="expense-day">Date</label>
       <select
         id="expense-day"
         className="rounded-md border-2 border-gray-100 bg-slate-50 px-2 py-4 outline-none transition-all placeholder:text-black/50 focus:border-neutral-dark focus:outline-none"
@@ -101,19 +76,24 @@ export function AddManuallyExpense({
         <option disabled value="Select a day">
           Select a day
         </option>
-        {days.map((day) => (
-          <option
-            key={new Date(day.startDate).toString()}
-            value={JSON.stringify({
-              id: day.id,
-              startDate: day.startDate,
-            })}
-          >
-            {format(new Date(day.startDate), 'EEEE - dd MMMM yyyy')}
-          </option>
-        ))}
+        {days
+          .sort((a, b) => a.startDate.localeCompare(b.startDate))
+          .map((day) => (
+            <option
+              key={new Date(day.startDate).toString()}
+              value={JSON.stringify({
+                id: day.id,
+                startDate: day.startDate,
+              })}
+            >
+              {formatDate(day.startDate, 'EEEE - dd MMMM yyyy')}
+            </option>
+          ))}
       </select>
-      <Button onClick={() => handleCreateExpense()} isDisabled={isPending}>
+      <Button
+        onClick={() => handleCreateExpense(newExpense)}
+        isDisabled={isPending}
+      >
         {isPending ? 'Adding new expense...' : 'Add new expense'}
       </Button>
     </div>

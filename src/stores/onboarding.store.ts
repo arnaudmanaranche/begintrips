@@ -1,7 +1,8 @@
 import type { AddJourney } from '@/types'
-import { addDays, format } from 'date-fns'
+import { formatDate } from '@/utils/date'
+import { addDays } from 'date-fns'
 import { create } from 'zustand'
-import { persist, createJSONStorage } from 'zustand/middleware'
+import { createJSONStorage, persist } from 'zustand/middleware'
 
 export interface OnboardingStore {
   journey: AddJourney
@@ -10,8 +11,8 @@ export interface OnboardingStore {
 }
 
 const initialJourney: AddJourney = {
-  departureDate: format(new Date(), 'yyyy-MM-dd'),
-  returnDate: format(addDays(new Date(), 1), 'yyyy-MM-dd'),
+  departureDate: formatDate(new Date(), 'yyyy-MM-dd'),
+  returnDate: formatDate(addDays(new Date(), 1), 'yyyy-MM-dd'),
   destination: '',
   budget: 0,
 }

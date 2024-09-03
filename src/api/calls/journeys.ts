@@ -4,14 +4,6 @@ import { isInvalidDate } from '@/utils/date'
 
 export interface GetJourneyParams {
   journeyId: string
-  userId: string
-}
-
-export const deleteJourney = async ({
-  journeyId,
-  userId,
-}: GetJourneyParams) => {
-  return apiInstance.delete(`/journeys/${journeyId}?userId=${userId}`)
 }
 
 export const createJourney = async (journey: AddJourney) => {
@@ -22,31 +14,28 @@ export const createJourney = async (journey: AddJourney) => {
 
 export const getExpensesByCategory = async ({
   journeyId,
-  userId,
 }: GetJourneyParams) => {
   const { data } = await apiInstance.get<Record<string, Expense[]>>(
-    `/journeys/${journeyId}/expenses-by-category?userId=${userId}`
+    `/journeys/${journeyId}/expenses-by-category`
   )
 
   return data
 }
 
-export const getExpensesByDay = async ({
-  journeyId,
-  userId,
-}: GetJourneyParams) => {
+export const getExpensesByDay = async ({ journeyId }: GetJourneyParams) => {
   const { data } = await apiInstance.get<Record<string, Expense[]>>(
-    `/journeys/${journeyId}/expenses-by-day?userId=${userId}`
+    `/journeys/${journeyId}/expenses-by-day`
   )
   return data
 }
 
-export const getJourney = async ({ journeyId, userId }: GetJourneyParams) => {
+export const getJourney = async ({ journeyId }: GetJourneyParams) => {
   const { data } = await apiInstance.get<{
     journey: Journey
     expenses: Expense[]
     days: Day[]
-  }>(`/journeys/${journeyId}?userId=${userId}`)
+    budgetSpent: number
+  }>(`/journeys/${journeyId}`)
 
   return data
 }
@@ -57,12 +46,9 @@ export const getJourneyDays = async ({ journeyId }: { journeyId: string }) => {
   return data
 }
 
-export const getJourneyDetails = async ({
-  journeyId,
-  userId,
-}: GetJourneyParams) => {
+export const getJourneyDetails = async ({ journeyId }: GetJourneyParams) => {
   const { data } = await apiInstance.get<Journey>(
-    `/journeys/${journeyId}/details?userId=${userId}`
+    `/journeys/${journeyId}/details`
   )
 
   return data
@@ -105,6 +91,30 @@ export const updateJourneyDestination = async ({
       destination,
     }
   )
+
+  return data
+}
+
+export const updateJourneyBudget = async ({
+  journeyId,
+  budget,
+}: {
+  journeyId: string
+  budget: number
+}) => {
+  const { data } = await apiInstance.patch(`/journeys/${journeyId}/budget`, {
+    budget,
+  })
+
+  return data
+}
+
+export const getJourneyBudgetSpent = async ({
+  journeyId,
+}: {
+  journeyId: string
+}) => {
+  const { data } = await apiInstance.get(`/journeys/${journeyId}/budget`)
 
   return data
 }

@@ -6,23 +6,22 @@ export default async function handler(
   res: NextApiResponse
 ) {
   const supabase = createClient(req, res)
-  const { id, userId } = req.query
+  const { id } = req.query
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
 
-  if (req.method === 'DELETE') {
-    await supabase.from('journeys').delete().eq('id', id!).eq('userId', userId!)
-
-    res.status(204).end()
-  } else if (req.method === 'GET') {
+  if (req.method === 'GET') {
     const { data: journey, error: journeyError } = await supabase
       .from('journeys')
       .select('*')
       .eq('id', id!)
-      .eq('userId', userId!)
+      .eq('userId', user?.id as string)
       .single()
 
     if (!journey || journeyError) {
-      return res.status(404).json({
-        message: 'Journey not found',
+      return res.status(401).json({
+        message: `Journey ${id} not found for userId ${user?.id}`,
       })
     }
 
@@ -36,7 +35,11 @@ export default async function handler(
       .select('*')
       .eq('journeyId', id!)
 
-    res.status(200).json({ journey, expenses, days })
+    const budgetSpent = expenses?.reduce((acc, expense) => {
+      return acc + expense.amount
+    }, 0)
+
+    res.status(200).json({ journey, expenses, days, budgetSpent })
   } else {
     res.status(405).json({
       message: 'Method not allowed',

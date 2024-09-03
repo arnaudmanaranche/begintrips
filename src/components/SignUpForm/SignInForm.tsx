@@ -2,6 +2,7 @@ import { Button } from '@/components/Button/Button'
 import { createClient } from '@/libs/supabase/client'
 import { motion } from 'framer-motion'
 import { useRouter } from 'next/router'
+import type { MouseEvent } from 'react'
 import { useState } from 'react'
 import { Callout } from '../Callout/Callout'
 import { Input } from '../Input/Input'
@@ -15,7 +16,7 @@ export function SignUpForm() {
   const [error, setError] = useState('')
   const [isLoading, setIsLoading] = useState(false)
 
-  async function handleSignUp(e: React.MouseEvent<HTMLButtonElement>) {
+  async function handleSignUp(e: MouseEvent<HTMLButtonElement>) {
     e.preventDefault()
     setIsLoading(true)
 
@@ -43,7 +44,7 @@ export function SignUpForm() {
       className="w-full space-y-4"
     >
       {error ? <Callout.Danger>{error}</Callout.Danger> : null}
-      <form className="flex flex-col space-y-4">
+      <form className="flex flex-col space-y-6">
         <div className="flex flex-col">
           <Input
             label="Email"
@@ -73,10 +74,10 @@ export function SignUpForm() {
         </div>
         <Button
           stretch
-          onClick={async (e: React.MouseEvent<HTMLButtonElement>) =>
+          onClick={async (e: MouseEvent<HTMLButtonElement>) =>
             await handleSignUp(e)
           }
-          isDisabled={isLoading}
+          isDisabled={isLoading || (!email && !password && !confirmPassword)}
         >
           {isLoading ? 'Signing up...' : 'Sign up'}
         </Button>

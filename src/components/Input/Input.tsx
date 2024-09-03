@@ -1,11 +1,11 @@
 import clsx from 'clsx'
+import type { ChangeEvent, InputHTMLAttributes } from 'react'
 import { useState } from 'react'
 
-export interface InputProps
-  extends React.InputHTMLAttributes<HTMLInputElement> {
+export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   label: string
   id: string
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
+  onChange: (e: ChangeEvent<HTMLInputElement>) => void
   min?: string
   isDisabled?: boolean
 }
@@ -25,7 +25,7 @@ export const Input = ({
   const handleBlur = () => setIsFocused(value !== '')
 
   return (
-    <div className="relative mb-6">
+    <div className="relative">
       <input
         type={type}
         id={id}
@@ -42,7 +42,7 @@ export const Input = ({
         htmlFor={id}
         className={clsx(
           'duration-400 absolute left-3 top-1/2 -translate-y-1/2 transform px-1 text-sm transition-all ease-in-out',
-          isFocused || value
+          isFocused || value || value === 0
             ? 'left-3 top-[-0.75rem] text-xs text-accent'
             : 'text-black/50'
         )}

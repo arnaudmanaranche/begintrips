@@ -1,5 +1,7 @@
+import { stripTime } from './date'
+
 export const hasJourneyPassed = (departureDate: Date) => {
   const todayDate = new Date()
 
-  return todayDate > departureDate
+  return stripTime(todayDate) > stripTime(departureDate)
 }
