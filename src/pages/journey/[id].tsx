@@ -9,17 +9,18 @@ import { Budget } from '@/components/Budget/Budget'
 import { Button } from '@/components/Button/Button'
 import { Checklist } from '@/components/Checklist/Checklist'
 import { Expenses } from '@/components/Expenses/Expenses'
-import { IWantTo } from '@/components/IWantTo/IWantTo'
 import { JourneyCard } from '@/components/JourneyCard/JourneyCard'
 import { SearchEvents } from '@/components/SearchEvents/SearchEvents'
 import { Sidebar } from '@/components/Sidebar/Sidebar'
 import { UpcomingSchedule } from '@/components/UpcomingSchedule/UpcomingSchedule'
 import { createClient } from '@/libs/supabase/server-props'
+import { useQuickActionsModalActions } from '@/providers/QuickActions.Provider'
 import type { Day, Journey } from '@/types'
 import { formatDate } from '@/utils/date'
 import {
   BarChartIcon,
   CalendarIcon,
+  CaretRightIcon,
   SewingPinIcon,
 } from '@radix-ui/react-icons'
 import type { User } from '@supabase/supabase-js'
@@ -35,6 +36,7 @@ export interface JourneyProps {
 
 export default function Journey({ user }: JourneyProps) {
   const { query } = useRouter()
+  const { setIsOpen } = useQuickActionsModalActions()
 
   const { data: days, isFetching: isFetchingDays } = useQuery({
     queryKey: ['journey', 'days', query.id],
@@ -91,10 +93,14 @@ export default function Journey({ user }: JourneyProps) {
               isHiddenOnSmallScreens
               isFetching={isFetchingDays || isFetchingJourney}
             >
-              <IWantTo
-                days={data?.days as Day[]}
-                journey={data?.journey as Journey}
-              />
+              <div className="flex" onClick={() => setIsOpen(true)}>
+                <div className="flex-1 cursor-pointer rounded-md bg-gray-50 p-4 text-black/50 outline-none transition-all">
+                  I want to...
+                </div>
+                <button className="rounded-r-lg bg-accent text-white">
+                  <CaretRightIcon height={20} width={20} />
+                </button>
+              </div>
             </JourneyCard>
             <AISuggest />
             <JourneyCard title="Budget" isFetching={isFetchingBudget}>

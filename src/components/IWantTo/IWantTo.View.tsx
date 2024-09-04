@@ -1,7 +1,7 @@
 import type { Journey } from '@/types'
 import { type AddExpense, type Day } from '@/types'
 import { useState } from 'react'
-import { type IWantToStep } from './IWantTo'
+import type { IWantToStep } from '@/providers/QuickActions.Provider'
 import { AddManuallyExpense } from './views/AddManuallyExpense'
 import { ChangeDates } from './views/ChangeDates'
 import { ChangeDestination } from './views/ChangeDestination'
@@ -15,6 +15,7 @@ export interface IWantToViewProps {
   days: Day[]
   setOpen: (open: boolean) => void
   journey: Journey
+  selectedDay: string | null
 }
 
 export function IWantToView({
@@ -23,14 +24,23 @@ export function IWantToView({
   days,
   setOpen,
   journey,
+  selectedDay,
 }: IWantToViewProps) {
+  const dayId = selectedDay
+    ? days.find((day) => day.startDate === selectedDay)?.id || ''
+    : days[0].id
+
+  const startDate = selectedDay
+    ? days.find((day) => day.startDate === selectedDay)?.startDate || ''
+    : days[0].startDate
+
   const [newExpense, setNewExpense] = useState<AddExpense>({
     category: 'other',
     name: '',
     amount: 0,
-    dayId: days[0].id,
+    dayId,
     journeyId: journey.id,
-    startDate: days[0].startDate,
+    startDate,
   })
 
   switch (currentStep) {

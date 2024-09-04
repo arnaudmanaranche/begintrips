@@ -1,7 +1,7 @@
+import type { IWantToStep } from '@/providers/QuickActions.Provider'
 import type { AddExpense } from '@/types'
 import { mappedExpensesWithEmojis } from '@/utils/expense-labels'
 import type { Dispatch, SetStateAction } from 'react'
-import type { IWantToStep } from '../IWantTo'
 
 export interface SelectCategoryProps {
   setCurrentStep: (step: IWantToStep) => void

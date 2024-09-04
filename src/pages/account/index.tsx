@@ -68,17 +68,19 @@ export default function AccountPage({ user }: AccountPageProps) {
                 className="fixed left-[50%] top-[50%] max-h-[90vh] min-h-[500px] w-[90vw] max-w-[650px] translate-x-[-50%] translate-y-[-50%] rounded-[6px] bg-white p-[25px] shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] focus:outline-none data-[state=open]:animate-contentShow"
                 aria-describedby={undefined}
               >
-                <Dialog.Close asChild>
-                  <button
-                    className="h-[25px] w-[25px] appearance-none items-center justify-center rounded-full outline-none"
-                    aria-label="Close"
-                  >
-                    <Cross2Icon />
-                  </button>
-                </Dialog.Close>
-                <Dialog.Title asChild>
-                  <h3 className="font-serif text-xl">{modalType}</h3>
-                </Dialog.Title>
+                <div className="mb-5 flex justify-between">
+                  <Dialog.Title asChild>
+                    <h3 className="font-serif text-xl">{modalType}</h3>
+                  </Dialog.Title>
+                  <Dialog.Close asChild>
+                    <button
+                      className="h-[25px] w-[25px] appearance-none items-center justify-center rounded-full outline-none"
+                      aria-label="Close"
+                    >
+                      <Cross2Icon />
+                    </button>
+                  </Dialog.Close>
+                </div>
                 <ChangePasswordModalView
                   onPasswordChangedCallback={() => {
                     setOpen(false)

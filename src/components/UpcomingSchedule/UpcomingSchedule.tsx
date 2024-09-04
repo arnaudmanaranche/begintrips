@@ -1,5 +1,6 @@
 import { getExpensesByDay } from '@/api/calls/journeys'
 import { ExpenseLabel } from '@/components/ExpenseLabel/ExpenseLabel'
+import { useQuickActionsModalActions } from '@/providers/QuickActions.Provider'
 import { formatDate } from '@/utils/date'
 import { hasJourneyPassed } from '@/utils/has-journey-passed'
 import { useQuery } from '@tanstack/react-query'
@@ -17,6 +18,9 @@ export function UpcomingSchedule({ departureDate }: UpcomingScheduleProps) {
     queryKey: [query.id, 'expensesByDay'],
     queryFn: () => getExpensesByDay({ journeyId: query.id as string }),
   })
+
+  const { setCurrentStep, setIsOpen, setSelectedDay } =
+    useQuickActionsModalActions()
 
   if (isFetching) {
     return (
@@ -40,12 +44,16 @@ export function UpcomingSchedule({ departureDate }: UpcomingScheduleProps) {
                 <span className="text-base text-black">
                   {formatDate(date, 'EEEE dd MMMM')}
                 </span>
-                <span className="text-sm text-accent">
-                  {expensesByDay[formatDate(date, 'yyyy-MM-dd')]?.length}{' '}
-                  {expensesByDay[formatDate(date, 'yyyy-MM-dd')]?.length > 1
-                    ? 'expenses'
-                    : 'expense'}
-                </span>
+                <div
+                  onClick={() => {
+                    setIsOpen(true)
+                    setCurrentStep('Select category')
+                    setSelectedDay(formatDate(new Date(date), 'yyyy-MM-dd'))
+                  }}
+                  className="cursor-pointer rounded-md px-2 py-1 ring-1 ring-slate-100 transition-colors hover:bg-slate-100"
+                >
+                  +
+                </div>
               </div>
               {expensesByDay[formatDate(date, 'yyyy-MM-dd')]?.length > 0 ? (
                 <ul className="flex w-full flex-col space-y-2 px-4 pb-4">

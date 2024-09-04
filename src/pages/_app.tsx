@@ -1,3 +1,4 @@
+import { QuickActionsModalProvider } from '@/providers/QuickActions.Provider'
 import '@/styles/globals.css'
 import { SITE_DESCRIPTION, SITE_TITLE, SITE_URL } from '@/utils/seo'
 import {
@@ -65,9 +66,11 @@ export default function App({ Component, pageProps }: AppProps) {
         />
       </Head>
       <HydrationBoundary state={pageProps.dehydratedState}>
-        <div className={`${playfair.variable} ${openSans.variable}`}>
-          <Component {...pageProps} />
-        </div>
+        <QuickActionsModalProvider>
+          <div className={`${playfair.variable} ${openSans.variable}`}>
+            <Component {...pageProps} />
+          </div>
+        </QuickActionsModalProvider>
         <Analytics />
       </HydrationBoundary>
       <ReactQueryDevtools buttonPosition="top-right" />
