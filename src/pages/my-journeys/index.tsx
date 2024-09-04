@@ -1,4 +1,5 @@
 import { getUserJourneys } from '@/api/calls/users'
+import { QUERY_KEYS } from '@/api/queryKeys'
 import MyJourneys from '@/components/MyJourneys/MyJourneys'
 import { NavBar } from '@/components/NavBar/NavBar'
 import { createClient as createClientServerProps } from '@/libs/supabase/server-props'
@@ -19,7 +20,7 @@ export default function MyJourneysPage({
   journeys: initialJourneys,
 }: MyJourneysPageProps) {
   const { data: journeys, isFetching } = useQuery({
-    queryKey: [user.id, 'journeys'],
+    queryKey: QUERY_KEYS.JOURNEYS(user.id),
     queryFn: () => getUserJourneys(),
     initialData: initialJourneys,
   })

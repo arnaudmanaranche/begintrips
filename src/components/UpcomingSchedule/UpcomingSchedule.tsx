@@ -1,11 +1,12 @@
 import { getExpensesByDay } from '@/api/calls/journeys'
+import { QUERY_KEYS } from '@/api/queryKeys'
 import { ExpenseLabel } from '@/components/ExpenseLabel/ExpenseLabel'
 import { useQuickActionsModalActions } from '@/providers/QuickActions.Provider'
 import { formatDate } from '@/utils/date'
 import { hasJourneyPassed } from '@/utils/has-journey-passed'
 import { useQuery } from '@tanstack/react-query'
 import { addDays } from 'date-fns'
-import { useRouter } from 'next/router'
+import { useParams } from 'next/navigation'
 import { EditExpense } from '../EditExpense/EditExpense'
 
 export type UpcomingScheduleProps = {
@@ -13,10 +14,10 @@ export type UpcomingScheduleProps = {
 }
 
 export function UpcomingSchedule({ departureDate }: UpcomingScheduleProps) {
-  const { query } = useRouter()
+  const { id: journeyId } = useParams()
   const { data: expensesByDay, isFetching } = useQuery({
-    queryKey: [query.id, 'expensesByDay'],
-    queryFn: () => getExpensesByDay({ journeyId: query.id as string }),
+    queryKey: QUERY_KEYS.EXPENSES_BY_DAY(journeyId as string),
+    queryFn: () => getExpensesByDay({ journeyId: journeyId as string }),
   })
 
   const { setCurrentStep, setIsOpen, setSelectedDay } =

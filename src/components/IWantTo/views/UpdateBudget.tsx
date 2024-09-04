@@ -1,4 +1,5 @@
 import { updateJourneyBudget } from '@/api/calls/journeys'
+import { QUERY_KEYS } from '@/api/queryKeys'
 import { Button } from '@/components/Button/Button'
 import { Callout } from '@/components/Callout/Callout'
 import { Input } from '@/components/Input/Input'
@@ -35,12 +36,11 @@ export function UpdateBudget({
       setOpen(false)
     },
     onMutate: async () => {
-      const previousJourney = queryClient.getQueryData<Journey>([
-        'journey',
-        journeyId,
-      ])
+      const previousJourney = queryClient.getQueryData<Journey>(
+        QUERY_KEYS.JOURNEY(journeyId as string)
+      )
 
-      queryClient.setQueryData(['journey', journeyId], {
+      queryClient.setQueryData(QUERY_KEYS.JOURNEY(journeyId as string), {
         ...previousJourney,
         budget,
       })
@@ -48,11 +48,16 @@ export function UpdateBudget({
       return { previousJourney }
     },
     onError: (err, newTodo, context) => {
-      queryClient.setQueryData(['journey', journeyId], context?.previousJourney)
+      queryClient.setQueryData(
+        QUERY_KEYS.JOURNEY(journeyId as string),
+        context?.previousJourney
+      )
       // @TODO: Add toast error
     },
     onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: ['journey', journeyId] })
+      queryClient.invalidateQueries({
+        queryKey: QUERY_KEYS.JOURNEY(journeyId as string),
+      })
     },
   })
 

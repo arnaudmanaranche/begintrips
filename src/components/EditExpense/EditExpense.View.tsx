@@ -1,8 +1,9 @@
 import { deleteExpense, updateExpense } from '@/api/calls/expenses'
+import { QUERY_KEYS } from '@/api/queryKeys'
 import type { Expense, ExpenseCategoryEnum } from '@/types'
 import { mappedExpensesWithEmojis } from '@/utils/expense-labels'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { useRouter } from 'next/router'
+import { useParams } from 'next/navigation'
 import { useState } from 'react'
 import { Button } from '../Button/Button'
 import { Input } from '../Input/Input'
@@ -14,7 +15,7 @@ export interface EditExpenseViewProps {
 
 export const EditExpenseView = ({ expense, setOpen }: EditExpenseViewProps) => {
   const [newExpense, setNewExpense] = useState(expense)
-  const { query } = useRouter()
+  const { id: journeyId } = useParams()
   const queryClient = useQueryClient()
 
   const { mutateAsync: handleUpdateExpense, isPending: isPendingUpdate } =
@@ -22,22 +23,20 @@ export const EditExpenseView = ({ expense, setOpen }: EditExpenseViewProps) => {
       mutationFn: updateExpense,
       onSuccess() {
         queryClient.invalidateQueries({
-          queryKey: [query.id, 'expensesByDay'],
+          queryKey: QUERY_KEYS.EXPENSES_BY_DAY(journeyId as string),
         })
         queryClient.invalidateQueries({
-          queryKey: [query.id, 'expensesByCategory'],
+          queryKey: QUERY_KEYS.EXPENSES_BY_CATEGORY(journeyId as string),
         })
         setOpen(false)
       },
       onMutate: async () => {
-        const previousBudgetSpent = queryClient.getQueryData<number>([
-          'journey',
-          query.id,
-          'budgetSpent',
-        ])
+        const previousBudgetSpent = queryClient.getQueryData<number>(
+          QUERY_KEYS.JOURNEY_BUDGET_SPENT(journeyId as string)
+        )
 
         queryClient.setQueryData(
-          ['journey', query.id, 'budgetSpent'],
+          QUERY_KEYS.JOURNEY_BUDGET_SPENT(journeyId as string),
           newExpense.amount
         )
 
@@ -45,14 +44,14 @@ export const EditExpenseView = ({ expense, setOpen }: EditExpenseViewProps) => {
       },
       onError: (err, newTodo, context) => {
         queryClient.setQueryData(
-          ['journey', query.id, 'budgetSpent'],
+          QUERY_KEYS.JOURNEY_BUDGET_SPENT(journeyId as string),
           context?.previousBudgetSpent
         )
         // @TODO: Add toast error
       },
       onSettled: () => {
         queryClient.invalidateQueries({
-          queryKey: ['journey', query.id, 'budgetSpent'],
+          queryKey: QUERY_KEYS.JOURNEY_BUDGET_SPENT(journeyId as string),
         })
       },
     })
@@ -62,16 +61,16 @@ export const EditExpenseView = ({ expense, setOpen }: EditExpenseViewProps) => {
       mutationFn: deleteExpense,
       onSuccess() {
         queryClient.invalidateQueries({
-          queryKey: [query.id, 'expensesByDay'],
+          queryKey: QUERY_KEYS.EXPENSES_BY_DAY(journeyId as string),
         })
         queryClient.invalidateQueries({
-          queryKey: [query.id, 'expensesByCategory'],
+          queryKey: QUERY_KEYS.EXPENSES_BY_CATEGORY(journeyId as string),
         })
         queryClient.invalidateQueries({
-          queryKey: ['journey', query.id, 'budgetSpent'],
+          queryKey: QUERY_KEYS.JOURNEY_BUDGET_SPENT(journeyId as string),
         })
         queryClient.invalidateQueries({
-          queryKey: ['journey', query.id],
+          queryKey: QUERY_KEYS.JOURNEY(journeyId as string),
         })
         setOpen(false)
       },

@@ -1,19 +1,19 @@
 import { getExpensesByCategory } from '@/api/calls/journeys'
-
+import { QUERY_KEYS } from '@/api/queryKeys'
 import { useQuery } from '@tanstack/react-query'
-import { useRouter } from 'next/router'
+import { useParams } from 'next/navigation'
 import { ExpensesCharts } from '../ExpensesCharts/ExpensesCharts'
 
 export function Expenses() {
-  const { query } = useRouter()
+  const { id: journeyId } = useParams()
 
   const {
     data: expensesByCategory,
     isFetching,
     isError,
   } = useQuery({
-    queryKey: [query.id, 'expensesByCategory'],
-    queryFn: () => getExpensesByCategory({ journeyId: query.id as string }),
+    queryKey: QUERY_KEYS.EXPENSES_BY_CATEGORY(journeyId as string),
+    queryFn: () => getExpensesByCategory({ journeyId: journeyId as string }),
   })
 
   if (isFetching || expensesByCategory === undefined) {

@@ -1,4 +1,5 @@
 import { updateJourneyDates } from '@/api/calls/journeys'
+import { QUERY_KEYS } from '@/api/queryKeys'
 import { Button } from '@/components/Button/Button'
 import { Callout } from '@/components/Callout/Callout'
 import { Input } from '@/components/Input/Input'
@@ -57,13 +58,13 @@ export function ChangeDates({
       }),
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: [journeyId, 'expensesByDay'],
+        queryKey: QUERY_KEYS.EXPENSES_BY_DAY(journeyId as string),
       })
       queryClient.invalidateQueries({
-        queryKey: [journeyId, 'expensesByCategory'],
+        queryKey: QUERY_KEYS.EXPENSES_BY_CATEGORY(journeyId as string),
       })
       queryClient.invalidateQueries({
-        queryKey: ['journey', 'days', journeyId],
+        queryKey: QUERY_KEYS.JOURNEY_DAYS(journeyId as string),
       })
       setOpen(false)
     },
@@ -73,7 +74,7 @@ export function ChangeDates({
         journeyId,
       ])
 
-      queryClient.setQueryData(['journey', journeyId], {
+      queryClient.setQueryData(QUERY_KEYS.JOURNEY(journeyId as string), {
         ...previousJourney,
         departureDate,
         returnDate,
@@ -82,11 +83,16 @@ export function ChangeDates({
       return { previousJourney }
     },
     onError: (err, newTodo, context) => {
-      queryClient.setQueryData(['journey', journeyId], context?.previousJourney)
+      queryClient.setQueryData(
+        QUERY_KEYS.JOURNEY(journeyId as string),
+        context?.previousJourney
+      )
       // @TODO: Add toast error
     },
     onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: ['journey', journeyId] })
+      queryClient.invalidateQueries({
+        queryKey: QUERY_KEYS.JOURNEY(journeyId as string),
+      })
     },
   })
 

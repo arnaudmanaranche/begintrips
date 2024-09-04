@@ -1,4 +1,5 @@
 import { updateJourneyDestination } from '@/api/calls/journeys'
+import { QUERY_KEYS } from '@/api/queryKeys'
 import { Button } from '@/components/Button/Button'
 import { Input } from '@/components/Input/Input'
 import { useSearchDestination } from '@/hooks/useSearchDestination'
@@ -22,7 +23,6 @@ export function ChangeDestination({
   const { id: journeyId } = useParams()
   const queryClient = useQueryClient()
   const { searchBoxRef, sessionTokenRef } = useSearchDestination()
-  // const [isFocused, setIsFocused] = useState(false)
   const [suggestions, setSuggestions] = useState<SearchBoxSuggestion[]>()
 
   async function handleChange(e: ChangeEvent<HTMLInputElement>) {
@@ -48,12 +48,11 @@ export function ChangeDestination({
         journeyId: journeyId as string,
       }),
     onMutate: async () => {
-      const previousJourney = queryClient.getQueryData<Journey>([
-        'journey',
-        journeyId,
-      ])
+      const previousJourney = queryClient.getQueryData<Journey>(
+        QUERY_KEYS.JOURNEY(journeyId as string)
+      )
 
-      queryClient.setQueryData(['journey', journeyId], {
+      queryClient.setQueryData(QUERY_KEYS.JOURNEY(journeyId as string), {
         ...previousJourney,
         destination,
       })
@@ -61,11 +60,16 @@ export function ChangeDestination({
       return { previousJourney }
     },
     onError: (err, newTodo, context) => {
-      queryClient.setQueryData(['journey', journeyId], context?.previousJourney)
+      queryClient.setQueryData(
+        QUERY_KEYS.JOURNEY(journeyId as string),
+        context?.previousJourney
+      )
       // @TODO: Add toast error
     },
     onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: ['journey', journeyId] })
+      queryClient.invalidateQueries({
+        queryKey: QUERY_KEYS.JOURNEY(journeyId as string),
+      })
     },
   })
 

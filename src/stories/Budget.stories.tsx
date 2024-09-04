@@ -13,7 +13,7 @@ type Story = StoryObj<typeof meta>
 
 export const Basic: Story = {
   args: {
-    spentBudget: 100,
+    budgetSpent: 100,
     totalBudget: 2000,
   },
 }

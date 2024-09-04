@@ -1,11 +1,12 @@
-import { getJourney, getJourneyDays } from '@/api/calls/journeys'
+import { getJourneyDays, getJourneyDetails } from '@/api/calls/journeys'
+import { QUERY_KEYS } from '@/api/queryKeys'
 import type { IWantToStep } from '@/providers/QuickActions.Provider'
 import { useQuickActionsModalActions } from '@/providers/QuickActions.Provider'
 import type { Day, Journey } from '@/types'
 import * as Dialog from '@radix-ui/react-dialog'
 import { ArrowLeftIcon, Cross2Icon } from '@radix-ui/react-icons'
 import { useQuery } from '@tanstack/react-query'
-import { useRouter } from 'next/router'
+import { useParams } from 'next/navigation'
 import { IWantToView } from './IWantTo.View'
 
 export interface IWantToProps {
@@ -16,16 +17,16 @@ export interface IWantToProps {
 
 export function IWantTo({ isOpen, currentStep, selectedDay }: IWantToProps) {
   const { setCurrentStep, setIsOpen } = useQuickActionsModalActions()
-  const { query } = useRouter()
+  const { id: journeyId } = useParams()
 
   const { data: days } = useQuery({
-    queryKey: ['journey', 'days', query.id],
-    queryFn: () => getJourneyDays({ journeyId: query.id as string }),
+    queryKey: QUERY_KEYS.JOURNEY_DAYS(journeyId as string),
+    queryFn: () => getJourneyDays({ journeyId: journeyId as string }),
   })
 
   const { data: journey } = useQuery({
-    queryKey: ['journey', query.id],
-    queryFn: () => getJourney({ journeyId: query.id as string }),
+    queryKey: QUERY_KEYS.JOURNEY(journeyId as string),
+    queryFn: () => getJourneyDetails({ journeyId: journeyId as string }),
   })
 
   return (
@@ -76,7 +77,7 @@ export function IWantTo({ isOpen, currentStep, selectedDay }: IWantToProps) {
             selectedDay={selectedDay}
             setCurrentStep={setCurrentStep}
             days={days as Day[]}
-            journey={journey as unknown as Journey}
+            journey={journey as Journey}
           />
         </Dialog.Content>
       </Dialog.Portal>

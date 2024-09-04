@@ -3,6 +3,7 @@ import {
   getJourneyBudgetSpent,
   getJourneyDays,
 } from '@/api/calls/journeys'
+import { QUERY_KEYS } from '@/api/queryKeys'
 import { AISuggest } from '@/components/AISuggest/AISugges'
 import { BottomBar } from '@/components/BottomBar/BottomBar'
 import { Budget } from '@/components/Budget/Budget'
@@ -27,7 +28,8 @@ import type { User } from '@supabase/supabase-js'
 import { useQuery } from '@tanstack/react-query'
 import { differenceInDays } from 'date-fns'
 import { type GetServerSidePropsContext } from 'next'
-import router, { useRouter } from 'next/router'
+import { useParams } from 'next/navigation'
+import router from 'next/router'
 import { useMemo } from 'react'
 
 export interface JourneyProps {
@@ -35,22 +37,22 @@ export interface JourneyProps {
 }
 
 export default function Journey({ user }: JourneyProps) {
-  const { query } = useRouter()
+  const { id: journeyId } = useParams()
   const { setIsOpen } = useQuickActionsModalActions()
 
   const { data: days, isFetching: isFetchingDays } = useQuery({
-    queryKey: ['journey', 'days', query.id],
-    queryFn: () => getJourneyDays({ journeyId: query.id as string }),
+    queryKey: QUERY_KEYS.JOURNEY_DAYS(journeyId as string),
+    queryFn: () => getJourneyDays({ journeyId: journeyId as string }),
   })
 
   const { data, isFetching: isFetchingJourney } = useQuery({
-    queryKey: ['journey', query.id],
-    queryFn: () => getJourney({ journeyId: query.id as string }),
+    queryKey: QUERY_KEYS.JOURNEY(journeyId as string),
+    queryFn: () => getJourney({ journeyId: journeyId as string }),
   })
 
   const { data: budgetSpent, isFetching: isFetchingBudget } = useQuery({
-    queryKey: ['journey', query.id, 'budgetSpent'],
-    queryFn: () => getJourneyBudgetSpent({ journeyId: query.id as string }),
+    queryKey: QUERY_KEYS.JOURNEY_BUDGET_SPENT(journeyId as string),
+    queryFn: () => getJourneyBudgetSpent({ journeyId: journeyId as string }),
   })
 
   const daysLeftBeforeJourneyBegins = useMemo(
@@ -106,7 +108,7 @@ export default function Journey({ user }: JourneyProps) {
             <JourneyCard title="Budget" isFetching={isFetchingBudget}>
               <Budget
                 totalBudget={data?.journey.budget ?? 0}
-                spentBudget={budgetSpent}
+                budgetSpent={budgetSpent}
               />
             </JourneyCard>
             <JourneyCard isHiddenOnSmallScreens title="Checklist">

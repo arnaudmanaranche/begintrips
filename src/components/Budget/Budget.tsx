@@ -1,13 +1,13 @@
 export function Budget({
-  spentBudget,
+  budgetSpent,
   totalBudget,
 }: {
-  spentBudget: number
+  budgetSpent: number
   totalBudget: number
 }) {
   // Calculate the percentage spent
   const percentageSpent =
-    totalBudget > 0 ? (spentBudget / totalBudget) * 100 : 0
+    totalBudget > 0 ? (budgetSpent / totalBudget) * 100 : 0
 
   // Determine the color based on percentage spent
   let strokeColor = '#4CAF50' // Green
@@ -51,11 +51,11 @@ export function Budget({
       </svg>
       <div className="absolute text-center text-gray-700">
         <div className="text-2xl font-bold">
-          {spentBudget > totalBudget
+          {budgetSpent > totalBudget
             ? '100%'
             : `${Math.round(percentageSpent)}%`}
         </div>
-        <div className="mt-1 text-sm">{`$${spentBudget} of $${totalBudget} spent`}</div>
+        <div className="mt-1 text-sm">{`$${budgetSpent} of $${totalBudget} spent`}</div>
       </div>
     </div>
   )
