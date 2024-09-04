@@ -72,24 +72,25 @@ export default function HomePage({ user }: { user: User }) {
               <span className="text-accent">.so</span>
             </Link>
             {user ? (
-              <Button onClick={() => router.push('/account')}>
+              <Button
+                onClick={() => router.push('/account')}
+                className="hidden lg:flex"
+              >
                 My dashboard
               </Button>
             ) : (
-              <>
-                <Button
-                  onClick={() => router.push('/welcome')}
-                  className="hidden lg:flex"
-                >
-                  Login
-                </Button>
-                <Button
-                  onClick={() => router.push('/welcome')}
-                  className="flex lg:hidden"
-                  icon={<PersonIcon />}
-                />
-              </>
+              <Button
+                onClick={() => router.push('/welcome')}
+                className="hidden lg:flex"
+              >
+                Login
+              </Button>
             )}
+            <Button
+              onClick={() => router.push('/account')}
+              className="flex lg:hidden"
+              icon={<PersonIcon />}
+            />
           </nav>
           <div className="flex grow flex-col flex-wrap justify-center space-y-4 text-center md:text-left">
             <h1

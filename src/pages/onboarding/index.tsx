@@ -74,57 +74,65 @@ export default function Onboarding() {
   const progressWidth = `${((currentStep + 1) / ONBOARDING_STEPS.length) * 100}%`
 
   return (
-    <div className="text-black">
-      <div className="absolute left-0 top-0 h-2 w-full transition-all duration-500">
-        <div
-          className="absolute left-0 top-0 z-10 h-2 bg-accent transition-all duration-500"
-          style={{ width: progressWidth }}
-        />
-      </div>
-      <div className="mt-20 flex flex-col">
-        <div className="flex justify-center">
-          <Link href="/account">
-            <span className="text-6xl">
-              Planner
-              <span className="text-accent">.so</span>
+    <div className="mx-auto flex min-h-screen max-w-screen-xl flex-col">
+      <header className="flex flex-col gap-4 px-4 py-6">
+        <Link href="/account">
+          <span className="text-2xl lg:text-3xl">
+            Planner
+            <span className="text-accent">.so</span>
+          </span>
+        </Link>
+        <div className="flex items-center justify-between">
+          <div className="flex items-center text-sm">
+            <span>
+              {currentStep + 1}{' '}
+              <span className="text-black/60">
+                of {ONBOARDING_STEPS.length}
+              </span>
             </span>
-          </Link>
-        </div>
-        <div className="mx-auto flex flex-col">
-          <div className="flex px-10 py-6 lg:px-0">
-            <Steps step={currentStep} error={error} />
           </div>
-          <div className="flex justify-end border-t border-gray-200 py-6">
-            <div className="flex w-full flex-col space-y-4 px-6 md:flex-row md:justify-end md:space-x-4 md:space-y-0 md:px-0 md:pr-6">
-              {currentStep > 0 && (
-                <Button
-                  onClick={() => setCurrentStep((prev) => prev - 1)}
-                  variant="ghost"
-                >
-                  {currentStep === 1 ? 'Change destination' : 'Change dates'}
-                </Button>
-              )}
+          <div className="relative h-2 min-w-[200px] rounded-sm bg-slate-100">
+            <div
+              className="absolute inset-0 z-20 h-2 rounded-sm bg-accent transition-all duration-500"
+              style={{ width: progressWidth }}
+            />
+          </div>
+        </div>
+      </header>
+      <main className="flex flex-1 items-center justify-center overflow-y-auto p-4">
+        <Steps step={currentStep} error={error} />
+      </main>
+      <footer>
+        <div className="flex justify-end py-6">
+          <div className="flex w-full flex-col space-y-4 px-6 md:flex-row md:justify-end md:space-x-4 md:space-y-0 md:px-0 md:pr-6">
+            {currentStep > 0 && (
               <Button
-                className={clsx(
-                  (isPending || isSuccess) && 'cursor-not-allowed bg-black/30'
-                )}
-                onClick={
-                  currentStep === ONBOARDING_STEPS.length - 1
-                    ? handleSubmit
-                    : handleNextStep
-                }
-                isDisabled={isPending || isSuccess}
+                onClick={() => setCurrentStep((prev) => prev - 1)}
+                variant="ghost"
               >
-                {isPending || isSuccess
-                  ? 'Creating your journey...'
-                  : currentStep === ONBOARDING_STEPS.length - 1
-                    ? "Let's go!"
-                    : 'Next'}
+                {currentStep === 1 ? 'Change destination' : 'Change dates'}
               </Button>
-            </div>
+            )}
+            <Button
+              className={clsx(
+                (isPending || isSuccess) && 'cursor-not-allowed bg-black/30'
+              )}
+              onClick={
+                currentStep === ONBOARDING_STEPS.length - 1
+                  ? handleSubmit
+                  : handleNextStep
+              }
+              isDisabled={isPending || isSuccess}
+            >
+              {isPending || isSuccess
+                ? 'Creating your journey...'
+                : currentStep === ONBOARDING_STEPS.length - 1
+                  ? "Let's go !"
+                  : 'Next'}
+            </Button>
           </div>
         </div>
-      </div>
+      </footer>
     </div>
   )
 }
@@ -146,15 +154,13 @@ interface StepProps {
 function Step({ children, title }: StepProps) {
   return (
     <motion.div
-      className="flex flex-col space-y-6 transition-opacity"
+      className="flex flex-col gap-10 transition-opacity"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.3 }}
     >
-      <div className="space-y-2">
-        <h2 className="text-4xl font-bold">{title}</h2>
-      </div>
+      <h2 className="text-center text-5xl font-bold uppercase">{title}</h2>
       <div className="pb-2 pt-4">{children}</div>
     </motion.div>
   )
@@ -182,7 +188,7 @@ function Step1({ error }: { error: string }) {
   }
 
   return (
-    <Step title="Let's plan your next journey">
+    <Step title="Where do you want to go ?">
       <div className="relative space-y-4">
         <Input
           label="Destination"
@@ -251,7 +257,7 @@ function Step2({ error }: { error: string }) {
   }
 
   return (
-    <Step title={`When do you plan to go to ${journey.destination}?`}>
+    <Step title={`When do you plan to go to ${journey.destination} ?`}>
       <div className="space-y-4">
         {error && (
           <motion.div
@@ -264,7 +270,7 @@ function Step2({ error }: { error: string }) {
             <Callout.Danger>{error}</Callout.Danger>
           </motion.div>
         )}
-        <div className="flex flex-col justify-around space-x-0 md:flex-row md:space-x-4">
+        <div className="flex flex-col justify-around space-x-0 space-y-10 md:flex-row md:space-x-4">
           <Input
             value={
               journey.departureDate || new Date().toISOString().split('T')[0]
@@ -293,7 +299,7 @@ function Step3({ error }: { error: string }) {
   const { journey, updateJourney } = useOnboardingStore()
 
   return (
-    <Step title="How much do you plan to spend on your next journey?">
+    <Step title="How much do you plan to spend ?">
       <div className="space-y-4">
         {error ? (
           <motion.div

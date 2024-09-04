@@ -131,7 +131,7 @@ export default function Journey({ user }: JourneyProps) {
               {isFetchingJourney || !data ? (
                 'loading'
               ) : (
-                <div className="flex flex-col space-y-6 md:space-y-0 lg:flex-row lg:items-center lg:space-x-10">
+                <div className="flex flex-col space-y-6 lg:flex-row lg:items-center lg:space-x-10 lg:space-y-0">
                   <div className="flex items-center space-x-2">
                     <div className="rounded-full bg-slate-200 p-2">
                       <SewingPinIcon className="h-5 w-5 text-accent" />
