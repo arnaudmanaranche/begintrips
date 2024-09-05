@@ -1,6 +1,7 @@
+import type { Meta, StoryObj } from '@storybook/react'
+
 import { ExpenseLabel } from '@/components/ExpenseLabel/ExpenseLabel'
 import { mappedExpensesWithColors } from '@/utils/expense-labels'
-import type { Meta, StoryObj } from '@storybook/react'
 
 const meta = {
   title: 'Expense Label',

@@ -1,9 +1,3 @@
-import { updateJourneyDestination } from '@/api/calls/journeys'
-import { QUERY_KEYS } from '@/api/queryKeys'
-import { Button } from '@/components/Button/Button'
-import { Input } from '@/components/Input/Input'
-import { useSearchDestination } from '@/hooks/useSearchDestination'
-import type { Journey } from '@/types'
 import type { SearchBoxSuggestion, SessionToken } from '@mapbox/search-js-core'
 import * as Dialog from '@radix-ui/react-dialog'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
@@ -11,6 +5,13 @@ import { motion } from 'framer-motion'
 import { useParams } from 'next/navigation'
 import type { ChangeEvent } from 'react'
 import { useState } from 'react'
+
+import { updateJourneyDestination } from '@/api/calls/journeys'
+import { QUERY_KEYS } from '@/api/queryKeys'
+import { Button } from '@/components/Button/Button'
+import { Input } from '@/components/Input/Input'
+import { useSearchDestination } from '@/hooks/useSearchDestination'
+import type { Journey } from '@/types'
 
 export interface ChangeDestinationProps {
   destination: string

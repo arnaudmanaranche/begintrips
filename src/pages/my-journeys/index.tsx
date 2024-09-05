@@ -1,14 +1,15 @@
+import { GearIcon, PaperPlaneIcon } from '@radix-ui/react-icons'
+import type { User } from '@supabase/supabase-js'
+import { useQuery } from '@tanstack/react-query'
+import type { GetServerSidePropsContext } from 'next'
+import Link from 'next/link'
+
 import { getUserJourneys } from '@/api/calls/users'
 import { QUERY_KEYS } from '@/api/queryKeys'
 import MyJourneys from '@/components/MyJourneys/MyJourneys'
 import { NavBar } from '@/components/NavBar/NavBar'
 import { createClient as createClientServerProps } from '@/libs/supabase/server-props'
 import type { Journey } from '@/types'
-import { GearIcon, PaperPlaneIcon } from '@radix-ui/react-icons'
-import type { User } from '@supabase/supabase-js'
-import { useQuery } from '@tanstack/react-query'
-import type { GetServerSidePropsContext } from 'next'
-import Link from 'next/link'
 
 export interface MyJourneysPageProps {
   user: User

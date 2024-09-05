@@ -1,5 +1,3 @@
-import type { Expense, ExpenseCategoryEnum } from '@/types'
-import { colorsAssociated } from '@/utils/expense-labels'
 import { useMemo } from 'react'
 import {
   Bar,
@@ -9,6 +7,9 @@ import {
   XAxis,
   YAxis,
 } from 'recharts'
+
+import type { Expense, ExpenseCategoryEnum } from '@/types'
+import { colorsAssociated } from '@/utils/expense-labels'
 
 export type ExpensesChartsProps = {
   expensesByCategory: Record<string, Expense[]>

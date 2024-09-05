@@ -1,5 +1,6 @@
-import { Callout } from '@/components/Callout/Callout'
 import type { Meta, StoryObj } from '@storybook/react'
+
+import { Callout } from '@/components/Callout/Callout'
 
 const meta = {
   title: 'Callout',

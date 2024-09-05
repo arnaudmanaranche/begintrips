@@ -1,8 +1,9 @@
+import router from 'next/router'
+
 import { Button } from '@/components/Button/Button'
 import type { Journey } from '@/types'
 import { formatDate } from '@/utils/date'
 import { hasJourneyPassed } from '@/utils/has-journey-passed'
-import router from 'next/router'
 
 export interface MyJourneysProps {
   journeys: Journey[]

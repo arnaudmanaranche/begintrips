@@ -1,4 +1,5 @@
 import type { Expense } from '@/types'
+
 import { apiInstance } from '../config'
 
 export const deleteExpense = async ({ id }: { id: string }) => {

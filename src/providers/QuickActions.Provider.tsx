@@ -1,6 +1,7 @@
-import { IWantTo } from '@/components/IWantTo/IWantTo'
 import type { ReactNode } from 'react'
 import { createContext, useContext, useState } from 'react'
+
+import { IWantTo } from '@/components/IWantTo/IWantTo'
 
 export type IWantToStep =
   | 'Select action'

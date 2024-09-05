@@ -1,8 +1,3 @@
-import { ChangePasswordModalView } from '@/components/modals/ChangePassword/ChangePassword'
-import { NavBar } from '@/components/NavBar/NavBar'
-import { createClient } from '@/libs/supabase/client'
-import { createClient as createClientServerProps } from '@/libs/supabase/server-props'
-import { useOnboardingStore } from '@/stores/onboarding.store'
 import * as Dialog from '@radix-ui/react-dialog'
 import {
   ChevronRightIcon,
@@ -16,6 +11,12 @@ import type { GetServerSidePropsContext } from 'next'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
+
+import { ChangePasswordModalView } from '@/components/modals/ChangePassword/ChangePassword'
+import { NavBar } from '@/components/NavBar/NavBar'
+import { createClient } from '@/libs/supabase/client'
+import { createClient as createClientServerProps } from '@/libs/supabase/server-props'
+import { useOnboardingStore } from '@/stores/onboarding.store'
 
 export interface AccountPageProps {
   user: User

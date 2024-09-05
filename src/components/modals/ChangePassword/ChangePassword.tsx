@@ -1,8 +1,9 @@
+import { useState } from 'react'
+
 import { Button } from '@/components/Button/Button'
 import { Callout } from '@/components/Callout/Callout'
 import { Input } from '@/components/Input/Input'
 import { createClient } from '@/libs/supabase/client'
-import { useState } from 'react'
 
 export interface ChangePasswordModalProps {
   onPasswordChangedCallback: () => void

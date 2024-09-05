@@ -1,5 +1,6 @@
 import { createServerClient, serializeCookieHeader } from '@supabase/ssr'
 import { type NextApiRequest, type NextApiResponse } from 'next'
+
 import { type Database } from './database.types'
 
 export default function createClient(

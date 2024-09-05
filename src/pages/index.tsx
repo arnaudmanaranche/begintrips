@@ -1,8 +1,3 @@
-import { Button } from '@/components/Button/Button'
-import { Map } from '@/components/Map/Map'
-import { useSearchDestination } from '@/hooks/useSearchDestination'
-import { createClient } from '@/libs/supabase/server-props'
-import { useOnboardingStore } from '@/stores/onboarding.store'
 import type { SearchBoxSuggestion, SessionToken } from '@mapbox/search-js-core'
 import { ChevronRightIcon, PersonIcon } from '@radix-ui/react-icons'
 import type { User } from '@supabase/supabase-js'
@@ -12,6 +7,12 @@ import Link from 'next/link'
 import router from 'next/router'
 import type { ChangeEvent } from 'react'
 import { useRef, useState } from 'react'
+
+import { Button } from '@/components/Button/Button'
+import { Map } from '@/components/Map/Map'
+import { useSearchDestination } from '@/hooks/useSearchDestination'
+import { createClient } from '@/libs/supabase/server-props'
+import { useOnboardingStore } from '@/stores/onboarding.store'
 
 export default function HomePage({ user }: { user: User }) {
   const { updateJourney, journey } = useOnboardingStore()

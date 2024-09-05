@@ -1,8 +1,9 @@
+import clsx from 'clsx'
+import { useMemo } from 'react'
+
 import type { ExpenseCategoryEnum } from '@/types'
 import { mappedExpensesWithColors } from '@/utils/expense-labels'
 import { getTextColor } from '@/utils/get-text-color'
-import clsx from 'clsx'
-import { useMemo } from 'react'
 
 export function ExpenseLabel({
   expenseCategory,

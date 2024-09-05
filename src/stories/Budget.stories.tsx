@@ -1,5 +1,6 @@
-import { Budget } from '@/components/Budget/Budget'
 import type { Meta, StoryObj } from '@storybook/react'
+
+import { Budget } from '@/components/Budget/Budget'
 
 const meta = {
   title: 'Budget',

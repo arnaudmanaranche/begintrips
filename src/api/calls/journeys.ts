@@ -1,6 +1,7 @@
-import type { Journey, AddJourney, Expense, Day } from '@/types'
-import { apiInstance } from '../config'
+import type { AddJourney, Day,Expense, Journey } from '@/types'
 import { isInvalidDate } from '@/utils/date'
+
+import { apiInstance } from '../config'
 
 export interface GetJourneyParams {
   journeyId: string

@@ -1,7 +1,9 @@
-import { getExpensesByCategory } from '@/api/calls/journeys'
-import { QUERY_KEYS } from '@/api/queryKeys'
 import { useQuery } from '@tanstack/react-query'
 import { useParams } from 'next/navigation'
+
+import { getExpensesByCategory } from '@/api/calls/journeys'
+import { QUERY_KEYS } from '@/api/queryKeys'
+
 import { ExpensesCharts } from '../ExpensesCharts/ExpensesCharts'
 
 export function Expenses() {

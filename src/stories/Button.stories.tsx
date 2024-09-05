@@ -1,7 +1,8 @@
-import { Button } from '@/components/Button/Button'
 import { PersonIcon } from '@radix-ui/react-icons'
 import type { Meta, StoryObj } from '@storybook/react'
 import { fn } from '@storybook/test'
+
+import { Button } from '@/components/Button/Button'
 
 const meta = {
   title: 'Button',

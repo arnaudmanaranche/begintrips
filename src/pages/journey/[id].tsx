@@ -1,4 +1,18 @@
 import {
+  BarChartIcon,
+  CalendarIcon,
+  CaretRightIcon,
+  SewingPinIcon,
+} from '@radix-ui/react-icons'
+import type { User } from '@supabase/supabase-js'
+import { useQuery } from '@tanstack/react-query'
+import { differenceInDays } from 'date-fns'
+import { type GetServerSidePropsContext } from 'next'
+import { useParams } from 'next/navigation'
+import router from 'next/router'
+import { useMemo } from 'react'
+
+import {
   getJourney,
   getJourneyBudgetSpent,
   getJourneyDays,
@@ -18,19 +32,6 @@ import { createClient } from '@/libs/supabase/server-props'
 import { useQuickActionsModalActions } from '@/providers/QuickActions.Provider'
 import type { Day, Journey } from '@/types'
 import { formatDate } from '@/utils/date'
-import {
-  BarChartIcon,
-  CalendarIcon,
-  CaretRightIcon,
-  SewingPinIcon,
-} from '@radix-ui/react-icons'
-import type { User } from '@supabase/supabase-js'
-import { useQuery } from '@tanstack/react-query'
-import { differenceInDays } from 'date-fns'
-import { type GetServerSidePropsContext } from 'next'
-import { useParams } from 'next/navigation'
-import router from 'next/router'
-import { useMemo } from 'react'
 
 export interface JourneyProps {
   user: User

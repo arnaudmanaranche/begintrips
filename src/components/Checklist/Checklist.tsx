@@ -1,7 +1,8 @@
-import { useJourneyStore } from '@/stores/journey.store'
 import { CheckCircledIcon, CircleIcon, Cross1Icon } from '@radix-ui/react-icons'
 import { motion } from 'framer-motion'
 import { useId } from 'react'
+
+import { useJourneyStore } from '@/stores/journey.store'
 
 function useHandleSubmit() {
   const { addItem } = useJourneyStore()

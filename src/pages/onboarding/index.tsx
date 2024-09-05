@@ -1,11 +1,3 @@
-import { createJourney } from '@/api/calls/journeys'
-import { Button } from '@/components/Button/Button'
-import { Callout } from '@/components/Callout/Callout'
-import { Input } from '@/components/Input/Input'
-import { useSearchDestination } from '@/hooks/useSearchDestination'
-import { createClient as createServerClient } from '@/libs/supabase/server-props'
-import { useOnboardingStore } from '@/stores/onboarding.store'
-import { isInvalidDate, stripTime } from '@/utils/date'
 import type { SearchBoxSuggestion, SessionToken } from '@mapbox/search-js-core'
 import { useMutation } from '@tanstack/react-query'
 import clsx from 'clsx'
@@ -17,6 +9,15 @@ import { useSearchParams } from 'next/navigation'
 import { useRouter } from 'next/router'
 import type { ChangeEvent, ReactNode } from 'react'
 import { useState } from 'react'
+
+import { createJourney } from '@/api/calls/journeys'
+import { Button } from '@/components/Button/Button'
+import { Callout } from '@/components/Callout/Callout'
+import { Input } from '@/components/Input/Input'
+import { useSearchDestination } from '@/hooks/useSearchDestination'
+import { createClient as createServerClient } from '@/libs/supabase/server-props'
+import { useOnboardingStore } from '@/stores/onboarding.store'
+import { isInvalidDate, stripTime } from '@/utils/date'
 
 const ONBOARDING_STEPS = [1, 2, 3]
 

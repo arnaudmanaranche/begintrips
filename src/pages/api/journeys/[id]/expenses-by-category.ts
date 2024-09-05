@@ -1,6 +1,7 @@
+import type { NextApiRequest, NextApiResponse } from 'next'
+
 import createClient from '@/libs/supabase/api'
 import { groupedExpensesByCategory } from '@/utils/groupe-expenses'
-import type { NextApiRequest, NextApiResponse } from 'next'
 
 export default async function handler(
   req: NextApiRequest,

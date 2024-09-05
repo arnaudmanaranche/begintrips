@@ -1,11 +1,12 @@
+import { motion } from 'framer-motion'
+import type { Dispatch, SetStateAction } from 'react'
+
 import { useCreateExpense } from '@/api/hooks/createExpense'
 import { Button } from '@/components/Button/Button'
 import { Callout } from '@/components/Callout/Callout'
 import { Input } from '@/components/Input/Input'
 import type { AddExpense, Day } from '@/types'
 import { formatDate } from '@/utils/date'
-import { motion } from 'framer-motion'
-import type { Dispatch, SetStateAction } from 'react'
 
 export interface AddManuallyExpenseProps {
   newExpense: AddExpense

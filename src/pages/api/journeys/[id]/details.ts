@@ -1,5 +1,6 @@
-import createClient from '@/libs/supabase/api'
 import type { NextApiRequest, NextApiResponse } from 'next'
+
+import createClient from '@/libs/supabase/api'
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse

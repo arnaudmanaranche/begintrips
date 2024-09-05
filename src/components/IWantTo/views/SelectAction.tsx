@@ -1,5 +1,3 @@
-import type { IWantToStep } from '@/providers/QuickActions.Provider'
-import { hasJourneyPassed } from '@/utils/has-journey-passed'
 import {
   BarChartIcon,
   CalendarIcon,
@@ -9,6 +7,9 @@ import {
 import clsx from 'clsx'
 import type { ReactNode } from 'react'
 import { useMemo } from 'react'
+
+import type { IWantToStep } from '@/providers/QuickActions.Provider'
+import { hasJourneyPassed } from '@/utils/has-journey-passed'
 
 export interface SelectActionProps {
   setCurrentStep: (step: IWantToStep) => void

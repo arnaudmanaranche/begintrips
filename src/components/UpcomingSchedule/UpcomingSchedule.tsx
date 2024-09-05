@@ -1,12 +1,14 @@
+import { useQuery } from '@tanstack/react-query'
+import { addDays } from 'date-fns'
+import { useParams } from 'next/navigation'
+
 import { getExpensesByDay } from '@/api/calls/journeys'
 import { QUERY_KEYS } from '@/api/queryKeys'
 import { ExpenseLabel } from '@/components/ExpenseLabel/ExpenseLabel'
 import { useQuickActionsModalActions } from '@/providers/QuickActions.Provider'
 import { formatDate } from '@/utils/date'
 import { hasJourneyPassed } from '@/utils/has-journey-passed'
-import { useQuery } from '@tanstack/react-query'
-import { addDays } from 'date-fns'
-import { useParams } from 'next/navigation'
+
 import { EditExpense } from '../EditExpense/EditExpense'
 
 export type UpcomingScheduleProps = {

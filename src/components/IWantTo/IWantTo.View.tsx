@@ -1,7 +1,9 @@
+import { useState } from 'react'
+
+import type { IWantToStep } from '@/providers/QuickActions.Provider'
 import type { Journey } from '@/types'
 import { type AddExpense, type Day } from '@/types'
-import { useState } from 'react'
-import type { IWantToStep } from '@/providers/QuickActions.Provider'
+
 import { AddManuallyExpense } from './views/AddManuallyExpense'
 import { ChangeDates } from './views/ChangeDates'
 import { ChangeDestination } from './views/ChangeDestination'
