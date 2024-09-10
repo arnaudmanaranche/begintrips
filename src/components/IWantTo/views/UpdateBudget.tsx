@@ -7,20 +7,18 @@ import { QUERY_KEYS } from '@/api/queryKeys'
 import { Button } from '@/components/Button/Button'
 import { Callout } from '@/components/Callout/Callout'
 import { Input } from '@/components/Input/Input'
+import { useQuickActionsModalActions } from '@/providers/QuickActions.Provider'
 import type { Journey } from '@/types'
 
 export interface UpdateBudgetProps {
   budget: number
-  setOpen: (open: boolean) => void
 }
 
-export function UpdateBudget({
-  budget: initialBudget,
-  setOpen,
-}: UpdateBudgetProps) {
+export function UpdateBudget({ budget: initialBudget }: UpdateBudgetProps) {
   const [budget, setBudget] = useState(initialBudget)
   const { id: journeyId } = useParams()
   const queryClient = useQueryClient()
+  const { setIsOpen, setCurrentStep } = useQuickActionsModalActions()
 
   const {
     mutateAsync: handleSubmit,
@@ -33,7 +31,8 @@ export function UpdateBudget({
         journeyId: journeyId as string,
       }),
     onSuccess: () => {
-      setOpen(false)
+      setIsOpen(false)
+      setCurrentStep('Select action')
     },
     onMutate: async () => {
       const previousJourney = queryClient.getQueryData<Journey>(
@@ -47,7 +46,7 @@ export function UpdateBudget({
 
       return { previousJourney }
     },
-    onError: (err, newTodo, context) => {
+    onError: (err, _, context) => {
       queryClient.setQueryData(
         QUERY_KEYS.JOURNEY(journeyId as string),
         context?.previousJourney

@@ -76,7 +76,7 @@ export function LogInForm() {
           onClick={async (e: MouseEvent<HTMLButtonElement>) =>
             await handleLogin(e)
           }
-          isDisabled={isLoading || (!email && !password) || error !== ''}
+          isDisabled={isLoading || !email || !password || error !== ''}
         >
           {isLoading ? 'Logging in...' : 'Login'}
         </Button>

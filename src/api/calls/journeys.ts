@@ -1,4 +1,4 @@
-import type { AddJourney, Day,Expense, Journey } from '@/types'
+import type { AddJourney, Day, Journey, JourneyPage } from '@/types'
 import { isInvalidDate } from '@/utils/date'
 
 import { apiInstance } from '../config'
@@ -13,30 +13,8 @@ export const createJourney = async (journey: AddJourney) => {
   return data
 }
 
-export const getExpensesByCategory = async ({
-  journeyId,
-}: GetJourneyParams) => {
-  const { data } = await apiInstance.get<Record<string, Expense[]>>(
-    `/journeys/${journeyId}/expenses-by-category`
-  )
-
-  return data
-}
-
-export const getExpensesByDay = async ({ journeyId }: GetJourneyParams) => {
-  const { data } = await apiInstance.get<Record<string, Expense[]>>(
-    `/journeys/${journeyId}/expenses-by-day`
-  )
-  return data
-}
-
 export const getJourney = async ({ journeyId }: GetJourneyParams) => {
-  const { data } = await apiInstance.get<{
-    journey: Journey
-    expenses: Expense[]
-    days: Day[]
-    budgetSpent: number
-  }>(`/journeys/${journeyId}`)
+  const { data } = await apiInstance.get<JourneyPage>(`/journeys/${journeyId}`)
 
   return data
 }
@@ -106,16 +84,6 @@ export const updateJourneyBudget = async ({
   const { data } = await apiInstance.patch(`/journeys/${journeyId}/budget`, {
     budget,
   })
-
-  return data
-}
-
-export const getJourneyBudgetSpent = async ({
-  journeyId,
-}: {
-  journeyId: string
-}) => {
-  const { data } = await apiInstance.get(`/journeys/${journeyId}/budget`)
 
   return data
 }

@@ -1,9 +1,9 @@
 import * as Dialog from '@radix-ui/react-dialog'
 import { ArrowLeftIcon, Cross2Icon } from '@radix-ui/react-icons'
 import { useQuery } from '@tanstack/react-query'
-import { useParams } from 'next/navigation'
+import { useRouter } from 'next/router'
 
-import { getJourneyDays, getJourneyDetails } from '@/api/calls/journeys'
+import { getJourney, getJourneyDays } from '@/api/calls/journeys'
 import { QUERY_KEYS } from '@/api/queryKeys'
 import type { IWantToStep } from '@/providers/QuickActions.Provider'
 import { useQuickActionsModalActions } from '@/providers/QuickActions.Provider'
@@ -19,16 +19,18 @@ export interface IWantToProps {
 
 export function IWantTo({ isOpen, currentStep, selectedDay }: IWantToProps) {
   const { setCurrentStep, setIsOpen } = useQuickActionsModalActions()
-  const { id: journeyId } = useParams()
+  const {
+    query: { id: journeyId },
+  } = useRouter()
 
   const { data: days } = useQuery({
     queryKey: QUERY_KEYS.JOURNEY_DAYS(journeyId as string),
     queryFn: () => getJourneyDays({ journeyId: journeyId as string }),
   })
 
-  const { data: journey } = useQuery({
+  const { data } = useQuery({
     queryKey: QUERY_KEYS.JOURNEY(journeyId as string),
-    queryFn: () => getJourneyDetails({ journeyId: journeyId as string }),
+    queryFn: () => getJourney({ journeyId: journeyId as string }),
   })
 
   return (
@@ -36,11 +38,11 @@ export function IWantTo({ isOpen, currentStep, selectedDay }: IWantToProps) {
       open={isOpen}
       onOpenChange={() => {
         if (!open) {
+          setCurrentStep('Select action')
           setIsOpen(true)
-          setCurrentStep('Select action')
         } else {
-          setIsOpen(false)
           setCurrentStep('Select action')
+          setIsOpen(false)
         }
       }}
     >
@@ -74,12 +76,11 @@ export function IWantTo({ isOpen, currentStep, selectedDay }: IWantToProps) {
             </Dialog.Title>
           </div>
           <IWantToView
-            setOpen={setIsOpen}
             currentStep={currentStep}
             selectedDay={selectedDay}
             setCurrentStep={setCurrentStep}
             days={days as Day[]}
-            journey={journey as Journey}
+            journey={data?.journey as Journey}
           />
         </Dialog.Content>
       </Dialog.Portal>

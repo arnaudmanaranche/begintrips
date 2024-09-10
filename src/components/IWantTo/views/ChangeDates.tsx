@@ -8,23 +8,23 @@ import { QUERY_KEYS } from '@/api/queryKeys'
 import { Button } from '@/components/Button/Button'
 import { Callout } from '@/components/Callout/Callout'
 import { Input } from '@/components/Input/Input'
+import { useQuickActionsModalActions } from '@/providers/QuickActions.Provider'
 import type { Journey } from '@/types'
 
 export interface ChangeDatesProps {
   departureDate: string
   returnDate: string
-  setOpen: (open: boolean) => void
 }
 
 export function ChangeDates({
   departureDate: initialDepartureDate,
   returnDate: initialReturnDate,
-  setOpen,
 }: ChangeDatesProps) {
   const [departureDate, setDepartureDate] = useState(initialDepartureDate)
   const [returnDate, setReturnDate] = useState(initialReturnDate)
   const { id: journeyId } = useParams()
   const queryClient = useQueryClient()
+  const { setIsOpen, setCurrentStep } = useQuickActionsModalActions()
 
   const hasDatesBeenChanged = useMemo(() => {
     return (
@@ -59,15 +59,10 @@ export function ChangeDates({
       }),
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: QUERY_KEYS.EXPENSES_BY_DAY(journeyId as string),
-      })
-      queryClient.invalidateQueries({
-        queryKey: QUERY_KEYS.EXPENSES_BY_CATEGORY(journeyId as string),
-      })
-      queryClient.invalidateQueries({
         queryKey: QUERY_KEYS.JOURNEY_DAYS(journeyId as string),
       })
-      setOpen(false)
+      setIsOpen(false)
+      setCurrentStep('Select action')
     },
     onMutate: async () => {
       const previousJourney = queryClient.getQueryData<Journey>([
@@ -83,7 +78,7 @@ export function ChangeDates({
 
       return { previousJourney }
     },
-    onError: (err, newTodo, context) => {
+    onError: (err, _, context) => {
       queryClient.setQueryData(
         QUERY_KEYS.JOURNEY(journeyId as string),
         context?.previousJourney

@@ -67,7 +67,6 @@ export default function Onboarding() {
       }
     }
 
-    // If no errors, clear the error and move to the next step
     setError('')
     setCurrentStep((prev) => prev + 1)
   }

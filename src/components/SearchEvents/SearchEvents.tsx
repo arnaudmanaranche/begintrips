@@ -111,17 +111,19 @@ export function SearchEvents({ journey, days }: SearchEventsProps) {
                   }
 
                   handleCreateExpense({
-                    dayId,
-                    amount:
-                      event.priceRanges?.[0].max ||
-                      event.priceRanges?.[0].min ||
-                      0,
-                    name: event.name,
-                    startDate: event.dates?.start.dateTime as string,
-                    category:
-                      (event.classifications?.[0].genre
-                        .name as ExpenseCategoryEnum) || 'other',
-                    journeyId: journey.id,
+                    expense: {
+                      dayId,
+                      amount:
+                        event.priceRanges?.[0].max ||
+                        event.priceRanges?.[0].min ||
+                        0,
+                      name: event.name,
+                      startDate: event.dates?.start.dateTime as string,
+                      category:
+                        (event.classifications?.[0].genre
+                          .name as ExpenseCategoryEnum) || 'other',
+                      journeyId: journey.id,
+                    },
                   })
                   setIsSearchFocused(false)
                 }}

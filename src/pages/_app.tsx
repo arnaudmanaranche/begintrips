@@ -12,7 +12,6 @@ import { Open_Sans, Playfair_Display } from 'next/font/google'
 import Head from 'next/head'
 import { useState } from 'react'
 
-import { QuickActionsModalProvider } from '@/providers/QuickActions.Provider'
 import { SITE_DESCRIPTION, SITE_TITLE, SITE_URL } from '@/utils/seo'
 
 const playfair = Playfair_Display({
@@ -68,11 +67,9 @@ export default function App({ Component, pageProps }: AppProps) {
         />
       </Head>
       <HydrationBoundary state={pageProps.dehydratedState}>
-        <QuickActionsModalProvider>
-          <div className={`${playfair.variable} ${openSans.variable}`}>
-            <Component {...pageProps} />
-          </div>
-        </QuickActionsModalProvider>
+        <div className={`${playfair.variable} ${openSans.variable}`}>
+          <Component {...pageProps} />
+        </div>
         <Analytics />
       </HydrationBoundary>
       <ReactQueryDevtools buttonPosition="top-right" />

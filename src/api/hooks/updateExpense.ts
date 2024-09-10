@@ -1,61 +1,57 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useParams } from 'next/navigation'
 
-import type { AddExpense, JourneyPage } from '@/types'
-import { addExpenseByCategory } from '@/utils/add-expense-by-category'
-import { addExpenseByDay } from '@/utils/add-expense-by-day'
+import type { Expense, UpdateExpense } from '@/types'
+import { type JourneyPage } from '@/types'
+import { updateExpenseById } from '@/utils/update-expense-by-id'
 
-import { createExpense } from '../calls/days'
+import { updateExpense } from '../calls/expenses'
 import { QUERY_KEYS } from '../queryKeys'
 
-export interface UseCreateExpenseProps {
+export interface useUpdateExpense {
   onSuccessCallback?: () => void
 }
 
-export const useCreateExpense = ({
-  onSuccessCallback,
-}: UseCreateExpenseProps) => {
+export const useUpdateExpense = ({ onSuccessCallback }: useUpdateExpense) => {
   const queryClient = useQueryClient()
   const { id: journeyId } = useParams()
 
   const {
-    mutateAsync: handleCreateExpense,
+    mutateAsync: handleUpdateExpense,
     isPending,
     isError,
     error,
   } = useMutation({
-    mutationFn: ({ expense }: { expense: AddExpense }) =>
-      createExpense({ expense }),
+    mutationFn: (expense: UpdateExpense) => updateExpense({ expense }),
     onSuccess() {
       onSuccessCallback?.()
     },
-    onMutate: async ({ expense }: { expense: AddExpense }) => {
+    onMutate: async (expense: Expense) => {
       const previousJourney = queryClient.getQueryData<JourneyPage>(
         QUERY_KEYS.JOURNEY(journeyId as string)
       )
+
       queryClient.setQueryData<JourneyPage>(
         QUERY_KEYS.JOURNEY(journeyId as string),
         (oldData) => {
           if (!oldData) return oldData
 
-          const expensesByCategory = addExpenseByCategory(
-            // @ts-expect-error TODO: Fix this
-            expense,
-            oldData.expensesByCategory
-          )
-          const expensesByDay = addExpenseByDay(
-            // @ts-expect-error TODO: Fix this
-            expense,
-            oldData.expensesByCategory
+          const { updatedRecord } = updateExpenseById(
+            oldData.expensesByCategory,
+            expense.id as string,
+            expense
           )
 
-          const newBudgetSpent = oldData.budgetSpent + expense.amount
+          const { updatedRecord: updatedRecord2 } = updateExpenseById(
+            oldData.expensesByDay,
+            expense.id as string,
+            expense
+          )
 
           return {
             ...oldData,
-            expensesByCategory,
-            expensesByDay,
-            budgetSpent: newBudgetSpent,
+            expensesByCategory: updatedRecord,
+            expensesByDay: updatedRecord2,
           }
         }
       )
@@ -76,7 +72,7 @@ export const useCreateExpense = ({
   })
 
   return {
-    handleCreateExpense,
+    handleUpdateExpense,
     isPending,
     isError,
     error,

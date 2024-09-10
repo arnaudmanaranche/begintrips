@@ -1,24 +1,14 @@
-import { useQuery } from '@tanstack/react-query'
-import { useParams } from 'next/navigation'
-
-import { getExpensesByCategory } from '@/api/calls/journeys'
-import { QUERY_KEYS } from '@/api/queryKeys'
+import type { Expense } from '@/types'
 
 import { ExpensesCharts } from '../ExpensesCharts/ExpensesCharts'
 
-export function Expenses() {
-  const { id: journeyId } = useParams()
+export interface ExpensesProps {
+  expensesByCategory: Record<string, Expense[]>
+  isLoading: boolean
+}
 
-  const {
-    data: expensesByCategory,
-    isFetching,
-    isError,
-  } = useQuery({
-    queryKey: QUERY_KEYS.EXPENSES_BY_CATEGORY(journeyId as string),
-    queryFn: () => getExpensesByCategory({ journeyId: journeyId as string }),
-  })
-
-  if (isFetching || expensesByCategory === undefined) {
+export function Expenses({ expensesByCategory, isLoading }: ExpensesProps) {
+  if (isLoading) {
     return (
       <div className="flex flex-col space-y-2">
         <div className="h-[400px] w-full animate-pulse rounded-lg bg-slate-200" />
@@ -31,7 +21,7 @@ export function Expenses() {
     )
   }
 
-  if (isError) return
+  if (expensesByCategory === undefined) return
 
   return Object.keys(expensesByCategory).length === 0 ? (
     <div className="flex items-center justify-center">

@@ -60,7 +60,6 @@ export function QuickActionsModalProvider({
   )
 }
 
-// Custom hook to access state
 export function useQuickActionsModalState(): QuickActionsModalState {
   const context = useContext(QuickActionsModalStateContext)
   if (context === undefined) {
@@ -71,7 +70,6 @@ export function useQuickActionsModalState(): QuickActionsModalState {
   return context
 }
 
-// Custom hook to access actions
 export function useQuickActionsModalActions(): QuickActionsModalActions {
   const context = useContext(QuickActionsModalActionsContext)
   if (context === undefined) {

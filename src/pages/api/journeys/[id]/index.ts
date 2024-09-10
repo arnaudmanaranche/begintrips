@@ -1,6 +1,11 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 
 import createClient from '@/libs/supabase/api'
+import type { Day, Expense } from '@/types'
+import {
+  groupedExpensesByCategory,
+  groupedExpensesByDay,
+} from '@/utils/groupe-expenses'
 
 export default async function handler(
   req: NextApiRequest,
@@ -40,7 +45,19 @@ export default async function handler(
       return acc + expense.amount
     }, 0)
 
-    res.status(200).json({ journey, expenses, days, budgetSpent })
+    const expensesByDay = groupedExpensesByDay({
+      days: days as Day[],
+      // @ts-expect-error TODO: fix type
+      expenses: expenses.flatMap((e) => e),
+    })
+
+    const expensesByCategory = groupedExpensesByCategory({
+      expenses: expenses as Expense[],
+    })
+
+    res
+      .status(200)
+      .json({ journey, days, budgetSpent, expensesByCategory, expensesByDay })
   } else {
     res.status(405).json({
       message: 'Method not allowed',

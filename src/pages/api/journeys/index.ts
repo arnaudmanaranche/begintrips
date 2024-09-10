@@ -26,9 +26,8 @@ export default async function handler(
   if (req.method === 'POST') {
     const journey = req.body
 
-    // 1. Create journey
     const createdJourney = await createJourney(journey)
-    // 2. Save journey
+
     const { data, error } = await supabase
       .from('journeys')
       .upsert(createdJourney)
@@ -39,7 +38,7 @@ export default async function handler(
       res.status(500).json({ message: 'Error when creating journey', error })
       return
     }
-    // 3. Save days
+
     const journeyLength =
       differenceInDays(
         new Date(journey.returnDate),
@@ -62,7 +61,6 @@ export default async function handler(
 
     res.status(200).json({ message: 'Journey created', journeyId: data.id })
   } else {
-    // Handle any other HTTP method
     res.status(405).json({ message: 'Method not allowed' })
   }
 }

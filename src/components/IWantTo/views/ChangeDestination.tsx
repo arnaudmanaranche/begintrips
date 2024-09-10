@@ -60,7 +60,7 @@ export function ChangeDestination({
 
       return { previousJourney }
     },
-    onError: (err, newTodo, context) => {
+    onError: (err, _, context) => {
       queryClient.setQueryData(
         QUERY_KEYS.JOURNEY(journeyId as string),
         context?.previousJourney
