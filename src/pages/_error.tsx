@@ -1,6 +1,7 @@
 import Head from 'next/head'
-import { Button } from '@/components/Button/Button'
 import { useRouter } from 'next/router'
+
+import { Button } from '@/components/Button/Button'
 
 export default function ErrorPage() {
   const router = useRouter()

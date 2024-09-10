@@ -1,25 +1,24 @@
-import { updateJourneyBudget } from '@/api/calls/journeys'
-import { Button } from '@/components/Button/Button'
-import { Callout } from '@/components/Callout/Callout'
-import { Input } from '@/components/Input/Input'
-import type { Journey } from '@/types'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-
 import { useParams } from 'next/navigation'
 import { useState } from 'react'
 
+import { updateJourneyBudget } from '@/api/calls/journeys'
+import { QUERY_KEYS } from '@/api/queryKeys'
+import { Button } from '@/components/Button/Button'
+import { Callout } from '@/components/Callout/Callout'
+import { Input } from '@/components/Input/Input'
+import { useQuickActionsModalActions } from '@/providers/QuickActions.Provider'
+import type { Journey } from '@/types'
+
 export interface UpdateBudgetProps {
   budget: number
-  setOpen: (open: boolean) => void
 }
 
-export function UpdateBudget({
-  budget: initialBudget,
-  setOpen,
-}: UpdateBudgetProps) {
+export function UpdateBudget({ budget: initialBudget }: UpdateBudgetProps) {
   const [budget, setBudget] = useState(initialBudget)
   const { id: journeyId } = useParams()
   const queryClient = useQueryClient()
+  const { setIsOpen, setCurrentStep } = useQuickActionsModalActions()
 
   const {
     mutateAsync: handleSubmit,
@@ -32,27 +31,32 @@ export function UpdateBudget({
         journeyId: journeyId as string,
       }),
     onSuccess: () => {
-      setOpen(false)
+      setIsOpen(false)
+      setCurrentStep('Select action')
     },
     onMutate: async () => {
-      const previousJourney = queryClient.getQueryData<Journey>([
-        'journey',
-        journeyId,
-      ])
+      const previousJourney = queryClient.getQueryData<Journey>(
+        QUERY_KEYS.JOURNEY(journeyId as string)
+      )
 
-      queryClient.setQueryData(['journey', journeyId], {
+      queryClient.setQueryData(QUERY_KEYS.JOURNEY(journeyId as string), {
         ...previousJourney,
         budget,
       })
 
       return { previousJourney }
     },
-    onError: (err, newTodo, context) => {
-      queryClient.setQueryData(['journey', journeyId], context?.previousJourney)
+    onError: (err, _, context) => {
+      queryClient.setQueryData(
+        QUERY_KEYS.JOURNEY(journeyId as string),
+        context?.previousJourney
+      )
       // @TODO: Add toast error
     },
     onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: ['journey', journeyId] })
+      queryClient.invalidateQueries({
+        queryKey: QUERY_KEYS.JOURNEY(journeyId as string),
+      })
     },
   })
 

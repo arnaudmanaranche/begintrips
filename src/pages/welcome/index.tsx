@@ -1,11 +1,12 @@
+import type { GetServerSidePropsContext } from 'next'
+import Link from 'next/link'
+import { useState } from 'react'
+
 import { Callout } from '@/components/Callout/Callout'
 import { LogInForm } from '@/components/LogInForm/LogInForm'
 import { SignUpForm } from '@/components/SignUpForm/SignInForm'
 import { createClient } from '@/libs/supabase/server-props'
 import { useOnboardingStore } from '@/stores/onboarding.store'
-import type { GetServerSidePropsContext } from 'next'
-import Link from 'next/link'
-import { useState } from 'react'
 
 export default function WelcomePage() {
   const [form, setForm] = useState<'login' | 'signup'>('signup')

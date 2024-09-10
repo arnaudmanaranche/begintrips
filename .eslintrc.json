@@ -1,5 +1,5 @@
 {
-  "plugins": ["@typescript-eslint"],
+  "plugins": ["@typescript-eslint", "simple-import-sort"],
   "ignorePatterns": ["tailwind.config.js", "*.d.ts"],
   "extends": [
     "next/core-web-vitals",
@@ -11,6 +11,12 @@
     "@typescript-eslint/no-unused-vars": "error",
     "@typescript-eslint/no-explicit-any": "error",
     "@typescript-eslint/consistent-type-imports": "error",
-    "no-console": "warn"
+    "no-console": "warn",
+    "simple-import-sort/imports": "error",
+    "simple-import-sort/exports": "error"
+  },
+  "parserOptions": {
+    "sourceType": "module",
+    "ecmaVersion": "latest"
   }
 }

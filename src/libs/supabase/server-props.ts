@@ -1,5 +1,6 @@
 import { createServerClient, serializeCookieHeader } from '@supabase/ssr'
 import { type GetServerSidePropsContext } from 'next'
+
 import { type Database } from './database.types'
 
 export function createClient({ req, res }: GetServerSidePropsContext) {

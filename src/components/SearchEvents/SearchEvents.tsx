@@ -1,13 +1,14 @@
-import { useCreateExpense } from '@/api/hooks/createExpense'
-import { useSearchEvents } from '@/libs/ticketmaster/client'
-import type { Day, ExpenseCategoryEnum, Journey } from '@/types'
-import { formatDate } from '@/utils/date'
-import { hasJourneyPassed } from '@/utils/has-journey-passed'
 import { MagnifyingGlassIcon } from '@radix-ui/react-icons'
 import clsx from 'clsx'
 import { motion } from 'framer-motion'
 import Image from 'next/image'
 import { useState } from 'react'
+
+import { useCreateExpense } from '@/api/hooks/createExpense'
+import { useSearchEvents } from '@/libs/ticketmaster/client'
+import type { Day, ExpenseCategoryEnum, Journey } from '@/types'
+import { formatDate } from '@/utils/date'
+import { hasJourneyPassed } from '@/utils/has-journey-passed'
 
 export interface SearchEventsProps {
   journey: Journey
@@ -110,17 +111,19 @@ export function SearchEvents({ journey, days }: SearchEventsProps) {
                   }
 
                   handleCreateExpense({
-                    dayId,
-                    amount:
-                      event.priceRanges?.[0].max ||
-                      event.priceRanges?.[0].min ||
-                      0,
-                    name: event.name,
-                    startDate: event.dates?.start.dateTime as string,
-                    category:
-                      (event.classifications?.[0].genre
-                        .name as ExpenseCategoryEnum) || 'other',
-                    journeyId: journey.id,
+                    expense: {
+                      dayId,
+                      amount:
+                        event.priceRanges?.[0].max ||
+                        event.priceRanges?.[0].min ||
+                        0,
+                      name: event.name,
+                      startDate: event.dates?.start.dateTime as string,
+                      category:
+                        (event.classifications?.[0].genre
+                          .name as ExpenseCategoryEnum) || 'other',
+                      journeyId: journey.id,
+                    },
                   })
                   setIsSearchFocused(false)
                 }}

@@ -1,5 +1,6 @@
-import type { EventResponse } from '@/types/ticketmaster'
 import { useState } from 'react'
+
+import type { EventResponse } from '@/types/ticketmaster'
 
 const TICKETMASTER_API_URI = `https://app.ticketmaster.com/discovery/v2/events.json?apikey=${process.env.NEXT_PUBLIC_TICKETMASTER_CONSUMER_KEY}`
 

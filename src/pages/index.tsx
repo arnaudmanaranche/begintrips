@@ -1,8 +1,3 @@
-import { Button } from '@/components/Button/Button'
-import { Map } from '@/components/Map/Map'
-import { useSearchDestination } from '@/hooks/useSearchDestination'
-import { createClient } from '@/libs/supabase/server-props'
-import { useOnboardingStore } from '@/stores/onboarding.store'
 import type { SearchBoxSuggestion, SessionToken } from '@mapbox/search-js-core'
 import { ChevronRightIcon, PersonIcon } from '@radix-ui/react-icons'
 import type { User } from '@supabase/supabase-js'
@@ -12,6 +7,12 @@ import Link from 'next/link'
 import router from 'next/router'
 import type { ChangeEvent } from 'react'
 import { useRef, useState } from 'react'
+
+import { Button } from '@/components/Button/Button'
+import { Map } from '@/components/Map/Map'
+import { useSearchDestination } from '@/hooks/useSearchDestination'
+import { createClient } from '@/libs/supabase/server-props'
+import { useOnboardingStore } from '@/stores/onboarding.store'
 
 export default function HomePage({ user }: { user: User }) {
   const { updateJourney, journey } = useOnboardingStore()
@@ -72,24 +73,25 @@ export default function HomePage({ user }: { user: User }) {
               <span className="text-accent">.so</span>
             </Link>
             {user ? (
-              <Button onClick={() => router.push('/account')}>
+              <Button
+                onClick={() => router.push('/account')}
+                className="hidden lg:flex"
+              >
                 My dashboard
               </Button>
             ) : (
-              <>
-                <Button
-                  onClick={() => router.push('/welcome')}
-                  className="hidden lg:flex"
-                >
-                  Login
-                </Button>
-                <Button
-                  onClick={() => router.push('/welcome')}
-                  className="flex lg:hidden"
-                  icon={<PersonIcon />}
-                />
-              </>
+              <Button
+                onClick={() => router.push('/welcome')}
+                className="hidden lg:flex"
+              >
+                Login
+              </Button>
             )}
+            <Button
+              onClick={() => router.push('/account')}
+              className="flex lg:hidden"
+              icon={<PersonIcon />}
+            />
           </nav>
           <div className="flex grow flex-col flex-wrap justify-center space-y-4 text-center md:text-left">
             <h1

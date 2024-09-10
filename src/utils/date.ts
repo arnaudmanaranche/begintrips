@@ -1,4 +1,4 @@
-import { isPast, isToday, startOfDay, format, isValid } from 'date-fns'
+import { format, isPast, isToday, isValid,startOfDay } from 'date-fns'
 
 export function stripTime(date: Date) {
   return startOfDay(date)

@@ -1,28 +1,30 @@
-import { updateJourneyDates } from '@/api/calls/journeys'
-import { Button } from '@/components/Button/Button'
-import { Callout } from '@/components/Callout/Callout'
-import { Input } from '@/components/Input/Input'
-import type { Journey } from '@/types'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useParams } from 'next/navigation'
 import type { ChangeEvent } from 'react'
 import { useMemo, useState } from 'react'
 
+import { updateJourneyDates } from '@/api/calls/journeys'
+import { QUERY_KEYS } from '@/api/queryKeys'
+import { Button } from '@/components/Button/Button'
+import { Callout } from '@/components/Callout/Callout'
+import { Input } from '@/components/Input/Input'
+import { useQuickActionsModalActions } from '@/providers/QuickActions.Provider'
+import type { Journey } from '@/types'
+
 export interface ChangeDatesProps {
   departureDate: string
   returnDate: string
-  setOpen: (open: boolean) => void
 }
 
 export function ChangeDates({
   departureDate: initialDepartureDate,
   returnDate: initialReturnDate,
-  setOpen,
 }: ChangeDatesProps) {
   const [departureDate, setDepartureDate] = useState(initialDepartureDate)
   const [returnDate, setReturnDate] = useState(initialReturnDate)
   const { id: journeyId } = useParams()
   const queryClient = useQueryClient()
+  const { setIsOpen, setCurrentStep } = useQuickActionsModalActions()
 
   const hasDatesBeenChanged = useMemo(() => {
     return (
@@ -57,15 +59,10 @@ export function ChangeDates({
       }),
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: [journeyId, 'expensesByDay'],
+        queryKey: QUERY_KEYS.JOURNEY_DAYS(journeyId as string),
       })
-      queryClient.invalidateQueries({
-        queryKey: [journeyId, 'expensesByCategory'],
-      })
-      queryClient.invalidateQueries({
-        queryKey: ['journey', 'days', journeyId],
-      })
-      setOpen(false)
+      setIsOpen(false)
+      setCurrentStep('Select action')
     },
     onMutate: async () => {
       const previousJourney = queryClient.getQueryData<Journey>([
@@ -73,7 +70,7 @@ export function ChangeDates({
         journeyId,
       ])
 
-      queryClient.setQueryData(['journey', journeyId], {
+      queryClient.setQueryData(QUERY_KEYS.JOURNEY(journeyId as string), {
         ...previousJourney,
         departureDate,
         returnDate,
@@ -81,12 +78,17 @@ export function ChangeDates({
 
       return { previousJourney }
     },
-    onError: (err, newTodo, context) => {
-      queryClient.setQueryData(['journey', journeyId], context?.previousJourney)
+    onError: (err, _, context) => {
+      queryClient.setQueryData(
+        QUERY_KEYS.JOURNEY(journeyId as string),
+        context?.previousJourney
+      )
       // @TODO: Add toast error
     },
     onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: ['journey', journeyId] })
+      queryClient.invalidateQueries({
+        queryKey: QUERY_KEYS.JOURNEY(journeyId as string),
+      })
     },
   })
 

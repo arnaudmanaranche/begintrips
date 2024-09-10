@@ -1,53 +1,51 @@
 import * as Dialog from '@radix-ui/react-dialog'
-import { useState } from 'react'
-import { IWantToView } from './IWantTo.View'
-import type { Journey } from '@/types'
-import { type Day } from '@/types'
-import {
-  ArrowLeftIcon,
-  CaretRightIcon,
-  Cross2Icon,
-} from '@radix-ui/react-icons'
+import { ArrowLeftIcon, Cross2Icon } from '@radix-ui/react-icons'
+import { useQuery } from '@tanstack/react-query'
+import { useRouter } from 'next/router'
 
-export type IWantToStep =
-  | 'Select action'
-  | 'Update budget'
-  | 'Change dates'
-  | 'Change destination'
-  | 'Select category'
-  | 'Add manually expense'
+import { getJourney, getJourneyDays } from '@/api/calls/journeys'
+import { QUERY_KEYS } from '@/api/queryKeys'
+import type { IWantToStep } from '@/providers/QuickActions.Provider'
+import { useQuickActionsModalActions } from '@/providers/QuickActions.Provider'
+import type { Day, Journey } from '@/types'
+
+import { IWantToView } from './IWantTo.View'
 
 export interface IWantToProps {
-  days: Day[]
-  journey: Journey
+  isOpen: boolean
+  currentStep: IWantToStep
+  selectedDay: string | null
 }
 
-export function IWantTo({ days, journey }: IWantToProps) {
-  const [currentStep, setCurrentStep] = useState<IWantToStep>('Select action')
-  const [open, setOpen] = useState(false)
+export function IWantTo({ isOpen, currentStep, selectedDay }: IWantToProps) {
+  const { setCurrentStep, setIsOpen } = useQuickActionsModalActions()
+  const {
+    query: { id: journeyId },
+  } = useRouter()
+
+  const { data: days } = useQuery({
+    queryKey: QUERY_KEYS.JOURNEY_DAYS(journeyId as string),
+    queryFn: () => getJourneyDays({ journeyId: journeyId as string }),
+  })
+
+  const { data } = useQuery({
+    queryKey: QUERY_KEYS.JOURNEY(journeyId as string),
+    queryFn: () => getJourney({ journeyId: journeyId as string }),
+  })
 
   return (
     <Dialog.Root
-      open={open}
+      open={isOpen}
       onOpenChange={() => {
         if (!open) {
-          setOpen(true)
           setCurrentStep('Select action')
+          setIsOpen(true)
         } else {
-          setOpen(false)
+          setCurrentStep('Select action')
+          setIsOpen(false)
         }
       }}
     >
-      <Dialog.Trigger asChild>
-        <div className="flex">
-          <div className="flex-1 cursor-pointer rounded-md bg-gray-50 p-4 text-black/50 outline-none transition-all">
-            I want to...
-          </div>
-          <button className="rounded-r-lg bg-accent text-white">
-            <CaretRightIcon height={20} width={20} />
-          </button>
-        </div>
-      </Dialog.Trigger>
       <Dialog.Portal>
         <Dialog.Overlay className="fixed inset-0 bg-black/30 data-[state=open]:animate-overlayShow" />
         <Dialog.Content
@@ -78,11 +76,11 @@ export function IWantTo({ days, journey }: IWantToProps) {
             </Dialog.Title>
           </div>
           <IWantToView
-            setOpen={setOpen}
             currentStep={currentStep}
+            selectedDay={selectedDay}
             setCurrentStep={setCurrentStep}
-            days={days}
-            journey={journey}
+            days={days as Day[]}
+            journey={data?.journey as Journey}
           />
         </Dialog.Content>
       </Dialog.Portal>

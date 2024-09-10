@@ -1,4 +1,5 @@
 import { createClient as createClientPrimitive } from '@supabase/supabase-js'
+
 import { type Database } from './database.types'
 
 export function createClient() {

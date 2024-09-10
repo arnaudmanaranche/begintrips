@@ -1,9 +1,11 @@
-import { deleteExpense, updateExpense } from '@/api/calls/expenses'
-import type { Expense, ExpenseCategoryEnum } from '@/types'
-import { mappedExpensesWithEmojis } from '@/utils/expense-labels'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { useRouter } from 'next/router'
 import { useState } from 'react'
+
+import { useDeleteExpense } from '@/api/hooks/deleteExpense'
+import { useUpdateExpense } from '@/api/hooks/updateExpense'
+import type { Expense } from '@/types'
+import { type ExpenseCategoryEnum } from '@/types'
+import { mappedExpensesWithEmojis } from '@/utils/expense-labels'
+
 import { Button } from '../Button/Button'
 import { Input } from '../Input/Input'
 
@@ -13,69 +15,19 @@ export interface EditExpenseViewProps {
 }
 
 export const EditExpenseView = ({ expense, setOpen }: EditExpenseViewProps) => {
-  const [newExpense, setNewExpense] = useState(expense)
-  const { query } = useRouter()
-  const queryClient = useQueryClient()
+  const [newExpense, setNewExpense] = useState<Expense>(expense)
 
-  const { mutateAsync: handleUpdateExpense, isPending: isPendingUpdate } =
-    useMutation({
-      mutationFn: updateExpense,
-      onSuccess() {
-        queryClient.invalidateQueries({
-          queryKey: [query.id, 'expensesByDay'],
-        })
-        queryClient.invalidateQueries({
-          queryKey: [query.id, 'expensesByCategory'],
-        })
-        setOpen(false)
-      },
-      onMutate: async () => {
-        const previousBudgetSpent = queryClient.getQueryData<number>([
-          'journey',
-          query.id,
-          'budgetSpent',
-        ])
+  const { handleUpdateExpense, isPending: isPendingUpdate } = useUpdateExpense({
+    onSuccessCallback: () => {
+      setOpen(false)
+    },
+  })
 
-        queryClient.setQueryData(
-          ['journey', query.id, 'budgetSpent'],
-          newExpense.amount
-        )
-
-        return { previousBudgetSpent }
-      },
-      onError: (err, newTodo, context) => {
-        queryClient.setQueryData(
-          ['journey', query.id, 'budgetSpent'],
-          context?.previousBudgetSpent
-        )
-        // @TODO: Add toast error
-      },
-      onSettled: () => {
-        queryClient.invalidateQueries({
-          queryKey: ['journey', query.id, 'budgetSpent'],
-        })
-      },
-    })
-
-  const { mutateAsync: handleDeleteExpense, isPending: isPendingDelete } =
-    useMutation({
-      mutationFn: deleteExpense,
-      onSuccess() {
-        queryClient.invalidateQueries({
-          queryKey: [query.id, 'expensesByDay'],
-        })
-        queryClient.invalidateQueries({
-          queryKey: [query.id, 'expensesByCategory'],
-        })
-        queryClient.invalidateQueries({
-          queryKey: ['journey', query.id, 'budgetSpent'],
-        })
-        queryClient.invalidateQueries({
-          queryKey: ['journey', query.id],
-        })
-        setOpen(false)
-      },
-    })
+  const { handleDeleteExpense, isPending: isPendingDelete } = useDeleteExpense({
+    onSuccessCallback: () => {
+      setOpen(false)
+    },
+  })
 
   return (
     <div className="flex flex-col space-y-6">
@@ -126,7 +78,7 @@ export const EditExpenseView = ({ expense, setOpen }: EditExpenseViewProps) => {
       <div className="flex justify-between space-x-4">
         <Button
           onClick={() => {
-            handleDeleteExpense({ id: expense.id })
+            handleDeleteExpense(expense.id)
           }}
           variant="ghost"
           isDisabled={isPendingUpdate || isPendingDelete}
@@ -135,7 +87,7 @@ export const EditExpenseView = ({ expense, setOpen }: EditExpenseViewProps) => {
         </Button>
         <Button
           onClick={() => {
-            handleUpdateExpense({ expense: newExpense })
+            handleUpdateExpense(newExpense)
           }}
           isDisabled={
             isPendingUpdate || isPendingDelete || newExpense === expense

@@ -1,4 +1,5 @@
-import type { Expense } from '@/types'
+import type { UpdateExpense } from '@/types'
+
 import { apiInstance } from '../config'
 
 export const deleteExpense = async ({ id }: { id: string }) => {
@@ -9,7 +10,11 @@ export const deleteExpense = async ({ id }: { id: string }) => {
   return data
 }
 
-export const updateExpense = async ({ expense }: { expense: Expense }) => {
+export const updateExpense = async ({
+  expense,
+}: {
+  expense: UpdateExpense
+}) => {
   const { data } = await apiInstance.patch<{ message: string }>(
     `/expenses/${expense.id}`,
     expense

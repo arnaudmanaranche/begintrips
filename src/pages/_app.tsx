@@ -1,5 +1,5 @@
 import '@/styles/globals.css'
-import { SITE_DESCRIPTION, SITE_TITLE, SITE_URL } from '@/utils/seo'
+
 import {
   HydrationBoundary,
   QueryClient,
@@ -11,6 +11,8 @@ import type { AppProps } from 'next/app'
 import { Open_Sans, Playfair_Display } from 'next/font/google'
 import Head from 'next/head'
 import { useState } from 'react'
+
+import { SITE_DESCRIPTION, SITE_TITLE, SITE_URL } from '@/utils/seo'
 
 const playfair = Playfair_Display({
   subsets: ['latin'],

@@ -1,28 +1,31 @@
+import { motion } from 'framer-motion'
+import type { Dispatch, SetStateAction } from 'react'
+
 import { useCreateExpense } from '@/api/hooks/createExpense'
 import { Button } from '@/components/Button/Button'
 import { Callout } from '@/components/Callout/Callout'
 import { Input } from '@/components/Input/Input'
+import { useQuickActionsModalActions } from '@/providers/QuickActions.Provider'
 import type { AddExpense, Day } from '@/types'
 import { formatDate } from '@/utils/date'
-import { motion } from 'framer-motion'
-import type { Dispatch, SetStateAction } from 'react'
 
 export interface AddManuallyExpenseProps {
   newExpense: AddExpense
   setNewExpense: Dispatch<SetStateAction<AddExpense>>
   days: Day[]
-  setOpen: (open: boolean) => void
 }
 
 export function AddManuallyExpense({
   newExpense,
   setNewExpense,
   days,
-  setOpen,
 }: AddManuallyExpenseProps) {
+  const { setIsOpen, setCurrentStep } = useQuickActionsModalActions()
+
   const { handleCreateExpense, isPending, isError, error } = useCreateExpense({
     onSuccessCallback: () => {
-      setOpen(false)
+      setIsOpen(false)
+      setCurrentStep('Select action')
     },
   })
 
@@ -91,7 +94,7 @@ export function AddManuallyExpense({
           ))}
       </select>
       <Button
-        onClick={() => handleCreateExpense(newExpense)}
+        onClick={() => handleCreateExpense({ expense: newExpense })}
         isDisabled={isPending}
       >
         {isPending ? 'Adding new expense...' : 'Add new expense'}

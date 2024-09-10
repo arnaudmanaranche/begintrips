@@ -1,9 +1,11 @@
 import * as Dialog from '@radix-ui/react-dialog'
-import { EditExpenseView } from './EditExpense.View'
 import { Cross2Icon, DotsHorizontalIcon } from '@radix-ui/react-icons'
-import type { Expense } from '@/types'
-import { Button } from '../Button/Button'
 import { useState } from 'react'
+
+import type { Expense } from '@/types'
+
+import { Button } from '../Button/Button'
+import { EditExpenseView } from './EditExpense.View'
 
 export interface EditExpenseProps {
   expense: Expense

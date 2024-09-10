@@ -1,7 +1,9 @@
-import type { Journey } from '@/types'
-import { type AddExpense, type Day } from '@/types'
 import { useState } from 'react'
-import { type IWantToStep } from './IWantTo'
+
+import type { IWantToStep } from '@/providers/QuickActions.Provider'
+import type { AddExpense, Journey } from '@/types'
+import { type Day } from '@/types'
+
 import { AddManuallyExpense } from './views/AddManuallyExpense'
 import { ChangeDates } from './views/ChangeDates'
 import { ChangeDestination } from './views/ChangeDestination'
@@ -13,24 +15,32 @@ export interface IWantToViewProps {
   currentStep: IWantToStep
   setCurrentStep: (step: IWantToStep) => void
   days: Day[]
-  setOpen: (open: boolean) => void
   journey: Journey
+  selectedDay: string | null
 }
 
 export function IWantToView({
   currentStep,
   setCurrentStep,
   days,
-  setOpen,
   journey,
+  selectedDay,
 }: IWantToViewProps) {
+  const dayId = selectedDay
+    ? days.find((day) => day.startDate === selectedDay)?.id || ''
+    : days[0].id
+
+  const startDate = selectedDay
+    ? days.find((day) => day.startDate === selectedDay)?.startDate || ''
+    : days[0].startDate
+
   const [newExpense, setNewExpense] = useState<AddExpense>({
     category: 'other',
     name: '',
     amount: 0,
-    dayId: days[0].id,
+    dayId,
     journeyId: journey.id,
-    startDate: days[0].startDate,
+    startDate,
   })
 
   switch (currentStep) {
@@ -53,22 +63,18 @@ export function IWantToView({
         <ChangeDates
           departureDate={journey.departureDate}
           returnDate={journey.returnDate}
-          setOpen={setOpen}
         />
       )
     case 'Change destination':
       return <ChangeDestination destination={journey.destination} />
     case 'Update budget':
-      return (
-        <UpdateBudget budget={journey.budget as number} setOpen={setOpen} />
-      )
+      return <UpdateBudget budget={journey.budget as number} />
     default:
       return (
         <AddManuallyExpense
           newExpense={newExpense}
           setNewExpense={setNewExpense}
           days={days}
-          setOpen={setOpen}
         />
       )
   }

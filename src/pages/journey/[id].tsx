@@ -1,25 +1,7 @@
 import {
-  getJourney,
-  getJourneyBudgetSpent,
-  getJourneyDays,
-} from '@/api/calls/journeys'
-import { AISuggest } from '@/components/AISuggest/AISugges'
-import { BottomBar } from '@/components/BottomBar/BottomBar'
-import { Budget } from '@/components/Budget/Budget'
-import { Button } from '@/components/Button/Button'
-import { Checklist } from '@/components/Checklist/Checklist'
-import { Expenses } from '@/components/Expenses/Expenses'
-import { IWantTo } from '@/components/IWantTo/IWantTo'
-import { JourneyCard } from '@/components/JourneyCard/JourneyCard'
-import { SearchEvents } from '@/components/SearchEvents/SearchEvents'
-import { Sidebar } from '@/components/Sidebar/Sidebar'
-import { UpcomingSchedule } from '@/components/UpcomingSchedule/UpcomingSchedule'
-import { createClient } from '@/libs/supabase/server-props'
-import type { Day, Journey } from '@/types'
-import { formatDate } from '@/utils/date'
-import {
   BarChartIcon,
   CalendarIcon,
+  CaretRightIcon,
   SewingPinIcon,
 } from '@radix-ui/react-icons'
 import type { User } from '@supabase/supabase-js'
@@ -29,35 +11,48 @@ import { type GetServerSidePropsContext } from 'next'
 import router, { useRouter } from 'next/router'
 import { useMemo } from 'react'
 
+import { getJourney } from '@/api/calls/journeys'
+import { QUERY_KEYS } from '@/api/queryKeys'
+import { AISuggest } from '@/components/AISuggest/AISugges'
+import { BottomBar } from '@/components/BottomBar/BottomBar'
+import { Budget } from '@/components/Budget/Budget'
+import { Button } from '@/components/Button/Button'
+import { Checklist } from '@/components/Checklist/Checklist'
+import { Expenses } from '@/components/Expenses/Expenses'
+import { JourneyCard } from '@/components/JourneyCard/JourneyCard'
+import { SearchEvents } from '@/components/SearchEvents/SearchEvents'
+import { Sidebar } from '@/components/Sidebar/Sidebar'
+import { UpcomingSchedule } from '@/components/UpcomingSchedule/UpcomingSchedule'
+import { createClient } from '@/libs/supabase/server-props'
+import {
+  QuickActionsModalProvider,
+  useQuickActionsModalActions,
+} from '@/providers/QuickActions.Provider'
+import type { Day, ExpensesByCategory, ExpensesByDay, Journey } from '@/types'
+import { formatDate } from '@/utils/date'
+
 export interface JourneyProps {
   user: User
 }
 
-export default function Journey({ user }: JourneyProps) {
-  const { query } = useRouter()
-
-  const { data: days, isFetching: isFetchingDays } = useQuery({
-    queryKey: ['journey', 'days', query.id],
-    queryFn: () => getJourneyDays({ journeyId: query.id as string }),
-  })
+function JourneyView({ user }: JourneyProps) {
+  const {
+    query: { id: journeyId },
+  } = useRouter()
+  const { setIsOpen } = useQuickActionsModalActions()
 
   const { data, isFetching: isFetchingJourney } = useQuery({
-    queryKey: ['journey', query.id],
-    queryFn: () => getJourney({ journeyId: query.id as string }),
-  })
-
-  const { data: budgetSpent, isFetching: isFetchingBudget } = useQuery({
-    queryKey: ['journey', query.id, 'budgetSpent'],
-    queryFn: () => getJourneyBudgetSpent({ journeyId: query.id as string }),
+    queryKey: QUERY_KEYS.JOURNEY(journeyId as string),
+    queryFn: () => getJourney({ journeyId: journeyId as string }),
   })
 
   const daysLeftBeforeJourneyBegins = useMemo(
     () =>
       differenceInDays(
-        new Date(data?.journey.departureDate as string),
+        new Date(data?.journey?.departureDate as string),
         new Date()
       ) + 1,
-    [data?.journey.departureDate]
+    [data?.journey?.departureDate]
   )
 
   return (
@@ -74,10 +69,10 @@ export default function Journey({ user }: JourneyProps) {
               !
             </h2>
           </div>
-          {isFetchingJourney || isFetchingDays ? null : (
+          {isFetchingJourney ? null : (
             <SearchEvents
               journey={data?.journey as Journey}
-              days={days as Day[]}
+              days={data?.days as Day[]}
             />
           )}
           <Button onClick={() => router.push('/account')} isRounded>
@@ -89,18 +84,22 @@ export default function Journey({ user }: JourneyProps) {
             <JourneyCard
               title="Quick action"
               isHiddenOnSmallScreens
-              isFetching={isFetchingDays || isFetchingJourney}
+              isFetching={isFetchingJourney}
             >
-              <IWantTo
-                days={data?.days as Day[]}
-                journey={data?.journey as Journey}
-              />
+              <div className="flex" onClick={() => setIsOpen(true)}>
+                <div className="flex-1 cursor-pointer rounded-md bg-gray-50 p-4 text-black/50 outline-none transition-all">
+                  I want to...
+                </div>
+                <button className="rounded-r-lg bg-accent text-white">
+                  <CaretRightIcon height={20} width={20} />
+                </button>
+              </div>
             </JourneyCard>
             <AISuggest />
-            <JourneyCard title="Budget" isFetching={isFetchingBudget}>
+            <JourneyCard title="Budget" isFetching={isFetchingJourney}>
               <Budget
-                totalBudget={data?.journey.budget ?? 0}
-                spentBudget={budgetSpent}
+                totalBudget={data?.journey?.budget ?? 0}
+                budgetSpent={data?.budgetSpent ?? 0}
               />
             </JourneyCard>
             <JourneyCard isHiddenOnSmallScreens title="Checklist">
@@ -109,9 +108,9 @@ export default function Journey({ user }: JourneyProps) {
           </div>
           <div className="col-span-12 rounded-lg px-2 lg:col-span-6 lg:h-screen lg:overflow-y-auto">
             <div className="flex justify-center p-4">
-              <h1 className="flex  items-baseline space-x-4 text-6xl leading-snug text-black lg:text-7xl">
+              <h1 className="flex w-full items-baseline justify-center space-x-4 text-6xl leading-snug text-black lg:text-7xl">
                 {isFetchingJourney ? (
-                  <div className="h-[20px] w-full animate-pulse rounded-lg bg-slate-200" />
+                  <div className="h-[80px] w-full animate-pulse rounded-lg bg-slate-200" />
                 ) : (
                   <>
                     <span className="font-serif text-8xl text-accent">
@@ -129,9 +128,13 @@ export default function Journey({ user }: JourneyProps) {
             <div className="mb-4 space-y-10 rounded-lg p-4">
               <h3 className="mb-2 text-3xl">Overview</h3>
               {isFetchingJourney || !data ? (
-                'loading'
+                <div className="flex flex-col space-y-6 lg:flex-row lg:items-center lg:space-x-10 lg:space-y-0">
+                  <div className="h-[20px] w-[100px] animate-pulse rounded-lg bg-slate-200" />
+                  <div className="h-[20px] w-[100px] animate-pulse rounded-lg bg-slate-200" />
+                  <div className="h-[20px] w-[100px] animate-pulse rounded-lg bg-slate-200" />
+                </div>
               ) : (
-                <div className="flex flex-col space-y-6 md:space-y-0 lg:flex-row lg:items-center lg:space-x-10">
+                <div className="flex flex-col space-y-6 lg:flex-row lg:items-center lg:space-x-10 lg:space-y-0">
                   <div className="flex items-center space-x-2">
                     <div className="rounded-full bg-slate-200 p-2">
                       <SewingPinIcon className="h-5 w-5 text-accent" />
@@ -139,7 +142,7 @@ export default function Journey({ user }: JourneyProps) {
                     <div className="flex flex-col">
                       <span className="text-sm text-gray-600">Destination</span>
                       <span className="text-black">
-                        {data?.journey.destination}
+                        {data?.journey?.destination}
                       </span>
                     </div>
                   </div>
@@ -179,7 +182,12 @@ export default function Journey({ user }: JourneyProps) {
               )}
             </div>
             <JourneyCard title="Expenses" isFetching={isFetchingJourney}>
-              <Expenses />
+              <Expenses
+                expensesByCategory={
+                  data?.expensesByCategory as ExpensesByCategory
+                }
+                isLoading={isFetchingJourney}
+              />
             </JourneyCard>
           </div>
           <div className="col-span-12 pt-4 lg:col-span-3">
@@ -188,7 +196,9 @@ export default function Journey({ user }: JourneyProps) {
               isFetching={isFetchingJourney || !data}
             >
               <UpcomingSchedule
-                departureDate={data?.journey.departureDate as string}
+                departureDate={data?.journey?.departureDate as string}
+                expensesByDay={data?.expensesByDay as ExpensesByDay}
+                isLoading={isFetchingJourney}
               />
             </JourneyCard>
           </div>
@@ -196,6 +206,14 @@ export default function Journey({ user }: JourneyProps) {
       </div>
       <BottomBar />
     </div>
+  )
+}
+
+export default function Journey({ user }: JourneyProps) {
+  return (
+    <QuickActionsModalProvider>
+      <JourneyView user={user} />
+    </QuickActionsModalProvider>
   )
 }
 

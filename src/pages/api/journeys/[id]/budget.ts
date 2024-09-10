@@ -1,5 +1,6 @@
-import createClient from '@/libs/supabase/api'
 import type { NextApiRequest, NextApiResponse } from 'next'
+
+import createClient from '@/libs/supabase/api'
 
 export default async function handler(
   req: NextApiRequest,
@@ -36,25 +37,6 @@ export default async function handler(
     }
 
     res.status(200).json({ message: 'Journey budget updated' })
-  }
-  if (req.method === 'GET') {
-    const { data: expenses, error } = await supabase
-      .from('expenses')
-      .select('amount')
-      .eq('journeyId', id!)
-
-    if (error) {
-      return res.status(500).json({
-        message: 'Error fetching journey budget spent',
-        cause: error,
-      })
-    }
-
-    const budgetSpent = expenses?.reduce((acc, expense) => {
-      return acc + expense.amount
-    }, 0)
-
-    res.status(200).json(budgetSpent)
   } else {
     res.status(405).json({
       message: 'Method not allowed',

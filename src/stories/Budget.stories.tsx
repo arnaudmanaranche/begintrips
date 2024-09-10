@@ -1,5 +1,6 @@
-import { Budget } from '@/components/Budget/Budget'
 import type { Meta, StoryObj } from '@storybook/react'
+
+import { Budget } from '@/components/Budget/Budget'
 
 const meta = {
   title: 'Budget',
@@ -13,7 +14,7 @@ type Story = StoryObj<typeof meta>
 
 export const Basic: Story = {
   args: {
-    spentBudget: 100,
+    budgetSpent: 100,
     totalBudget: 2000,
   },
 }

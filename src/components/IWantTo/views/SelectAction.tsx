@@ -4,11 +4,12 @@ import {
   GlobeIcon,
   PlusIcon,
 } from '@radix-ui/react-icons'
-import type { IWantToStep } from '../IWantTo'
-import { hasJourneyPassed } from '@/utils/has-journey-passed'
+import clsx from 'clsx'
 import type { ReactNode } from 'react'
 import { useMemo } from 'react'
-import clsx from 'clsx'
+
+import type { IWantToStep } from '@/providers/QuickActions.Provider'
+import { hasJourneyPassed } from '@/utils/has-journey-passed'
 
 export interface SelectActionProps {
   setCurrentStep: (step: IWantToStep) => void

@@ -1,6 +1,7 @@
 import { formatISO } from 'date-fns'
-import type { Expense, Day } from '@/types'
 import groupBy from 'lodash.groupby'
+
+import type { Day,Expense } from '@/types'
 
 export const groupedExpensesByCategory = ({
   expenses,

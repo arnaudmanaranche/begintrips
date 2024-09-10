@@ -1,8 +1,9 @@
-import type { AddJourney } from '@/types'
-import { formatDate } from '@/utils/date'
 import { addDays } from 'date-fns'
 import { create } from 'zustand'
 import { createJSONStorage, persist } from 'zustand/middleware'
+
+import type { AddJourney } from '@/types'
+import { formatDate } from '@/utils/date'
 
 export interface OnboardingStore {
   journey: AddJourney
