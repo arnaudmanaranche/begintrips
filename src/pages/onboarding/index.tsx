@@ -327,9 +327,9 @@ function Step3({ error }: { error: string }) {
 
 export const getServerSideProps = (async (context) => {
   const supabase = createServerClient(context)
-  const { data, error } = await supabase.auth.getUser()
+  const { data: auth, error } = await supabase.auth.getUser()
 
-  if (error || !data) {
+  if (error || !auth) {
     return {
       redirect: {
         destination: '/welcome',
@@ -338,9 +338,25 @@ export const getServerSideProps = (async (context) => {
     }
   }
 
+  const { data: userEntity } = await supabase
+    .from('users')
+    .select('*')
+    .eq('id', auth.user.id)
+    .single()
+
+  // @TODO Add another condition when the user has enough credits because he paid with Stripe.
+  if (userEntity?.credits === 0) {
+    return {
+      redirect: {
+        destination: '/account',
+        permanent: false,
+      },
+    }
+  }
+
   return {
     props: {
-      user: data.user,
+      user: auth.user,
     },
   }
 }) satisfies GetServerSideProps<{ user: User | null }>

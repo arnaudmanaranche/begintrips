@@ -137,6 +137,12 @@ export interface Database {
       [_ in never]: never
     }
     Functions: {
+      decrement_user_credits: {
+        Args: {
+          user_id: string
+        }
+        Returns: undefined
+      }
       process_days: {
         Args: {
           start_date: string

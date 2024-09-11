@@ -32,22 +32,23 @@ export function SignUpForm(): ReactNode {
       return
     }
 
-    const { error: userCreationError } = await supabase.from('users').insert({
-      username: email,
-    })
-
-    if (userCreationError) {
-      setError(SIGN_UP_ERROR_MESSAGE)
-      setIsLoading(false)
-      return
-    }
-
-    const { error: userSignUpError } = await supabase.auth.signUp({
+    const { data, error: userSignUpError } = await supabase.auth.signUp({
       email,
       password,
     })
 
     if (userSignUpError) {
+      setError(SIGN_UP_ERROR_MESSAGE)
+      setIsLoading(false)
+      return
+    }
+
+    const { error: userCreationError } = await supabase.from('users').insert({
+      username: email,
+      id: data.user?.id,
+    })
+
+    if (userCreationError) {
       setError(SIGN_UP_ERROR_MESSAGE)
       setIsLoading(false)
       return

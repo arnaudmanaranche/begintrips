@@ -1,4 +1,5 @@
 import { addDays, differenceInDays } from 'date-fns'
+import { id } from 'date-fns/locale'
 import type { NextApiRequest, NextApiResponse } from 'next'
 
 import createClient from '@/libs/supabase/api'
@@ -21,6 +22,9 @@ export default async function handler(
   res: NextApiResponse
 ): Promise<void> {
   const supabase = createClient(req, res)
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
 
   if (req.method === 'POST') {
     const journey = req.body
@@ -37,6 +41,10 @@ export default async function handler(
       res.status(500).json({ message: 'Error when creating journey', error })
       return
     }
+
+    await supabase.rpc('decrement_user_credits', {
+      user_id: user?.id as string,
+    })
 
     const journeyLength =
       differenceInDays(
