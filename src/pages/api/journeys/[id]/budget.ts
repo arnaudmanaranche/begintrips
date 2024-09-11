@@ -15,7 +15,7 @@ export default async function handler(
   if (req.method === 'PATCH') {
     const { budget } = req.body
 
-    if (!budget) {
+    if (budget === undefined || budget === null) {
       return res.status(400).json({
         message: 'Missing budget',
       })
