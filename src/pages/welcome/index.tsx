@@ -9,7 +9,7 @@ import { createClient } from '@/libs/supabase/server-props'
 import { useOnboardingStore } from '@/stores/onboarding.store'
 
 export default function WelcomePage() {
-  const [form, setForm] = useState<'login' | 'signup'>('signup')
+  const [form, setForm] = useState<'login' | 'signup'>('login')
   const { journey } = useOnboardingStore()
 
   return (
