@@ -89,33 +89,54 @@ export type Database = {
       journeys: {
         Row: {
           budget: number | null
+          country: string
           created_at: string
           departureDate: string
           destination: string
           id: string
-          image_cover: string | null
           returnDate: string
           userId: string
         }
         Insert: {
           budget?: number | null
+          country?: string
           created_at?: string
           departureDate: string
           destination: string
           id?: string
-          image_cover?: string | null
           returnDate: string
           userId?: string
         }
         Update: {
           budget?: number | null
+          country?: string
           created_at?: string
           departureDate?: string
           destination?: string
           id?: string
-          image_cover?: string | null
           returnDate?: string
           userId?: string
+        }
+        Relationships: []
+      }
+      users: {
+        Row: {
+          created_at: string
+          credits: number
+          id: string
+          username: string
+        }
+        Insert: {
+          created_at?: string
+          credits?: number
+          id?: string
+          username?: string
+        }
+        Update: {
+          created_at?: string
+          credits?: number
+          id?: string
+          username?: string
         }
         Relationships: []
       }

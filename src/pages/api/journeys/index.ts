@@ -13,7 +13,6 @@ async function createJourney(data: AddJourney): Promise<AddJourney> {
     returnDate,
     destination: destination ?? '',
     budget: budget ?? 0,
-    image_cover: '',
   }
 }
 
