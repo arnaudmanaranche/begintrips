@@ -53,7 +53,7 @@ export function UpcomingSchedule({
                     setCurrentStep('Select category')
                     setSelectedDay(formatDate(new Date(date), 'yyyy-MM-dd'))
                   }}
-                  className="cursor-pointer rounded-md px-2 py-1 ring-1 ring-slate-100 transition-colors hover:bg-slate-100"
+                  className="cursor-pointer rounded-md px-2 py-1 ring-1 ring-slate-200 transition-colors hover:bg-slate-200"
                 >
                   +
                 </div>
