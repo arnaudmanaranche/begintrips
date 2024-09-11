@@ -5,6 +5,14 @@ export function Budget({
   budgetSpent: number
   totalBudget: number
 }) {
+  if (totalBudget === 0) {
+    return (
+      <div className="flex w-full items-center justify-center">
+        <span className="text-lg text-black/30">No budget set</span>
+      </div>
+    )
+  }
+
   const percentageSpent =
     totalBudget > 0 ? (budgetSpent / totalBudget) * 100 : 0
 
