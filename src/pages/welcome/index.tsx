@@ -5,7 +5,7 @@ import { useState } from 'react'
 
 import { Callout } from '@/components/Callout/Callout'
 import { LogInForm } from '@/components/LogInForm/LogInForm'
-import { SignUpForm } from '@/components/SignUpForm/SignInForm'
+import { SignUpForm } from '@/components/SignUpForm/SignUpForm'
 import { createClient } from '@/libs/supabase/server-props'
 import { useOnboardingStore } from '@/stores/onboarding.store'
 import { formatDate } from '@/utils/date'

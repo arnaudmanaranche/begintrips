@@ -9,6 +9,10 @@ import { createClient } from '@/libs/supabase/client'
 import { Callout } from '../Callout/Callout'
 import { Input } from '../Input/Input'
 
+const PASSWORD_MISSMATCH_ERROR_MESSAGE = 'Passwords do not match'
+const SIGN_UP_ERROR_MESSAGE =
+  'Unable to sign up at the moment. Please try again later.'
+
 export function SignUpForm(): ReactNode {
   const router = useRouter()
   const supabase = createClient()
@@ -23,15 +27,28 @@ export function SignUpForm(): ReactNode {
     setIsLoading(true)
 
     if (password !== confirmPassword) {
-      setError('Passwords do not match')
+      setError(PASSWORD_MISSMATCH_ERROR_MESSAGE)
       setIsLoading(false)
       return
     }
 
-    const { error } = await supabase.auth.signUp({ email, password })
+    const { error: userCreationError } = await supabase.from('users').insert({
+      username: email,
+    })
 
-    if (error) {
-      setError('Unable to sign up at the moment. Please try again later.')
+    if (userCreationError) {
+      setError(SIGN_UP_ERROR_MESSAGE)
+      setIsLoading(false)
+      return
+    }
+
+    const { error: userSignUpError } = await supabase.auth.signUp({
+      email,
+      password,
+    })
+
+    if (userSignUpError) {
+      setError(SIGN_UP_ERROR_MESSAGE)
       setIsLoading(false)
       return
     }
