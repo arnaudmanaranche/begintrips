@@ -41,7 +41,7 @@ function JourneyView({ user }: JourneyProps) {
   } = useRouter()
   const { setIsOpen } = useQuickActionsModalActions()
 
-  const { data, isFetching: isFetchingJourney } = useQuery({
+  const { data, isPending: isFetchingJourney } = useQuery({
     queryKey: QUERY_KEYS.JOURNEY(journeyId as string),
     queryFn: () => getJourney({ journeyId: journeyId as string }),
   })
