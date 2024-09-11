@@ -270,7 +270,7 @@ function Step2({ error }: { error: string }) {
             <Callout.Danger>{error}</Callout.Danger>
           </motion.div>
         )}
-        <div className="flex flex-col justify-around space-x-0 space-y-10 md:flex-row md:space-x-4">
+        <div className="flex flex-col justify-around space-x-0 space-y-10 md:flex-row md:space-x-4 md:space-y-0">
           <Input
             value={
               journey.departureDate || new Date().toISOString().split('T')[0]
