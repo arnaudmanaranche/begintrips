@@ -1,4 +1,5 @@
 import { addDays } from 'date-fns'
+import { type ReactNode } from 'react'
 
 import { ExpenseLabel } from '@/components/ExpenseLabel/ExpenseLabel'
 import { useQuickActionsModalActions } from '@/providers/QuickActions.Provider'
@@ -8,7 +9,7 @@ import { hasJourneyPassed } from '@/utils/has-journey-passed'
 
 import { EditExpense } from '../EditExpense/EditExpense'
 
-export type UpcomingScheduleProps = {
+interface UpcomingScheduleProps {
   departureDate: string
   expensesByDay: ExpensesByDay
   isLoading: boolean
@@ -18,7 +19,7 @@ export function UpcomingSchedule({
   departureDate,
   expensesByDay,
   isLoading,
-}: UpcomingScheduleProps) {
+}: UpcomingScheduleProps): ReactNode {
   const { setCurrentStep, setIsOpen, setSelectedDay } =
     useQuickActionsModalActions()
 

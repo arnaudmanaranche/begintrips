@@ -7,9 +7,10 @@ import {
 } from '@radix-ui/react-icons'
 import type { User } from '@supabase/supabase-js'
 import Avatar from 'boring-avatars'
-import type { GetServerSidePropsContext } from 'next'
+import type { GetServerSideProps } from 'next'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
+import type { ReactNode } from 'react'
 import { useState } from 'react'
 
 import { ChangePasswordModalView } from '@/components/modals/ChangePassword/ChangePassword'
@@ -18,11 +19,11 @@ import { createClient } from '@/libs/supabase/client'
 import { createClient as createClientServerProps } from '@/libs/supabase/server-props'
 import { useOnboardingStore } from '@/stores/onboarding.store'
 
-export interface AccountPageProps {
+interface AccountPageProps {
   user: User
 }
 
-export default function AccountPage({ user }: AccountPageProps) {
+export default function AccountPage({ user }: AccountPageProps): ReactNode {
   const supabase = createClient()
   const router = useRouter()
   const { resetJourney } = useOnboardingStore()
@@ -145,7 +146,7 @@ export default function AccountPage({ user }: AccountPageProps) {
   )
 }
 
-export async function getServerSideProps(context: GetServerSidePropsContext) {
+export const getServerSideProps = (async (context) => {
   const supabase = createClientServerProps(context)
 
   const { data, error } = await supabase.auth.getUser()
@@ -164,4 +165,4 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
       user: data.user,
     },
   }
-}
+}) satisfies GetServerSideProps<{ user: User | null }>

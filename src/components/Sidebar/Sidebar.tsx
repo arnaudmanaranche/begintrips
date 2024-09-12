@@ -1,6 +1,7 @@
 import { BookmarkIcon, FileIcon, PaperPlaneIcon } from '@radix-ui/react-icons'
+import { type ReactNode } from 'react'
 
-export function Sidebar() {
+export function Sidebar(): ReactNode {
   return (
     <div className="hidden h-screen flex-col border-r-[1px] lg:flex">
       <div className="px-6 pt-5 text-3xl">

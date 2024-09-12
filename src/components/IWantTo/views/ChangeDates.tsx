@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useParams } from 'next/navigation'
-import type { ChangeEvent } from 'react'
+import type { ChangeEvent, ReactNode } from 'react'
 import { useMemo, useState } from 'react'
 
 import { updateJourneyDates } from '@/api/calls/journeys'
@@ -11,7 +11,7 @@ import { Input } from '@/components/Input/Input'
 import { useQuickActionsModalActions } from '@/providers/QuickActions.Provider'
 import type { Journey } from '@/types'
 
-export interface ChangeDatesProps {
+interface ChangeDatesProps {
   departureDate: string
   returnDate: string
 }
@@ -19,7 +19,7 @@ export interface ChangeDatesProps {
 export function ChangeDates({
   departureDate: initialDepartureDate,
   returnDate: initialReturnDate,
-}: ChangeDatesProps) {
+}: ChangeDatesProps): ReactNode {
   const [departureDate, setDepartureDate] = useState(initialDepartureDate)
   const [returnDate, setReturnDate] = useState(initialReturnDate)
   const { id: journeyId } = useParams()
@@ -83,7 +83,6 @@ export function ChangeDates({
         QUERY_KEYS.JOURNEY(journeyId as string),
         context?.previousJourney
       )
-      // @TODO: Add toast error
     },
     onSettled: () => {
       queryClient.invalidateQueries({

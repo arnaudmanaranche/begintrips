@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import type { Dispatch, SetStateAction } from 'react'
+import type { Dispatch, ReactNode, SetStateAction } from 'react'
 
 import { useCreateExpense } from '@/api/hooks/createExpense'
 import { Button } from '@/components/Button/Button'
@@ -9,7 +9,7 @@ import { useQuickActionsModalActions } from '@/providers/QuickActions.Provider'
 import type { AddExpense, Day } from '@/types'
 import { formatDate } from '@/utils/date'
 
-export interface AddManuallyExpenseProps {
+interface AddManuallyExpenseProps {
   newExpense: AddExpense
   setNewExpense: Dispatch<SetStateAction<AddExpense>>
   days: Day[]
@@ -19,7 +19,7 @@ export function AddManuallyExpense({
   newExpense,
   setNewExpense,
   days,
-}: AddManuallyExpenseProps) {
+}: AddManuallyExpenseProps): ReactNode {
   const { setIsOpen, setCurrentStep } = useQuickActionsModalActions()
 
   const { handleCreateExpense, isPending, isError, error } = useCreateExpense({

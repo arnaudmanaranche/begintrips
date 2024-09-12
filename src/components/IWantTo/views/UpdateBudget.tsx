@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useParams } from 'next/navigation'
+import type { ReactNode } from 'react'
 import { useState } from 'react'
 
 import { updateJourneyBudget } from '@/api/calls/journeys'
@@ -10,11 +11,13 @@ import { Input } from '@/components/Input/Input'
 import { useQuickActionsModalActions } from '@/providers/QuickActions.Provider'
 import type { Journey } from '@/types'
 
-export interface UpdateBudgetProps {
+interface UpdateBudgetProps {
   budget: number
 }
 
-export function UpdateBudget({ budget: initialBudget }: UpdateBudgetProps) {
+export function UpdateBudget({
+  budget: initialBudget,
+}: UpdateBudgetProps): ReactNode {
   const [budget, setBudget] = useState(initialBudget)
   const { id: journeyId } = useParams()
   const queryClient = useQueryClient()
@@ -51,7 +54,6 @@ export function UpdateBudget({ budget: initialBudget }: UpdateBudgetProps) {
         QUERY_KEYS.JOURNEY(journeyId as string),
         context?.previousJourney
       )
-      // @TODO: Add toast error
     },
     onSettled: () => {
       queryClient.invalidateQueries({

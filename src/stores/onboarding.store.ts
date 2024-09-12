@@ -5,7 +5,7 @@ import { createJSONStorage, persist } from 'zustand/middleware'
 import type { AddJourney } from '@/types'
 import { formatDate } from '@/utils/date'
 
-export interface OnboardingStore {
+interface OnboardingStore {
   journey: AddJourney
   updateJourney: (data: Partial<AddJourney>) => void
   resetJourney: () => void

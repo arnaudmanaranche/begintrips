@@ -1,9 +1,10 @@
 import type { SearchBoxSuggestion, SessionToken } from '@mapbox/search-js-core'
+import type { User } from '@supabase/supabase-js'
 import { useMutation } from '@tanstack/react-query'
 import clsx from 'clsx'
 import { isToday } from 'date-fns'
 import { motion } from 'framer-motion'
-import type { GetServerSidePropsContext } from 'next'
+import type { GetServerSideProps } from 'next'
 import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
 import { useRouter } from 'next/router'
@@ -21,7 +22,7 @@ import { isInvalidDate, stripTime } from '@/utils/date'
 
 const ONBOARDING_STEPS = [1, 2, 3]
 
-export default function Onboarding() {
+export default function Onboarding(): ReactNode {
   const searchParams = useSearchParams()
   const step = searchParams.get('step')
 
@@ -37,8 +38,8 @@ export default function Onboarding() {
     try {
       const data = await mutateAsync()
       resetJourney()
-      router.push(`/journey/${data.journeyId}`)
-    } catch (error) {
+      router.push(`/journey/${data.id}`)
+    } catch {
       setError(
         'An error occurred while creating your journey. Please try again later.'
       )
@@ -324,7 +325,7 @@ function Step3({ error }: { error: string }) {
   )
 }
 
-export async function getServerSideProps(context: GetServerSidePropsContext) {
+export const getServerSideProps = (async (context) => {
   const supabase = createServerClient(context)
   const { data, error } = await supabase.auth.getUser()
 
@@ -342,4 +343,4 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
       user: data.user,
     },
   }
-}
+}) satisfies GetServerSideProps<{ user: User | null }>

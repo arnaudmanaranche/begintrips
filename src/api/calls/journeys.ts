@@ -3,32 +3,30 @@ import { isInvalidDate } from '@/utils/date'
 
 import { apiInstance } from '../config'
 
-export interface GetJourneyParams {
+interface GetJourneyParams {
   journeyId: string
 }
 
-export const createJourney = async (journey: AddJourney) => {
+export const createJourney = async (journey: AddJourney): Promise<Journey> => {
   const { data } = await apiInstance.post('/journeys', journey)
 
   return data
 }
 
-export const getJourney = async ({ journeyId }: GetJourneyParams) => {
+export const getJourney = async ({
+  journeyId,
+}: GetJourneyParams): Promise<JourneyPage> => {
   const { data } = await apiInstance.get<JourneyPage>(`/journeys/${journeyId}`)
 
   return data
 }
 
-export const getJourneyDays = async ({ journeyId }: { journeyId: string }) => {
+export const getJourneyDays = async ({
+  journeyId,
+}: {
+  journeyId: string
+}): Promise<Day[]> => {
   const { data } = await apiInstance.get<Day[]>(`/journeys/${journeyId}/days`)
-
-  return data
-}
-
-export const getJourneyDetails = async ({ journeyId }: GetJourneyParams) => {
-  const { data } = await apiInstance.get<Journey>(
-    `/journeys/${journeyId}/details`
-  )
 
   return data
 }
@@ -41,7 +39,7 @@ export const updateJourneyDates = async ({
   journeyId: string
   departureDate: string
   returnDate: string
-}) => {
+}): Promise<{ message: string }> => {
   if (
     isInvalidDate(new Date(departureDate)) ||
     isInvalidDate(new Date(returnDate))
@@ -49,10 +47,13 @@ export const updateJourneyDates = async ({
     throw new Error('You need to set a valid start and end date')
   }
 
-  const { data } = await apiInstance.patch(`/journeys/${journeyId}/dates`, {
-    departureDate,
-    returnDate,
-  })
+  const { data } = await apiInstance.patch<{ message: string }>(
+    `/journeys/${journeyId}/dates`,
+    {
+      departureDate,
+      returnDate,
+    }
+  )
 
   return data
 }
@@ -63,8 +64,8 @@ export const updateJourneyDestination = async ({
 }: {
   journeyId: string
   destination: string
-}) => {
-  const { data } = await apiInstance.patch(
+}): Promise<{ message: string }> => {
+  const { data } = await apiInstance.patch<{ message: string }>(
     `/journeys/${journeyId}/destination`,
     {
       destination,
@@ -80,10 +81,13 @@ export const updateJourneyBudget = async ({
 }: {
   journeyId: string
   budget: number
-}) => {
-  const { data } = await apiInstance.patch(`/journeys/${journeyId}/budget`, {
-    budget,
-  })
+}): Promise<{ message: string }> => {
+  const { data } = await apiInstance.patch<{ message: string }>(
+    `/journeys/${journeyId}/budget`,
+    {
+      budget,
+    }
+  )
 
   return data
 }

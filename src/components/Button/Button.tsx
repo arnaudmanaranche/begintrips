@@ -1,7 +1,7 @@
 import clsx from 'clsx'
 import type { ReactNode } from 'react'
 
-export interface ButtonProps {
+interface ButtonProps {
   children?: ReactNode
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   onClick: (...args: any[]) => void
@@ -22,7 +22,7 @@ export function Button({
   stretch = false,
   isRounded = false,
   icon,
-}: ButtonProps) {
+}: ButtonProps): ReactNode {
   const variantClasses = {
     primary: clsx(
       'bg-accent text-white hover:bg-accent-dark',

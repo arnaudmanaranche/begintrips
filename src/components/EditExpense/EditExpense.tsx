@@ -1,5 +1,6 @@
 import * as Dialog from '@radix-ui/react-dialog'
 import { Cross2Icon, DotsHorizontalIcon } from '@radix-ui/react-icons'
+import type { ReactNode } from 'react'
 import { useState } from 'react'
 
 import type { Expense } from '@/types'
@@ -7,11 +8,11 @@ import type { Expense } from '@/types'
 import { Button } from '../Button/Button'
 import { EditExpenseView } from './EditExpense.View'
 
-export interface EditExpenseProps {
+interface EditExpenseProps {
   expense: Expense
 }
 
-export const EditExpense = ({ expense }: EditExpenseProps) => {
+export const EditExpense = ({ expense }: EditExpenseProps): ReactNode => {
   const [open, setOpen] = useState(false)
 
   return (

@@ -1,9 +1,10 @@
 import Head from 'next/head'
 import { useRouter } from 'next/router'
+import { type ReactNode } from 'react'
 
 import { Button } from '@/components/Button/Button'
 
-export default function ErrorPage() {
+export default function ErrorPage(): ReactNode {
   const router = useRouter()
 
   return (

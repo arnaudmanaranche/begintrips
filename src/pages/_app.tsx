@@ -10,6 +10,7 @@ import { Analytics } from '@vercel/analytics/react'
 import type { AppProps } from 'next/app'
 import { Open_Sans, Playfair_Display } from 'next/font/google'
 import Head from 'next/head'
+import type { ReactNode } from 'react'
 import { useState } from 'react'
 
 import { SITE_DESCRIPTION, SITE_TITLE, SITE_URL } from '@/utils/seo'
@@ -28,7 +29,7 @@ const openSans = Open_Sans({
   display: 'optional',
 })
 
-export default function App({ Component, pageProps }: AppProps) {
+export default function App({ Component, pageProps }: AppProps): ReactNode {
   const [queryClient] = useState(
     () =>
       new QueryClient({

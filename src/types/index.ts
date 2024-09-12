@@ -1,23 +1,33 @@
-import type { Database } from '@/libs/supabase/database.types'
+import type {
+  Enums,
+  Tables,
+  TablesInsert,
+  TablesUpdate,
+} from '@/libs/supabase/database.types'
 
 export type DateString = `${number}-${number}-${number}` // Example for YYYY-MM-DD format
 
-// Database types
-export type Journey = Database['public']['Tables']['journeys']['Row']
-export type Day = Database['public']['Tables']['days']['Row']
-export type Expense = Database['public']['Tables']['expenses']['Row']
-export type AddExpense = Database['public']['Tables']['expenses']['Insert']
-export type UpdateExpense = Database['public']['Tables']['expenses']['Update']
-export type ExpenseCategoryEnum =
-  Database['public']['Enums']['expense_category']
-export type AddJourney = Database['public']['Tables']['journeys']['Insert']
-export type AddDay = Database['public']['Tables']['days']['Insert']
+// READ
+export type Journey = Tables<'journeys'>
+export type Day = Tables<'days'>
+export type Expense = Tables<'expenses'>
+
+// CREATE
+export type AddExpense = TablesInsert<'expenses'>
+export type AddJourney = TablesInsert<'journeys'>
+export type AddDay = TablesInsert<'days'>
+
+// UPDATE
+export type UpdateExpense = TablesUpdate<'expenses'>
+
+// ENUMS
+export type ExpenseCategoryEnum = Enums<'expense_category'>
 
 // App types
 export type ExpensesByCategory = Record<ExpenseCategoryEnum, Expense[]>
 export type ExpensesByDay = Record<DateString, Expense[]>
 
-export type JourneyPage = {
+export interface JourneyPage {
   budgetSpent: number
   days: Day[]
   expensesByCategory: ExpensesByCategory

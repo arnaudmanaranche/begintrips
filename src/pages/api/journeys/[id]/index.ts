@@ -10,7 +10,7 @@ import {
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
-) {
+): Promise<void> {
   const supabase = createClient(req, res)
   const { id } = req.query
   const {

@@ -5,8 +5,9 @@ import {
   PaperPlaneIcon,
 } from '@radix-ui/react-icons'
 import Link from 'next/link'
+import { type ReactNode } from 'react'
 
-export function BottomBar() {
+export function BottomBar(): ReactNode {
   return (
     <div className="fixed bottom-0 left-0 right-0 bg-white lg:hidden">
       <ul className="flex h-16  items-center justify-around ring-1 ring-slate-200">

@@ -2,6 +2,7 @@ import * as Dialog from '@radix-ui/react-dialog'
 import { ArrowLeftIcon, Cross2Icon } from '@radix-ui/react-icons'
 import { useQuery } from '@tanstack/react-query'
 import { useRouter } from 'next/router'
+import { type ReactNode } from 'react'
 
 import { getJourney, getJourneyDays } from '@/api/calls/journeys'
 import { QUERY_KEYS } from '@/api/queryKeys'
@@ -11,13 +12,17 @@ import type { Day, Journey } from '@/types'
 
 import { IWantToView } from './IWantTo.View'
 
-export interface IWantToProps {
+interface IWantToProps {
   isOpen: boolean
   currentStep: IWantToStep
   selectedDay: string | null
 }
 
-export function IWantTo({ isOpen, currentStep, selectedDay }: IWantToProps) {
+export function IWantTo({
+  isOpen,
+  currentStep,
+  selectedDay,
+}: IWantToProps): ReactNode {
   const { setCurrentStep, setIsOpen } = useQuickActionsModalActions()
   const {
     query: { id: journeyId },

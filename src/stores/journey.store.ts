@@ -1,7 +1,7 @@
 import { create } from 'zustand'
 import { createJSONStorage, persist } from 'zustand/middleware'
 
-export interface JourneyStore {
+interface JourneyStore {
   checkList: { item: string; isDone: boolean; id: string }[]
   toggleItem: (item: string) => void
   deleteItem: (item: string) => void

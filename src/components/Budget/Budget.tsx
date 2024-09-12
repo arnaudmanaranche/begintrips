@@ -1,10 +1,12 @@
+import { type ReactNode } from 'react'
+
 export function Budget({
   budgetSpent,
   totalBudget,
 }: {
   budgetSpent: number
   totalBudget: number
-}) {
+}): ReactNode {
   if (totalBudget === 0) {
     return (
       <div className="flex w-full items-center justify-center">

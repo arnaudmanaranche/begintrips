@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react'
 import React, { useEffect, useRef } from 'react'
 
 interface ParticlesProps {
@@ -229,7 +230,7 @@ const Particles: React.FC<ParticlesProps> = ({
   )
 }
 
-export function AISuggest() {
+export function AISuggest(): ReactNode {
   return (
     <div className="relative flex-1 space-y-4 rounded-md bg-slate-800 p-4 text-white">
       <p className="text-2xl font-medium">Plan Smarter with Scoutia !</p>

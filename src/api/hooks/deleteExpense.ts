@@ -1,19 +1,29 @@
+import type { UseMutateAsyncFunction } from '@tanstack/react-query'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useParams } from 'next/navigation'
 
-import { type JourneyPage } from '@/types'
+import type { JourneyPage } from '@/types'
 import { removeExpenseById } from '@/utils/remove-expense-by-id'
 
 import { deleteExpense } from '../calls/expenses'
 import { QUERY_KEYS } from '../queryKeys'
 
-export interface UseDeleteExpenseProps {
+interface UseDeleteExpenseProps {
   onSuccessCallback?: () => void
 }
 
 export const useDeleteExpense = ({
   onSuccessCallback,
-}: UseDeleteExpenseProps) => {
+}: UseDeleteExpenseProps): {
+  handleDeleteExpense: UseMutateAsyncFunction<
+    { message: string },
+    Error,
+    string
+  >
+  isPending: boolean
+  isError: boolean
+  error: Error | null
+} => {
   const queryClient = useQueryClient()
   const { id: journeyId } = useParams()
 

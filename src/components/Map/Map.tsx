@@ -1,4 +1,6 @@
-export function Map() {
+import type { ReactNode } from 'react'
+
+export function Map(): ReactNode {
   return (
     <svg
       className="absolute right-10 top-10 z-[-1] hidden opacity-5 md:block"

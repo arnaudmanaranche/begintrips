@@ -2,6 +2,7 @@ import { MagnifyingGlassIcon } from '@radix-ui/react-icons'
 import clsx from 'clsx'
 import { motion } from 'framer-motion'
 import Image from 'next/image'
+import type { ReactNode } from 'react'
 import { useState } from 'react'
 
 import { useCreateExpense } from '@/api/hooks/createExpense'
@@ -10,12 +11,12 @@ import type { Day, ExpenseCategoryEnum, Journey } from '@/types'
 import { formatDate } from '@/utils/date'
 import { hasJourneyPassed } from '@/utils/has-journey-passed'
 
-export interface SearchEventsProps {
+interface SearchEventsProps {
   journey: Journey
   days: Day[]
 }
 
-export function SearchEvents({ journey, days }: SearchEventsProps) {
+export function SearchEvents({ journey, days }: SearchEventsProps): ReactNode {
   const { events, isLoading, error, searchEvents } = useSearchEvents()
   const [searchValue, setSearchValue] = useState('')
   const [isSearchFocused, setIsSearchFocused] = useState(false)

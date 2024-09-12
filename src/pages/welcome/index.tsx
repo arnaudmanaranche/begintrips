@@ -1,5 +1,6 @@
-import type { GetServerSidePropsContext } from 'next'
+import type { GetServerSideProps } from 'next'
 import Link from 'next/link'
+import type { ReactNode } from 'react'
 import { useState } from 'react'
 
 import { Callout } from '@/components/Callout/Callout'
@@ -8,7 +9,7 @@ import { SignUpForm } from '@/components/SignUpForm/SignInForm'
 import { createClient } from '@/libs/supabase/server-props'
 import { useOnboardingStore } from '@/stores/onboarding.store'
 
-export default function WelcomePage() {
+export default function WelcomePage(): ReactNode {
   const [form, setForm] = useState<'login' | 'signup'>('login')
   const { journey } = useOnboardingStore()
 
@@ -81,7 +82,7 @@ export default function WelcomePage() {
   )
 }
 
-export async function getServerSideProps(context: GetServerSidePropsContext) {
+export const getServerSideProps = (async (context) => {
   const supabase = createClient(context)
   const { data } = await supabase.auth.getUser()
 
@@ -97,4 +98,4 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   return {
     props: {},
   }
-}
+}) satisfies GetServerSideProps

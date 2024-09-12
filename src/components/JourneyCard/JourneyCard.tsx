@@ -1,7 +1,7 @@
 import clsx from 'clsx'
 import type { ReactNode } from 'react'
 
-export interface JourneyCardProps {
+interface JourneyCardProps {
   children: ReactNode
   isFetching?: boolean
   isHiddenOnSmallScreens?: boolean
@@ -13,7 +13,7 @@ export function JourneyCard({
   isFetching,
   isHiddenOnSmallScreens = false,
   title,
-}: JourneyCardProps) {
+}: JourneyCardProps): ReactNode {
   if (isFetching) {
     return (
       <div className="flex-1 space-y-4 rounded-md bg-white p-4 shadow-sm ring-1 ring-slate-200">

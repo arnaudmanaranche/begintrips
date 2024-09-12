@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react'
 import { useState } from 'react'
 
 import { useDeleteExpense } from '@/api/hooks/deleteExpense'
@@ -9,12 +10,15 @@ import { mappedExpensesWithEmojis } from '@/utils/expense-labels'
 import { Button } from '../Button/Button'
 import { Input } from '../Input/Input'
 
-export interface EditExpenseViewProps {
+interface EditExpenseViewProps {
   expense: Expense
   setOpen: (open: boolean) => void
 }
 
-export const EditExpenseView = ({ expense, setOpen }: EditExpenseViewProps) => {
+export const EditExpenseView = ({
+  expense,
+  setOpen,
+}: EditExpenseViewProps): ReactNode => {
   const [newExpense, setNewExpense] = useState<Expense>(expense)
 
   const { handleUpdateExpense, isPending: isPendingUpdate } = useUpdateExpense({

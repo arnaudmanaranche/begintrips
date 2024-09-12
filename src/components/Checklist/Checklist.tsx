@@ -1,5 +1,6 @@
 import { CheckCircledIcon, CircleIcon, Cross1Icon } from '@radix-ui/react-icons'
 import { motion } from 'framer-motion'
+import type { ReactNode } from 'react'
 import { useId } from 'react'
 
 import { useJourneyStore } from '@/stores/journey.store'
@@ -19,7 +20,7 @@ function useHandleSubmit() {
   }
 }
 
-export function Checklist() {
+export function Checklist(): ReactNode {
   const { checkList, toggleItem, deleteItem } = useJourneyStore()
   const handleSubmit = useHandleSubmit()
 

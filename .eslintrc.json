@@ -13,7 +13,9 @@
     "@typescript-eslint/consistent-type-imports": "error",
     "no-console": "warn",
     "simple-import-sort/imports": "error",
-    "simple-import-sort/exports": "error"
+    "simple-import-sort/exports": "error",
+    "@typescript-eslint/explicit-module-boundary-types": "error",
+    "@typescript-eslint/consistent-type-definitions": ["error", "interface"]
   },
   "parserOptions": {
     "sourceType": "module",

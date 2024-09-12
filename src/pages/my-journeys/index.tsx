@@ -1,8 +1,9 @@
 import { GearIcon, PaperPlaneIcon } from '@radix-ui/react-icons'
 import type { User } from '@supabase/supabase-js'
 import { useQuery } from '@tanstack/react-query'
-import type { GetServerSidePropsContext } from 'next'
+import type { GetServerSideProps } from 'next'
 import Link from 'next/link'
+import type { ReactNode } from 'react'
 
 import { getUserJourneys } from '@/api/calls/users'
 import { QUERY_KEYS } from '@/api/queryKeys'
@@ -11,7 +12,7 @@ import { NavBar } from '@/components/NavBar/NavBar'
 import { createClient as createClientServerProps } from '@/libs/supabase/server-props'
 import type { Journey } from '@/types'
 
-export interface MyJourneysPageProps {
+interface MyJourneysPageProps {
   user: User
   journeys: Journey[]
 }
@@ -19,7 +20,7 @@ export interface MyJourneysPageProps {
 export default function MyJourneysPage({
   user,
   journeys: initialJourneys,
-}: MyJourneysPageProps) {
+}: MyJourneysPageProps): ReactNode {
   const { data: journeys, isFetching } = useQuery({
     queryKey: QUERY_KEYS.JOURNEYS(user.id),
     queryFn: () => getUserJourneys(),
@@ -56,7 +57,7 @@ export default function MyJourneysPage({
   )
 }
 
-export async function getServerSideProps(context: GetServerSidePropsContext) {
+export const getServerSideProps = (async (context) => {
   const supabase = createClientServerProps(context)
 
   const { data, error } = await supabase.auth.getUser()
@@ -78,4 +79,4 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
       journeys,
     },
   }
-}
+}) satisfies GetServerSideProps<{ user: User | null }>

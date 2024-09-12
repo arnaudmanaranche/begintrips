@@ -1,16 +1,20 @@
 import router from 'next/router'
+import { type ReactNode } from 'react'
 
 import { Button } from '@/components/Button/Button'
 import type { Journey } from '@/types'
 import { formatDate } from '@/utils/date'
 import { hasJourneyPassed } from '@/utils/has-journey-passed'
 
-export interface MyJourneysProps {
+interface MyJourneysProps {
   journeys: Journey[]
   isLoading: boolean
 }
 
-export default function MyJourneys({ journeys, isLoading }: MyJourneysProps) {
+export default function MyJourneys({
+  journeys,
+  isLoading,
+}: MyJourneysProps): ReactNode {
   if (isLoading) {
     return (
       <div className="mx-auto mt-20 flex min-h-[500px] max-w-screen-sm flex-col space-y-4">

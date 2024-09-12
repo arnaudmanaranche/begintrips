@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react'
 import { useMemo } from 'react'
 import {
   Bar,
@@ -11,11 +12,13 @@ import {
 import type { Expense, ExpenseCategoryEnum } from '@/types'
 import { colorsAssociated } from '@/utils/expense-labels'
 
-export type ExpensesChartsProps = {
+interface ExpensesChartsProps {
   expensesByCategory: Record<string, Expense[]>
 }
 
-export function ExpensesCharts({ expensesByCategory }: ExpensesChartsProps) {
+export function ExpensesCharts({
+  expensesByCategory,
+}: ExpensesChartsProps): ReactNode {
   const labelBackgroundColors = useMemo(() => {
     return Object.keys(expensesByCategory).map((k) => {
       const color = colorsAssociated[k as ExpenseCategoryEnum]

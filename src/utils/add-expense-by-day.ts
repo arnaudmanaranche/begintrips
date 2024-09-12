@@ -3,7 +3,7 @@ import type { Expense, ExpensesByDay } from '@/types'
 export function addExpenseByDay(
   newExpense: Expense,
   expensesByDay: ExpensesByDay
-) {
+): ExpensesByDay {
   const copy = { ...expensesByDay }
 
   if (!copy[newExpense.startDate as keyof ExpensesByDay]) {

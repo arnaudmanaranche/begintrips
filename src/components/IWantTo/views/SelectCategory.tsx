@@ -1,10 +1,10 @@
-import type { Dispatch, SetStateAction } from 'react'
+import type { Dispatch, ReactNode, SetStateAction } from 'react'
 
 import type { IWantToStep } from '@/providers/QuickActions.Provider'
 import type { AddExpense } from '@/types'
 import { mappedExpensesWithEmojis } from '@/utils/expense-labels'
 
-export interface SelectCategoryProps {
+interface SelectCategoryProps {
   setCurrentStep: (step: IWantToStep) => void
   setNewExpense: Dispatch<SetStateAction<AddExpense>>
 }
@@ -12,7 +12,7 @@ export interface SelectCategoryProps {
 export function SelectCategory({
   setCurrentStep,
   setNewExpense,
-}: SelectCategoryProps) {
+}: SelectCategoryProps): ReactNode {
   return (
     <div className="mt-10 grid max-h-[500px] grid-cols-2 gap-5 overflow-y-scroll">
       {mappedExpensesWithEmojis.map((mappedExpense) => (

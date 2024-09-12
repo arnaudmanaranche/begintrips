@@ -2,10 +2,10 @@ import type { SearchBoxSuggestion, SessionToken } from '@mapbox/search-js-core'
 import { ChevronRightIcon, PersonIcon } from '@radix-ui/react-icons'
 import type { User } from '@supabase/supabase-js'
 import { motion, useInView } from 'framer-motion'
-import type { GetServerSidePropsContext } from 'next'
+import type { GetServerSideProps } from 'next'
 import Link from 'next/link'
 import router from 'next/router'
-import type { ChangeEvent } from 'react'
+import type { ChangeEvent, ReactNode } from 'react'
 import { useRef, useState } from 'react'
 
 import { Button } from '@/components/Button/Button'
@@ -14,7 +14,7 @@ import { useSearchDestination } from '@/hooks/useSearchDestination'
 import { createClient } from '@/libs/supabase/server-props'
 import { useOnboardingStore } from '@/stores/onboarding.store'
 
-export default function HomePage({ user }: { user: User }) {
+export default function HomePage({ user }: { user: User }): ReactNode {
   const { updateJourney, journey } = useOnboardingStore()
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true })
@@ -427,7 +427,7 @@ export default function HomePage({ user }: { user: User }) {
   )
 }
 
-export async function getServerSideProps(context: GetServerSidePropsContext) {
+export const getServerSideProps = (async (context) => {
   const supabase = createClient(context)
 
   const { data } = await supabase.auth.getUser()
@@ -437,4 +437,4 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
       user: data.user,
     },
   }
-}
+}) satisfies GetServerSideProps<{ user: User | null }>

@@ -5,7 +5,7 @@ import createClient from '@/libs/supabase/api'
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
-) {
+): Promise<void> {
   const supabase = createClient(req, res)
   const {
     data: { user },
