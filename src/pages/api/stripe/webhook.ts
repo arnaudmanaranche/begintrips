@@ -1,25 +1,20 @@
-import createClient from '@/libs/supabase/api'
-import { error } from 'console'
-import { buffer } from 'micro'
+import { handleCheckoutSessionCompleted } from '@/libs/supabase/admin'
 
 import { NextApiRequest, NextApiResponse } from 'next'
-
+import { buffer } from 'micro'
 import Stripe from 'stripe'
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY)
-
-const relevantEvents = new Set([
-  'checkout.session.completed',
-  'customer.subscription.created',
-  'customer.subscription.updated',
-  'customer.subscription.deleted',
-])
+enum STRIPE_EVENTS_ENUM {
+  CHECKOUT_SESSION_COMPLETED = 'checkout.session.completed',
+}
 
 export const config = {
   api: {
     bodyParser: false,
   },
 }
+
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY)
 
 export default async function handler(
   req: NextApiRequest,
@@ -37,8 +32,6 @@ export default async function handler(
   const buf = await buffer(req)
 
   if (req.method === 'POST') {
-    const supabase = createClient(req, res)
-
     let event
 
     try {
@@ -52,16 +45,14 @@ export default async function handler(
     }
 
     switch (event.type) {
-      case 'checkout.session.completed':
+      case STRIPE_EVENTS_ENUM.CHECKOUT_SESSION_COMPLETED:
         const session = event.data.object
 
-        const { error } = await supabase.rpc('handle_payment_update', {
-          payment_id: session.id,
-          input_user_id: session.metadata?.user_id as string,
-          payment_type: session.mode,
-          payment_price_id: session.line_items?.data[0].price?.id as string,
+        await handleCheckoutSessionCompleted({
+          req,
+          res,
+          session,
         })
-        console.log(error)
         break
       default:
         console.info(`Unhandled event: ${event.type}`)
