@@ -111,6 +111,110 @@ export interface Database {
         }
         Relationships: []
       }
+      one_time_payments: {
+        Row: {
+          created_at: string | null
+          id: string
+          status: string | null
+          stripe_payment_id: string | null
+          updated_at: string | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          status?: string | null
+          stripe_payment_id?: string | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          status?: string | null
+          stripe_payment_id?: string | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "one_time_payments_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      products: {
+        Row: {
+          created_at: string
+          id: number
+          price: number | null
+          stripe_product_id: string | null
+          type: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: number
+          price?: number | null
+          stripe_product_id?: string | null
+          type?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: number
+          price?: number | null
+          stripe_product_id?: string | null
+          type?: string | null
+        }
+        Relationships: []
+      }
+      subscriptions: {
+        Row: {
+          created_at: string | null
+          id: number
+          product_id: number | null
+          status: string | null
+          stripe_subscription_id: string | null
+          updated_at: string | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: number
+          product_id?: number | null
+          status?: string | null
+          stripe_subscription_id?: string | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: number
+          product_id?: number | null
+          status?: string | null
+          stripe_subscription_id?: string | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "subscriptions_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "subscriptions_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: true
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       users: {
         Row: {
           created_at: string
@@ -143,6 +247,57 @@ export interface Database {
         }
         Returns: undefined
       }
+      fetch_users_with_subscriptions:
+        | {
+            Args: Record<PropertyKey, never>
+            Returns: {
+              user_id: string
+              user_name: string
+              user_email: string
+              subscription_id: string
+              stripe_subscription_id: string
+              subscription_status: string
+              subscription_created_at: string
+              product_name: string
+              product_description: string
+              price_id: string
+            }[]
+          }
+        | {
+            Args: {
+              input_user_id: string
+            }
+            Returns: {
+              user_id: string
+              user_name: string
+              user_email: string
+              subscription_id: string
+              stripe_subscription_id: string
+              subscription_status: string
+              subscription_created_at: string
+              product_name: string
+              product_description: string
+              price_id: string
+            }[]
+          }
+      handle_payment_update:
+        | {
+            Args: {
+              payment_id: string
+              input_user_id: string
+              payment_type: string
+            }
+            Returns: undefined
+          }
+        | {
+            Args: {
+              payment_id: string
+              input_user_id: string
+              payment_type: string
+              payment_price_id: string
+            }
+            Returns: undefined
+          }
       process_days: {
         Args: {
           start_date: string
