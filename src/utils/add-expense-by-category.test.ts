@@ -1,6 +1,7 @@
 import type { Expense, ExpensesByCategory } from '@/types'
 
 import { addExpenseByCategory } from './add-expense-by-category'
+import { formatDate, stripTime } from './date'
 
 describe('addExpenseByCategory', () => {
   it('should add expense by category', () => {
@@ -39,7 +40,7 @@ describe('addExpenseByCategory', () => {
       name: 'Food 2',
       dayId: '1',
       journeyId: '1',
-      created_at: new Date().toISOString(),
+      created_at: formatDate(new Date('2022-01-03'), 'yyyy-MM-dd', true),
     }
 
     addExpenseByCategory(newExpense, expensesByCategory)
@@ -64,6 +65,7 @@ describe('addExpenseByCategory', () => {
           name: 'Food 2',
           dayId: '1',
           journeyId: '1',
+          created_at: '2022-01-03',
         },
       ],
       bar: [
