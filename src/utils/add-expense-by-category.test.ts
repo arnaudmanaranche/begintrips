@@ -1,7 +1,7 @@
 import type { Expense, ExpensesByCategory } from '@/types'
 
 import { addExpenseByCategory } from './add-expense-by-category'
-import { formatDate, stripTime } from './date'
+import { formatDate } from './date'
 
 describe('addExpenseByCategory', () => {
   it('should add expense by category', () => {
