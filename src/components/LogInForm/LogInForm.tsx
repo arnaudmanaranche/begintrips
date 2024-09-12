@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion'
 import { useRouter } from 'next/router'
-import type { MouseEvent } from 'react'
+import type { MouseEvent, ReactNode } from 'react'
 import { useState } from 'react'
 
 import { Button } from '@/components/Button/Button'
@@ -10,7 +10,7 @@ import { useOnboardingStore } from '@/stores/onboarding.store'
 import { Callout } from '../Callout/Callout'
 import { Input } from '../Input/Input'
 
-export function LogInForm() {
+export function LogInForm(): ReactNode {
   const router = useRouter()
   const supabase = createClient()
   const [email, setEmail] = useState('')

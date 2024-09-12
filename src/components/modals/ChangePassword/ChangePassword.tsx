@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react'
 import { useState } from 'react'
 
 import { Button } from '@/components/Button/Button'
@@ -5,13 +6,13 @@ import { Callout } from '@/components/Callout/Callout'
 import { Input } from '@/components/Input/Input'
 import { createClient } from '@/libs/supabase/client'
 
-export interface ChangePasswordModalProps {
+interface ChangePasswordModalProps {
   onPasswordChangedCallback: () => void
 }
 
 export function ChangePasswordModalView({
   onPasswordChangedCallback,
-}: ChangePasswordModalProps) {
+}: ChangePasswordModalProps): ReactNode {
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
   const [formError, setFormError] = useState('')

@@ -11,7 +11,7 @@ import { useMemo } from 'react'
 import type { IWantToStep } from '@/providers/QuickActions.Provider'
 import { hasJourneyPassed } from '@/utils/has-journey-passed'
 
-export interface SelectActionProps {
+interface SelectActionProps {
   setCurrentStep: (step: IWantToStep) => void
   departureDate: string
 }
@@ -19,7 +19,7 @@ export interface SelectActionProps {
 export function SelectAction({
   setCurrentStep,
   departureDate,
-}: SelectActionProps) {
+}: SelectActionProps): ReactNode {
   const actions: {
     icon: ReactNode
     label: string

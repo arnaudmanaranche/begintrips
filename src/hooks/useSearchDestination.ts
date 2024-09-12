@@ -1,7 +1,11 @@
 import { SearchBoxCore, SessionToken } from '@mapbox/search-js-core'
+import type { MutableRefObject } from 'react'
 import { useEffect, useRef } from 'react'
 
-export const useSearchDestination = () => {
+export const useSearchDestination = (): {
+  searchBoxRef: MutableRefObject<SearchBoxCore | null>
+  sessionTokenRef: MutableRefObject<'' | SessionToken | undefined>
+} => {
   const searchBoxRef = useRef<SearchBoxCore | null>(null)
   const sessionTokenRef = useRef<SessionToken | ''>()
 

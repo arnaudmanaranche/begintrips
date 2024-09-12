@@ -1,27 +1,26 @@
-import { format, isPast, isToday, isValid,startOfDay } from 'date-fns'
+import { format, isPast, isToday, isValid, startOfDay } from 'date-fns'
 
-export function stripTime(date: Date) {
+export function stripTime(date: Date): Date {
   return startOfDay(date)
 }
 
-export const isInvalidDate = (date: Date) =>
+export const isInvalidDate = (date: Date): boolean =>
   isPast(stripTime(date)) && !isToday(stripTime(date))
 
-enum DATE_FORMAT {
-  'EEEE - dd MMMM yyyy' = 'EEEE - dd MMMM yyyy',
-  'dd/MM/yyyy' = 'dd/MM/yyyy',
-  'EEEE dd MMMM' = 'EEEE dd MMMM',
-  'yyyy-MM-dd' = 'yyyy-MM-dd',
-  "yyyy-MM-dd'T'HH:mm:ss'Z'" = "yyyy-MM-dd'T'HH:mm:ss'Z'",
-  'dd MMMM yyyy - HH:mm' = 'dd MMMM yyyy - HH:mm',
-  'dd MMMM yyyy' = 'dd MMMM yyyy',
-}
+type DateFormatEnumType =
+  | 'EEEE - dd MMMM yyyy'
+  | 'dd/MM/yyyy'
+  | 'EEEE dd MMMM'
+  | 'yyyy-MM-dd'
+  | "yyyy-MM-dd'T'HH:mm:ss'Z'"
+  | 'dd MMMM yyyy - HH:mm'
+  | 'dd MMMM yyyy'
 
 export const formatDate = (
   date: string | Date,
-  dateFormat: keyof typeof DATE_FORMAT,
+  dateFormat: DateFormatEnumType,
   shouldStripeTime = true
-) => {
+): string => {
   let formatedDate = date
 
   if (!isValid(date)) {

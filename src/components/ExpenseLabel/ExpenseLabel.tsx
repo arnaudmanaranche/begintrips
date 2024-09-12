@@ -1,4 +1,5 @@
 import clsx from 'clsx'
+import type { ReactNode } from 'react'
 import { useMemo } from 'react'
 
 import type { ExpenseCategoryEnum } from '@/types'
@@ -9,7 +10,7 @@ export function ExpenseLabel({
   expenseCategory,
 }: {
   expenseCategory: ExpenseCategoryEnum
-}) {
+}): ReactNode {
   const color = useMemo(() => {
     return mappedExpensesWithColors.find(
       (expense) => expense.category === expenseCategory

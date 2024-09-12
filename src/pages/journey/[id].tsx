@@ -7,8 +7,9 @@ import {
 import type { User } from '@supabase/supabase-js'
 import { useQuery } from '@tanstack/react-query'
 import { differenceInDays } from 'date-fns'
-import { type GetServerSidePropsContext } from 'next'
+import type { GetServerSideProps } from 'next'
 import router, { useRouter } from 'next/router'
+import type { ReactNode } from 'react'
 import { useMemo } from 'react'
 
 import { getJourney } from '@/api/calls/journeys'
@@ -31,7 +32,7 @@ import {
 import type { Day, ExpensesByCategory, ExpensesByDay, Journey } from '@/types'
 import { formatDate } from '@/utils/date'
 
-export interface JourneyProps {
+interface JourneyProps {
   user: User
 }
 
@@ -209,7 +210,7 @@ function JourneyView({ user }: JourneyProps) {
   )
 }
 
-export default function Journey({ user }: JourneyProps) {
+export default function Journey({ user }: JourneyProps): ReactNode {
   return (
     <QuickActionsModalProvider>
       <JourneyView user={user} />
@@ -217,7 +218,7 @@ export default function Journey({ user }: JourneyProps) {
   )
 }
 
-export async function getServerSideProps(context: GetServerSidePropsContext) {
+export const getServerSideProps = (async (context) => {
   const supabase = createClient(context)
 
   const { data, error } = await supabase.auth.getUser()
@@ -236,4 +237,4 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
       user: data.user,
     },
   }
-}
+}) satisfies GetServerSideProps<{ user: User | null }>

@@ -1,8 +1,8 @@
 import clsx from 'clsx'
-import type { ChangeEvent, InputHTMLAttributes } from 'react'
+import type { ChangeEvent, InputHTMLAttributes, ReactNode } from 'react'
 import { useState } from 'react'
 
-export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
+interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   label: string
   id: string
   onChange: (e: ChangeEvent<HTMLInputElement>) => void
@@ -18,7 +18,7 @@ export const Input = ({
   onChange,
   min,
   isDisabled,
-}: InputProps) => {
+}: InputProps): ReactNode => {
   const [isFocused, setIsFocused] = useState(false)
 
   const handleFocus = () => setIsFocused(true)

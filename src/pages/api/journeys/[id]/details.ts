@@ -1,10 +1,11 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 
 import createClient from '@/libs/supabase/api'
+
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
-) {
+): Promise<void> {
   const supabase = createClient(req, res)
   const { id } = req.query
   const {

@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react'
 import { useState } from 'react'
 
 import type { IWantToStep } from '@/providers/QuickActions.Provider'
@@ -11,7 +12,7 @@ import { SelectAction } from './views/SelectAction'
 import { SelectCategory } from './views/SelectCategory'
 import { UpdateBudget } from './views/UpdateBudget'
 
-export interface IWantToViewProps {
+interface IWantToViewProps {
   currentStep: IWantToStep
   setCurrentStep: (step: IWantToStep) => void
   days: Day[]
@@ -25,7 +26,7 @@ export function IWantToView({
   days,
   journey,
   selectedDay,
-}: IWantToViewProps) {
+}: IWantToViewProps): ReactNode {
   const dayId = selectedDay
     ? days.find((day) => day.startDate === selectedDay)?.id || ''
     : days[0].id

@@ -2,13 +2,14 @@ import { GearIcon, PaperPlaneIcon } from '@radix-ui/react-icons'
 import clsx from 'clsx'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
+import { type ReactNode } from 'react'
 
 const navItems = [
   { name: 'My journeys', href: '/my-journeys', icon: PaperPlaneIcon },
   { name: 'Settings', href: '/account', icon: GearIcon },
 ]
 
-export function NavBar() {
+export function NavBar(): ReactNode {
   const router = useRouter()
 
   return (

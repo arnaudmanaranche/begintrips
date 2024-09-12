@@ -3,7 +3,7 @@ import * as Dialog from '@radix-ui/react-dialog'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { motion } from 'framer-motion'
 import { useParams } from 'next/navigation'
-import type { ChangeEvent } from 'react'
+import type { ChangeEvent, ReactNode } from 'react'
 import { useState } from 'react'
 
 import { updateJourneyDestination } from '@/api/calls/journeys'
@@ -13,13 +13,13 @@ import { Input } from '@/components/Input/Input'
 import { useSearchDestination } from '@/hooks/useSearchDestination'
 import type { Journey } from '@/types'
 
-export interface ChangeDestinationProps {
+interface ChangeDestinationProps {
   destination: string
 }
 
 export function ChangeDestination({
   destination: initialDestination,
-}: ChangeDestinationProps) {
+}: ChangeDestinationProps): ReactNode {
   const [destination, setDestination] = useState(initialDestination)
   const { id: journeyId } = useParams()
   const queryClient = useQueryClient()
@@ -65,7 +65,6 @@ export function ChangeDestination({
         QUERY_KEYS.JOURNEY(journeyId as string),
         context?.previousJourney
       )
-      // @TODO: Add toast error
     },
     onSettled: () => {
       queryClient.invalidateQueries({

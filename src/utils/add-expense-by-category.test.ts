@@ -1,10 +1,10 @@
-import type { AddExpense, Expense, ExpensesByCategory } from '@/types'
+import type { Expense, ExpensesByCategory } from '@/types'
 
 import { addExpenseByCategory } from './add-expense-by-category'
 
 describe('addExpenseByCategory', () => {
   it('should add expense by category', () => {
-    const expensesByCategory: ExpensesByCategory = {
+    const expensesByCategory = {
       food: [
         {
           id: '1',
@@ -15,7 +15,7 @@ describe('addExpenseByCategory', () => {
           dayId: '1',
           name: 'Food 1',
           created_at: '2022-01-01',
-        } as Expense,
+        },
       ],
       bar: [
         {
@@ -27,11 +27,11 @@ describe('addExpenseByCategory', () => {
           dayId: '1',
           name: 'Bar 1',
           created_at: '2022-01-03',
-        } as Expense,
+        },
       ],
-    }
+    } as ExpensesByCategory
 
-    const newExpense: AddExpense = {
+    const newExpense: Expense = {
       id: '3',
       amount: 300,
       category: 'food',
@@ -39,6 +39,7 @@ describe('addExpenseByCategory', () => {
       name: 'Food 2',
       dayId: '1',
       journeyId: '1',
+      created_at: new Date().toISOString(),
     }
 
     addExpenseByCategory(newExpense, expensesByCategory)

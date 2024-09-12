@@ -1,12 +1,12 @@
 import { ExclamationTriangleIcon, InfoCircledIcon } from '@radix-ui/react-icons'
 import type { ReactNode } from 'react'
 
-export interface CalloutProps {
+interface CalloutProps {
   type: 'danger' | 'info'
   children: ReactNode
 }
 
-const Callout = ({ type, children }: CalloutProps) => {
+const Callout = ({ type, children }: CalloutProps): ReactNode => {
   const types = {
     danger: {
       icon: <ExclamationTriangleIcon className="h-4 w-4 text-red-600" />,

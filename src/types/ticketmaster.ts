@@ -6,7 +6,7 @@ export interface EventResponse {
   _links: Links
 }
 
-export interface Event {
+interface Event {
   name: string
   type: string
   id: string
@@ -31,7 +31,7 @@ export interface Event {
   _embedded?: EmbeddedDetails
 }
 
-export interface Image {
+interface Image {
   ratio: string
   url: string
   width: number
@@ -39,31 +39,31 @@ export interface Image {
   fallback: boolean
 }
 
-export interface Sales {
+interface Sales {
   public?: PublicSales
   presales?: PreSale[]
 }
 
-export interface PublicSales {
+interface PublicSales {
   startDateTime?: string
   startTBD?: boolean
   endDateTime?: string
 }
 
-export interface PreSale {
+interface PreSale {
   startDateTime: string
   endDateTime: string
   name: string
 }
 
-export interface EventDates {
+interface EventDates {
   start: StartDates
   end?: EndDates
   timezone?: string
   spanMultipleDays?: boolean
 }
 
-export interface StartDates {
+interface StartDates {
   localDate: string
   localTime?: string
   dateTime?: string
@@ -73,13 +73,13 @@ export interface StartDates {
   noSpecificTime?: boolean
 }
 
-export interface EndDates {
+interface EndDates {
   localDate: string
   localTime?: string
   dateTime?: string
 }
 
-export interface Classification {
+interface Classification {
   primary: boolean
   segment: Genre
   genre: Genre
@@ -89,25 +89,25 @@ export interface Classification {
   family: boolean
 }
 
-export interface Genre {
+interface Genre {
   id: string
   name: string
 }
 
-export interface Promoter {
+interface Promoter {
   id: string
   name: string
   description: string
 }
 
-export interface PriceRange {
+interface PriceRange {
   type: string
   currency: string
   min: number
   max: number
 }
 
-export interface Product {
+interface Product {
   id: string
   name: string
   url: string
@@ -115,46 +115,46 @@ export interface Product {
   classifications?: Classification[]
 }
 
-export interface SeatMap {
+interface SeatMap {
   staticUrl: string
 }
 
-export interface Accessibility {
+interface Accessibility {
   ticketLimit?: number
 }
 
-export interface TicketLimit {
+interface TicketLimit {
   info: string
 }
 
-export interface AgeRestrictions {
+interface AgeRestrictions {
   legalAgeEnforced: boolean
 }
 
-export interface PageInfo {
+interface PageInfo {
   size: number
   totalElements: number
   totalPages: number
   number: number
 }
 
-export interface Links {
+interface Links {
   first?: Link
   self?: Link
   next?: Link
   last?: Link
 }
 
-export interface Link {
+interface Link {
   href: string
 }
 
-export interface EmbeddedDetails {
+interface EmbeddedDetails {
   venues?: Venue[]
   attractions?: Attraction[]
 }
 
-export interface Venue {
+interface Venue {
   name: string
   type: string
   id: string
@@ -180,62 +180,62 @@ export interface Venue {
   _links?: Links
 }
 
-export interface City {
+interface City {
   name: string
 }
 
-export interface State {
+interface State {
   name: string
   stateCode: string
 }
 
-export interface Country {
+interface Country {
   name: string
   countryCode: string
 }
 
-export interface Address {
+interface Address {
   line1: string
   line2?: string
 }
 
-export interface Location {
+interface Location {
   longitude: string
   latitude: string
 }
 
-export interface Market {
+interface Market {
   id: string
 }
 
-export interface Dma {
+interface Dma {
   id: number
 }
 
-export interface Social {
+interface Social {
   twitter?: string
   facebook?: string
 }
 
-export interface BoxOfficeInfo {
+interface BoxOfficeInfo {
   phoneNumberDetail?: string
   openHoursDetail?: string
   acceptedPaymentDetail?: string
   willCallDetail?: string
 }
 
-export interface GeneralInfo {
+interface GeneralInfo {
   generalRule?: string
   childRule?: string
 }
 
-export interface UpcomingEvents {
+interface UpcomingEvents {
   _total: number
   ticketmaster?: number
   _filtered: number
 }
 
-export interface Attraction {
+interface Attraction {
   name: string
   type: string
   id: string
@@ -249,7 +249,7 @@ export interface Attraction {
   _links?: Links
 }
 
-export interface ExternalLinks {
+interface ExternalLinks {
   youtube?: ExternalLink[]
   twitter?: ExternalLink[]
   facebook?: ExternalLink[]
@@ -262,6 +262,6 @@ export interface ExternalLinks {
   musicbrainz?: ExternalLink[]
 }
 
-export interface ExternalLink {
+interface ExternalLink {
   url: string
 }

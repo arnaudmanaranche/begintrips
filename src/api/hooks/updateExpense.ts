@@ -1,3 +1,4 @@
+import type { UseMutateAsyncFunction } from '@tanstack/react-query'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useParams } from 'next/navigation'
 
@@ -8,11 +9,22 @@ import { updateExpenseById } from '@/utils/update-expense-by-id'
 import { updateExpense } from '../calls/expenses'
 import { QUERY_KEYS } from '../queryKeys'
 
-export interface useUpdateExpense {
+interface useUpdateExpense {
   onSuccessCallback?: () => void
 }
 
-export const useUpdateExpense = ({ onSuccessCallback }: useUpdateExpense) => {
+export const useUpdateExpense = ({
+  onSuccessCallback,
+}: useUpdateExpense): {
+  handleUpdateExpense: UseMutateAsyncFunction<
+    { message: string },
+    Error,
+    Expense
+  >
+  isPending: boolean
+  isError: boolean
+  error: Error | null
+} => {
   const queryClient = useQueryClient()
   const { id: journeyId } = useParams()
 

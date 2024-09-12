@@ -1,9 +1,10 @@
 import Head from 'next/head'
 import { useRouter } from 'next/router'
+import { type ReactNode } from 'react'
 
 import { Button } from '@/components/Button/Button'
 
-export default function Custom404() {
+export default function Custom404(): ReactNode {
   const router = useRouter()
 
   return (

@@ -1,13 +1,18 @@
+import { type ReactNode } from 'react'
+
 import type { Expense } from '@/types'
 
 import { ExpensesCharts } from '../ExpensesCharts/ExpensesCharts'
 
-export interface ExpensesProps {
+interface ExpensesProps {
   expensesByCategory: Record<string, Expense[]>
   isLoading: boolean
 }
 
-export function Expenses({ expensesByCategory, isLoading }: ExpensesProps) {
+export function Expenses({
+  expensesByCategory,
+  isLoading,
+}: ExpensesProps): ReactNode {
   if (isLoading) {
     return (
       <div className="flex flex-col space-y-2">

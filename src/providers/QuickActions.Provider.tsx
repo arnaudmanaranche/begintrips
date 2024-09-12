@@ -60,16 +60,6 @@ export function QuickActionsModalProvider({
   )
 }
 
-export function useQuickActionsModalState(): QuickActionsModalState {
-  const context = useContext(QuickActionsModalStateContext)
-  if (context === undefined) {
-    throw new Error(
-      'useQuickActionsModalState must be used within a QuickActionsModalProvider'
-    )
-  }
-  return context
-}
-
 export function useQuickActionsModalActions(): QuickActionsModalActions {
   const context = useContext(QuickActionsModalActionsContext)
   if (context === undefined) {
