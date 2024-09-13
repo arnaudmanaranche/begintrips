@@ -38,7 +38,7 @@ export default function Onboarding(): ReactNode {
     try {
       const data = await mutateAsync()
       resetJourney()
-      router.push(`/journey/${data.id}`)
+      router.push(`/journey/${data.journeyId}`)
     } catch {
       setError(
         'An error occurred while creating your journey. Please try again later.'
