@@ -121,8 +121,9 @@ export function SearchEvents({ journey, days }: SearchEventsProps): ReactNode {
                       name: event.name,
                       startDate: event.dates?.start.dateTime as string,
                       category:
-                        (event.classifications?.[0].genre
-                          .name as ExpenseCategoryEnum) || 'other',
+                        // (event.classifications?.[0].genre
+                        //   .name as ExpenseCategoryEnum) || 'other',
+                        'other',
                       journeyId: journey.id,
                     },
                   })
