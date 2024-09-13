@@ -7,7 +7,7 @@ import { useState } from 'react'
 
 import { useCreateExpense } from '@/api/hooks/createExpense'
 import { useSearchEvents } from '@/libs/ticketmaster/client'
-import type { Day, ExpenseCategoryEnum, Journey } from '@/types'
+import type { Day, Journey } from '@/types'
 import { formatDate } from '@/utils/date'
 import { hasJourneyPassed } from '@/utils/has-journey-passed'
 
@@ -121,8 +121,9 @@ export function SearchEvents({ journey, days }: SearchEventsProps): ReactNode {
                       name: event.name,
                       startDate: event.dates?.start.dateTime as string,
                       category:
-                        (event.classifications?.[0].genre
-                          .name as ExpenseCategoryEnum) || 'other',
+                        // (event.classifications?.[0].genre
+                        //   .name as ExpenseCategoryEnum) || 'other',
+                        'other',
                       journeyId: journey.id,
                     },
                   })
