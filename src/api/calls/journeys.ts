@@ -1,4 +1,4 @@
-import type { AddJourney, Day, Journey, JourneyPage } from '@/types'
+import type { AddJourney, Day, JourneyPage } from '@/types'
 import { isInvalidDate } from '@/utils/date'
 
 import { apiInstance } from '../config'
@@ -7,7 +7,9 @@ interface GetJourneyParams {
   journeyId: string
 }
 
-export const createJourney = async (journey: AddJourney): Promise<Journey> => {
+export const createJourney = async (
+  journey: AddJourney
+): Promise<{ message: string; journeyId: string }> => {
   const { data } = await apiInstance.post('/journeys', journey)
 
   return data
