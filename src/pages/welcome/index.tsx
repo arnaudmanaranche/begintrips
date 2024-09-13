@@ -8,6 +8,7 @@ import { LogInForm } from '@/components/LogInForm/LogInForm'
 import { SignUpForm } from '@/components/SignUpForm/SignInForm'
 import { createClient } from '@/libs/supabase/server-props'
 import { useOnboardingStore } from '@/stores/onboarding.store'
+import { formatDate } from '@/utils/date'
 
 export default function WelcomePage(): ReactNode {
   const [form, setForm] = useState<'login' | 'signup'>('login')
@@ -47,12 +48,20 @@ export default function WelcomePage(): ReactNode {
                       <li className="flex flex-col space-y-1 text-base font-medium">
                         <span>Departure date</span>
                         <span className="font-light">
-                          {journey.departureDate}
+                          {formatDate(
+                            journey.departureDate,
+                            'EEEE - dd MMMM yyyy'
+                          )}
                         </span>
                       </li>
                       <li className="flex flex-col space-y-1 text-base font-medium">
                         <span>Return date</span>
-                        <span className="font-light">{journey.returnDate}</span>
+                        <span className="font-light">
+                          {formatDate(
+                            journey.returnDate,
+                            'EEEE - dd MMMM yyyy'
+                          )}
+                        </span>
                       </li>
                     </ul>
                   </div>
