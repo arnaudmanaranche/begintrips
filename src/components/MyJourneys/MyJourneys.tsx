@@ -17,10 +17,10 @@ export default function MyJourneys({
 }: MyJourneysProps): ReactNode {
   if (isLoading) {
     return (
-      <div className="mx-auto mt-20 flex min-h-[500px] max-w-screen-sm flex-col space-y-4">
-        <div className="h-[100px] w-full animate-pulse rounded-lg bg-slate-200" />
-        <div className="h-[100px] w-full animate-pulse rounded-lg bg-slate-200" />
-        <div className="h-[100px] w-full animate-pulse rounded-lg bg-slate-200" />
+      <div className="flex min-h-[500px] max-w-screen-sm flex-col space-y-4">
+        <div className="h-[80px] w-full animate-pulse rounded-lg bg-slate-200" />
+        <div className="h-[80px] w-full animate-pulse rounded-lg bg-slate-200" />
+        <div className="h-[80px] w-full animate-pulse rounded-lg bg-slate-200" />
       </div>
     )
   }
