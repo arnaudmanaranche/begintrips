@@ -22,7 +22,7 @@ export function NavBar(): ReactNode {
         <ul className="flex flex-1 items-center space-x-6 px-10 lg:px-0">
           {navItems.map((item) => {
             const Icon = item.icon
-            const isActive = item.href === router.asPath
+            const isActive = item.href === router.pathname
 
             return (
               <li

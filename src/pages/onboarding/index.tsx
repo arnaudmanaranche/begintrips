@@ -344,7 +344,6 @@ export const getServerSideProps = (async (context) => {
     .eq('id', auth.user.id)
     .single()
 
-  // @TODO Add another condition when the user has enough credits because he paid with Stripe.
   if (userEntity?.credits === 0) {
     return {
       redirect: {

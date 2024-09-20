@@ -27,7 +27,7 @@ export function Button({
     primary: clsx(
       'bg-accent text-white hover:bg-accent-dark',
       isDisabled &&
-        'cursor-not-allowed bg-gray-400/30 text-black/60 disabled:hover:bg-gray-400/30'
+        'cursor-not-allowed bg-gray-400/50 text-black/60 disabled:hover:bg-gray-400/50'
     ),
     ghost: clsx(
       'bg-transparent text-accent border border-accent hover:bg-accent-dark hover:text-white',

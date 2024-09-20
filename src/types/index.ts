@@ -11,6 +11,10 @@ export type DateString = `${number}-${number}-${number}` // Example for YYYY-MM-
 export type Journey = Tables<'journeys'>
 export type Day = Tables<'days'>
 export type Expense = Tables<'expenses'>
+export type Payments = Tables<'payments'>
+export interface User extends Tables<'users'> {
+  email: string
+}
 
 // CREATE
 export type AddExpense = TablesInsert<'expenses'>
@@ -22,6 +26,7 @@ export type UpdateExpense = TablesUpdate<'expenses'>
 
 // ENUMS
 export type ExpenseCategoryEnum = Enums<'expense_category'>
+export type PaymentStatusEnum = Enums<'payment_status'>
 
 // App types
 export type ExpensesByCategory = Record<ExpenseCategoryEnum, Expense[]>
@@ -33,4 +38,15 @@ export interface JourneyPage {
   expensesByCategory: ExpensesByCategory
   expensesByDay: ExpensesByDay
   journey: Journey
+}
+
+export interface ProductPlanProps {
+  externalProductId: string
+  internalProductId: string
+  isDisabled: boolean
+  isMostPopular: boolean
+  items: string[]
+  mode: 'subscription' | 'payment' | ''
+  price: number
+  title: string
 }

@@ -1,3 +1,11 @@
+export type Json =
+  | string
+  | number
+  | boolean
+  | null
+  | { [key: string]: Json | undefined }
+  | Json[]
+
 export interface Database {
   public: {
     Tables: {
@@ -111,61 +119,83 @@ export interface Database {
         }
         Relationships: []
       }
-      one_time_payments: {
+      payments: {
         Row: {
           created_at: string | null
+          external_payment_id: string | null
           id: string
-          status: string | null
-          stripe_payment_id: string | null
+          internal_product_id: string | null
+          status: Database['public']['Enums']['payment_status'] | null
           updated_at: string | null
           user_id: string | null
         }
         Insert: {
           created_at?: string | null
+          external_payment_id?: string | null
           id?: string
-          status?: string | null
-          stripe_payment_id?: string | null
+          internal_product_id?: string | null
+          status?: Database['public']['Enums']['payment_status'] | null
           updated_at?: string | null
           user_id?: string | null
         }
         Update: {
           created_at?: string | null
+          external_payment_id?: string | null
           id?: string
-          status?: string | null
-          stripe_payment_id?: string | null
+          internal_product_id?: string | null
+          status?: Database['public']['Enums']['payment_status'] | null
           updated_at?: string | null
           user_id?: string | null
         }
         Relationships: [
           {
-            foreignKeyName: "one_time_payments_user_id_fkey"
-            columns: ["user_id"]
+            foreignKeyName: 'one_time_payments_user_id_fkey'
+            columns: ['user_id']
             isOneToOne: false
-            referencedRelation: "users"
-            referencedColumns: ["id"]
+            referencedRelation: 'users'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'payments_internal_product_id_fkey'
+            columns: ['internal_product_id']
+            isOneToOne: false
+            referencedRelation: 'products'
+            referencedColumns: ['id']
           },
         ]
       }
       products: {
         Row: {
           created_at: string
-          id: number
+          external_product_id: string | null
+          id: string
+          is_disabled: boolean | null
+          is_most_popular: boolean | null
+          items: string | null
           price: number | null
-          stripe_product_id: string | null
+          title: string | null
           type: string | null
         }
         Insert: {
           created_at?: string
-          id?: number
+          external_product_id?: string | null
+          id?: string
+          is_disabled?: boolean | null
+          is_most_popular?: boolean | null
+          items?: string | null
           price?: number | null
-          stripe_product_id?: string | null
+          title?: string | null
           type?: string | null
         }
         Update: {
           created_at?: string
-          id?: number
+          external_product_id?: string | null
+          id?: string
+          is_disabled?: boolean | null
+          is_most_popular?: boolean | null
+          items?: string | null
           price?: number | null
-          stripe_product_id?: string | null
+          title?: string | null
           type?: string | null
         }
         Relationships: []
@@ -173,45 +203,52 @@ export interface Database {
       subscriptions: {
         Row: {
           created_at: string | null
-          id: number
-          product_id: number | null
-          status: string | null
-          stripe_subscription_id: string | null
+          external_subscription_id: string | null
+          id: string
+          internal_product_id: string
+          status: Database['public']['Enums']['subscription_status'] | null
           updated_at: string | null
           user_id: string | null
         }
         Insert: {
           created_at?: string | null
-          id?: number
-          product_id?: number | null
-          status?: string | null
-          stripe_subscription_id?: string | null
+          external_subscription_id?: string | null
+          id?: string
+          internal_product_id: string
+          status?: Database['public']['Enums']['subscription_status'] | null
           updated_at?: string | null
           user_id?: string | null
         }
         Update: {
           created_at?: string | null
-          id?: number
-          product_id?: number | null
-          status?: string | null
-          stripe_subscription_id?: string | null
+          external_subscription_id?: string | null
+          id?: string
+          internal_product_id?: string
+          status?: Database['public']['Enums']['subscription_status'] | null
           updated_at?: string | null
           user_id?: string | null
         }
         Relationships: [
           {
-            foreignKeyName: "subscriptions_product_id_fkey"
-            columns: ["product_id"]
-            isOneToOne: false
-            referencedRelation: "products"
-            referencedColumns: ["id"]
+            foreignKeyName: 'fk_user'
+            columns: ['user_id']
+            isOneToOne: true
+            referencedRelation: 'users'
+            referencedColumns: ['id']
           },
           {
-            foreignKeyName: "subscriptions_user_id_fkey"
-            columns: ["user_id"]
+            foreignKeyName: 'subscriptions_internal_product_id_fkey'
+            columns: ['internal_product_id']
+            isOneToOne: false
+            referencedRelation: 'products'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'subscriptions_user_id_fkey'
+            columns: ['user_id']
             isOneToOne: true
-            referencedRelation: "users"
-            referencedColumns: ["id"]
+            referencedRelation: 'users'
+            referencedColumns: ['id']
           },
         ]
       }
@@ -247,57 +284,22 @@ export interface Database {
         }
         Returns: undefined
       }
-      fetch_users_with_subscriptions:
-        | {
-            Args: Record<PropertyKey, never>
-            Returns: {
-              user_id: string
-              user_name: string
-              user_email: string
-              subscription_id: string
-              stripe_subscription_id: string
-              subscription_status: string
-              subscription_created_at: string
-              product_name: string
-              product_description: string
-              price_id: string
-            }[]
-          }
-        | {
-            Args: {
-              input_user_id: string
-            }
-            Returns: {
-              user_id: string
-              user_name: string
-              user_email: string
-              subscription_id: string
-              stripe_subscription_id: string
-              subscription_status: string
-              subscription_created_at: string
-              product_name: string
-              product_description: string
-              price_id: string
-            }[]
-          }
-      handle_payment_update:
-        | {
-            Args: {
-              payment_id: string
-              input_user_id: string
-              payment_type: string
-            }
-            Returns: undefined
-          }
-        | {
-            Args: {
-              payment_id: string
-              input_user_id: string
-              payment_type: string
-              payment_price_id: string
-            }
-            Returns: undefined
-          }
+      fetch_users_with_subscriptions: {
+        Args: {
+          input_user_id: string
+        }
+        Returns: {
+          user_id: string
+          username: string
+          credits: number
+          subscription_id: number
+          stripe_subscription_id: string
+          subscription_status: string
+          product_stripe_product_id: string
+          product_type: string
+          product_price: number
+        }[]
+      }
       process_days: {
         Args: {
           start_date: string
@@ -311,6 +313,14 @@ export interface Database {
           start_date: string
           end_date: string
           journey_id: string
+        }
+        Returns: undefined
+      }
+      update_user_credits: {
+        Args: {
+          user_id: string
+          change_direction: number
+          amount: number
         }
         Returns: undefined
       }
@@ -344,6 +354,8 @@ export interface Database {
         | 'parking'
         | 'ferry'
         | 'flight'
+      payment_status: 'succeeded' | 'failed' | 'refunded'
+      subscription_status: 'active' | 'canceled'
     }
     CompositeTypes: {
       [_ in never]: never

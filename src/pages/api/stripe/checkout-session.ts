@@ -1,46 +1,52 @@
-import { id } from 'date-fns/locale'
 import type { NextApiRequest, NextApiResponse } from 'next'
 import Stripe from 'stripe'
 
 import createClient from '@/libs/supabase/api'
+import { SITE_URL } from '@/utils/seo'
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY)
+
+const REDIRECT_URL = `${SITE_URL}/account`
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
-) {
+): Promise<void> {
   const supabase = createClient(req, res)
   const {
     data: { user },
   } = await supabase.auth.getUser()
 
-  try {
-    const {
-      body: { priceId },
-    } = req.body
-    // console.log(req.body?.priceId)
+  const { externalProductId, internalProductId, mode } = req.body
 
+  if (!externalProductId || !mode || !user?.id) {
+    return res.status(400).json({ error: 'Malformed request' })
+  }
+
+  try {
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
-      mode: 'subscription',
+      mode,
       metadata: {
-        user_id: user?.id as string,
+        userId: user.id,
+        externalProductId,
+        internalProductId,
       },
       line_items: [
         {
-          price: priceId,
+          price: externalProductId,
           quantity: 1,
         },
       ],
-      success_url: 'http://localhost:3000/account',
-      cancel_url: 'http://localhost:3000/account',
+      success_url: `${REDIRECT_URL}?payment_status=succeeded`,
+      cancel_url: `${REDIRECT_URL}?payment_status=declined`,
     })
 
     return res.json({ id: session.id })
-  } catch (err) {
+  } catch (error) {
     return res.json({
-      error: 'An error occurred while creating the checkout session.',
+      error: 'An error occurred while creating the checkout session',
+      message: error,
     })
   }
 }

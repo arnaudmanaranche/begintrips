@@ -1,15 +1,22 @@
 import { apiInstance } from '../config'
 
-export const checkoutStripeProduct = async ({
-  priceId,
+export const checkoutSession = async ({
+  externalProductId,
+  internalProductId,
+  mode,
 }: {
-  priceId: string
-}) => {
-  const { data } = await apiInstance.post('/stripe/checkout-session', {
-    body: {
-      priceId,
-    },
-  })
+  externalProductId: string
+  internalProductId: string
+  mode: string
+}): Promise<{ id: string }> => {
+  const { data } = await apiInstance.post<Promise<{ id: string }>>(
+    '/stripe/checkout-session',
+    {
+      externalProductId,
+      internalProductId,
+      mode,
+    }
+  )
 
   return data
 }

@@ -11688,7 +11688,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ora@npm:^5.4.1":
+"ora@npm:5.4.1":
   version: 5.4.1
   resolution: "ora@npm:5.4.1"
   dependencies:
@@ -12108,6 +12108,7 @@ __metadata:
     lodash.groupby: "npm:4.6.0"
     micro: "npm:10.0.1"
     next: "npm:14.2.10"
+    ora: "npm:5.4.1"
     postcss: "npm:8"
     postcss-load-config: "npm:6.0.1"
     prettier: "npm:3.3.3"
@@ -12116,6 +12117,7 @@ __metadata:
     react: "npm:18"
     react-dom: "npm:18"
     recharts: "npm:2.12.7"
+    sonner: "npm:1.5.0"
     storybook: "npm:8.2.9"
     stripe: "npm:16.10.0"
     supabase: "npm:1.192.5"
@@ -13771,6 +13773,16 @@ __metadata:
     ip-address: "npm:^9.0.5"
     smart-buffer: "npm:^4.2.0"
   checksum: 10c0/d54a52bf9325165770b674a67241143a3d8b4e4c8884560c4e0e078aace2a728dffc7f70150660f51b85797c4e1a3b82f9b7aa25e0a0ceae1a243365da5c51a7
+  languageName: node
+  linkType: hard
+
+"sonner@npm:1.5.0":
+  version: 1.5.0
+  resolution: "sonner@npm:1.5.0"
+  peerDependencies:
+    react: ^18.0.0
+    react-dom: ^18.0.0
+  checksum: 10c0/9561b5861bede7f874cc442e447a68c8bfa6e4eadad603bc04e38db35a8b8108741f595a12c9856742062bae230ffedf73122015940491f482c5aa9e68ee85e0
   languageName: node
   linkType: hard
 
