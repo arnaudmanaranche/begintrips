@@ -4,6 +4,7 @@ import Stripe from 'stripe'
 
 import {
   getUserByPaymentIntentId,
+  getUserJourneysAfterPaymentDate,
   handleCheckoutSessionCompleted,
 } from '@/libs/supabase/admin'
 import createClient from '@/libs/supabase/api'
@@ -71,6 +72,7 @@ export default async function handler(
           throw new Error('No `paymentIntentId` linked')
         }
 
+        // Get the initial payment date
         const user = await getUserByPaymentIntentId({
           req,
           res,
@@ -83,7 +85,7 @@ export default async function handler(
           )
         }
 
-        const { user_id } = user
+        const { user_id, created_at } = user
 
         await supabase
           .from('payments')
@@ -97,6 +99,27 @@ export default async function handler(
           change_direction: -1,
           amount: 5,
         })
+
+        const journeys = await getUserJourneysAfterPaymentDate({
+          req,
+          res,
+          date: created_at as string,
+          userId: user_id as string,
+        })
+
+        if (journeys?.length && journeys?.length > 0) {
+          const journeyIds = journeys.map((journey) => journey.id)
+
+          const { error } = await supabase
+            .from('journeys')
+            .update({ status: false })
+            .in('id', journeyIds)
+            .eq('userId', user_id as string)
+
+          if (error) {
+            throw new Error('Error updating journeys: ' + error.message)
+          }
+        }
 
         break
       }

@@ -24,8 +24,8 @@ export function ExpenseLabel({
   return (
     <div
       className={clsx(
-        'flex items-center justify-center rounded-full border-[0.5px] px-2 py-1 text-xs font-medium',
-        `bg-[${color}] border-[${color}] text-${textColor}`
+        'flex items-center justify-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset',
+        `bg-[${color}] ring-[${color}] text-${textColor}`
       )}
     >
       <p>{expenseCategory}</p>

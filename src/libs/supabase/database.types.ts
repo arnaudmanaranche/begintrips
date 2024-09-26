@@ -95,6 +95,7 @@ export interface Database {
           destination: string
           id: string
           returnDate: string
+          status: boolean
           userId: string
         }
         Insert: {
@@ -105,6 +106,7 @@ export interface Database {
           destination: string
           id?: string
           returnDate: string
+          status?: boolean
           userId?: string
         }
         Update: {
@@ -115,6 +117,7 @@ export interface Database {
           destination?: string
           id?: string
           returnDate?: string
+          status?: boolean
           userId?: string
         }
         Relationships: []
@@ -278,12 +281,6 @@ export interface Database {
       [_ in never]: never
     }
     Functions: {
-      decrement_user_credits: {
-        Args: {
-          user_id: string
-        }
-        Returns: undefined
-      }
       fetch_users_with_subscriptions: {
         Args: {
           input_user_id: string

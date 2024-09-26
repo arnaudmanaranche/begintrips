@@ -36,15 +36,17 @@ export default function MyJourneysPage({
         <p className="text-3xl">My journeys</p>
         <MyJourneys journeys={journeys} isLoading={isFetching} />
       </div>
-      {user.credits > 0 ? (
-        <Button
-          onClick={() => {
-            router.push('/onboarding')
-          }}
-        >
-          Plan a new trip
-        </Button>
-      ) : null}
+      <div className="mt-20 flex justify-center">
+        {user.credits > 0 ? (
+          <Button
+            onClick={() => {
+              router.push('/onboarding')
+            }}
+          >
+            Plan a new trip
+          </Button>
+        ) : null}
+      </div>
       <div className="fixed bottom-0 left-0 right-0 bg-white lg:hidden">
         <ul className="flex h-16  items-center justify-around ring-1 ring-slate-200">
           <li className="flex items-center text-accent">

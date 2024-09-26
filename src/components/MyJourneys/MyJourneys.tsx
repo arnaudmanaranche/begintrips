@@ -80,7 +80,10 @@ export default function MyJourneys({
             </span>
           </div>
           <div className="flex space-x-2">
-            <Button onClick={() => router.push(`/journey/${journey.id}`)}>
+            <Button
+              onClick={() => router.push(`/journey/${journey.id}`)}
+              isDisabled={!journey.status}
+            >
               {hasJourneyPassed(new Date(journey.departureDate))
                 ? 'Visit'
                 : 'Edit'}

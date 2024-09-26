@@ -45,6 +45,10 @@ function JourneyView({ user }: JourneyProps) {
   const { data, isPending: isFetchingJourney } = useQuery({
     queryKey: QUERY_KEYS.JOURNEY(journeyId as string),
     queryFn: () => getJourney({ journeyId: journeyId as string }),
+    throwOnError() {
+      router.replace('/my-journeys')
+      return false
+    },
   })
 
   const daysLeftBeforeJourneyBegins = useMemo(

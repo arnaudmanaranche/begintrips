@@ -20,6 +20,10 @@ export const getJourney = async ({
 }: GetJourneyParams): Promise<JourneyPage> => {
   const { data } = await apiInstance.get<JourneyPage>(`/journeys/${journeyId}`)
 
+  if (!data.journey.status) {
+    throw new Error('Journey is not active')
+  }
+
   return data
 }
 

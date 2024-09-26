@@ -1,6 +1,8 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import type Stripe from 'stripe'
 
+import type { Journey } from '@/types'
+
 import createClient from '../api'
 
 export async function handleCheckoutSessionCompleted({
@@ -38,14 +40,41 @@ export async function getUserByPaymentIntentId({
   paymentIntentId: string
 }): Promise<{
   user_id: string | null
+  created_at: string | null
 } | null> {
   const supabase = createClient(req, res)
 
   const { data } = await supabase
     .from('payments')
-    .select('user_id')
+    .select('user_id, created_at')
     .eq('external_payment_id', paymentIntentId)
     .single()
+
+  return data
+}
+
+export async function getUserJourneysAfterPaymentDate({
+  req,
+  res,
+  date,
+  userId,
+}: {
+  req: NextApiRequest
+  res: NextApiResponse
+  date: string
+  userId: string
+}): Promise<Journey[] | null> {
+  const supabase = createClient(req, res)
+
+  const { data, error } = await supabase
+    .from('journeys')
+    .select('*')
+    .eq('userId', userId)
+    .gt('created_at', date)
+
+  if (error) {
+    throw new Error('Error getting user journeys: ' + error.message)
+  }
 
   return data
 }
