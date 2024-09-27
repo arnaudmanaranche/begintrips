@@ -16,9 +16,9 @@ function Cta({ title, isDisabled }: { title: string; isDisabled: boolean }) {
     switch (title) {
       case 'Free':
         return 'Get started'
-      case 'Journey Pack':
+      case 'Casual Explorer':
         return 'Buy now'
-      case 'Monthly':
+      case 'Globetrotter':
         return 'Subscribe'
     }
   }, [title])
@@ -47,7 +47,7 @@ export function ProductPlan({
   return (
     <div
       className={clsx(
-        'rounded-lg border p-6 shadow-md',
+        'flex flex-col rounded-lg border p-6 shadow-md',
         (isMostPopular || isDisabled) && 'relative',
         isDisabled ? 'border-gray-400/30' : 'border-accent'
       )}
@@ -69,7 +69,7 @@ export function ProductPlan({
           currency: 'USD',
         }).format(price)}
       </p>
-      <ul className="mb-6 space-y-2">
+      <ul className="mb-6 flex-grow space-y-2">
         {items.map((item) => (
           <li className="flex items-center" key={item}>
             <ChevronRightIcon className="mr-2 h-5 w-5 text-accent" />

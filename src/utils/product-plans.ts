@@ -2,7 +2,11 @@ import type { ProductPlanProps } from '@/types'
 
 export const PLANS: Record<string, ProductPlanProps> = {
   FREE: {
-    items: ['1 journey', 'All features included', '5 AI suggestions'],
+    items: [
+      'Unlimited journeys with all features',
+      'Full access to every feature',
+      'Unlimited AI-generated suggestions',
+    ],
     price: 0,
     title: 'Free',
     externalProductId: '',
@@ -11,24 +15,30 @@ export const PLANS: Record<string, ProductPlanProps> = {
     isDisabled: false,
     isMostPopular: false,
   },
-  JOURNEY_PACK: {
-    items: ['5 journeys', 'All features included', '50 AI suggestions'],
+  CASUAL_EXPLORER: {
+    items: [
+      'Access to all features for up to 5 journeys',
+      'Track expenses by category',
+      'View activities available on your selected dates',
+      'Monitor your budget in real-time',
+    ],
     price: 29.99,
-    title: 'Journey Pack',
+    title: 'Casual Explorer',
     externalProductId: 'price_1PuJB0QtXBTOxwJvNGoKTC6T',
     mode: 'payment',
     internalProductId: '8827fdcf-0b57-4b5d-b3ea-546ae94073a7',
     isDisabled: false,
     isMostPopular: false,
   },
-  MONTHLY: {
+  GLOBETROTTER: {
     items: [
-      'Unlimited journeys',
-      'All features included',
-      'Unlimited AI suggestions',
+      'Access to all features for up to 1 journey',
+      'Track expenses by category',
+      'View activities available on your selected dates',
+      'Monitor your budget in real-time',
     ],
     price: 5.5,
-    title: 'Monthly',
+    title: 'Globetrotter',
     externalProductId: 'price_1PxsP0QtXBTOxwJvUHRtOaQM',
     mode: 'subscription',
     internalProductId: '5b266ab3-bf87-47df-964c-e9ef465ef87b',

@@ -100,7 +100,6 @@ function JourneyView({ user }: JourneyProps) {
                 </button>
               </div>
             </JourneyCard>
-            <AISuggest />
             <JourneyCard title="Budget" isFetching={isFetchingJourney}>
               <Budget
                 totalBudget={data?.journey?.budget ?? 0}
