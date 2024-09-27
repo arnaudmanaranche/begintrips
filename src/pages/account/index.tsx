@@ -5,37 +5,83 @@ import {
   GearIcon,
   PaperPlaneIcon,
 } from '@radix-ui/react-icons'
-import type { User } from '@supabase/supabase-js'
+import { loadStripe } from '@stripe/stripe-js'
 import Avatar from 'boring-avatars'
 import type { GetServerSideProps } from 'next'
 import Link from 'next/link'
+import { useSearchParams } from 'next/navigation'
 import { useRouter } from 'next/router'
 import type { ReactNode } from 'react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { toast } from 'sonner'
 
+import { checkoutSession } from '@/api/calls/stripe'
+import { CurrentPlan } from '@/components/CurrentPlan/CurrentPlan'
+import { PaymentModalView } from '@/components/modals/Billing/Billing'
 import { ChangePasswordModalView } from '@/components/modals/ChangePassword/ChangePassword'
 import { NavBar } from '@/components/NavBar/NavBar'
 import { createClient } from '@/libs/supabase/client'
 import { createClient as createClientServerProps } from '@/libs/supabase/server-props'
 import { useOnboardingStore } from '@/stores/onboarding.store'
+import type { User } from '@/types'
+import { PLANS } from '@/utils/product-plans'
 
-interface AccountPageProps {
+const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY)
+
+export interface AccountPageProps {
   user: User
 }
 
 export default function AccountPage({ user }: AccountPageProps): ReactNode {
   const supabase = createClient()
   const router = useRouter()
+  const searchParams = useSearchParams()
+  const [isLoading, setIsLoading] = useState(false)
   const { resetJourney } = useOnboardingStore()
   const [open, setOpen] = useState(false)
   const [modalType, setModalType] = useState<
-    'Change password' | 'Billing' | null
+    'Change password' | 'Payments' | null
   >(null)
+
+  useEffect(() => {
+    const search = searchParams.get('payment_status')
+
+    if (search === 'declined') {
+      toast.error('Your payment was declined')
+    } else if (search === 'succeeded') {
+      toast.success('Payment successful. New credits added!')
+    }
+  }, [searchParams])
 
   const handleLogout = async () => {
     await supabase.auth.signOut()
     resetJourney()
     router.push('/')
+  }
+
+  const handleOnCheckout = async () => {
+    setIsLoading(true)
+    const stripe = await stripePromise
+
+    if (!stripe) return
+
+    try {
+      const session = await checkoutSession({
+        externalProductId: PLANS['JOURNEY_PACK'].externalProductId,
+        mode: PLANS['JOURNEY_PACK'].mode,
+        internalProductId: PLANS['JOURNEY_PACK'].internalProductId,
+        email: user.email,
+      })
+
+      await stripe.redirectToCheckout({
+        sessionId: session.id,
+      })
+    } catch {
+      toast.error('An error occurred while creating the checkout session')
+      return
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   return (
@@ -62,8 +108,13 @@ export default function AccountPage({ user }: AccountPageProps): ReactNode {
 
             <span className="text-black">{user.email}</span>
           </div>
-          <div className="space-y-2">
-            <p className="font-medium text-black">Account</p>
+          <div className="space-y-4">
+            <p className="font-medium text-black">Account Details</p>
+            <CurrentPlan
+              credits={user.credits}
+              isLoading={isLoading}
+              onCheckout={handleOnCheckout}
+            />
             <Dialog.Portal>
               <Dialog.Overlay className="fixed inset-0 bg-black/30 data-[state=open]:animate-overlayShow" />
               <Dialog.Content
@@ -83,11 +134,15 @@ export default function AccountPage({ user }: AccountPageProps): ReactNode {
                     </button>
                   </Dialog.Close>
                 </div>
-                <ChangePasswordModalView
-                  onPasswordChangedCallback={() => {
-                    setOpen(false)
-                  }}
-                />
+                {modalType === 'Change password' ? (
+                  <ChangePasswordModalView
+                    onPasswordChangedCallback={() => {
+                      setOpen(false)
+                    }}
+                  />
+                ) : (
+                  <PaymentModalView userId={user.id} />
+                )}
               </Dialog.Content>
             </Dialog.Portal>
             <Dialog.Trigger
@@ -101,17 +156,19 @@ export default function AccountPage({ user }: AccountPageProps): ReactNode {
                 <ChevronRightIcon className="h-5 w-5 text-black/50" />
               </div>
             </Dialog.Trigger>
-            <div>
-              <div className="flex items-center justify-between rounded-md bg-white p-4 ring-1 ring-slate-200">
+            <Dialog.Trigger
+              asChild
+              onClick={() => {
+                setModalType('Payments')
+              }}
+            >
+              <div className="flex cursor-pointer items-center justify-between rounded-md bg-white p-4 ring-1 ring-slate-200">
                 <span className="flex items-center space-x-2 text-black">
-                  <span>Billing</span>
-                  <span className="rounded-md bg-accent px-2 text-xs text-white">
-                    Soon
-                  </span>
+                  <span>Payments</span>
                 </span>
                 <ChevronRightIcon className="h-5 w-5 text-black/50" />
               </div>
-            </div>
+            </Dialog.Trigger>
           </div>
           <div className="flex justify-end">
             <span
@@ -149,9 +206,9 @@ export default function AccountPage({ user }: AccountPageProps): ReactNode {
 export const getServerSideProps = (async (context) => {
   const supabase = createClientServerProps(context)
 
-  const { data, error } = await supabase.auth.getUser()
+  const { data: auth, error: authError } = await supabase.auth.getUser()
 
-  if (error || !data) {
+  if (authError || !auth) {
     return {
       redirect: {
         destination: '/welcome',
@@ -160,9 +217,18 @@ export const getServerSideProps = (async (context) => {
     }
   }
 
+  const { data: userEntity } = await supabase
+    .from('users')
+    .select('*')
+    .eq('id', auth.user.id)
+    .single()
+
   return {
     props: {
-      user: data.user,
+      user: {
+        ...userEntity,
+        email: auth.user.email,
+      },
     },
   }
-}) satisfies GetServerSideProps<{ user: User | null }>
+}) satisfies GetServerSideProps

@@ -14,7 +14,6 @@ import { useMemo } from 'react'
 
 import { getJourney } from '@/api/calls/journeys'
 import { QUERY_KEYS } from '@/api/queryKeys'
-import { AISuggest } from '@/components/AISuggest/AISugges'
 import { BottomBar } from '@/components/BottomBar/BottomBar'
 import { Budget } from '@/components/Budget/Budget'
 import { Button } from '@/components/Button/Button'
@@ -45,6 +44,10 @@ function JourneyView({ user }: JourneyProps) {
   const { data, isPending: isFetchingJourney } = useQuery({
     queryKey: QUERY_KEYS.JOURNEY(journeyId as string),
     queryFn: () => getJourney({ journeyId: journeyId as string }),
+    throwOnError() {
+      router.replace('/my-journeys')
+      return false
+    },
   })
 
   const daysLeftBeforeJourneyBegins = useMemo(
@@ -96,7 +99,6 @@ function JourneyView({ user }: JourneyProps) {
                 </button>
               </div>
             </JourneyCard>
-            <AISuggest />
             <JourneyCard title="Budget" isFetching={isFetchingJourney}>
               <Budget
                 totalBudget={data?.journey?.budget ?? 0}

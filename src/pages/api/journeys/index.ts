@@ -21,8 +21,23 @@ export default async function handler(
   res: NextApiResponse
 ): Promise<void> {
   const supabase = createClient(req, res)
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
 
   if (req.method === 'POST') {
+    const { data: userEntity } = await supabase
+      .from('users')
+      .select('credits')
+      .eq('id', user?.id as string)
+      .single()
+
+    if (userEntity?.credits === 0) {
+      return res
+        .status(403)
+        .json({ message: 'Insufficient credits to create a journey' })
+    }
+
     const journey = req.body
 
     const createdJourney = await createJourney(journey)
@@ -37,6 +52,12 @@ export default async function handler(
       res.status(500).json({ message: 'Error when creating journey', error })
       return
     }
+
+    await supabase.rpc('update_user_credits', {
+      user_id: user?.id as string,
+      change_direction: -1,
+      amount: 1,
+    })
 
     const journeyLength =
       differenceInDays(

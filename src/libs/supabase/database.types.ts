@@ -1,3 +1,11 @@
+export type Json =
+  | string
+  | number
+  | boolean
+  | null
+  | { [key: string]: Json | undefined }
+  | Json[]
+
 export interface Database {
   public: {
     Tables: {
@@ -87,6 +95,7 @@ export interface Database {
           destination: string
           id: string
           returnDate: string
+          status: boolean
           userId: string
         }
         Insert: {
@@ -97,6 +106,7 @@ export interface Database {
           destination: string
           id?: string
           returnDate: string
+          status?: boolean
           userId?: string
         }
         Update: {
@@ -107,9 +117,143 @@ export interface Database {
           destination?: string
           id?: string
           returnDate?: string
+          status?: boolean
           userId?: string
         }
         Relationships: []
+      }
+      payments: {
+        Row: {
+          created_at: string | null
+          external_payment_id: string | null
+          id: string
+          internal_product_id: string | null
+          status: Database['public']['Enums']['payment_status'] | null
+          updated_at: string | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          external_payment_id?: string | null
+          id?: string
+          internal_product_id?: string | null
+          status?: Database['public']['Enums']['payment_status'] | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          external_payment_id?: string | null
+          id?: string
+          internal_product_id?: string | null
+          status?: Database['public']['Enums']['payment_status'] | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'one_time_payments_user_id_fkey'
+            columns: ['user_id']
+            isOneToOne: false
+            referencedRelation: 'users'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'payments_internal_product_id_fkey'
+            columns: ['internal_product_id']
+            isOneToOne: false
+            referencedRelation: 'products'
+            referencedColumns: ['id']
+          },
+        ]
+      }
+      products: {
+        Row: {
+          created_at: string
+          external_product_id: string | null
+          id: string
+          is_disabled: boolean | null
+          is_most_popular: boolean | null
+          items: string | null
+          price: number | null
+          title: string | null
+          type: string | null
+        }
+        Insert: {
+          created_at?: string
+          external_product_id?: string | null
+          id?: string
+          is_disabled?: boolean | null
+          is_most_popular?: boolean | null
+          items?: string | null
+          price?: number | null
+          title?: string | null
+          type?: string | null
+        }
+        Update: {
+          created_at?: string
+          external_product_id?: string | null
+          id?: string
+          is_disabled?: boolean | null
+          is_most_popular?: boolean | null
+          items?: string | null
+          price?: number | null
+          title?: string | null
+          type?: string | null
+        }
+        Relationships: []
+      }
+      subscriptions: {
+        Row: {
+          created_at: string | null
+          external_subscription_id: string | null
+          id: string
+          internal_product_id: string
+          status: Database['public']['Enums']['subscription_status'] | null
+          updated_at: string | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          external_subscription_id?: string | null
+          id?: string
+          internal_product_id: string
+          status?: Database['public']['Enums']['subscription_status'] | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          external_subscription_id?: string | null
+          id?: string
+          internal_product_id?: string
+          status?: Database['public']['Enums']['subscription_status'] | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'fk_user'
+            columns: ['user_id']
+            isOneToOne: true
+            referencedRelation: 'users'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'subscriptions_internal_product_id_fkey'
+            columns: ['internal_product_id']
+            isOneToOne: false
+            referencedRelation: 'products'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'subscriptions_user_id_fkey'
+            columns: ['user_id']
+            isOneToOne: true
+            referencedRelation: 'users'
+            referencedColumns: ['id']
+          },
+        ]
       }
       users: {
         Row: {
@@ -137,6 +281,22 @@ export interface Database {
       [_ in never]: never
     }
     Functions: {
+      fetch_users_with_subscriptions: {
+        Args: {
+          input_user_id: string
+        }
+        Returns: {
+          user_id: string
+          username: string
+          credits: number
+          subscription_id: number
+          stripe_subscription_id: string
+          subscription_status: string
+          product_stripe_product_id: string
+          product_type: string
+          product_price: number
+        }[]
+      }
       process_days: {
         Args: {
           start_date: string
@@ -150,6 +310,14 @@ export interface Database {
           start_date: string
           end_date: string
           journey_id: string
+        }
+        Returns: undefined
+      }
+      update_user_credits: {
+        Args: {
+          user_id: string
+          change_direction: number
+          amount: number
         }
         Returns: undefined
       }
@@ -183,6 +351,8 @@ export interface Database {
         | 'parking'
         | 'ferry'
         | 'flight'
+      payment_status: 'succeeded' | 'failed' | 'refunded'
+      subscription_status: 'active' | 'canceled'
     }
     CompositeTypes: {
       [_ in never]: never

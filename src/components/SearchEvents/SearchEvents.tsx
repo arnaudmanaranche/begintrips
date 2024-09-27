@@ -24,7 +24,7 @@ export function SearchEvents({ journey, days }: SearchEventsProps): ReactNode {
 
   return (
     <>
-      {hasJourneyPassed(new Date(journey.departureDate as string)) ? null : (
+      {hasJourneyPassed(new Date(journey?.departureDate as string)) ? null : (
         <div className="flex space-x-2 border-x-[1px] px-10 py-6">
           <MagnifyingGlassIcon className="h-6 w-6 text-black/70" />
           <input

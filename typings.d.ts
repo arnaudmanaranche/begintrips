@@ -10,5 +10,9 @@ namespace NodeJS {
     // Ticketmaster
     NEXT_PUBLIC_TICKETMASTER_CONSUMER_KEY: string
     NEXT_PUBLIC_TICKETMASTER_CONSUMER_SECRET: string
+    // Stripe
+    NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: string
+    STRIPE_SECRET_KEY: string
+    STRIPE_WEBHOOK_SECRET: string
   }
 }

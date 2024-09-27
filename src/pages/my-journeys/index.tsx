@@ -1,16 +1,17 @@
 import { GearIcon, PaperPlaneIcon } from '@radix-ui/react-icons'
-import type { User } from '@supabase/supabase-js'
 import { useQuery } from '@tanstack/react-query'
 import type { GetServerSideProps } from 'next'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 import type { ReactNode } from 'react'
 
 import { getUserJourneys } from '@/api/calls/users'
 import { QUERY_KEYS } from '@/api/queryKeys'
+import { Button } from '@/components/Button/Button'
 import MyJourneys from '@/components/MyJourneys/MyJourneys'
 import { NavBar } from '@/components/NavBar/NavBar'
 import { createClient as createClientServerProps } from '@/libs/supabase/server-props'
-import type { Journey } from '@/types'
+import type { Journey, User } from '@/types'
 
 interface MyJourneysPageProps {
   user: User
@@ -26,6 +27,7 @@ export default function MyJourneysPage({
     queryFn: () => getUserJourneys(),
     initialData: initialJourneys,
   })
+  const router = useRouter()
 
   return (
     <div className="relative min-h-screen flex-1 bg-[#faf9f8] pt-10 lg:pt-0">
@@ -33,6 +35,17 @@ export default function MyJourneysPage({
       <div className="mx-auto flex max-w-screen-sm flex-1 flex-col justify-center gap-10 px-10 lg:px-0">
         <p className="text-3xl">My journeys</p>
         <MyJourneys journeys={journeys} isLoading={isFetching} />
+      </div>
+      <div className="mt-20 flex justify-center">
+        {user.credits > 0 ? (
+          <Button
+            onClick={() => {
+              router.push('/onboarding')
+            }}
+          >
+            Plan a new journey
+          </Button>
+        ) : null}
       </div>
       <div className="fixed bottom-0 left-0 right-0 bg-white lg:hidden">
         <ul className="flex h-16  items-center justify-around ring-1 ring-slate-200">
@@ -60,9 +73,9 @@ export default function MyJourneysPage({
 export const getServerSideProps = (async (context) => {
   const supabase = createClientServerProps(context)
 
-  const { data, error } = await supabase.auth.getUser()
+  const { data: auth, error } = await supabase.auth.getUser()
 
-  if (error || !data) {
+  if (error || !auth) {
     return {
       redirect: {
         destination: '/welcome',
@@ -72,11 +85,19 @@ export const getServerSideProps = (async (context) => {
   }
 
   const journeys = await getUserJourneys()
+  const { data: userEntity } = await supabase
+    .from('users')
+    .select('*')
+    .eq('id', auth.user.id)
+    .single()
 
   return {
     props: {
-      user: data.user,
+      user: {
+        ...userEntity,
+        email: auth.user.email,
+      },
       journeys,
     },
   }
-}) satisfies GetServerSideProps<{ user: User | null }>
+}) satisfies GetServerSideProps

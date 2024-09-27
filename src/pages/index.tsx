@@ -10,9 +10,11 @@ import { useRef, useState } from 'react'
 
 import { Button } from '@/components/Button/Button'
 import { Map } from '@/components/Map/Map'
+import { ProductPlan } from '@/components/ProductPlan/ProductPlan'
 import { useSearchDestination } from '@/hooks/useSearchDestination'
 import { createClient } from '@/libs/supabase/server-props'
 import { useOnboardingStore } from '@/stores/onboarding.store'
+import { PLANS } from '@/utils/product-plans'
 
 export default function HomePage({ user }: { user: User }): ReactNode {
   const { updateJourney, journey } = useOnboardingStore()
@@ -232,125 +234,61 @@ export default function HomePage({ user }: { user: User }): ReactNode {
               </p>
             </div>
             <div className="cursor-default rounded-lg p-6 text-center transition-colors hover:border-accent hover:bg-accent-light/10">
-              <h2 className="mb-4 text-2xl">Personalized AI Assistance</h2>
+              <h2 className="mb-4 text-2xl">Expenses overview</h2>
               <p className="text-black/70">
-                Our AI assistant tailors your journey to your tastes, offering
-                lodging and activities that perfectly match your preferences for
-                a seamless experience.
+                See your expenses by category and by day, and get a
+                comprehensive overview of your budget.
               </p>
             </div>
           </div>
         </div>
       </section>
-      <section className="hidden bg-gray-50 py-20" id="pricing">
+      <section className="bg-gray-50 px-6 pt-20 md:px-0 md:py-20" id="pricing">
         <div className="mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8">
           <h2 className="mb-12 text-center text-4xl text-black">
-            Choose Your Plan
+            Buy as you travel
           </h2>
           <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
-            <div className="rounded-lg border border-gray-200 p-6 shadow-sm">
-              <h3 className="mb-4 text-2xl">Free</h3>
-              <p className="mb-4 text-4xl font-bold">$0</p>
-              <ul className="mb-6 space-y-2">
-                <li className="flex items-center">
-                  <ChevronRightIcon className="mr-2 h-5 w-5 text-accent" />1
-                  Journey
-                </li>
-                <li className="flex items-center">
-                  <ChevronRightIcon className="mr-2 h-5 w-5 text-accent" />
-                  All features included
-                </li>
-                <li className="flex items-center">
-                  <ChevronRightIcon className="mr-2 h-5 w-5 text-accent" />
-                  10 AI suggestions
-                </li>
-              </ul>
-              <Button
-                onClick={() => {
-                  router.push('/welcome')
-                }}
-                className="w-full"
-              >
-                Get Started
-              </Button>
-            </div>
-            <div className="relative rounded-lg border border-accent p-6 shadow-md">
-              <div className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-accent px-4 py-1 text-sm font-semibold text-white">
-                Most Popular
-              </div>
-              <h3 className="mb-4 text-2xl">Journey Pack</h3>
-              <p className="mb-4 text-4xl font-bold">$29.99</p>
-              <ul className="mb-6 space-y-2">
-                <li className="flex items-center">
-                  <ChevronRightIcon className="mr-2 h-5 w-5 text-accent" />5
-                  Journeys
-                </li>
-                <li className="flex items-center">
-                  <ChevronRightIcon className="mr-2 h-5 w-5 text-accent" />
-                  All features included
-                </li>
-                <li className="flex items-center">
-                  <ChevronRightIcon className="mr-2 h-5 w-5 text-accent" />
-                  Unlimited AI suggestions
-                </li>
-              </ul>
-
-              <Button onClick={() => {}} className="w-full">
-                Choose Plan
-              </Button>
-            </div>
-            <div className="rounded-lg border border-gray-200 p-6 shadow-sm">
-              <h3 className="mb-4 text-2xl">Monthly</h3>
-              <p className="mb-4 text-4xl font-bold">
-                $9.99<span className="text-base font-normal">/month</span>
-              </p>
-              <ul className="mb-6 space-y-2">
-                <li className="flex items-center">
-                  <ChevronRightIcon className="mr-2 h-5 w-5 text-accent" />
-                  Unlimited Journeys
-                </li>
-                <li className="flex items-center">
-                  <ChevronRightIcon className="mr-2 h-5 w-5 text-accent" />
-                  All features included
-                </li>
-                <li className="flex items-center">
-                  <ChevronRightIcon className="mr-2 h-5 w-5 text-accent" />
-                  Unlimited AI suggestions
-                </li>
-              </ul>
-              <Button onClick={() => {}} className="w-full">
-                Subscribe Now
-              </Button>
-            </div>
+            {Object.entries(PLANS).map(([plan, details]) => (
+              <ProductPlan key={plan} {...details} />
+            ))}
           </div>
         </div>
       </section>
-      <section className="hidden bg-white px-6 py-16 md:px-0" id="faq">
+      <section className="bg-white px-6 pt-20 md:px-0 md:py-20" id="faq">
         <div className="mx-auto max-w-3xl text-center">
           <h2 className="mb-8 text-center text-4xl text-black">
             Frequently Asked Questions
           </h2>
           <div className="text-left">
+            <h3 className="font-semibold">What is Planner.so?</h3>
+            <p className="mb-6 mt-2">
+              Planner.so is your ultimate travel companion, designed to simplify
+              your travel planning. It offers an intuitive platform where you
+              can effortlessly create, organize, and visualize all your trips in
+              one convenient place.
+            </p>
             <h3 className="font-semibold">
               How does the first free trip work?
             </h3>
             <p className="mb-6 mt-2">
-              Your first trip is on us! You get full access to all features at
-              no cost, so you can experience the power of our travel planner.
+              Your first journey is completely free! Enjoy full access to every
+              feature, allowing you to explore the full potential of Planner.so
+              at no cost.
             </p>
             <h3 className="font-semibold">
               What payment methods are accepted?
             </h3>
             <p className="mb-6 mt-2">
-              We accept all major credit cards and PayPal, securely processed by
-              Stripe for your convenience and peace of mind.
+              We accept all major credit cards, securely processed through
+              Stripe to ensure your transactions are safe and hassle-free.
             </p>
             <h3 className="font-semibold">
               Can I modify my itinerary after planning?
             </h3>
             <p className="mt-2">
-              Yes, you can easily modify your itinerary at any time through our
-              platform.
+              Absolutely! You can update and adjust your itinerary anytime using
+              our flexible and easy-to-use platform.
             </p>
           </div>
         </div>
@@ -399,7 +337,7 @@ export default function HomePage({ user }: { user: User }): ReactNode {
               <ul className="space-y-2">
                 <li>
                   <Link
-                    href="/privacy"
+                    href="/privacy-policy"
                     className="text-sm text-gray-600 hover:text-accent"
                   >
                     Privacy Policy

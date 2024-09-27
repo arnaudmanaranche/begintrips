@@ -12,6 +12,7 @@ import { Open_Sans, Playfair_Display } from 'next/font/google'
 import Head from 'next/head'
 import type { ReactNode } from 'react'
 import { useState } from 'react'
+import { Toaster } from 'sonner'
 
 import { SITE_DESCRIPTION, SITE_TITLE, SITE_URL } from '@/utils/seo'
 
@@ -68,6 +69,7 @@ export default function App({ Component, pageProps }: AppProps): ReactNode {
         />
       </Head>
       <HydrationBoundary state={pageProps.dehydratedState}>
+        <Toaster richColors visibleToasts={1} />
         <div className={`${playfair.variable} ${openSans.variable}`}>
           <Component {...pageProps} />
         </div>
