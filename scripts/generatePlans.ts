@@ -55,7 +55,7 @@ const fetchProductPlans = async (): Promise<
       is_disabled: boolean
       is_most_popular: boolean
     }) => {
-      const planKey = product.title.replace(/\s+/g, '_').toUpperCase() // e.g., 'Journey Pack' -> 'JOURNEY_PACK'
+      const planKey = product.title.replace(/\s+/g, '_').toUpperCase()
 
       productPlans[planKey] = {
         items: parseItems(product.items),

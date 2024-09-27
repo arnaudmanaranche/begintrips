@@ -67,9 +67,9 @@ export default function AccountPage({ user }: AccountPageProps): ReactNode {
 
     try {
       const session = await checkoutSession({
-        externalProductId: PLANS['JOURNEY_PACK'].externalProductId,
-        mode: PLANS['JOURNEY_PACK'].mode,
-        internalProductId: PLANS['JOURNEY_PACK'].internalProductId,
+        externalProductId: PLANS['CASUAL_EXPLORER'].externalProductId,
+        mode: PLANS['CASUAL_EXPLORER'].mode,
+        internalProductId: PLANS['CASUAL_EXPLORER'].internalProductId,
         email: user.email,
       })
 
