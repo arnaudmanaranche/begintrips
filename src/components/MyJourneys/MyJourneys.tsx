@@ -62,7 +62,7 @@ export default function MyJourneys({
         </p>
       </div>
       <Button onClick={() => router.push('/onboarding')}>
-        Plan a new trip
+        Plan a new journey
       </Button>
     </div>
   ) : (

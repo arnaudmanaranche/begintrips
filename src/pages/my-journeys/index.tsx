@@ -43,7 +43,7 @@ export default function MyJourneysPage({
               router.push('/onboarding')
             }}
           >
-            Plan a new trip
+            Plan a new journey
           </Button>
         ) : null}
       </div>

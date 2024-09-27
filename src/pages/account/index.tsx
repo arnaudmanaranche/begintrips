@@ -70,6 +70,7 @@ export default function AccountPage({ user }: AccountPageProps): ReactNode {
         externalProductId: PLANS['JOURNEY_PACK'].externalProductId,
         mode: PLANS['JOURNEY_PACK'].mode,
         internalProductId: PLANS['JOURNEY_PACK'].internalProductId,
+        email: user.email,
       })
 
       await stripe.redirectToCheckout({

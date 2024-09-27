@@ -244,7 +244,7 @@ export default function HomePage({ user }: { user: User }): ReactNode {
           </div>
         </div>
       </section>
-      <section className="bg-gray-50 py-20" id="pricing">
+      <section className="bg-gray-50 px-6 pt-20 md:px-0 md:py-20" id="pricing">
         <div className="mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8">
           <h2 className="mb-12 text-center text-4xl text-black">
             Choose Your Plan
@@ -256,18 +256,25 @@ export default function HomePage({ user }: { user: User }): ReactNode {
           </div>
         </div>
       </section>
-      <section className="bg-white px-6 py-16 md:px-0" id="faq">
+      <section className="bg-white px-6 pt-20 md:px-0 md:py-20" id="faq">
         <div className="mx-auto max-w-3xl text-center">
           <h2 className="mb-8 text-center text-4xl text-black">
             Frequently Asked Questions
           </h2>
           <div className="text-left">
+            <h3 className="font-semibold">What is Planner.so?</h3>
+            <p className="mb-6 mt-2">
+              Planner.so is a travel companion that helps you plan and organize
+              your journeys with ease. It provides a user-friendly interface
+              that allows you to create, manage, and visualize your travel plans
+              in a single place.
+            </p>
             <h3 className="font-semibold">
               How does the first free trip work?
             </h3>
             <p className="mb-6 mt-2">
-              Your first trip is on us! You get full access to all features at
-              no cost, so you can experience the power of our travel planner.
+              Your first journey is on us! You get full access to all features
+              at no cost, so you can experience the power of our travel planner.
             </p>
             <h3 className="font-semibold">
               What payment methods are accepted?
@@ -330,7 +337,7 @@ export default function HomePage({ user }: { user: User }): ReactNode {
               <ul className="space-y-2">
                 <li>
                   <Link
-                    href="/privacy"
+                    href="/privacy-policy"
                     className="text-sm text-gray-600 hover:text-accent"
                   >
                     Privacy Policy

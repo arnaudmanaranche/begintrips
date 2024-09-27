@@ -72,7 +72,6 @@ export default async function handler(
           throw new Error('No `paymentIntentId` linked')
         }
 
-        // Get the initial payment date
         const user = await getUserByPaymentIntentId({
           req,
           res,
@@ -87,18 +86,26 @@ export default async function handler(
 
         const { user_id, created_at } = user
 
-        await supabase
+        const { error } = await supabase
           .from('payments')
           .update({
             status: 'refunded',
           })
           .eq('external_payment_id', paymentIntentId as string)
 
-        await supabase.rpc('update_user_credits', {
+        if (error) {
+          throw new Error('Error updating payments: ' + error.message)
+        }
+
+        const { error: error2 } = await supabase.rpc('update_user_credits', {
           user_id: user_id as string,
           change_direction: -1,
           amount: 5,
         })
+
+        if (error2) {
+          throw new Error('Error updating credits: ' + error2.message)
+        }
 
         const journeys = await getUserJourneysAfterPaymentDate({
           req,

@@ -69,7 +69,7 @@ export default function App({ Component, pageProps }: AppProps): ReactNode {
         />
       </Head>
       <HydrationBoundary state={pageProps.dehydratedState}>
-        <Toaster richColors />
+        <Toaster richColors visibleToasts={1} />
         <div className={`${playfair.variable} ${openSans.variable}`}>
           <Component {...pageProps} />
         </div>

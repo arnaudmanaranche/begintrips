@@ -17,7 +17,7 @@ export default async function handler(
     data: { user },
   } = await supabase.auth.getUser()
 
-  const { externalProductId, internalProductId, mode } = req.body
+  const { externalProductId, internalProductId, mode, email } = req.body
 
   if (!externalProductId || !mode || !user?.id) {
     return res.status(400).json({ error: 'Malformed request' })
@@ -38,6 +38,7 @@ export default async function handler(
           quantity: 1,
         },
       ],
+      customer_email: email,
       success_url: `${REDIRECT_URL}?payment_status=succeeded`,
       cancel_url: `${REDIRECT_URL}?payment_status=declined`,
     })

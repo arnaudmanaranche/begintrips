@@ -14,8 +14,9 @@ export default async function handler(
   if (req.method === 'GET') {
     const { data } = await supabase
       .from('payments')
-      .select('*')
+      .select('id, status, created_at')
       .eq('user_id', user?.id as string)
+      .order('created_at', { ascending: false })
 
     res.status(200).json(data)
   } else {
