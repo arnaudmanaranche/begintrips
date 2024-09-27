@@ -24,7 +24,7 @@ export const PLANS: Record<string, ProductPlanProps> = {
     ],
     price: 29.99,
     title: 'Casual Explorer',
-    externalProductId: 'price_1PuJB0QtXBTOxwJvNGoKTC6T',
+    externalProductId: 'price_1Pt3FoJSIXQSLNx1CUmYklku',
     mode: 'payment',
     internalProductId: '8827fdcf-0b57-4b5d-b3ea-546ae94073a7',
     isDisabled: false,
