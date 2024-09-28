@@ -83,7 +83,7 @@ function JourneyView({ user }: JourneyProps) {
             {user.email?.split('@')[0]?.slice(0, 2)}
           </Button>
         </nav>
-        <div className="grid h-full grid-cols-12 gap-6 bg-gray-50 px-6 lg:pb-0">
+        <div className="mb-[80px] grid h-full grid-cols-12 gap-6 bg-gray-50 px-6 lg:pb-0">
           <div className="col-span-12 space-y-4 pt-4 lg:col-span-3">
             <JourneyCard
               title="Quick action"
