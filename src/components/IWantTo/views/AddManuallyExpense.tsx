@@ -6,12 +6,12 @@ import { Button } from '@/components/Button/Button'
 import { Callout } from '@/components/Callout/Callout'
 import { Input } from '@/components/Input/Input'
 import { useQuickActionsModalActions } from '@/providers/QuickActions.Provider'
-import type { AddExpense, Day } from '@/types'
+import type { AddExpenseWithCategories, Day } from '@/types'
 import { formatDate } from '@/utils/date'
 
 interface AddManuallyExpenseProps {
-  newExpense: AddExpense
-  setNewExpense: Dispatch<SetStateAction<AddExpense>>
+  newExpense: AddExpenseWithCategories
+  setNewExpense: Dispatch<SetStateAction<AddExpenseWithCategories>>
   days: Day[]
 }
 

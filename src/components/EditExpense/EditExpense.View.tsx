@@ -1,17 +1,18 @@
+import { useQuery } from '@tanstack/react-query'
 import type { ReactNode } from 'react'
 import { useState } from 'react'
 
+import { getUserFavoriteCategories } from '@/api/calls/users'
 import { useDeleteExpense } from '@/api/hooks/deleteExpense'
 import { useUpdateExpense } from '@/api/hooks/updateExpense'
-import type { Expense } from '@/types'
-import { type ExpenseCategoryEnum } from '@/types'
-import { mappedExpensesWithEmojis } from '@/utils/expense-labels'
+import { QUERY_KEYS } from '@/api/queryKeys'
+import type { AddExpenseWithCategories } from '@/types'
 
 import { Button } from '../Button/Button'
 import { Input } from '../Input/Input'
 
 interface EditExpenseViewProps {
-  expense: Expense
+  expense: AddExpenseWithCategories
   setOpen: (open: boolean) => void
 }
 
@@ -19,18 +20,21 @@ export const EditExpenseView = ({
   expense,
   setOpen,
 }: EditExpenseViewProps): ReactNode => {
-  const [newExpense, setNewExpense] = useState<Expense>(expense)
-
+  const [newExpense, setNewExpense] =
+    useState<AddExpenseWithCategories>(expense)
   const { handleUpdateExpense, isPending: isPendingUpdate } = useUpdateExpense({
     onSuccessCallback: () => {
       setOpen(false)
     },
   })
-
   const { handleDeleteExpense, isPending: isPendingDelete } = useDeleteExpense({
     onSuccessCallback: () => {
       setOpen(false)
     },
+  })
+  const { data: categories } = useQuery({
+    queryKey: QUERY_KEYS.USER_FAVORITE_CATEGORIES(),
+    queryFn: () => getUserFavoriteCategories(),
   })
 
   return (
@@ -64,25 +68,27 @@ export const EditExpenseView = ({
         <select
           id="expense-category"
           className="rounded-md border-2 border-gray-100 bg-slate-50 px-10 py-4 outline-none transition-all placeholder:text-black/50 focus:border-neutral-dark focus:outline-none"
-          defaultValue={expense.category}
-          onChange={(e) =>
+          onChange={(e) => {
             setNewExpense({
               ...newExpense,
-              category: e.target.value as ExpenseCategoryEnum,
+              category_id: e.target.value,
             })
-          }
+          }}
+          defaultValue={newExpense.categories.id}
         >
-          {mappedExpensesWithEmojis.map((category) => (
-            <option key={category.name} value={category.name}>
-              {category.name}
-            </option>
-          ))}
+          {categories?.map((category) => {
+            return (
+              <option key={category.name} value={category.id}>
+                {category.name}
+              </option>
+            )
+          })}
         </select>
       </div>
       <div className="flex justify-between space-x-4">
         <Button
           onClick={() => {
-            handleDeleteExpense(expense.id)
+            handleDeleteExpense(expense.id as string)
           }}
           variant="ghost"
           isDisabled={isPendingUpdate || isPendingDelete}

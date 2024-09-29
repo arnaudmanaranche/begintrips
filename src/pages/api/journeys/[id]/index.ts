@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 
 import createClient from '@/libs/supabase/api'
-import type { Day, Expense } from '@/types'
+import type { ExpenseWithCategories } from '@/types'
 import {
   groupedExpensesByCategory,
   groupedExpensesByDay,
@@ -31,28 +31,39 @@ export default async function handler(
       })
     }
 
-    const { data: expenses } = await supabase
+    const { data: expenses, error: expensesError } = await supabase
       .from('expenses')
-      .select('*')
+      .select('*, categories(name)')
       .eq('journeyId', id!)
 
-    const { data: days } = await supabase
+    if (expensesError) {
+      return res.status(500).json({
+        message: `Error fetching expenses for journey ${id}`,
+      })
+    }
+
+    const { data: days, error: daysError } = await supabase
       .from('days')
       .select('*')
       .eq('journeyId', id!)
+
+    if (daysError) {
+      return res.status(500).json({
+        message: `Error fetching days for journey ${id}`,
+      })
+    }
 
     const budgetSpent = expenses?.reduce((acc, expense) => {
       return acc + expense.amount
     }, 0)
 
     const expensesByDay = groupedExpensesByDay({
-      days: days as Day[],
-      // @ts-expect-error TODO: fix type
-      expenses: expenses.flatMap((e) => e),
+      days,
+      expenses: expenses.flatMap((e) => e) as ExpenseWithCategories[],
     })
 
     const expensesByCategory = groupedExpensesByCategory({
-      expenses: expenses as Expense[],
+      expenses: expenses as ExpenseWithCategories[],
     })
 
     res

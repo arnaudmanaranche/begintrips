@@ -16,7 +16,7 @@ export default async function handler(
       .from('expenses')
       .insert({
         amount: body.amount,
-        category: body.category,
+        category_id: body.category_id,
         dayId: body.dayId,
         startDate: body.startDate,
         endDate: body.endDate,

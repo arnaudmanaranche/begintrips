@@ -3,4 +3,5 @@ export const QUERY_KEYS = {
   JOURNEY: (journeyId: string) => ['journey', journeyId] as const,
   JOURNEY_DAYS: (journeyId: string) => ['journey', journeyId, 'days'] as const,
   USER_BILLS: (userId: string) => ['user', userId, 'bills'] as const,
+  USER_FAVORITE_CATEGORIES: () => ['user', 'favoriteCategories'] as const,
 }

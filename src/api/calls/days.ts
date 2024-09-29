@@ -1,10 +1,10 @@
 import { apiInstance } from '@/api/config'
-import type { AddExpense, Expense } from '@/types'
+import type { AddExpenseWithCategories, Expense } from '@/types'
 
 export const createExpense = async ({
   expense,
 }: {
-  expense: AddExpense
+  expense: AddExpenseWithCategories
 }): Promise<Expense> => {
   if (!expense.name) {
     throw new Error('You need to fill in the name field')

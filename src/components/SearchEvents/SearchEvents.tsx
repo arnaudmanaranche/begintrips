@@ -120,10 +120,10 @@ export function SearchEvents({ journey, days }: SearchEventsProps): ReactNode {
                         0,
                       name: event.name,
                       startDate: event.dates?.start.dateTime as string,
-                      category:
-                        // (event.classifications?.[0].genre
-                        //   .name as ExpenseCategoryEnum) || 'other',
-                        'other',
+                      category_id: '',
+                      categories: {
+                        name: 'other',
+                      },
                       journeyId: journey.id,
                     },
                   })

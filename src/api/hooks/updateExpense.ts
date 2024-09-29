@@ -2,7 +2,7 @@ import type { UseMutateAsyncFunction } from '@tanstack/react-query'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useParams } from 'next/navigation'
 
-import type { Expense, UpdateExpense } from '@/types'
+import type { UpdateExpense } from '@/types'
 import { type JourneyPage } from '@/types'
 import { updateExpenseById } from '@/utils/update-expense-by-id'
 
@@ -19,7 +19,7 @@ export const useUpdateExpense = ({
   handleUpdateExpense: UseMutateAsyncFunction<
     { message: string },
     Error,
-    Expense
+    UpdateExpense
   >
   isPending: boolean
   isError: boolean
@@ -38,7 +38,7 @@ export const useUpdateExpense = ({
     onSuccess() {
       onSuccessCallback?.()
     },
-    onMutate: async (expense: Expense) => {
+    onMutate: async (expense: UpdateExpense) => {
       const previousJourney = queryClient.getQueryData<JourneyPage>(
         QUERY_KEYS.JOURNEY(journeyId as string)
       )

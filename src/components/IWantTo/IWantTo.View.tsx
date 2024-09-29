@@ -2,7 +2,7 @@ import type { ReactNode } from 'react'
 import { useState } from 'react'
 
 import type { IWantToStep } from '@/providers/QuickActions.Provider'
-import type { AddExpense, Journey } from '@/types'
+import type { AddExpenseWithCategories, Journey } from '@/types'
 import { type Day } from '@/types'
 
 import { AddManuallyExpense } from './views/AddManuallyExpense'
@@ -35,13 +35,16 @@ export function IWantToView({
     ? days.find((day) => day.startDate === selectedDay)?.startDate || ''
     : days[0].startDate
 
-  const [newExpense, setNewExpense] = useState<AddExpense>({
-    category: 'other',
+  const [newExpense, setNewExpense] = useState<AddExpenseWithCategories>({
     name: '',
     amount: 0,
     dayId,
     journeyId: journey.id,
     startDate,
+    category_id: '',
+    categories: {
+      name: '',
+    },
   })
 
   switch (currentStep) {

@@ -12,25 +12,43 @@ export type Journey = Tables<'journeys'>
 export type Day = Tables<'days'>
 export type Expense = Tables<'expenses'>
 export type Payments = Tables<'payments'>
+export type Category = Tables<'categories'>
 export interface User extends Tables<'users'> {
   email: string
 }
+export interface UserFavoriteCategories extends Tables<'categories_favorites'> {
+  category_id: string
+  name: string
+  isFavorite: boolean
+  emoji: string
+}
+export interface ExpenseWithCategories extends Expense {
+  categories: Category
+}
 
 // CREATE
-export type AddExpense = TablesInsert<'expenses'>
+export interface AddExpense extends TablesInsert<'expenses'> {
+  categories: Category
+}
 export type AddJourney = TablesInsert<'journeys'>
 export type AddDay = TablesInsert<'days'>
+export type AddCategory = TablesInsert<'categories'>
+export interface AddExpenseWithCategories extends TablesInsert<'expenses'> {
+  categories: AddCategory
+}
 
 // UPDATE
-export type UpdateExpense = TablesUpdate<'expenses'>
+export interface UpdateExpense extends TablesUpdate<'expenses'> {
+  categories: AddCategory
+}
 
 // ENUMS
 export type ExpenseCategoryEnum = Enums<'expense_category'>
 export type PaymentStatusEnum = Enums<'payment_status'>
 
 // App types
-export type ExpensesByCategory = Record<ExpenseCategoryEnum, Expense[]>
-export type ExpensesByDay = Record<DateString, Expense[]>
+export type ExpensesByCategory = Record<string, ExpenseWithCategories[]>
+export type ExpensesByDay = Record<DateString, ExpenseWithCategories[]>
 
 export interface JourneyPage {
   budgetSpent: number

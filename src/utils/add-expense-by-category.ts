@@ -1,16 +1,22 @@
-import type { Expense, ExpensesByCategory } from '@/types'
+import type {
+  AddExpenseWithCategories,
+  ExpensesByCategory,
+  ExpenseWithCategories,
+} from '@/types'
 
 export function addExpenseByCategory(
-  expense: Expense,
+  expense: AddExpenseWithCategories,
   expensesByCategory: ExpensesByCategory
 ): ExpensesByCategory {
-  const epxensesByCategoryCopy = { ...expensesByCategory }
+  const expensesByCategoryCopy = { ...expensesByCategory }
 
-  if (!epxensesByCategoryCopy[expense.category]) {
-    epxensesByCategoryCopy[expense.category] = []
+  if (!expensesByCategoryCopy[expense.categories.name]) {
+    expensesByCategoryCopy[expense.categories.name] = []
   }
 
-  epxensesByCategoryCopy[expense.category].push(expense)
+  expensesByCategoryCopy[expense.categories.name].push(
+    expense as ExpenseWithCategories
+  )
 
-  return epxensesByCategoryCopy
+  return expensesByCategoryCopy
 }
