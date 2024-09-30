@@ -98,7 +98,7 @@ export default function HomePage({ user }: { user: User }): ReactNode {
           <div className="flex grow flex-col flex-wrap justify-center space-y-4 text-center md:text-left">
             <h1
               ref={ref}
-              className="text-4xl font-bold text-black sm:leading-tight md:text-6xl md:leading-[5rem] lg:max-w-[800px]"
+              className="text-4xl font-bold text-black sm:leading-tight md:text-6xl md:leading-[5rem] lg:max-w-[850px]"
             >
               {'Take the Stress Out of Travel Simplify Your Journey'
                 .split('')
