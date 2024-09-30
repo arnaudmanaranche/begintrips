@@ -1,11 +1,12 @@
-import type { ProductPlanProps, ProductPlanTitleEnum } from '@/types'
+import type { ProductPlanProps } from '@/types'
 
-export const PLANS: Record<ProductPlanTitleEnum, ProductPlanProps> = {
+export const PLANS: Record<string, ProductPlanProps> = {
   FREE: {
     items: [
-      'Unlimited journeys with all features',
-      'Full access to every feature',
-      'Unlimited AI-generated suggestions',
+      'Access to all features for up to 1 journey',
+      'Track expenses by category',
+      'View activities available on your selected dates',
+      'Monitor your budget in real-time',
     ],
     price: 0,
     title: 'Free',
@@ -32,10 +33,9 @@ export const PLANS: Record<ProductPlanTitleEnum, ProductPlanProps> = {
   },
   GLOBETROTTER: {
     items: [
-      'Access to all features for up to 1 journey',
-      'Track expenses by category',
-      'View activities available on your selected dates',
-      'Monitor your budget in real-time',
+      'Unlimited journeys with all features',
+      'Full access to every feature',
+      'Unlimited AI-generated suggestions',
     ],
     price: 5.5,
     title: 'Globetrotter',

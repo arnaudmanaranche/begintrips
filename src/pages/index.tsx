@@ -67,7 +67,7 @@ export default function HomePage({ user }: { user: User }): ReactNode {
 
   return (
     <main>
-      <section className="bg-accent-light/20 pb-4 md:min-h-[calc(100vh-20rem)] md:pb-0">
+      <section className="bg-accent-light bg-opacity-20 pb-4 md:min-h-[calc(100vh-20rem)] md:pb-0">
         <div className="mx-auto flex max-w-screen-xl flex-col justify-start space-y-16 px-10 pt-10">
           <nav className="flex flex-row items-center justify-between px-10 md:space-y-0 xl:px-0">
             <Link href="/" className="text-3xl">
@@ -76,10 +76,10 @@ export default function HomePage({ user }: { user: User }): ReactNode {
             </Link>
             {user ? (
               <Button
-                onClick={() => router.push('/account')}
+                onClick={() => router.push('/my-journeys')}
                 className="hidden lg:flex"
               >
-                My dashboard
+                My journeys
               </Button>
             ) : (
               <Button
@@ -98,9 +98,9 @@ export default function HomePage({ user }: { user: User }): ReactNode {
           <div className="flex grow flex-col flex-wrap justify-center space-y-4 text-center md:text-left">
             <h1
               ref={ref}
-              className="text-4xl font-bold text-black sm:leading-tight md:text-6xl md:leading-[4rem] lg:max-w-[500px]"
+              className="text-4xl font-bold text-black sm:leading-tight md:text-6xl md:leading-[5rem] lg:max-w-[800px]"
             >
-              {'Your Ultimate Travel Companion'
+              {'Take the Stress Out of Travel Simplify Your Journey'
                 .split('')
                 .map((letter, index) => (
                   <motion.span
@@ -173,10 +173,10 @@ export default function HomePage({ user }: { user: User }): ReactNode {
                 />
               </div>
               <button
-                className="flex items-center justify-center rounded-b-2xl bg-accent-light px-4 py-4 text-xl text-black/80 transition-colors hover:bg-accent md:rounded-b-none md:rounded-br-2xl md:rounded-tr-2xl"
+                className="flex items-center justify-center rounded-b-2xl bg-accent px-4 py-4 text-xl text-black/80 transition-colors hover:bg-accent-dark md:rounded-b-none md:rounded-br-2xl md:rounded-tr-2xl"
                 onClick={handleSubmit}
               >
-                <ChevronRightIcon className="hidden h-6 w-6 text-black/50 md:block" />
+                <ChevronRightIcon className="hidden h-6 w-6 text-white md:block" />
                 <span className="block text-base md:hidden">
                   Plan my journey
                 </span>
