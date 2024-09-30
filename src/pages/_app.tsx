@@ -47,26 +47,20 @@ export default function App({ Component, pageProps }: AppProps): ReactNode {
     <QueryClientProvider client={queryClient}>
       <Head>
         <title>{SITE_TITLE}</title>
-        <meta name="title" content="Meta Tags — Preview, Edit and Generate" />
+        <meta name="title" content={SITE_TITLE} />
         <meta name="description" content={SITE_DESCRIPTION} />
 
         <meta property="og:type" content="website" />
         <meta property="og:url" content={SITE_URL} />
         <meta property="og:title" content={SITE_TITLE} />
         <meta property="og:description" content={SITE_DESCRIPTION} />
-        <meta
-          property="og:image"
-          content="https://metatags.io/images/meta-tags.png"
-        />
+        <meta property="og:image" content="/meta-image.png" />
 
         <meta property="twitter:card" content="summary_large_image" />
         <meta property="twitter:url" content={SITE_TITLE} />
         <meta property="twitter:title" content={SITE_URL} />
         <meta property="twitter:description" content={SITE_DESCRIPTION} />
-        <meta
-          property="twitter:image"
-          content="https://metatags.io/images/meta-tags.png"
-        />
+        <meta property="twitter:image" content="/meta-image.png" />
       </Head>
       <HydrationBoundary state={pageProps.dehydratedState}>
         <Toaster richColors visibleToasts={1} />
