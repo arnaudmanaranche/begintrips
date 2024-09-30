@@ -177,7 +177,9 @@ export default function HomePage({ user }: { user: User }): ReactNode {
                 onClick={handleSubmit}
               >
                 <ChevronRightIcon className="hidden h-6 w-6 text-black/50 md:block" />
-                <span className="block md:hidden">Plan my journey</span>
+                <span className="block text-base md:hidden">
+                  Plan my journey
+                </span>
               </button>
             </div>
             <motion.ul
