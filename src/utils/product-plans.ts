@@ -1,6 +1,6 @@
-import type { ProductPlanProps } from '@/types'
+import type { ProductPlanProps, ProductPlanTitleEnum } from '@/types'
 
-export const PLANS: Record<string, ProductPlanProps> = {
+export const PLANS: Record<ProductPlanTitleEnum, ProductPlanProps> = {
   FREE: {
     items: [
       'Access to all features for up to 1 journey',

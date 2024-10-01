@@ -78,9 +78,9 @@ const main = async () => {
   const productPlans = await fetchProductPlans()
   spinner.succeed('Product plans')
 
-  const fileContent = `import type { ProductPlanProps } from '@/types'
+  const fileContent = `import type { ProductPlanProps, ProductPlanTitleEnum } from '@/types'
 
-export const PLANS: Record<string, ProductPlanProps> = ${JSON.stringify(productPlans, null, 2)};
+export const PLANS: Record<ProductPlanTitleEnum, ProductPlanProps> = ${JSON.stringify(productPlans, null, 2)};
 `
 
   spinner.start('Writing to plan.ts...')
