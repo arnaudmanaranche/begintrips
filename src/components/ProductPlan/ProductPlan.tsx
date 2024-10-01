@@ -47,7 +47,7 @@ export function ProductPlan({
   return (
     <div
       className={clsx(
-        'flex flex-col rounded-lg border p-6 shadow-md',
+        'flex flex-col rounded-lg border p-6',
         (isMostPopular || isDisabled) && 'relative',
         isDisabled ? 'border-gray-400/30' : 'border-accent'
       )}

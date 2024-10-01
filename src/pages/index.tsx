@@ -3,6 +3,7 @@ import { ChevronRightIcon, PersonIcon } from '@radix-ui/react-icons'
 import type { User } from '@supabase/supabase-js'
 import { motion, useInView } from 'framer-motion'
 import type { GetServerSideProps } from 'next'
+import Image from 'next/image'
 import Link from 'next/link'
 import router from 'next/router'
 import type { ChangeEvent, ReactNode } from 'react'
@@ -14,7 +15,29 @@ import { ProductPlan } from '@/components/ProductPlan/ProductPlan'
 import { useSearchDestination } from '@/hooks/useSearchDestination'
 import { createClient } from '@/libs/supabase/server-props'
 import { useOnboardingStore } from '@/stores/onboarding.store'
+import { mainFeatures, popularDestinations } from '@/utils/homepage'
 import { PLANS } from '@/utils/product-plans'
+
+function Section({
+  children,
+  backgroundColor,
+  title,
+}: {
+  children: ReactNode
+  backgroundColor: string
+  title: string
+}) {
+  return (
+    <section
+      className={`bg-${backgroundColor} px-6 py-10 pt-20 md:px-0 md:py-20`}
+    >
+      <div className="mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8">
+        <h2 className="mb-12 text-center text-4xl text-black">{title}</h2>
+        {children}
+      </div>
+    </section>
+  )
+}
 
 export default function HomePage({ user }: { user: User }): ReactNode {
   const { updateJourney, journey } = useOnboardingStore()
@@ -215,87 +238,93 @@ export default function HomePage({ user }: { user: User }): ReactNode {
         </div>
         <Map />
       </section>
-      <section className="bg-white px-6 pt-20 md:px-0 md:py-20">
-        <div className="mx-auto flex max-w-screen-xl flex-col text-black">
-          <h2 className="mb-8 text-center text-4xl">
-            Your All-Inclusive Journey Starts Here
-          </h2>
-          <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 md:my-10 lg:grid-cols-3">
-            <div className="cursor-default rounded-lg p-6 text-center transition-colors hover:border-accent hover:bg-accent-light/10">
-              <h2 className="mb-4 text-2xl">Effortless Planning</h2>
-              <p className="text-black/70">
-                Plan your trip with ease using our intuitive tools, enabling you
-                to craft a perfect itinerary in just minutes.
-              </p>
+      <Section
+        title="Your All-Inclusive Journey Starts Here"
+        backgroundColor="white"
+      >
+        <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
+          {mainFeatures.map((feature) => (
+            <div
+              key={feature.title}
+              className="flex cursor-default flex-col items-center gap-6 rounded-lg p-6 text-center transition-colors hover:border-accent hover:bg-accent-light/10"
+            >
+              <div className="flex flex-col items-center space-y-2">
+                <feature.image className="h-6 w-6 text-accent" />
+                <h2 className="mb-4 text-2xl">{feature.title}</h2>
+              </div>
+              <p className="text-black/70">{feature.description}</p>
             </div>
-            <div className="cursor-default rounded-lg p-6 text-center transition-colors hover:border-accent hover:bg-accent-light/10">
-              <h2 className="mb-4 text-2xl">Smart Budget Management</h2>
-              <p className="text-black/70">
-                Keep your expenses under control with our comprehensive budget
-                tracking, ensuring every penny is well spent.
-              </p>
-            </div>
-            <div className="cursor-default rounded-lg p-6 text-center transition-colors hover:border-accent hover:bg-accent-light/10">
-              <h2 className="mb-4 text-2xl">Expenses overview</h2>
-              <p className="text-black/70">
-                See your expenses by category and by day, and get a
-                comprehensive overview of your budget.
-              </p>
-            </div>
-          </div>
+          ))}
         </div>
-      </section>
-      <section className="bg-gray-50 px-6 pt-20 md:px-0 md:py-20" id="pricing">
-        <div className="mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8">
-          <h2 className="mb-12 text-center text-4xl text-black">
-            Buy as you travel
-          </h2>
+      </Section>
+      <Section backgroundColor="gray-50" title="Popular destinations">
+        <div className="space-y-10 text-center">
           <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
-            {Object.entries(PLANS).map(([plan, details]) => (
-              <ProductPlan key={plan} {...details} />
+            {popularDestinations.map((destination) => (
+              <div key={destination.name} className="relative">
+                <Image
+                  src={destination.image}
+                  alt={`${destination.name} cityscape`}
+                  width="300"
+                  height="300"
+                  className="h-64 w-full rounded-lg object-cover"
+                />
+                <div className="absolute inset-0 flex flex-col items-center justify-center rounded-lg bg-black bg-opacity-30 p-6 text-white">
+                  <p className="mb-2 text-2xl font-bold">{destination.name}</p>
+                  <p className="mb-4 text-center">{destination.description}</p>
+                </div>
+              </div>
             ))}
           </div>
+          <p className="text-lg">
+            Create an account and start planning your dream trip now
+          </p>
+          <Button onClick={() => router.push('/welcome')}>
+            Sign up for free
+          </Button>
         </div>
-      </section>
-      <section className="bg-white px-6 pt-20 md:px-0 md:py-20" id="faq">
-        <div className="mx-auto max-w-3xl text-center">
-          <h2 className="mb-8 text-center text-4xl text-black">
-            Frequently Asked Questions
-          </h2>
-          <div className="text-left">
-            <h3 className="font-semibold">What is Planner.so?</h3>
-            <p className="mb-6 mt-2">
-              Planner.so is your ultimate travel companion, designed to simplify
-              your travel planning. It offers an intuitive platform where you
-              can effortlessly create, organize, and visualize all your trips in
-              one convenient place.
-            </p>
-            <h3 className="font-semibold">
-              How does the first free trip work?
-            </h3>
-            <p className="mb-6 mt-2">
-              Your first journey is completely free! Enjoy full access to every
-              feature, allowing you to explore the full potential of Planner.so
-              at no cost.
-            </p>
-            <h3 className="font-semibold">
-              What payment methods are accepted?
-            </h3>
-            <p className="mb-6 mt-2">
-              We accept all major credit cards, securely processed through
-              Stripe to ensure your transactions are safe and hassle-free.
-            </p>
-            <h3 className="font-semibold">
-              Can I modify my itinerary after planning?
-            </h3>
-            <p className="mt-2">
-              Absolutely! You can update and adjust your itinerary anytime using
-              our flexible and easy-to-use platform.
-            </p>
-          </div>
+      </Section>
+      <Section backgroundColor="white" title="Pay as you travel">
+        <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
+          {Object.entries(PLANS).map(([plan, details]) => (
+            <ProductPlan key={plan} {...details} />
+          ))}
         </div>
-      </section>
-      <footer className="bg-gray-50 py-12">
+      </Section>
+      <Section backgroundColor="gray-50" title="Frequently Asked Questions">
+        <div className="text-left">
+          <h3 className="text-lg font-semibold">What is Planner.so?</h3>
+          <p className="mb-6 mt-2">
+            Planner.so is your ultimate travel companion, designed to simplify
+            your travel planning. It offers an intuitive platform where you can
+            effortlessly create, organize, and visualize all your trips in one
+            convenient place.
+          </p>
+          <h3 className="text-lg font-semibold">
+            How does the first free trip work?
+          </h3>
+          <p className="mb-6 mt-2">
+            Your first journey is completely free! Enjoy full access to every
+            feature, allowing you to explore the full potential of Planner.so at
+            no cost.
+          </p>
+          <h3 className="text-lg font-semibold">
+            What payment methods are accepted?
+          </h3>
+          <p className="mb-6 mt-2">
+            We accept all major credit cards, securely processed through Stripe
+            to ensure your transactions are safe and hassle-free.
+          </p>
+          <h3 className="text-lg font-semibold">
+            Can I modify my itinerary after planning?
+          </h3>
+          <p className="mt-2">
+            Absolutely! You can update and adjust your itinerary anytime using
+            our flexible and easy-to-use platform.
+          </p>
+        </div>
+      </Section>
+      <footer className="bg-white py-12">
         <div className="mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-4">
             <div>
