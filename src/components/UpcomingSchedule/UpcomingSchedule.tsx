@@ -3,7 +3,7 @@ import { type ReactNode } from 'react'
 
 import { ExpenseLabel } from '@/components/ExpenseLabel/ExpenseLabel'
 import { useQuickActionsModalActions } from '@/providers/QuickActions.Provider'
-import type { ExpensesByDay } from '@/types'
+import type { DateString, ExpensesByDay } from '@/types'
 import { formatDate } from '@/utils/date'
 import { hasJourneyPassed } from '@/utils/has-journey-passed'
 
@@ -40,7 +40,7 @@ export function UpcomingSchedule({
           const date = addDays(new Date(departureDate), index)
 
           const expenses =
-            expensesByDay[formatDate(date, 'yyyy-MM-dd') as keyof ExpensesByDay]
+            expensesByDay[formatDate(date, 'yyyy-MM-dd') as DateString]
 
           return (
             <div key={index} className="flex flex-col rounded-lg">
@@ -63,12 +63,14 @@ export function UpcomingSchedule({
                 <ul className="flex w-full flex-col space-y-2 px-4 pb-4">
                   {expenses.map((expense) => (
                     <div
-                      key={expense.name}
+                      key={expense.id}
                       className="flex justify-between rounded-lg border-[1px] border-gray-400/30 bg-white px-4 py-4"
                     >
                       <div className="flex items-center space-x-2 truncate">
                         <span className="truncate">{expense.name}</span>
-                        <ExpenseLabel expenseCategory={expense.category} />
+                        <ExpenseLabel
+                          expenseCategory={expense.categories.name}
+                        />
                       </div>
                       {!hasJourneyPassed(new Date(departureDate)) ? (
                         <div className="flex items-center space-x-2">

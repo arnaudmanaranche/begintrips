@@ -3,13 +3,13 @@ import { Cross2Icon, DotsHorizontalIcon } from '@radix-ui/react-icons'
 import type { ReactNode } from 'react'
 import { useState } from 'react'
 
-import type { Expense } from '@/types'
+import type { AddExpenseWithCategories } from '@/types'
 
 import { Button } from '../Button/Button'
 import { EditExpenseView } from './EditExpense.View'
 
 interface EditExpenseProps {
-  expense: Expense
+  expense: AddExpenseWithCategories
 }
 
 export const EditExpense = ({ expense }: EditExpenseProps): ReactNode => {

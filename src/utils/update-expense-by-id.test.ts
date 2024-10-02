@@ -1,4 +1,8 @@
-import type { Expense, ExpensesByCategory } from '@/types'
+import type {
+  Expense,
+  ExpensesByCategory,
+  ExpenseWithCategories,
+} from '@/types'
 
 import { updateExpenseById } from './update-expense-by-id'
 
@@ -9,21 +13,21 @@ describe('updateExpenseById', () => {
         {
           id: '1',
           name: 'Expense 1',
-        } as Expense,
+        } as ExpenseWithCategories,
         {
           id: '2',
           name: 'Expense 2',
-        } as Expense,
+        } as ExpenseWithCategories,
       ],
       bar: [
         {
           id: '3',
           name: 'Expense 3',
-        } as Expense,
+        } as ExpenseWithCategories,
         {
           id: '4',
           name: 'Expense 4',
-        } as Expense,
+        } as ExpenseWithCategories,
       ],
     } as ExpensesByCategory
 

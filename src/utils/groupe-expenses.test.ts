@@ -1,4 +1,4 @@
-import type { Expense } from '@/types'
+import type { ExpenseWithCategories } from '@/types'
 
 import {
   groupedExpensesByCategory,
@@ -11,36 +11,57 @@ describe('groupedExpensesByCategory', () => {
   })
 
   it('should group expenses by category', () => {
-    const expenses: Expense[] = [
+    const expenses: ExpenseWithCategories[] = [
       {
         name: 'Concert',
         amount: 10,
-        category: 'concert',
+
         startDate: new Date().toISOString(),
         journeyId: '1',
         created_at: new Date().toISOString(),
         dayId: '1',
         id: '1',
+        category_id: '',
+        categories: {
+          name: 'concert',
+          id: '1',
+          emoji: '🎶',
+          created_at: new Date().toISOString(),
+        },
       },
       {
         name: 'Restaurant 1',
         amount: 10,
-        category: 'restaurant',
+
         startDate: new Date().toISOString(),
         journeyId: '1',
         created_at: new Date().toISOString(),
         dayId: '1',
         id: '2',
+        category_id: '',
+        categories: {
+          name: 'restaurant',
+          id: '2',
+          emoji: '🍔',
+          created_at: new Date().toISOString(),
+        },
       },
       {
         name: 'Restaurant 2',
         amount: 20,
-        category: 'restaurant',
+
         startDate: new Date().toISOString(),
         journeyId: '1',
         created_at: new Date().toISOString(),
         dayId: '1',
         id: '3',
+        category_id: '',
+        categories: {
+          name: 'restaurant',
+          id: '2',
+          emoji: '🍔',
+          created_at: new Date().toISOString(),
+        },
       },
     ]
 
@@ -51,7 +72,7 @@ describe('groupedExpensesByCategory', () => {
         {
           name: 'Concert',
           amount: 10,
-          category: 'concert',
+
           startDate: new Date().toISOString(),
           journeyId: '1',
           created_at: new Date().toISOString(),
@@ -63,7 +84,7 @@ describe('groupedExpensesByCategory', () => {
         {
           name: 'Restaurant 1',
           amount: 10,
-          category: 'restaurant',
+
           startDate: new Date().toISOString(),
           journeyId: '1',
           created_at: new Date().toISOString(),
@@ -73,7 +94,7 @@ describe('groupedExpensesByCategory', () => {
         {
           name: 'Restaurant 2',
           amount: 20,
-          category: 'restaurant',
+
           startDate: new Date().toISOString(),
           journeyId: '1',
           created_at: new Date().toISOString(),
@@ -84,26 +105,40 @@ describe('groupedExpensesByCategory', () => {
     })
   })
   it('groups expenses by day', () => {
-    const expenses: Expense[] = [
+    const expenses: ExpenseWithCategories[] = [
       {
         name: 'Concert',
         amount: 10,
-        category: 'concert',
+
         startDate: new Date().toISOString(),
         created_at: new Date().toISOString(),
         dayId: '1',
         id: '1',
         journeyId: '1',
+        category_id: '',
+        categories: {
+          name: 'concert',
+          id: '1',
+          emoji: '🎶',
+          created_at: new Date().toISOString(),
+        },
       },
       {
         name: 'Restaurant 1',
         amount: 10,
-        category: 'restaurant',
+
         startDate: new Date().toISOString(),
         created_at: new Date().toISOString(),
         dayId: '1',
         id: '2',
         journeyId: '1',
+        category_id: '',
+        categories: {
+          name: 'restaurant',
+          id: '2',
+          emoji: '🍔',
+          created_at: new Date().toISOString(),
+        },
       },
     ]
     const grouped = groupedExpensesByDay({ expenses, days: [] })
@@ -112,7 +147,7 @@ describe('groupedExpensesByCategory', () => {
         {
           name: 'Concert',
           amount: 10,
-          category: 'concert',
+
           startDate: new Date().toISOString(),
           created_at: new Date().toISOString(),
           dayId: '1',
@@ -122,7 +157,7 @@ describe('groupedExpensesByCategory', () => {
         {
           name: 'Restaurant 1',
           amount: 10,
-          category: 'restaurant',
+
           startDate: new Date().toISOString(),
           created_at: new Date().toISOString(),
           dayId: '1',

@@ -13,6 +13,7 @@ import type { ReactNode } from 'react'
 import { useMemo } from 'react'
 
 import { getJourney } from '@/api/calls/journeys'
+import { getUserFavoriteCategories } from '@/api/calls/users'
 import { QUERY_KEYS } from '@/api/queryKeys'
 import { BottomBar } from '@/components/BottomBar/BottomBar'
 import { Budget } from '@/components/Budget/Budget'
@@ -35,7 +36,7 @@ interface JourneyProps {
   user: User
 }
 
-function JourneyView({ user }: JourneyProps) {
+function JourneyView({ user }: JourneyProps): ReactNode {
   const {
     query: { id: journeyId },
   } = useRouter()
@@ -48,6 +49,11 @@ function JourneyView({ user }: JourneyProps) {
       router.replace('/my-journeys')
       return false
     },
+  })
+
+  useQuery({
+    queryKey: QUERY_KEYS.USER_FAVORITE_CATEGORIES(),
+    queryFn: () => getUserFavoriteCategories(),
   })
 
   const daysLeftBeforeJourneyBegins = useMemo(

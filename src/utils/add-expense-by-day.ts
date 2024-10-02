@@ -1,16 +1,22 @@
-import type { Expense, ExpensesByDay } from '@/types'
+import type {
+  AddExpenseWithCategories,
+  ExpensesByDay,
+  ExpenseWithCategories,
+} from '@/types'
 
 export function addExpenseByDay(
-  newExpense: Expense,
+  expense: AddExpenseWithCategories,
   expensesByDay: ExpensesByDay
 ): ExpensesByDay {
-  const copy = { ...expensesByDay }
+  const expensesByDayCopy = { ...expensesByDay }
 
-  if (!copy[newExpense.startDate as keyof ExpensesByDay]) {
-    copy[newExpense.startDate as keyof ExpensesByDay] = []
+  if (!expensesByDayCopy[expense.startDate as keyof ExpensesByDay]) {
+    expensesByDayCopy[expense.startDate as keyof ExpensesByDay] = []
   }
 
-  copy[newExpense.startDate as keyof ExpensesByDay].push(newExpense)
+  expensesByDayCopy[expense.startDate as keyof ExpensesByDay].push(
+    expense as ExpenseWithCategories
+  )
 
-  return copy
+  return expensesByDayCopy
 }

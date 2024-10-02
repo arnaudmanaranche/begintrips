@@ -1,4 +1,8 @@
-import type { Expense, ExpensesByCategory } from '@/types'
+import type {
+  Expense,
+  ExpensesByCategory,
+  ExpenseWithCategories,
+} from '@/types'
 
 import { removeExpenseById } from './remove-expense-by-id'
 
@@ -9,21 +13,23 @@ describe('removeExpenseById', () => {
         {
           id: '1',
           name: 'Expense 1',
-        } as Expense,
+          category_id: '1',
+        } as ExpenseWithCategories,
         {
           id: '2',
           name: 'Expense 2',
-        } as Expense,
+          category_id: '2',
+        } as ExpenseWithCategories,
       ],
       bar: [
         {
           id: '3',
           name: 'Expense 3',
-        } as Expense,
+        } as ExpenseWithCategories,
         {
           id: '4',
           name: 'Expense 4',
-        } as Expense,
+        } as ExpenseWithCategories,
       ],
     } as ExpensesByCategory
 

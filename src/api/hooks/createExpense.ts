@@ -2,7 +2,7 @@ import type { UseMutateAsyncFunction } from '@tanstack/react-query'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useParams } from 'next/navigation'
 
-import type { AddExpense, Expense, JourneyPage } from '@/types'
+import type { AddExpenseWithCategories, Expense, JourneyPage } from '@/types'
 import { addExpenseByCategory } from '@/utils/add-expense-by-category'
 import { addExpenseByDay } from '@/utils/add-expense-by-day'
 
@@ -19,7 +19,7 @@ export const useCreateExpense = ({
   handleCreateExpense: UseMutateAsyncFunction<
     Expense,
     Error,
-    { expense: AddExpense }
+    { expense: AddExpenseWithCategories }
   >
   isPending: boolean
   isError: boolean
@@ -34,30 +34,26 @@ export const useCreateExpense = ({
     isError,
     error,
   } = useMutation({
-    mutationFn: ({ expense }: { expense: AddExpense }) =>
+    mutationFn: ({ expense }: { expense: AddExpenseWithCategories }) =>
       createExpense({ expense }),
     onSuccess() {
       onSuccessCallback?.()
     },
-    onMutate: async ({ expense }: { expense: AddExpense }) => {
+    onMutate: async ({ expense }: { expense: AddExpenseWithCategories }) => {
       const previousJourney = queryClient.getQueryData<JourneyPage>(
         QUERY_KEYS.JOURNEY(journeyId as string)
       )
+
       queryClient.setQueryData<JourneyPage>(
         QUERY_KEYS.JOURNEY(journeyId as string),
         (oldData) => {
           if (!oldData) return oldData
 
           const expensesByCategory = addExpenseByCategory(
-            // @ts-expect-error TODO: Fix this
             expense,
             oldData.expensesByCategory
           )
-          const expensesByDay = addExpenseByDay(
-            // @ts-expect-error TODO: Fix this
-            expense,
-            oldData.expensesByCategory
-          )
+          const expensesByDay = addExpenseByDay(expense, oldData.expensesByDay)
 
           const newBudgetSpent = oldData.budgetSpent + expense.amount
 

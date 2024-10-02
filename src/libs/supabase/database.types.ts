@@ -9,6 +9,63 @@ export type Json =
 export interface Database {
   public: {
     Tables: {
+      categories: {
+        Row: {
+          created_at: string | null
+          emoji: string | null
+          id: string
+          name: string
+        }
+        Insert: {
+          created_at?: string | null
+          emoji?: string | null
+          id?: string
+          name: string
+        }
+        Update: {
+          created_at?: string | null
+          emoji?: string | null
+          id?: string
+          name?: string
+        }
+        Relationships: []
+      }
+      categories_favorites: {
+        Row: {
+          category_id: string | null
+          created_at: string | null
+          id: string
+          user_id: string | null
+        }
+        Insert: {
+          category_id?: string | null
+          created_at?: string | null
+          id?: string
+          user_id?: string | null
+        }
+        Update: {
+          category_id?: string | null
+          created_at?: string | null
+          id?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'categories_favorites_category_id_fkey'
+            columns: ['category_id']
+            isOneToOne: false
+            referencedRelation: 'categories'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'categories_favorites_user_id_fkey'
+            columns: ['user_id']
+            isOneToOne: false
+            referencedRelation: 'users'
+            referencedColumns: ['id']
+          },
+        ]
+      }
       days: {
         Row: {
           created_at: string
@@ -41,7 +98,7 @@ export interface Database {
       expenses: {
         Row: {
           amount: number
-          category: Database['public']['Enums']['expense_category']
+          category_id: string | null
           created_at: string
           dayId: string
           id: string
@@ -51,7 +108,7 @@ export interface Database {
         }
         Insert: {
           amount: number
-          category: Database['public']['Enums']['expense_category']
+          category_id?: string | null
           created_at?: string
           dayId: string
           id?: string
@@ -61,7 +118,7 @@ export interface Database {
         }
         Update: {
           amount?: number
-          category?: Database['public']['Enums']['expense_category']
+          category_id?: string | null
           created_at?: string
           dayId?: string
           id?: string
@@ -70,6 +127,13 @@ export interface Database {
           startDate?: string
         }
         Relationships: [
+          {
+            foreignKeyName: 'expenses_category_id_fkey'
+            columns: ['category_id']
+            isOneToOne: false
+            referencedRelation: 'categories'
+            referencedColumns: ['id']
+          },
           {
             foreignKeyName: 'expenses_dayId_fkey'
             columns: ['dayId']

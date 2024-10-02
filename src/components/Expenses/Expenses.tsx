@@ -1,11 +1,11 @@
 import { type ReactNode } from 'react'
 
-import type { Expense } from '@/types'
+import type { ExpenseWithCategories } from '@/types'
 
 import { ExpensesCharts } from '../ExpensesCharts/ExpensesCharts'
 
 interface ExpensesProps {
-  expensesByCategory: Record<string, Expense[]>
+  expensesByCategory: Record<string, ExpenseWithCategories[]>
   isLoading: boolean
 }
 

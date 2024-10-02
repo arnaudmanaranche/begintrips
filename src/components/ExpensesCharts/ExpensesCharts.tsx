@@ -9,11 +9,11 @@ import {
   YAxis,
 } from 'recharts'
 
-import type { Expense, ExpenseCategoryEnum } from '@/types'
+import type { ExpensesByCategory } from '@/types'
 import { colorsAssociated } from '@/utils/expense-labels'
 
 interface ExpensesChartsProps {
-  expensesByCategory: Record<string, Expense[]>
+  expensesByCategory: ExpensesByCategory
 }
 
 export function ExpensesCharts({
@@ -21,7 +21,7 @@ export function ExpensesCharts({
 }: ExpensesChartsProps): ReactNode {
   const labelBackgroundColors = useMemo(() => {
     return Object.keys(expensesByCategory).map((k) => {
-      const color = colorsAssociated[k as ExpenseCategoryEnum]
+      const color = colorsAssociated[k]
       return color
     })
   }, [expensesByCategory])
@@ -47,7 +47,7 @@ export function ExpensesCharts({
     <ResponsiveContainer width="100%" height="100%">
       <div className="flex justify-center">
         <BarChart
-          width={Object.keys(expensesByCategory).length * 100}
+          width={Object.keys(expensesByCategory).length * 120}
           height={200}
           data={data}
         >
@@ -55,10 +55,7 @@ export function ExpensesCharts({
           <YAxis />
           <Bar dataKey="uv" fill="black" height={400}>
             {data.map((_, index) => (
-              <Cell
-                key={`cell-${index}`}
-                fill={labelBackgroundColors[index % 20]}
-              />
+              <Cell key={`cell-${index}`} fill={labelBackgroundColors[index]} />
             ))}
           </Bar>
         </BarChart>

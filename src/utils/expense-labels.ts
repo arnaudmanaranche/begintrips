@@ -30,7 +30,7 @@ const emojisAssociated: Record<ExpenseCategoryEnum, string> = {
   transport: '🚌',
 }
 
-export const colorsAssociated: Record<ExpenseCategoryEnum, string> = {
+export const colorsAssociated: Record<string, string> = {
   attraction: '#FF5722',
   bar: '#E65100',
   bike: '#FF5722',
