@@ -5,6 +5,7 @@ import { motion } from 'framer-motion'
 import { useParams } from 'next/navigation'
 import type { ChangeEvent, ReactNode } from 'react'
 import { useState } from 'react'
+import { FormattedMessage } from 'react-intl'
 
 import { updateJourneyDestination } from '@/api/calls/journeys'
 import { QUERY_KEYS } from '@/api/queryKeys'
@@ -77,9 +78,14 @@ export function ChangeDestination({
     <div className="mt-10 flex h-fit flex-col space-y-4">
       <div className="relative">
         <Input
+          label={
+            <FormattedMessage
+              id="inputDestinationLabel"
+              defaultMessage="Destination"
+            />
+          }
           value={destination}
           id="destination"
-          label="Destination"
           type="text"
           onChange={(e) => handleChange(e)}
         />
@@ -118,7 +124,10 @@ export function ChangeDestination({
           }
           onClick={handleSubmit}
         >
-          Change destination
+          <FormattedMessage
+            id="changeDestination"
+            defaultMessage="Change destination"
+          />
         </Button>
       </Dialog.Close>
     </div>

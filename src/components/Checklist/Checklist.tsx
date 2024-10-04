@@ -2,6 +2,7 @@ import { CheckCircledIcon, CircleIcon, Cross1Icon } from '@radix-ui/react-icons'
 import { motion } from 'framer-motion'
 import type { ReactNode } from 'react'
 import { useId } from 'react'
+import { useIntl } from 'react-intl'
 
 import { useJourneyStore } from '@/stores/journey.store'
 
@@ -23,6 +24,7 @@ function useHandleSubmit() {
 export function Checklist(): ReactNode {
   const { checkList, toggleItem, deleteItem } = useJourneyStore()
   const handleSubmit = useHandleSubmit()
+  const intl = useIntl()
 
   return (
     <div>
@@ -86,7 +88,10 @@ export function Checklist(): ReactNode {
         type="text"
         className="w-full border-t-[1px] p-2 outline-none"
         required
-        placeholder="Add item"
+        placeholder={intl.formatMessage({
+          id: 'checklistPlaceholder',
+          defaultMessage: 'Add an item',
+        })}
         onKeyUp={handleSubmit}
       />
     </div>

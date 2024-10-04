@@ -3,7 +3,7 @@ import type { ChangeEvent, InputHTMLAttributes, ReactNode } from 'react'
 import { useState } from 'react'
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
-  label: string
+  label: ReactNode
   id: string
   onChange: (e: ChangeEvent<HTMLInputElement>) => void
   min?: string

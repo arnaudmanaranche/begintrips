@@ -1,5 +1,6 @@
-import router from 'next/router'
+import { useRouter } from 'next/router'
 import { type ReactNode } from 'react'
+import { FormattedMessage } from 'react-intl'
 
 import { Button } from '@/components/Button/Button'
 import type { Journey } from '@/types'
@@ -15,6 +16,8 @@ export default function MyJourneys({
   journeys,
   isLoading,
 }: MyJourneysProps): ReactNode {
+  const router = useRouter()
+
   if (isLoading) {
     return (
       <div className="flex min-h-[500px] max-w-screen-sm flex-col space-y-4">
@@ -62,7 +65,10 @@ export default function MyJourneys({
         </p>
       </div>
       <Button onClick={() => router.push('/onboarding')}>
-        Plan a new journey
+        <FormattedMessage
+          id="planANewJourney"
+          defaultMessage="Plan a new journey"
+        />
       </Button>
     </div>
   ) : (
@@ -75,8 +81,20 @@ export default function MyJourneys({
           <div className="flex flex-col space-y-1">
             <span>Destination: {journey.destination}</span>
             <span>
-              Dates: {formatDate(journey.departureDate, 'dd/MM/yyyy')} -{' '}
-              {formatDate(journey.returnDate, 'dd/MM/yyyy')}
+              Dates:{' '}
+              {formatDate(
+                journey.departureDate,
+                'dd/MM/yyyy',
+                true,
+                router.locale
+              )}{' '}
+              -{' '}
+              {formatDate(
+                journey.returnDate,
+                'dd/MM/yyyy',
+                true,
+                router.locale
+              )}
             </span>
           </div>
           <div className="flex space-x-2">
@@ -84,9 +102,11 @@ export default function MyJourneys({
               onClick={() => router.push(`/journey/${journey.id}`)}
               isDisabled={!journey.status}
             >
-              {hasJourneyPassed(new Date(journey.departureDate))
-                ? 'Visit'
-                : 'Edit'}
+              {hasJourneyPassed(new Date(journey.departureDate)) ? (
+                <FormattedMessage id="visit" defaultMessage="Visit" />
+              ) : (
+                <FormattedMessage id="edit" defaultMessage="Edit" />
+              )}
             </Button>
           </div>
         </div>

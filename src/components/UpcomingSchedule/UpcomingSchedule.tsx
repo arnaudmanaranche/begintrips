@@ -1,4 +1,5 @@
 import { addDays } from 'date-fns'
+import { useRouter } from 'next/router'
 import { type ReactNode } from 'react'
 
 import { ExpenseLabel } from '@/components/ExpenseLabel/ExpenseLabel'
@@ -22,6 +23,7 @@ export function UpcomingSchedule({
 }: UpcomingScheduleProps): ReactNode {
   const { setCurrentStep, setIsOpen, setSelectedDay } =
     useQuickActionsModalActions()
+  const router = useRouter()
 
   if (isLoading) {
     return (
@@ -40,19 +42,28 @@ export function UpcomingSchedule({
           const date = addDays(new Date(departureDate), index)
 
           const expenses =
-            expensesByDay[formatDate(date, 'yyyy-MM-dd') as DateString]
+            expensesByDay[
+              formatDate(date, 'yyyy-MM-dd', true, router.locale) as DateString
+            ]
 
           return (
             <div key={index} className="flex flex-col rounded-lg">
               <div className="flex items-center justify-between p-4">
-                <span className="text-base text-black">
-                  {formatDate(date, 'EEEE dd MMMM')}
+                <span className="text-base capitalize text-black">
+                  {formatDate(date, 'EEEE dd MMMM', true, router.locale)}
                 </span>
                 <div
                   onClick={() => {
                     setIsOpen(true)
                     setCurrentStep('Select category')
-                    setSelectedDay(formatDate(new Date(date), 'yyyy-MM-dd'))
+                    setSelectedDay(
+                      formatDate(
+                        new Date(date),
+                        'yyyy-MM-dd',
+                        true,
+                        router.locale
+                      )
+                    )
                   }}
                   className="cursor-pointer rounded-md px-2 py-1 ring-1 ring-slate-200 transition-colors hover:bg-slate-200"
                 >

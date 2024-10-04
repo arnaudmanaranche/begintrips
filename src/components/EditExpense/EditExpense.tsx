@@ -2,6 +2,7 @@ import * as Dialog from '@radix-ui/react-dialog'
 import { Cross2Icon, DotsHorizontalIcon } from '@radix-ui/react-icons'
 import type { ReactNode } from 'react'
 import { useState } from 'react'
+import { FormattedMessage } from 'react-intl'
 
 import type { AddExpenseWithCategories } from '@/types'
 
@@ -35,7 +36,12 @@ export const EditExpense = ({ expense }: EditExpenseProps): ReactNode => {
           aria-describedby={undefined}
         >
           <div className="mb-6 flex items-center justify-between">
-            <Dialog.Title className="text-xl">Edit expense</Dialog.Title>
+            <Dialog.Title className="text-xl">
+              <FormattedMessage
+                id="editExpense"
+                defaultMessage="Edit expense"
+              />
+            </Dialog.Title>
             <Dialog.Close asChild>
               <button
                 className="h-[25px] w-[25px] appearance-none items-center justify-center rounded-full outline-none"

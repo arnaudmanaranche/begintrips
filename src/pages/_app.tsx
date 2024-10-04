@@ -10,11 +10,19 @@ import { Analytics } from '@vercel/analytics/react'
 import type { AppProps } from 'next/app'
 import { Open_Sans, Playfair_Display } from 'next/font/google'
 import Head from 'next/head'
+import { useRouter } from 'next/router'
 import type { ReactNode } from 'react'
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
+import { IntlProvider } from 'react-intl'
 import { Toaster } from 'sonner'
 
-import { SITE_DESCRIPTION, SITE_TITLE, SITE_URL } from '@/utils/seo'
+import enMessages from '../../assets/translations/en.json'
+import frMessages from '../../assets/translations/fr.json'
+
+const messages = {
+  en: enMessages,
+  fr: frMessages,
+}
 
 const playfair = Playfair_Display({
   subsets: ['latin'],
@@ -31,6 +39,7 @@ const openSans = Open_Sans({
 })
 
 export default function App({ Component, pageProps }: AppProps): ReactNode {
+  const router = useRouter()
   const [queryClient] = useState(
     () =>
       new QueryClient({
@@ -43,33 +52,32 @@ export default function App({ Component, pageProps }: AppProps): ReactNode {
       })
   )
 
+  const currentLocale = useMemo(() => router.locale ?? 'en', [router.locale])
+
   return (
-    <QueryClientProvider client={queryClient}>
+    <>
       <Head>
-        <title>{SITE_TITLE}</title>
-        <meta name="title" content={SITE_TITLE} />
-        <meta name="description" content={SITE_DESCRIPTION} />
-
         <meta property="og:type" content="website" />
-        <meta property="og:url" content={SITE_URL} />
-        <meta property="og:title" content={SITE_TITLE} />
-        <meta property="og:description" content={SITE_DESCRIPTION} />
         <meta property="og:image" content="/meta-image.png" />
-
         <meta property="twitter:card" content="summary_large_image" />
-        <meta property="twitter:url" content={SITE_TITLE} />
-        <meta property="twitter:title" content={SITE_URL} />
-        <meta property="twitter:description" content={SITE_DESCRIPTION} />
         <meta property="twitter:image" content="/meta-image.png" />
       </Head>
-      <HydrationBoundary state={pageProps.dehydratedState}>
-        <Toaster richColors visibleToasts={1} />
-        <div className={`${playfair.variable} ${openSans.variable}`}>
-          <Component {...pageProps} />
-        </div>
-        <Analytics />
-      </HydrationBoundary>
-      <ReactQueryDevtools buttonPosition="top-right" />
-    </QueryClientProvider>
+      <IntlProvider
+        messages={messages[currentLocale as 'en' | 'fr']}
+        locale={currentLocale}
+        defaultLocale={router.defaultLocale}
+      >
+        <QueryClientProvider client={queryClient}>
+          <HydrationBoundary state={pageProps.dehydratedState}>
+            <Toaster richColors visibleToasts={1} />
+            <div className={`${playfair.variable} ${openSans.variable}`}>
+              <Component {...pageProps} />
+            </div>
+            <Analytics />
+          </HydrationBoundary>
+          <ReactQueryDevtools buttonPosition="top-right" />
+        </QueryClientProvider>
+      </IntlProvider>
+    </>
   )
 }

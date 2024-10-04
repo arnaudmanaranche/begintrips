@@ -1,4 +1,5 @@
 import { format, isPast, isToday, isValid, startOfDay } from 'date-fns'
+import { enUS, fr } from 'date-fns/locale'
 
 export function stripTime(date: Date): Date {
   return startOfDay(date)
@@ -19,17 +20,23 @@ type DateFormatEnumType =
 export const formatDate = (
   date: string | Date,
   dateFormat: DateFormatEnumType,
-  shouldStripeTime = true
+  shouldStripeTime = true,
+  locale = 'en'
 ): string => {
   let formatedDate = date
+  const dateLocale = locale === 'fr' ? fr : enUS
 
   if (!isValid(date)) {
     formatedDate = new Date(date)
   }
 
   if (shouldStripeTime) {
-    return format(stripTime(formatedDate as Date), dateFormat)
+    return format(stripTime(formatedDate as Date), dateFormat, {
+      locale: dateLocale,
+    })
   }
 
-  return format(formatedDate as Date, dateFormat)
+  return format(formatedDate as Date, dateFormat, {
+    locale: dateLocale,
+  })
 }

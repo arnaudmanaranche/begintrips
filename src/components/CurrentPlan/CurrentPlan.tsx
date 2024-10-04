@@ -1,5 +1,6 @@
 import clsx from 'clsx'
 import type { ReactNode } from 'react'
+import { FormattedMessage } from 'react-intl'
 
 export interface CurrentPlanProps {
   credits: number
@@ -15,13 +16,19 @@ export function CurrentPlan({
 }: CurrentPlanProps): ReactNode {
   return (
     <div className="flex items-center justify-between rounded-md bg-white p-4 text-black ring-1 ring-slate-200">
-      <div className="flex w-full items-center justify-between">
-        <div className="space-y-2 text-black">
-          <p className="text-sm">Plan</p>
-          <p className="text-2xl font-medium">Free</p>
+      <div className="flex w-full flex-col justify-between space-y-4 md:flex-row md:items-center">
+        <div className="flex items-center justify-between space-y-2 text-black md:flex-col md:items-start">
+          <p className="text-sm">
+            <FormattedMessage id="plan" defaultMessage="Plan" />
+          </p>
+          <p className="text-2xl font-medium">
+            <FormattedMessage id="free" defaultMessage="Free" />
+          </p>
         </div>
-        <div className="space-y-2 text-black">
-          <p className="text-sm">Credits left</p>
+        <div className="flex items-center justify-between space-y-2 text-black md:flex-col md:items-start">
+          <p className="text-sm">
+            <FormattedMessage id="creditsLeft" defaultMessage="Credits left" />
+          </p>
           <p className="text-2xl font-medium">{credits}</p>
         </div>
         <div className="space-x-3 text-sm text-black/70">
@@ -32,7 +39,17 @@ export function CurrentPlan({
             )}
             onClick={onCheckout}
           >
-            {isLoading ? 'Redirecting...' : 'Buy more credits'}
+            {isLoading ? (
+              <FormattedMessage
+                id="redirecting"
+                defaultMessage="Redirecting..."
+              />
+            ) : (
+              <FormattedMessage
+                id="buyMoreCredits"
+                defaultMessage="Buy more credits"
+              />
+            )}
           </span>
         </div>
       </div>

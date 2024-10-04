@@ -7,6 +7,7 @@ import {
 import clsx from 'clsx'
 import type { ReactNode } from 'react'
 import { useMemo } from 'react'
+import { FormattedMessage } from 'react-intl'
 
 import type { IWantToStep } from '@/providers/QuickActions.Provider'
 import { hasJourneyPassed } from '@/utils/has-journey-passed'
@@ -22,33 +23,47 @@ export function SelectAction({
 }: SelectActionProps): ReactNode {
   const actions: {
     icon: ReactNode
-    label: string
+    label: ReactNode
     step: IWantToStep
     disabled: boolean
   }[] = useMemo(() => {
     return [
       {
         icon: <PlusIcon />,
-        label: 'Add manually expense',
+        label: (
+          <FormattedMessage
+            id="addManuallyExpense"
+            defaultMessage="Add manually expense"
+          />
+        ),
         step: 'Select category',
         // Adding manually expense is always possible
         disabled: false,
       },
       {
         icon: <CalendarIcon />,
-        label: 'Change dates',
+        label: (
+          <FormattedMessage id="changeDates" defaultMessage="Change dates" />
+        ),
         step: 'Change dates',
         disabled: hasJourneyPassed(new Date(departureDate)),
       },
       {
         icon: <GlobeIcon />,
-        label: 'Change destination',
+        label: (
+          <FormattedMessage
+            id="changeDestination"
+            defaultMessage="Change destination"
+          />
+        ),
         step: 'Change destination',
         disabled: hasJourneyPassed(new Date(departureDate)),
       },
       {
         icon: <BarChartIcon />,
-        label: 'Update budget',
+        label: (
+          <FormattedMessage id="updateBudget" defaultMessage="Update budget" />
+        ),
         step: 'Update budget',
         disabled: hasJourneyPassed(new Date(departureDate)),
       },
@@ -59,7 +74,7 @@ export function SelectAction({
     <div className="mt-10 grid grid-cols-2 gap-5">
       {actions.map((action) => (
         <div
-          key={action.label}
+          key={action.label?.toString()}
           className={clsx(
             'flex flex-col items-center justify-center space-y-2 rounded-lg border-[1px] border-neutral p-4 text-black transition-colors',
             action.disabled

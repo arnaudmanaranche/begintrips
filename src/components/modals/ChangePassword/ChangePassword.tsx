@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react'
 import { useState } from 'react'
+import { FormattedMessage } from 'react-intl'
 
 import { Button } from '@/components/Button/Button'
 import { Callout } from '@/components/Callout/Callout'
@@ -47,14 +48,24 @@ export function ChangePasswordModalView({
       {formError ? <Callout.Danger>{formError}</Callout.Danger> : null}
       <div className="flex flex-col gap-6">
         <Input
-          label="Password"
+          label={
+            <FormattedMessage
+              id="inputPasswordLabel"
+              defaultMessage="Password"
+            />
+          }
           id="password"
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
         <Input
-          label="Confirm password"
+          label={
+            <FormattedMessage
+              id="inputConfirmPasswordLabel"
+              defaultMessage="Confirm password"
+            />
+          }
           value={confirmPassword}
           onChange={(e) => setConfirmPassword(e.target.value)}
           id="confirmPassword"
@@ -70,7 +81,17 @@ export function ChangePasswordModalView({
           !confirmPassword
         }
       >
-        {isLoading ? 'Changing password...' : 'Change password'}
+        {isLoading ? (
+          <FormattedMessage
+            id="changingPassword"
+            defaultMessage="Changing password..."
+          />
+        ) : (
+          <FormattedMessage
+            id="changePassword"
+            defaultMessage="Change password"
+          />
+        )}
       </Button>
     </div>
   )

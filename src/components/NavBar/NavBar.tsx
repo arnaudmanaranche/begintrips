@@ -3,10 +3,16 @@ import clsx from 'clsx'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { type ReactNode } from 'react'
+import { FormattedMessage } from 'react-intl'
 
 const navItems = [
-  { name: 'My journeys', href: '/my-journeys', icon: PaperPlaneIcon },
-  { name: 'Settings', href: '/account', icon: GearIcon },
+  {
+    id: 'myJourneys',
+    name: 'My journeys',
+    href: '/my-journeys',
+    icon: PaperPlaneIcon,
+  },
+  { id: 'settings', name: 'Settings', href: '/account', icon: GearIcon },
 ]
 
 export function NavBar(): ReactNode {
@@ -45,7 +51,13 @@ export function NavBar(): ReactNode {
                   <span
                     className={clsx(isActive ? 'text-accent' : 'text-black')}
                   >
-                    {item.name}
+                    <FormattedMessage
+                      id={item.id}
+                      defaultMessage={`{name}`}
+                      values={{
+                        name: item.name,
+                      }}
+                    />
                   </span>
                 </Link>
               </li>

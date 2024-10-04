@@ -3,6 +3,7 @@ import { ArrowLeftIcon, Cross2Icon } from '@radix-ui/react-icons'
 import { useQuery } from '@tanstack/react-query'
 import { useRouter } from 'next/router'
 import { type ReactNode } from 'react'
+import { FormattedMessage } from 'react-intl'
 
 import { getJourney, getJourneyDays } from '@/api/calls/journeys'
 import { QUERY_KEYS } from '@/api/queryKeys'
@@ -16,6 +17,42 @@ interface IWantToProps {
   isOpen: boolean
   currentStep: IWantToStep
   selectedDay: string | null
+}
+
+function FormattedIWantToTitle({ currentStep }: { currentStep: IWantToStep }) {
+  switch (currentStep) {
+    case 'Select action':
+      return (
+        <FormattedMessage id="selectAction" defaultMessage="Select action" />
+      )
+    case 'Select category':
+      return (
+        <FormattedMessage
+          id="selectCategory"
+          defaultMessage="Select category"
+        />
+      )
+    case 'Change dates':
+      return <FormattedMessage id="changeDates" defaultMessage="Change dates" />
+    case 'Change destination':
+      return (
+        <FormattedMessage
+          id="changeDestination"
+          defaultMessage="Change destination"
+        />
+      )
+    case 'Update budget':
+      return (
+        <FormattedMessage id="updateBudget" defaultMessage="Update budget" />
+      )
+    default:
+      return (
+        <FormattedMessage
+          id="addManuallyExpense"
+          defaultMessage="Add manually expense"
+        />
+      )
+  }
 }
 
 export function IWantTo({
@@ -77,7 +114,9 @@ export function IWantTo({
               </Dialog.Close>
             </div>
             <Dialog.Title asChild>
-              <h3 className="font-serif text-xl">{currentStep}</h3>
+              <h3 className="font-serif text-xl">
+                <FormattedIWantToTitle currentStep={currentStep} />
+              </h3>
             </Dialog.Title>
           </div>
           <IWantToView

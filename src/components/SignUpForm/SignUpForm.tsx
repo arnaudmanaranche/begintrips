@@ -2,6 +2,7 @@ import { motion } from 'framer-motion'
 import { useRouter } from 'next/router'
 import type { MouseEvent, ReactNode } from 'react'
 import { useState } from 'react'
+import { FormattedMessage } from 'react-intl'
 
 import { Button } from '@/components/Button/Button'
 import { createClient } from '@/libs/supabase/client'
@@ -67,7 +68,9 @@ export function SignUpForm(): ReactNode {
       <form className="flex flex-col space-y-6">
         <div className="flex flex-col">
           <Input
-            label="Email"
+            label={
+              <FormattedMessage id="inputEmailLabel" defaultMessage="Email" />
+            }
             id="email"
             type="email"
             value={email}
@@ -76,7 +79,12 @@ export function SignUpForm(): ReactNode {
         </div>
         <div className="flex flex-col">
           <Input
-            label="Password"
+            label={
+              <FormattedMessage
+                id="inputPasswordLabel"
+                defaultMessage="Password"
+              />
+            }
             id="password"
             type="password"
             value={password}
@@ -85,7 +93,12 @@ export function SignUpForm(): ReactNode {
         </div>
         <div className="flex flex-col">
           <Input
-            label="Confirm password"
+            label={
+              <FormattedMessage
+                id="inputConfirmPasswordLabel"
+                defaultMessage="Confirm password"
+              />
+            }
             id="confirm-password"
             type="password"
             value={confirmPassword}
@@ -99,7 +112,11 @@ export function SignUpForm(): ReactNode {
           }
           isDisabled={isLoading || (!email && !password && !confirmPassword)}
         >
-          {isLoading ? 'Signing up...' : 'Sign up'}
+          {isLoading ? (
+            <FormattedMessage id="signingUp" defaultMessage="Signing up..." />
+          ) : (
+            <FormattedMessage id="signUp" defaultMessage="Sign up" />
+          )}
         </Button>
       </form>
     </motion.div>

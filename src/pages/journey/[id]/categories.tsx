@@ -2,8 +2,10 @@ import { StarFilledIcon, StarIcon } from '@radix-ui/react-icons'
 import type { User } from '@supabase/supabase-js'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import type { GetServerSideProps } from 'next'
+import Head from 'next/head'
 import { useRouter } from 'next/router'
 import type { ReactNode } from 'react'
+import { defineMessages, useIntl } from 'react-intl'
 
 import {
   getUserFavoriteCategories,
@@ -15,15 +17,24 @@ import { Button } from '@/components/Button/Button'
 import { Sidebar } from '@/components/Sidebar/Sidebar'
 import { createClient } from '@/libs/supabase/server-props'
 import type { UserFavoriteCategories } from '@/types'
+import { SITE_URL } from '@/utils/seo'
 
 interface JourneyCategoriesProps {
   user: User
 }
 
+const messages = defineMessages({
+  title: {
+    id: 'journeyCategoriesTitle',
+    defaultMessage: 'My journey | Categories',
+  },
+})
+
 export default function JourneyCategories({
   user,
 }: JourneyCategoriesProps): ReactNode {
   const router = useRouter()
+  const intl = useIntl()
   const queryClient = useQueryClient()
   const { data, isPending } = useQuery({
     queryKey: QUERY_KEYS.USER_FAVORITE_CATEGORIES(),
@@ -87,6 +98,20 @@ export default function JourneyCategories({
 
   return (
     <div className="flex">
+      <Head>
+        <title>{intl.formatMessage(messages.title)}</title>
+        <meta name="title" content={intl.formatMessage(messages.title)} />
+        <meta property="og:url" content={`${SITE_URL}`} />
+        <meta
+          property="og:title"
+          content={intl.formatMessage(messages.title)}
+        />
+        <meta
+          property="twitter:title"
+          content={intl.formatMessage(messages.title)}
+        />
+        <meta property="twitter:url" content={`${SITE_URL}`} />
+      </Head>
       <Sidebar />
       <div className="flex flex-1 flex-col">
         <nav className="relative hidden min-h-[70px] items-center justify-between border-b-[1px] px-10 lg:flex">

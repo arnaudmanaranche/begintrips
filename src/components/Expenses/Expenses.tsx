@@ -1,4 +1,5 @@
 import { type ReactNode } from 'react'
+import { FormattedMessage } from 'react-intl'
 
 import type { ExpenseWithCategories } from '@/types'
 
@@ -30,7 +31,9 @@ export function Expenses({
 
   return Object.keys(expensesByCategory).length === 0 ? (
     <div className="flex items-center justify-center">
-      <p className="text-xl text-gray-500">No expenses yet</p>
+      <p className="text-lg text-black/30">
+        <FormattedMessage id="noExpenses" defaultMessage="No expenses yet" />
+      </p>
     </div>
   ) : (
     <ExpensesCharts expensesByCategory={expensesByCategory} />

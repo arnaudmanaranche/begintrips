@@ -5,11 +5,13 @@ import clsx from 'clsx'
 import { isToday } from 'date-fns'
 import { motion } from 'framer-motion'
 import type { GetServerSideProps } from 'next'
+import Head from 'next/head'
 import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
 import { useRouter } from 'next/router'
 import type { ChangeEvent, ReactNode } from 'react'
 import { useState } from 'react'
+import { defineMessages, FormattedMessage, useIntl } from 'react-intl'
 
 import { createJourney } from '@/api/calls/journeys'
 import { Button } from '@/components/Button/Button'
@@ -19,16 +21,24 @@ import { useSearchDestination } from '@/hooks/useSearchDestination'
 import { createClient as createServerClient } from '@/libs/supabase/server-props'
 import { useOnboardingStore } from '@/stores/onboarding.store'
 import { isInvalidDate, stripTime } from '@/utils/date'
+import { SITE_URL } from '@/utils/seo'
 
 const ONBOARDING_STEPS = [1, 2, 3]
+
+const messages = defineMessages({
+  title: {
+    id: 'onboardingPageTitle',
+    defaultMessage: 'Planner.so | Onboarding',
+  },
+})
 
 export default function Onboarding(): ReactNode {
   const searchParams = useSearchParams()
   const step = searchParams.get('step')
-
+  const intl = useIntl()
   const [currentStep, setCurrentStep] = useState(step ? parseInt(step) : 0)
   const router = useRouter()
-  const [error, setError] = useState('')
+  const [error, setError] = useState<ReactNode>('')
   const { journey, resetJourney } = useOnboardingStore()
   const { mutateAsync, isPending, isSuccess } = useMutation({
     mutationFn: () => createJourney(journey),
@@ -41,7 +51,10 @@ export default function Onboarding(): ReactNode {
       router.push(`/journey/${data.journeyId}`)
     } catch {
       setError(
-        'An error occurred while creating your journey. Please try again later.'
+        <FormattedMessage
+          id="onboardingCreatingJourneyError"
+          defaultMessage="An error occurred while creating your journey. Please try again later."
+        />
       )
     }
   }
@@ -49,7 +62,12 @@ export default function Onboarding(): ReactNode {
   const handleNextStep = () => {
     if (currentStep === 0) {
       if (!journey.destination) {
-        setError('You need to set a destination')
+        setError(
+          <FormattedMessage
+            id="onboardingStep1Error"
+            defaultMessage="You need to set a destination"
+          />
+        )
         return
       }
     } else if (currentStep === 1) {
@@ -63,7 +81,12 @@ export default function Onboarding(): ReactNode {
       }
 
       if (isInvalidDate(departureDate) || isInvalidDate(returnDate)) {
-        setError('You need to set a valid start and end date')
+        setError(
+          <FormattedMessage
+            id="onboardingStep2Error"
+            defaultMessage="You need to set a valid start and end date"
+          />
+        )
         return
       }
     }
@@ -76,6 +99,20 @@ export default function Onboarding(): ReactNode {
 
   return (
     <div className="mx-auto flex min-h-screen max-w-screen-xl flex-col">
+      <Head>
+        <title>{intl.formatMessage(messages.title)}</title>
+        <meta name="title" content={intl.formatMessage(messages.title)} />
+        <meta property="og:url" content={`${SITE_URL}/onboarding`} />
+        <meta
+          property="og:title"
+          content={intl.formatMessage(messages.title)}
+        />
+        <meta
+          property="twitter:title"
+          content={intl.formatMessage(messages.title)}
+        />
+        <meta property="twitter:url" content={`${SITE_URL}/onboarding`} />
+      </Head>
       <header className="flex flex-col gap-4 px-4 py-6">
         <Link href="/account">
           <span className="text-2xl lg:text-3xl">
@@ -111,7 +148,17 @@ export default function Onboarding(): ReactNode {
                 onClick={() => setCurrentStep((prev) => prev - 1)}
                 variant="ghost"
               >
-                {currentStep === 1 ? 'Change destination' : 'Change dates'}
+                {currentStep === 1 ? (
+                  <FormattedMessage
+                    id="onboardingChangeDestination"
+                    defaultMessage="Change destination"
+                  />
+                ) : (
+                  <FormattedMessage
+                    id="onboardingChangeDates"
+                    defaultMessage="Change dates"
+                  />
+                )}
               </Button>
             )}
             <Button
@@ -125,11 +172,19 @@ export default function Onboarding(): ReactNode {
               }
               isDisabled={isPending || isSuccess}
             >
-              {isPending || isSuccess
-                ? 'Creating your journey...'
-                : currentStep === ONBOARDING_STEPS.length - 1
-                  ? "Let's go !"
-                  : 'Next'}
+              {isPending || isSuccess ? (
+                <FormattedMessage
+                  id="onboardingCreatingJourney"
+                  defaultMessage="Creating your journey..."
+                />
+              ) : currentStep === ONBOARDING_STEPS.length - 1 ? (
+                <FormattedMessage
+                  id="onboarding.letsGo"
+                  defaultMessage="Let's go!"
+                />
+              ) : (
+                <FormattedMessage id="onboardingNext" defaultMessage="Next" />
+              )}
             </Button>
           </div>
         </div>
@@ -138,7 +193,7 @@ export default function Onboarding(): ReactNode {
   )
 }
 
-function Steps({ step, error }: { step: number; error: string }) {
+function Steps({ step, error }: { step: number; error: ReactNode }) {
   const stepComponents = [
     <Step1 key="step1" error={error} />,
     <Step2 key="step2" error={error} />,
@@ -167,7 +222,7 @@ function Step({ children, title }: StepProps) {
   )
 }
 
-function Step1({ error }: { error: string }) {
+function Step1({ error }: { error: ReactNode }) {
   const { journey, updateJourney } = useOnboardingStore()
   const { searchBoxRef, sessionTokenRef } = useSearchDestination()
   const [suggestions, setSuggestions] = useState<SearchBoxSuggestion[]>()
@@ -189,10 +244,22 @@ function Step1({ error }: { error: string }) {
   }
 
   return (
-    <Step title="Where do you want to go ?">
+    <Step
+      title={
+        <FormattedMessage
+          id="onboardingStep1Title"
+          defaultMessage="Where do you want to go ?"
+        />
+      }
+    >
       <div className="relative space-y-4">
         <Input
-          label="Destination"
+          label={
+            <FormattedMessage
+              id="inputDestinationLabel"
+              defaultMessage="Destination"
+            />
+          }
           id="destination"
           value={journey.destination}
           onChange={handleSearchDestination}
@@ -241,7 +308,7 @@ function Step1({ error }: { error: string }) {
   )
 }
 
-function Step2({ error }: { error: string }) {
+function Step2({ error }: { error: ReactNode }) {
   const { journey, updateJourney } = useOnboardingStore()
 
   const handleDepartureDateChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -258,7 +325,17 @@ function Step2({ error }: { error: string }) {
   }
 
   return (
-    <Step title={`When do you plan to go to ${journey.destination} ?`}>
+    <Step
+      title={
+        <FormattedMessage
+          id="onboarding.step2.title"
+          defaultMessage={`When do you plan to go to {destination} ?`}
+          values={{
+            destination: journey.destination,
+          }}
+        />
+      }
+    >
       <div className="space-y-4">
         {error && (
           <motion.div
@@ -277,15 +354,25 @@ function Step2({ error }: { error: string }) {
               journey.departureDate || new Date().toISOString().split('T')[0]
             }
             id="departureDate"
-            label="Departure date"
+            label={
+              <FormattedMessage
+                id="inputDepartureDateLabel"
+                defaultMessage="Departure date"
+              />
+            }
             type="date"
             min={journey.departureDate}
             onChange={handleDepartureDateChange}
           />
           <Input
             value={journey.returnDate || new Date().toISOString().split('T')[0]}
-            id="departureDate"
-            label="Departure date"
+            id="returnDate"
+            label={
+              <FormattedMessage
+                id="inputReturnDateLabel"
+                defaultMessage="Return date"
+              />
+            }
             type="date"
             min={journey.departureDate}
             onChange={handleReturnDateChange}
@@ -296,11 +383,18 @@ function Step2({ error }: { error: string }) {
   )
 }
 
-function Step3({ error }: { error: string }) {
+function Step3({ error }: { error: ReactNode }) {
   const { journey, updateJourney } = useOnboardingStore()
 
   return (
-    <Step title="How much do you plan to spend ?">
+    <Step
+      title={
+        <FormattedMessage
+          id="onboarding.step3.title"
+          defaultMessage="How much do you plan to spend ?"
+        />
+      }
+    >
       <div className="space-y-4">
         {error ? (
           <motion.div
@@ -314,8 +408,10 @@ function Step3({ error }: { error: string }) {
           </motion.div>
         ) : null}
         <Input
+          label={
+            <FormattedMessage id="inputBudgetLabel" defaultMessage="Budget" />
+          }
           id="budget"
-          label="Budget"
           value={journey.budget ?? ''}
           placeholder="e.g 3600$"
           onChange={(e) => updateJourney({ budget: parseInt(e.target.value) })}

@@ -1,5 +1,7 @@
 import { motion } from 'framer-motion'
+import { useRouter } from 'next/router'
 import type { Dispatch, ReactNode, SetStateAction } from 'react'
+import { FormattedMessage } from 'react-intl'
 
 import { useCreateExpense } from '@/api/hooks/createExpense'
 import { Button } from '@/components/Button/Button'
@@ -21,7 +23,7 @@ export function AddManuallyExpense({
   days,
 }: AddManuallyExpenseProps): ReactNode {
   const { setIsOpen, setCurrentStep } = useQuickActionsModalActions()
-
+  const router = useRouter()
   const { handleCreateExpense, isPending, isError, error } = useCreateExpense({
     onSuccessCallback: () => {
       setIsOpen(false)
@@ -41,15 +43,17 @@ export function AddManuallyExpense({
         </motion.div>
       ) : null}
       <Input
+        label={<FormattedMessage id="inputNameLabel" defaultMessage="Name" />}
         id="expense-name"
         type="text"
-        label="Name"
         value={newExpense.name}
         onChange={(e) => setNewExpense({ ...newExpense, name: e.target.value })}
       />
       <Input
+        label={
+          <FormattedMessage id="inputAmountLabel" defaultMessage="Amount" />
+        }
         id="expense-amount"
-        label="Amount"
         type="number"
         value={newExpense.amount}
         onChange={(e) =>
@@ -59,45 +63,64 @@ export function AddManuallyExpense({
           })
         }
       />
-      <label htmlFor="expense-day">Date</label>
-      <select
-        id="expense-day"
-        className="rounded-md border-2 border-gray-100 bg-slate-50 px-2 py-4 outline-none transition-all placeholder:text-black/50 focus:border-neutral-dark focus:outline-none"
-        onChange={(e) => {
-          const selectedDay = JSON.parse(e.target.value)
-          setNewExpense((prev) => ({
-            ...prev,
-            dayId: selectedDay.id,
-            startDate: selectedDay.startDate,
-          }))
-        }}
-        defaultValue={JSON.stringify({
-          id: newExpense.dayId,
-          startDate: newExpense.startDate,
-        })}
-      >
-        <option disabled value="Select a day">
-          Select a day
-        </option>
-        {days
-          .sort((a, b) => a.startDate.localeCompare(b.startDate))
-          .map((day) => (
-            <option
-              key={new Date(day.startDate).toString()}
-              value={JSON.stringify({
-                id: day.id,
-                startDate: day.startDate,
-              })}
-            >
-              {formatDate(day.startDate, 'EEEE - dd MMMM yyyy')}
-            </option>
-          ))}
-      </select>
+      <div className="flex flex-col space-y-1">
+        <label htmlFor="expense-day" className="px-4 text-xs text-accent">
+          Date
+        </label>
+        <select
+          id="expense-day"
+          className="rounded-md border-2 border-gray-100 bg-slate-50 px-4 py-4 outline-none transition-all placeholder:text-black/50 focus:border-neutral-dark focus:outline-none"
+          onChange={(e) => {
+            const selectedDay = JSON.parse(e.target.value)
+            setNewExpense((prev) => ({
+              ...prev,
+              dayId: selectedDay.id,
+              startDate: selectedDay.startDate,
+            }))
+          }}
+          defaultValue={JSON.stringify({
+            id: newExpense.dayId,
+            startDate: newExpense.startDate,
+          })}
+        >
+          <option disabled value="Select a day">
+            Select a day
+          </option>
+          {days
+            .sort((a, b) => a.startDate.localeCompare(b.startDate))
+            .map((day) => (
+              <option
+                key={new Date(day.startDate).toString()}
+                value={JSON.stringify({
+                  id: day.id,
+                  startDate: day.startDate,
+                })}
+              >
+                {formatDate(
+                  day.startDate,
+                  'EEEE - dd MMMM yyyy',
+                  true,
+                  router.locale
+                )}
+              </option>
+            ))}
+        </select>
+      </div>
       <Button
         onClick={() => handleCreateExpense({ expense: newExpense })}
         isDisabled={isPending}
       >
-        {isPending ? 'Adding new expense...' : 'Add new expense'}
+        {isPending ? (
+          <FormattedMessage
+            id="addingExpense"
+            defaultMessage="Adding new expense..."
+          />
+        ) : (
+          <FormattedMessage
+            id="addNewExpense"
+            defaultMessage="Add new expense"
+          />
+        )}
       </Button>
     </div>
   )

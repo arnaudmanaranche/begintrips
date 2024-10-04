@@ -8,11 +8,13 @@ import {
 import { loadStripe } from '@stripe/stripe-js'
 import Avatar from 'boring-avatars'
 import type { GetServerSideProps } from 'next'
+import Head from 'next/head'
 import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
 import { useRouter } from 'next/router'
 import type { ReactNode } from 'react'
 import { useEffect, useState } from 'react'
+import { defineMessages, FormattedMessage, useIntl } from 'react-intl'
 import { toast } from 'sonner'
 
 import { checkoutSession } from '@/api/calls/stripe'
@@ -25,14 +27,42 @@ import { createClient as createClientServerProps } from '@/libs/supabase/server-
 import { useOnboardingStore } from '@/stores/onboarding.store'
 import type { User } from '@/types'
 import { PLANS } from '@/utils/product-plans'
-
+import { SITE_URL } from '@/utils/seo'
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY)
 
 export interface AccountPageProps {
   user: User
 }
 
+const messages = defineMessages({
+  title: {
+    id: 'accountPagetitle',
+    defaultMessage: 'Planner.so | Account',
+  },
+  metaDescription: {
+    id: 'accountPageDescription',
+    defaultMessage: 'Manage your account',
+  },
+})
+
+function FormattedTitle({ modalType }: { modalType: string | null }) {
+  switch (modalType) {
+    case 'Change password':
+      return (
+        <FormattedMessage
+          id="changeMyPassword"
+          defaultMessage="Change my password"
+        />
+      )
+    case 'Payments':
+      return <FormattedMessage id="payments" defaultMessage="Payments" />
+    default:
+      return <FormattedMessage id="account" defaultMessage="Account" />
+  }
+}
+
 export default function AccountPage({ user }: AccountPageProps): ReactNode {
+  const intl = useIntl()
   const supabase = createClient()
   const router = useRouter()
   const searchParams = useSearchParams()
@@ -47,9 +77,19 @@ export default function AccountPage({ user }: AccountPageProps): ReactNode {
     const search = searchParams.get('payment_status')
 
     if (search === 'declined') {
-      toast.error('Your payment was declined')
+      toast.error(
+        <FormattedMessage
+          id="paymentDeclined"
+          defaultMessage="Your payment has been declined"
+        />
+      )
     } else if (search === 'succeeded') {
-      toast.success('Payment successful. New credits added!')
+      toast.success(
+        <FormattedMessage
+          id="paymentSuccessful"
+          defaultMessage="Payment successful. New credits added!"
+        />
+      )
     }
   }, [searchParams])
 
@@ -77,7 +117,12 @@ export default function AccountPage({ user }: AccountPageProps): ReactNode {
         sessionId: session.id,
       })
     } catch {
-      toast.error('An error occurred while creating the checkout session')
+      toast.error(
+        <FormattedMessage
+          id="paymentError"
+          defaultMessage="An error occurred while creating the checkout session"
+        />
+      )
       return
     } finally {
       setIsLoading(false)
@@ -96,6 +141,32 @@ export default function AccountPage({ user }: AccountPageProps): ReactNode {
         }
       }}
     >
+      <Head>
+        <title>{intl.formatMessage(messages.title)}</title>
+        <meta name="title" content={intl.formatMessage(messages.title)} />
+        <meta
+          name="description"
+          content={intl.formatMessage(messages.metaDescription)}
+        />
+        <meta property="og:url" content={`${SITE_URL}/account`} />
+        <meta
+          property="og:title"
+          content={intl.formatMessage(messages.title)}
+        />
+        <meta
+          property="og:description"
+          content={intl.formatMessage(messages.metaDescription)}
+        />
+        <meta
+          property="twitter:title"
+          content={intl.formatMessage(messages.title)}
+        />
+        <meta property="twitter:url" content={`${SITE_URL}/account`} />
+        <meta
+          property="twitter:description"
+          content={intl.formatMessage(messages.metaDescription)}
+        />
+      </Head>
       <div className="relative min-h-screen flex-1 bg-[#faf9f8] pt-10 lg:pt-0">
         <NavBar />
         <div className="mx-auto flex max-w-screen-sm flex-1 flex-col justify-center gap-10 px-10 lg:px-0">
@@ -109,7 +180,12 @@ export default function AccountPage({ user }: AccountPageProps): ReactNode {
             <span className="text-black">{user.email}</span>
           </div>
           <div className="space-y-4">
-            <p className="font-medium text-black">Account Details</p>
+            <p className="font-medium text-black">
+              <FormattedMessage
+                id="accountDetails"
+                defaultMessage="Account details"
+              />
+            </p>
             <CurrentPlan
               credits={user.credits}
               isLoading={isLoading}
@@ -123,7 +199,9 @@ export default function AccountPage({ user }: AccountPageProps): ReactNode {
               >
                 <div className="mb-5 flex justify-between">
                   <Dialog.Title asChild>
-                    <h3 className="font-serif text-xl">{modalType}</h3>
+                    <h3 className="font-serif text-xl">
+                      <FormattedTitle modalType={modalType} />
+                    </h3>
                   </Dialog.Title>
                   <Dialog.Close asChild>
                     <button
@@ -152,7 +230,12 @@ export default function AccountPage({ user }: AccountPageProps): ReactNode {
               }}
             >
               <div className="flex cursor-pointer items-center justify-between rounded-md bg-white p-4 ring-1 ring-slate-200">
-                <span className="text-black">Change my password</span>
+                <span className="text-black">
+                  <FormattedMessage
+                    id="changeMyPassword"
+                    defaultMessage="Change my password"
+                  />
+                </span>
                 <ChevronRightIcon className="h-5 w-5 text-black/50" />
               </div>
             </Dialog.Trigger>
@@ -164,7 +247,9 @@ export default function AccountPage({ user }: AccountPageProps): ReactNode {
             >
               <div className="flex cursor-pointer items-center justify-between rounded-md bg-white p-4 ring-1 ring-slate-200">
                 <span className="flex items-center space-x-2 text-black">
-                  <span>Payments</span>
+                  <span>
+                    <FormattedMessage id="payments" defaultMessage="Payments" />
+                  </span>
                 </span>
                 <ChevronRightIcon className="h-5 w-5 text-black/50" />
               </div>
@@ -175,7 +260,7 @@ export default function AccountPage({ user }: AccountPageProps): ReactNode {
               className="cursor-pointer text-accent-dark"
               onClick={handleLogout}
             >
-              Logout
+              <FormattedMessage id="logout" defaultMessage="Logout" />
             </span>
           </div>
         </div>
@@ -184,7 +269,10 @@ export default function AccountPage({ user }: AccountPageProps): ReactNode {
             <li className="flex items-center">
               <Link href="/my-journeys" className="flex flex-col items-center">
                 <PaperPlaneIcon className="h-6 w-6 text-black" />
-                <span>My journeys</span>
+                <FormattedMessage
+                  id="myJourneys"
+                  defaultMessage="My journeys"
+                />
               </Link>
             </li>
             <li className="flex items-center">
@@ -193,7 +281,7 @@ export default function AccountPage({ user }: AccountPageProps): ReactNode {
                 className="flex flex-col items-center text-accent"
               >
                 <GearIcon className="h-6 w-6" />
-                <span>Settings</span>
+                <FormattedMessage id="settings" defaultMessage="Settings" />
               </Link>
             </li>
           </ul>

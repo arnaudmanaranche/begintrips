@@ -1,22 +1,30 @@
 import type { SearchBoxSuggestion, SessionToken } from '@mapbox/search-js-core'
 import { ChevronRightIcon, PersonIcon } from '@radix-ui/react-icons'
 import type { User } from '@supabase/supabase-js'
-import { motion, useInView } from 'framer-motion'
+import { motion } from 'framer-motion'
 import type { GetServerSideProps } from 'next'
+import Head from 'next/head'
 import Image from 'next/image'
 import Link from 'next/link'
 import router from 'next/router'
 import type { ChangeEvent, ReactNode } from 'react'
 import { useRef, useState } from 'react'
+import { FormattedMessage } from 'react-intl'
 
 import { Button } from '@/components/Button/Button'
+import { Footer } from '@/components/Footer/Footer'
 import { Map } from '@/components/Map/Map'
 import { ProductPlan } from '@/components/ProductPlan/ProductPlan'
 import { useSearchDestination } from '@/hooks/useSearchDestination'
 import { createClient } from '@/libs/supabase/server-props'
 import { useOnboardingStore } from '@/stores/onboarding.store'
-import { mainFeatures, popularDestinations } from '@/utils/homepage'
+import {
+  useFaq,
+  useMainFeatures,
+  usePopularDestinations,
+} from '@/utils/homepage'
 import { PLANS } from '@/utils/product-plans'
+import { SITE_URL, useSiteDescription, useSiteTitle } from '@/utils/seo'
 
 function Section({
   children,
@@ -25,7 +33,7 @@ function Section({
 }: {
   children: ReactNode
   backgroundColor: string
-  title: string
+  title: ReactNode
 }) {
   return (
     <section
@@ -40,9 +48,13 @@ function Section({
 }
 
 export default function HomePage({ user }: { user: User }): ReactNode {
+  const mainFeatures = useMainFeatures()
+  const popularDestinations = usePopularDestinations()
+  const siteTitle = useSiteTitle()
+  const siteDescription = useSiteDescription()
+  const faq = useFaq()
   const { updateJourney, journey } = useOnboardingStore()
   const ref = useRef(null)
-  const isInView = useInView(ref, { once: true })
   const { searchBoxRef, sessionTokenRef } = useSearchDestination()
   const [isFocused, setIsFocused] = useState(false)
   const [suggestions, setSuggestions] = useState<SearchBoxSuggestion[]>()
@@ -89,310 +101,282 @@ export default function HomePage({ user }: { user: User }): ReactNode {
   }
 
   return (
-    <main>
-      <section className="bg-accent-light bg-opacity-20 pb-4 md:min-h-[calc(100vh-20rem)] md:pb-0">
-        <div className="mx-auto flex max-w-screen-xl flex-col justify-start space-y-16 px-10 pt-10">
-          <nav className="flex flex-row items-center justify-between px-10 md:space-y-0 xl:px-0">
-            <Link href="/" className="text-3xl">
-              Planner
-              <span className="text-accent">.so</span>
-            </Link>
-            {user ? (
+    <>
+      <Head>
+        <title>{siteTitle}</title>
+        <meta name="title" content={siteTitle} />
+        <meta name="description" content={siteDescription} />
+
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content={SITE_URL} />
+        <meta property="og:title" content={siteTitle} />
+        <meta property="og:description" content={siteDescription} />
+        <meta property="og:image" content="/meta-image.png" />
+
+        <meta property="twitter:card" content="summary_large_image" />
+        <meta property="twitter:url" content={siteTitle} />
+        <meta property="twitter:title" content={SITE_URL} />
+        <meta property="twitter:description" content={siteDescription} />
+        <meta property="twitter:image" content="/meta-image.png" />
+      </Head>
+      <main>
+        <section className="bg-accent-light bg-opacity-20 pb-4 md:min-h-[calc(100vh-20rem)] md:pb-0">
+          <div className="mx-auto flex max-w-screen-xl flex-col justify-start space-y-16 px-10 pt-10">
+            <nav className="flex flex-row items-center justify-between px-10 md:space-y-0 xl:px-0">
+              <Link href="/" className="text-3xl">
+                Planner
+                <span className="text-accent">.so</span>
+              </Link>
+              {user ? (
+                <Button
+                  onClick={() => router.push('/my-journeys')}
+                  className="hidden lg:flex"
+                >
+                  <FormattedMessage
+                    id="menuMyJourneys"
+                    defaultMessage="My journeys"
+                  />
+                </Button>
+              ) : (
+                <Button
+                  onClick={() => router.push('/welcome')}
+                  className="hidden lg:flex"
+                >
+                  <FormattedMessage id="menuLogin" defaultMessage="Login" />
+                </Button>
+              )}
               <Button
-                onClick={() => router.push('/my-journeys')}
-                className="hidden lg:flex"
+                onClick={() => router.push('/account')}
+                className="flex lg:hidden"
+                icon={<PersonIcon />}
+              />
+            </nav>
+            <div className="flex grow flex-col flex-wrap justify-center space-y-4 text-center md:text-left">
+              <h1
+                ref={ref}
+                className="text-4xl font-bold text-black sm:leading-tight md:text-6xl md:leading-[5rem] lg:max-w-[850px]"
               >
-                My journeys
-              </Button>
-            ) : (
-              <Button
-                onClick={() => router.push('/welcome')}
-                className="hidden lg:flex"
-              >
-                Login
-              </Button>
-            )}
-            <Button
-              onClick={() => router.push('/account')}
-              className="flex lg:hidden"
-              icon={<PersonIcon />}
-            />
-          </nav>
-          <div className="flex grow flex-col flex-wrap justify-center space-y-4 text-center md:text-left">
-            <h1
-              ref={ref}
-              className="text-4xl font-bold text-black sm:leading-tight md:text-6xl md:leading-[5rem] lg:max-w-[850px]"
-            >
-              {'Take the Stress Out of Travel Simplify Your Journey'
-                .split('')
-                .map((letter, index) => (
-                  <motion.span
-                    key={index}
-                    initial={{ opacity: 0 }}
-                    animate={isInView ? { opacity: 1 } : {}}
-                    transition={{ duration: 0.2, delay: index * 0.03 }}
+                <FormattedMessage
+                  id="homepageTitle"
+                  defaultMessage="Take the Stress Out of Travel Simplify your Journey"
+                />
+              </h1>
+            </div>
+            <div className="relative flex flex-col items-center space-y-10 md:items-start md:space-y-4">
+              <div className="flex w-[calc(100%-2rem)] flex-col space-x-0 rounded-2xl bg-white shadow md:w-fit md:flex-row md:space-x-10">
+                <div className="flex flex-col py-4">
+                  <label
+                    className="flex-1 px-10 text-sm text-black/80"
+                    htmlFor="destination"
                   >
-                    {letter}
-                  </motion.span>
-                ))}
-            </h1>
-          </div>
-          <div className="relative flex flex-col items-center space-y-10 md:items-start md:space-y-4">
-            <div className="flex w-[calc(100%-2rem)] flex-col space-x-0 rounded-2xl bg-white shadow-lg md:w-fit md:flex-row md:space-x-10">
-              <div className="flex flex-col py-4">
-                <label
-                  className="flex-1 px-10 text-sm text-black/80"
-                  htmlFor="destination"
-                >
-                  Destination
-                </label>
-                <input
-                  type="text"
-                  id="destination"
-                  onBlur={() => {
-                    setIsFocused(false)
-                  }}
-                  onFocus={() => {
-                    setIsFocused(true)
-                  }}
-                  className="py-4 pl-10 outline-none transition-all placeholder:text-black/50 focus:border-neutral-dark focus:outline-none"
-                  placeholder="New York"
-                  value={journey.destination}
-                  onChange={handleSearchDestination}
-                />
-              </div>
-              <div className="flex flex-col py-4">
-                <label
-                  className="px-10 text-sm text-black/80"
-                  htmlFor="departureDate"
-                >
-                  Departure date
-                </label>
-                <input
-                  placeholder="Departure date"
-                  className="w-full flex-1 border-gray-100 bg-transparent py-4 pl-10 outline-none transition-all placeholder:text-black/50 focus:border-neutral-dark focus:outline-none"
-                  id="departureDate"
-                  defaultValue={journey.departureDate}
-                  type="date"
-                  min={journey.departureDate}
-                  onChange={handleDepartureDateChange}
-                />
-              </div>
-              <div className="flex flex-col py-4">
-                <label
-                  className="px-10 text-sm text-black/80"
-                  htmlFor="returnDate"
-                >
-                  Return date
-                </label>
-                <input
-                  placeholder="Return date"
-                  className="w-full flex-1 border-gray-100 bg-transparent py-4 pl-10 outline-none transition-all placeholder:text-black/50 focus:border-neutral-dark focus:outline-none"
-                  id="returnDate"
-                  type="date"
-                  value={journey.returnDate}
-                  min={journey.departureDate}
-                  onChange={handleReturnDateChange}
-                />
-              </div>
-              <button
-                className="flex items-center justify-center rounded-b-2xl bg-accent px-4 py-4 text-xl text-black/80 transition-colors hover:bg-accent-dark md:rounded-b-none md:rounded-br-2xl md:rounded-tr-2xl"
-                onClick={handleSubmit}
-              >
-                <ChevronRightIcon className="hidden h-6 w-6 text-white md:block" />
-                <span className="block text-base md:hidden">
-                  Plan my journey
-                </span>
-              </button>
-            </div>
-            <motion.ul
-              className="absolute left-0 top-[100%] mt-2 max-h-[200px] w-full max-w-xl overflow-y-scroll rounded-md bg-white shadow-md"
-              animate={{
-                height: suggestions?.length && isFocused ? 'auto' : 0,
-              }}
-            >
-              {suggestions?.length
-                ? suggestions.map((suggestion) => {
-                    return (
-                      <li
-                        key={suggestion.mapbox_id}
-                        className="flex cursor-pointer flex-col px-4 py-2 text-start hover:bg-slate-100"
-                        tabIndex={-1}
-                        onClick={() => {
-                          updateJourney({
-                            destination: suggestion.name,
-                          })
-                          setSuggestions([])
-                        }}
-                      >
-                        <p className="text-black">{suggestion.name}</p>
-                        <span className="text-sm text-black/70">
-                          {suggestion.place_formatted}
-                        </span>
-                      </li>
-                    )
-                  })
-                : null}
-            </motion.ul>
-          </div>
-        </div>
-        <Map />
-      </section>
-      <Section
-        title="Your All-Inclusive Journey Starts Here"
-        backgroundColor="white"
-      >
-        <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
-          {mainFeatures.map((feature) => (
-            <div
-              key={feature.title}
-              className="flex cursor-default flex-col items-center gap-6 rounded-lg p-6 text-center transition-colors hover:border-accent hover:bg-accent-light/10"
-            >
-              <div className="flex flex-col items-center space-y-2">
-                <feature.image className="h-6 w-6 text-accent" />
-                <h2 className="mb-4 text-2xl">{feature.title}</h2>
-              </div>
-              <p className="text-black/70">{feature.description}</p>
-            </div>
-          ))}
-        </div>
-      </Section>
-      <Section backgroundColor="gray-50" title="Popular destinations">
-        <div className="space-y-10 text-center">
-          <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
-            {popularDestinations.map((destination) => (
-              <div key={destination.name} className="relative">
-                <Image
-                  src={destination.image}
-                  alt={`${destination.name} cityscape`}
-                  width="300"
-                  height="300"
-                  className="h-64 w-full rounded-lg object-cover"
-                />
-                <div className="absolute inset-0 flex flex-col items-center justify-center rounded-lg bg-black bg-opacity-30 p-6 text-white">
-                  <p className="mb-2 text-2xl font-bold">{destination.name}</p>
-                  <p className="mb-4 text-center">{destination.description}</p>
+                    Destination
+                  </label>
+                  <input
+                    type="text"
+                    id="destination"
+                    onBlur={() => {
+                      setIsFocused(false)
+                    }}
+                    onFocus={() => {
+                      setIsFocused(true)
+                    }}
+                    className="py-4 pl-10 outline-none transition-all placeholder:text-black/50 focus:border-neutral-dark focus:outline-none"
+                    placeholder="New York"
+                    value={journey.destination}
+                    onChange={handleSearchDestination}
+                  />
                 </div>
+                <div className="flex flex-col py-4">
+                  <label
+                    className="px-10 text-sm text-black/80"
+                    htmlFor="departureDate"
+                  >
+                    <FormattedMessage
+                      id="departureDateLabel"
+                      defaultMessage="Departure date"
+                    />
+                  </label>
+                  <input
+                    placeholder="Departure date"
+                    className="w-full flex-1 border-gray-100 bg-transparent py-4 pl-10 outline-none transition-all placeholder:text-black/50 focus:border-neutral-dark focus:outline-none"
+                    id="departureDate"
+                    defaultValue={journey.departureDate}
+                    type="date"
+                    min={journey.departureDate}
+                    onChange={handleDepartureDateChange}
+                  />
+                </div>
+                <div className="flex flex-col py-4">
+                  <label
+                    className="px-10 text-sm text-black/80"
+                    htmlFor="returnDate"
+                  >
+                    <FormattedMessage
+                      id="returnDateLabel"
+                      defaultMessage="Return date"
+                    />
+                  </label>
+                  <input
+                    placeholder="Return date"
+                    className="w-full flex-1 border-gray-100 bg-transparent py-4 pl-10 outline-none transition-all placeholder:text-black/50 focus:border-neutral-dark focus:outline-none"
+                    id="returnDate"
+                    type="date"
+                    value={journey.returnDate}
+                    min={journey.departureDate}
+                    onChange={handleReturnDateChange}
+                  />
+                </div>
+                <button
+                  className="flex items-center justify-center rounded-b-2xl bg-accent px-4 py-4 text-xl text-black/80 transition-colors hover:bg-accent-dark md:rounded-b-none md:rounded-br-2xl md:rounded-tr-2xl"
+                  onClick={handleSubmit}
+                >
+                  <ChevronRightIcon className="hidden h-6 w-6 text-white md:block" />
+                  <span className="block text-base md:hidden">
+                    <FormattedMessage
+                      id="planMyJourney"
+                      defaultMessage="Plan my journey"
+                    />
+                  </span>
+                </button>
+              </div>
+              <motion.ul
+                className="absolute left-0 top-[100%] mt-2 max-h-[200px] w-full max-w-xl overflow-y-scroll rounded-md bg-white shadow-md"
+                animate={{
+                  height: suggestions?.length && isFocused ? 'auto' : 0,
+                }}
+              >
+                {suggestions?.length
+                  ? suggestions.map((suggestion) => {
+                      return (
+                        <li
+                          key={suggestion.mapbox_id}
+                          className="flex cursor-pointer flex-col px-4 py-2 text-start hover:bg-slate-100"
+                          tabIndex={-1}
+                          onClick={() => {
+                            updateJourney({
+                              destination: suggestion.name,
+                            })
+                            setSuggestions([])
+                          }}
+                        >
+                          <p className="text-black">{suggestion.name}</p>
+                          <span className="text-sm text-black/70">
+                            {suggestion.place_formatted}
+                          </span>
+                        </li>
+                      )
+                    })
+                  : null}
+              </motion.ul>
+            </div>
+          </div>
+          <Map />
+        </section>
+        <Section
+          title={
+            <FormattedMessage
+              id="yourAllInclusiveJourneyStartsHere"
+              defaultMessage="Your all-inclusive journey starts here"
+            />
+          }
+          backgroundColor="white"
+        >
+          <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
+            {mainFeatures.map((feature) => (
+              <div
+                key={feature.title}
+                className="flex cursor-default flex-col items-center gap-6 rounded-lg p-6 text-center transition-colors hover:border-accent hover:bg-accent-light/10"
+              >
+                <div className="flex flex-col items-center space-y-2">
+                  <feature.image className="h-6 w-6 text-accent" />
+                  <h2 className="mb-4 text-2xl">{feature.title}</h2>
+                </div>
+                <p className="text-black/70">{feature.description}</p>
               </div>
             ))}
           </div>
-          <p className="text-lg">
-            Create an account and start planning your dream trip now
-          </p>
-          <Button onClick={() => router.push('/welcome')}>
-            Sign up for free
-          </Button>
-        </div>
-      </Section>
-      <Section backgroundColor="white" title="Pay as you travel">
-        <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
-          {Object.entries(PLANS).map(([plan, details]) => (
-            <ProductPlan key={plan} {...details} />
-          ))}
-        </div>
-      </Section>
-      <Section backgroundColor="gray-50" title="Frequently Asked Questions">
-        <div className="text-left">
-          <h3 className="text-lg font-semibold">What is Planner.so?</h3>
-          <p className="mb-6 mt-2">
-            Planner.so is your ultimate travel companion, designed to simplify
-            your travel planning. It offers an intuitive platform where you can
-            effortlessly create, organize, and visualize all your trips in one
-            convenient place.
-          </p>
-          <h3 className="text-lg font-semibold">
-            How does the first free trip work?
-          </h3>
-          <p className="mb-6 mt-2">
-            Your first journey is completely free! Enjoy full access to every
-            feature, allowing you to explore the full potential of Planner.so at
-            no cost.
-          </p>
-          <h3 className="text-lg font-semibold">
-            What payment methods are accepted?
-          </h3>
-          <p className="mb-6 mt-2">
-            We accept all major credit cards, securely processed through Stripe
-            to ensure your transactions are safe and hassle-free.
-          </p>
-          <h3 className="text-lg font-semibold">
-            Can I modify my itinerary after planning?
-          </h3>
-          <p className="mt-2">
-            Absolutely! You can update and adjust your itinerary anytime using
-            our flexible and easy-to-use platform.
-          </p>
-        </div>
-      </Section>
-      <footer className="bg-white py-12">
-        <div className="mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-4">
-            <div>
-              <h3 className="font-semibol mb-4 text-lg">About us</h3>
-              <p className="text-sm text-gray-600">
-                Planner.so is your ultimate travel companion, helping you plan
-                and organize your journeys with ease.
-              </p>
+        </Section>
+        <Section
+          backgroundColor="gray-50"
+          title={
+            <FormattedMessage
+              defaultMessage="Popular destinations"
+              id="components.home.popularDestinations"
+            />
+          }
+        >
+          <div className="space-y-10 text-center">
+            <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
+              {popularDestinations.map((destination) => (
+                <div key={destination.name} className="relative">
+                  <Image
+                    src={destination.image}
+                    alt={`${destination.name} cityscape`}
+                    width="300"
+                    height="300"
+                    className="h-64 w-full rounded-lg object-cover"
+                  />
+                  <div className="absolute inset-0 flex flex-col items-center justify-center rounded-lg bg-black bg-opacity-30 p-6 text-white">
+                    <p className="mb-2 text-2xl font-bold">
+                      {destination.name}
+                    </p>
+                    <p className="mb-4 text-center">
+                      {destination.description}
+                    </p>
+                  </div>
+                </div>
+              ))}
             </div>
-            <div className="hidden">
-              <h3 className="font-semibol mb-4 text-lg">Quick Links</h3>
-              <ul className="space-y-2">
-                <li>
-                  <Link
-                    href="/"
-                    className="text-sm text-gray-600 hover:text-accent"
-                  >
-                    Home
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="#pricing"
-                    className="text-sm text-gray-600 hover:text-accent"
-                  >
-                    Pricing
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="#faq"
-                    className="text-sm text-gray-600 hover:text-accent"
-                  >
-                    FAQ
-                  </Link>
-                </li>
-              </ul>
-            </div>
-            <div>
-              <h3 className="font-semibol mb-4 text-lg">Legal</h3>
-              <ul className="space-y-2">
-                <li>
-                  <Link
-                    href="/privacy-policy"
-                    className="text-sm text-gray-600 hover:text-accent"
-                  >
-                    Privacy Policy
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="/terms"
-                    className="text-sm text-gray-600 hover:text-accent"
-                  >
-                    Terms of Service
-                  </Link>
-                </li>
-              </ul>
-            </div>
-          </div>
-          <div className="mt-8 border-t border-gray-200 pt-8 text-center">
-            <p className="text-sm text-gray-600">
-              &copy; {new Date().getFullYear()} Planner.so. All rights reserved.
+            <p className="text-lg">
+              <FormattedMessage
+                id="homepageSubtitle"
+                defaultMessage="Create an account and start planning your dream trip now"
+              />
             </p>
+            <Button onClick={() => router.push('/welcome')}>
+              <FormattedMessage
+                id="signUpForFree"
+                defaultMessage="Sign up for free"
+              />
+            </Button>
           </div>
-        </div>
-      </footer>
-    </main>
+        </Section>
+        <Section
+          backgroundColor="white"
+          title={
+            <FormattedMessage
+              id="payAsYouTravel"
+              defaultMessage="Pay as you travel"
+            />
+          }
+        >
+          <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
+            {Object.entries(PLANS).map(([plan, details]) => (
+              <ProductPlan key={plan} {...details} />
+            ))}
+          </div>
+        </Section>
+        <Section
+          backgroundColor="gray-50"
+          title={
+            <FormattedMessage
+              id="frequentlyAskedQuestions"
+              defaultMessage="Frequently Asked Questions"
+            />
+          }
+        >
+          <div className="text-left">
+            {faq.map(({ title, subtitle }) => (
+              <div key={title}>
+                <h3 className="text-lg font-semibold">{title}</h3>
+                <p className="mb-6 mt-2">{subtitle}</p>
+              </div>
+            ))}
+          </div>
+        </Section>
+        <Footer />
+      </main>
+    </>
   )
 }
 
