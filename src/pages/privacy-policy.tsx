@@ -17,7 +17,7 @@ const messages = defineMessages({
   metaDescription: {
     id: 'privacyPolicy.subtitle',
     defaultMessage:
-      'At Planner.so, we are dedicated to safeguarding your privacy. This policy explains the information we collect, how we use it, and your rights regarding that information.',
+      'Learn how Planner.so collects, uses, and protects your personal information in our Privacy Policy',
   },
 })
 

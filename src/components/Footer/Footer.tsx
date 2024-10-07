@@ -35,7 +35,7 @@ export function Footer(): ReactNode {
               </li>
               <li>
                 <Link
-                  href="/terms"
+                  href="/terms-of-service"
                   className="text-sm text-gray-600 hover:text-accent"
                 >
                   <FormattedMessage
