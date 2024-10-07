@@ -1,9 +1,11 @@
 import { GearIcon, PaperPlaneIcon } from '@radix-ui/react-icons'
 import { useQuery } from '@tanstack/react-query'
 import type { GetServerSideProps } from 'next'
+import Head from 'next/head'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import type { ReactNode } from 'react'
+import { defineMessages, FormattedMessage, useIntl } from 'react-intl'
 
 import { getUserJourneys } from '@/api/calls/users'
 import { QUERY_KEYS } from '@/api/queryKeys'
@@ -12,11 +14,19 @@ import MyJourneys from '@/components/MyJourneys/MyJourneys'
 import { NavBar } from '@/components/NavBar/NavBar'
 import { createClient as createClientServerProps } from '@/libs/supabase/server-props'
 import type { Journey, User } from '@/types'
+import { SITE_URL } from '@/utils/seo'
 
 interface MyJourneysPageProps {
   user: User
   journeys: Journey[]
 }
+
+const messages = defineMessages({
+  title: {
+    id: 'myJourneysPageTitle',
+    defaultMessage: 'Planenr.so | My journeys',
+  },
+})
 
 export default function MyJourneysPage({
   user,
@@ -28,22 +38,42 @@ export default function MyJourneysPage({
     initialData: initialJourneys,
   })
   const router = useRouter()
+  const intl = useIntl()
 
   return (
     <div className="relative min-h-screen flex-1 bg-[#faf9f8] pt-10 lg:pt-0">
+      <Head>
+        <title>{intl.formatMessage(messages.title)}</title>
+        <meta name="title" content={intl.formatMessage(messages.title)} />
+        <meta property="og:url" content={`${SITE_URL}/my-journeys`} />
+        <meta
+          property="og:title"
+          content={intl.formatMessage(messages.title)}
+        />
+        <meta
+          property="twitter:title"
+          content={intl.formatMessage(messages.title)}
+        />
+        <meta property="twitter:url" content={`${SITE_URL}/my-journeys`} />
+      </Head>
       <NavBar />
       <div className="mx-auto flex max-w-screen-sm flex-1 flex-col justify-center gap-10 px-10 lg:px-0">
-        <p className="text-3xl">My journeys</p>
+        <p className="text-3xl">
+          <FormattedMessage id="myJourneys" defaultMessage="My journeys" />
+        </p>
         <MyJourneys journeys={journeys} isLoading={isFetching} />
       </div>
-      <div className="mt-20 flex justify-center">
+      <div className="mt-14 flex justify-center pb-[80px]">
         {user.credits > 0 ? (
           <Button
             onClick={() => {
               router.push('/onboarding')
             }}
           >
-            Plan a new journey
+            <FormattedMessage
+              id="planANewJourney"
+              defaultMessage="Plan a new journey"
+            />
           </Button>
         ) : null}
       </div>
@@ -52,7 +82,12 @@ export default function MyJourneysPage({
           <li className="flex items-center text-accent">
             <Link href="/my-journeys" className="flex flex-col items-center">
               <PaperPlaneIcon className="h-6 w-6" />
-              <span>My journeys</span>
+              <span>
+                <FormattedMessage
+                  id="myJourneys"
+                  defaultMessage="My journeys"
+                />
+              </span>
             </Link>
           </li>
           <li className="flex items-center">
@@ -61,7 +96,9 @@ export default function MyJourneysPage({
               className="flex flex-col items-center text-black"
             >
               <GearIcon className="h-6 w-6" />
-              <span>Settings</span>
+              <span>
+                <FormattedMessage id="settings" defaultMessage="Settings" />
+              </span>
             </Link>
           </li>
         </ul>

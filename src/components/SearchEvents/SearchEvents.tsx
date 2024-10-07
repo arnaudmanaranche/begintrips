@@ -2,6 +2,7 @@ import { MagnifyingGlassIcon } from '@radix-ui/react-icons'
 import clsx from 'clsx'
 import { motion } from 'framer-motion'
 import Image from 'next/image'
+import { useRouter } from 'next/router'
 import type { ReactNode } from 'react'
 import { useState } from 'react'
 
@@ -18,6 +19,7 @@ interface SearchEventsProps {
 
 export function SearchEvents({ journey, days }: SearchEventsProps): ReactNode {
   const { events, isLoading, error, searchEvents } = useSearchEvents()
+  const router = useRouter()
   const [searchValue, setSearchValue] = useState('')
   const [isSearchFocused, setIsSearchFocused] = useState(false)
   const { handleCreateExpense } = useCreateExpense({})
@@ -42,11 +44,15 @@ export function SearchEvents({ journey, days }: SearchEventsProps): ReactNode {
                 query: e.target.value,
                 startDate: formatDate(
                   new Date(journey.departureDate),
-                  "yyyy-MM-dd'T'HH:mm:ss'Z'"
+                  "yyyy-MM-dd'T'HH:mm:ss'Z'",
+                  true,
+                  router.locale
                 ),
                 endDate: formatDate(
                   new Date(journey.returnDate),
-                  "yyyy-MM-dd'T'HH:mm:ss'Z'"
+                  "yyyy-MM-dd'T'HH:mm:ss'Z'",
+                  true,
+                  router.locale
                 ),
                 city: journey.destination,
               })
@@ -103,7 +109,9 @@ export function SearchEvents({ journey, days }: SearchEventsProps): ReactNode {
                       day.startDate ===
                       formatDate(
                         new Date(event.dates?.start.dateTime as string),
-                        'yyyy-MM-dd'
+                        'yyyy-MM-dd',
+                        true,
+                        router.locale
                       )
                   )?.id
 
@@ -142,7 +150,9 @@ export function SearchEvents({ journey, days }: SearchEventsProps): ReactNode {
                   <p className="text-sm">
                     {formatDate(
                       new Date(event.dates?.start.dateTime as string),
-                      'dd MMMM yyyy - HH:mm'
+                      'dd MMMM yyyy - HH:mm',
+                      true,
+                      router.locale
                     )}
                   </p>
                 </div>

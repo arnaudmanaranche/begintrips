@@ -3,16 +3,17 @@ import clsx from 'clsx'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import type { ForwardRefExoticComponent, RefAttributes } from 'react'
-import { type ReactNode } from 'react'
+import React, { type ReactNode } from 'react'
+import { FormattedMessage } from 'react-intl'
 
 import { jounryeNavigationItems } from '@/utils/navigationItems'
 
 function SidebarItem({
   href,
   icon,
-  label,
   isActive,
   isEnabled,
+  label,
 }: {
   href: string
   icon: ForwardRefExoticComponent<IconProps & RefAttributes<SVGSVGElement>>
@@ -48,7 +49,7 @@ function SidebarItem({
           <span>{label}</span>
           {!isEnabled ? (
             <span className="rounded-md bg-accent px-2 text-xs text-white">
-              Soon
+              <FormattedMessage id="soon" defaultMessage="Soon" />
             </span>
           ) : null}
         </div>
@@ -68,7 +69,7 @@ export function Sidebar(): ReactNode {
         <span className="text-accent">.so</span>
       </div>
       <ul className="flex flex-col justify-center pt-20">
-        {jounryeNavigationItems.map((item) => {
+        {jounryeNavigationItems.map((item, index) => {
           const href = item.href.replace('[id]', id)
           const Icon = item.icon
           const isActive = router.pathname === item.href
@@ -76,7 +77,7 @@ export function Sidebar(): ReactNode {
           return (
             <SidebarItem
               isEnabled={item.isEnabled}
-              key={item.label}
+              key={`sidebar-item-${index}`}
               isActive={isActive}
               href={href}
               icon={Icon}

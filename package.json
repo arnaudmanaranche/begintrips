@@ -8,6 +8,7 @@
     "build": "next build",
     "build-storybook": "storybook build",
     "dev": "next dev",
+    "extract": "formatjs extract './src/{components,pages,utils}/**/*.ts*' --ignore='**/*.d.ts' --out-file ./assets/translations/en.json --format simple",
     "generate:product-plans": "dotenv -- yarn _generate-product-plans",
     "generate:types": "dotenv -- yarn _generate-types",
     "lint": "next lint",
@@ -41,6 +42,7 @@
     "next": "14.2.10",
     "react": "18",
     "react-dom": "18",
+    "react-intl": "6.7.0",
     "recharts": "2.12.7",
     "sonner": "1.5.0",
     "stripe": "16.10.0",
@@ -48,6 +50,7 @@
   },
   "devDependencies": {
     "@chromatic-com/storybook": "1.7.0",
+    "@formatjs/cli": "6.2.12",
     "@storybook/addon-essentials": "8.2.9",
     "@storybook/addon-interactions": "8.2.9",
     "@storybook/addon-links": "8.2.9",

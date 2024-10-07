@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import { format } from 'date-fns'
 import type { ReactNode } from 'react'
+import { FormattedMessage } from 'react-intl'
 
 import { getUserPayments } from '@/api/calls/users'
 import { QUERY_KEYS } from '@/api/queryKeys'
@@ -32,14 +33,30 @@ export function PaymentModalView({ userId }: PaymentModalViewProps): ReactNode {
     )
   }
 
+  if (payments.length === 0) {
+    return (
+      <div className="mt-6 flex flex-col gap-6">
+        <p className="text-center text-lg text-black/30">
+          <FormattedMessage id="noPayments" defaultMessage="No payments yet" />
+        </p>
+      </div>
+    )
+  }
+
   return (
     <div className="mt-6 flex flex-col gap-6">
       <table>
         <thead>
           <tr className=" text-left">
-            <th className="px-4 py-2 font-thin">Amount</th>
-            <th className="px-4 py-2 font-thin">Date</th>
-            <th className="px-4 py-2 font-thin">Status</th>
+            <th className="px-4 py-2 font-thin">
+              <FormattedMessage id="amount" defaultMessage="Amount" />
+            </th>
+            <th className="px-4 py-2 font-thin">
+              <FormattedMessage id="date" defaultMessage="Date" />
+            </th>
+            <th className="px-4 py-2 font-thin">
+              <FormattedMessage id="status" defaultMessage="Status" />
+            </th>
           </tr>
         </thead>
         <tbody>

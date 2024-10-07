@@ -2,6 +2,7 @@ import { ChevronRightIcon } from '@radix-ui/react-icons'
 import clsx from 'clsx'
 import { useRouter } from 'next/router'
 import { type ReactNode, useMemo } from 'react'
+import { FormattedMessage } from 'react-intl'
 
 import { useOnboardingStore } from '@/stores/onboarding.store'
 import type { ProductPlanProps } from '@/types'
@@ -15,11 +16,11 @@ function Cta({ title, isDisabled }: { title: string; isDisabled: boolean }) {
   const wording = useMemo(() => {
     switch (title) {
       case 'Free':
-        return 'Get started'
+        return <FormattedMessage id="getStarted" defaultMessage="Get started" />
       case 'Casual Explorer':
-        return 'Buy now'
+        return <FormattedMessage id="casualExplorer" defaultMessage="Buy now" />
       case 'Globetrotter':
-        return 'Subscribe'
+        return <FormattedMessage id="globetrotter" defaultMessage="Subscribe" />
     }
   }, [title])
 

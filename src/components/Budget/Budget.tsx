@@ -1,4 +1,5 @@
 import { type ReactNode } from 'react'
+import { FormattedMessage, FormattedNumber } from 'react-intl'
 
 export function Budget({
   budgetSpent,
@@ -10,7 +11,9 @@ export function Budget({
   if (totalBudget === 0) {
     return (
       <div className="flex w-full items-center justify-center">
-        <span className="text-lg text-black/30">No budget set</span>
+        <span className="text-lg text-black/30">
+          <FormattedMessage id="noBudget" defaultMessage="No budget yet" />
+        </span>
       </div>
     )
   }
@@ -62,7 +65,30 @@ export function Budget({
             ? '100%'
             : `${Math.round(percentageSpent)}%`}
         </div>
-        <div className="mt-1 text-sm">{`$${budgetSpent} of $${totalBudget} spent`}</div>
+        <div className="mt-1 text-xs">
+          <FormattedMessage
+            id="budgetSpent"
+            defaultMessage={`{budgetSpent} of {totalBudget} spent`}
+            values={{
+              budgetSpent: (
+                <FormattedNumber
+                  value={budgetSpent}
+                  currency="EUR"
+                  style="currency"
+                  maximumFractionDigits={1}
+                />
+              ),
+              totalBudget: (
+                <FormattedNumber
+                  value={totalBudget}
+                  currency="EUR"
+                  style="currency"
+                  maximumFractionDigits={1}
+                />
+              ),
+            }}
+          />
+        </div>
       </div>
     </div>
   )

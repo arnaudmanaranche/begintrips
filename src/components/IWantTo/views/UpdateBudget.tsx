@@ -2,6 +2,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useParams } from 'next/navigation'
 import type { ReactNode } from 'react'
 import { useState } from 'react'
+import { FormattedMessage } from 'react-intl'
 
 import { updateJourneyBudget } from '@/api/calls/journeys'
 import { QUERY_KEYS } from '@/api/queryKeys'
@@ -70,9 +71,11 @@ export function UpdateBudget({
 
       <div className="flex flex-col space-y-4">
         <Input
+          label={
+            <FormattedMessage id="inputBudgetLabel" defaultMessage="Budget" />
+          }
           value={budget}
           id="budget"
-          label="Budget"
           type="number"
           onChange={(e) => setBudget(Number(e.target.value))}
         />
@@ -81,7 +84,7 @@ export function UpdateBudget({
           isDisabled={isPending || budget === initialBudget}
           onClick={handleSubmit}
         >
-          Update budget
+          <FormattedMessage id="updateBudget" defaultMessage="Update budget" />
         </Button>
       </div>
     </div>

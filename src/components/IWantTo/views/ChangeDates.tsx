@@ -2,6 +2,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useParams } from 'next/navigation'
 import type { ChangeEvent, ReactNode } from 'react'
 import { useMemo, useState } from 'react'
+import { FormattedMessage } from 'react-intl'
 
 import { updateJourneyDates } from '@/api/calls/journeys'
 import { QUERY_KEYS } from '@/api/queryKeys'
@@ -97,23 +98,36 @@ export function ChangeDates({
         <Callout.Danger>{mutateError.message}</Callout.Danger>
       ) : (
         <Callout.Danger>
-          If you delete days which have expenses, the expenses will be deleted.
+          <FormattedMessage
+            id="warningChangingDates"
+            defaultMessage="If you delete days which have expenses, the expenses will be deleted."
+          />
         </Callout.Danger>
       )}
 
       <div className="flex flex-col space-y-4">
         <Input
+          label={
+            <FormattedMessage
+              id="inputDepartureDateLabel"
+              defaultMessage="Departure date"
+            />
+          }
           value={departureDate || new Date().toISOString().split('T')[0]}
           id="departureDate"
-          label="Departure date"
           type="date"
           min={new Date().toISOString().split('T')[0]}
           onChange={(e) => handleDepartureDateChange(e)}
         />
         <Input
+          label={
+            <FormattedMessage
+              id="inputReturnDateLabel"
+              defaultMessage="Return date"
+            />
+          }
           value={returnDate || new Date().toISOString().split('T')[0]}
           id="returnDate"
-          label="Return date"
           type="date"
           min={departureDate}
           onChange={(e) => handleReturnDateChange(e)}
@@ -124,7 +138,7 @@ export function ChangeDates({
           }
           onClick={handleSubmit}
         >
-          Change dates
+          <FormattedMessage id="changeDates" defaultMessage="Change dates" />
         </Button>
       </div>
     </div>

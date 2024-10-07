@@ -2,6 +2,7 @@ import { motion } from 'framer-motion'
 import { useRouter } from 'next/router'
 import type { MouseEvent, ReactNode } from 'react'
 import { useState } from 'react'
+import { FormattedMessage } from 'react-intl'
 
 import { Button } from '@/components/Button/Button'
 import { createClient } from '@/libs/supabase/client'
@@ -51,7 +52,9 @@ export function LogInForm(): ReactNode {
       <form className="flex flex-col space-y-6">
         <div className="flex flex-col">
           <Input
-            label="Email"
+            label={
+              <FormattedMessage id="inputEmailLabel" defaultMessage="Email" />
+            }
             id="email"
             type="email"
             value={email}
@@ -60,7 +63,12 @@ export function LogInForm(): ReactNode {
         </div>
         <div className="flex flex-col">
           <Input
-            label="Password"
+            label={
+              <FormattedMessage
+                id="inputPasswordLabel"
+                defaultMessage="Password"
+              />
+            }
             id="password"
             type="password"
             value={password}
@@ -78,7 +86,11 @@ export function LogInForm(): ReactNode {
           }
           isDisabled={isLoading || !email || !password || error !== ''}
         >
-          {isLoading ? 'Logging in...' : 'Login'}
+          {isLoading ? (
+            <FormattedMessage id="logginInCta" defaultMessage="Logging in..." />
+          ) : (
+            <FormattedMessage id="loginCta" defaultMessage="Log in" />
+          )}
         </Button>
       </form>
     </motion.div>

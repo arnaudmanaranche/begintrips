@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import type { ForwardRefExoticComponent, RefAttributes } from 'react'
 import { type ReactNode } from 'react'
+import { FormattedMessage } from 'react-intl'
 
 import { jounryeNavigationItems } from '@/utils/navigationItems'
 
@@ -43,7 +44,7 @@ function BottomBarItem({
         <div className="flex flex-col items-center space-x-2">
           {!isEnabled ? (
             <span className="rounded-md bg-accent px-2 text-xs text-white">
-              Soon
+              <FormattedMessage id="soon" defaultMessage="Soon" />
             </span>
           ) : (
             <span>{label}</span>
@@ -61,7 +62,7 @@ export function BottomBar(): ReactNode {
   return (
     <div className="fixed bottom-0 left-0 right-0 bg-white lg:hidden">
       <ul className="flex h-16  items-center justify-around ring-1 ring-slate-200">
-        {jounryeNavigationItems.map((item) => {
+        {jounryeNavigationItems.map((item, index) => {
           const href = item.href.replace('[id]', id)
           const Icon = item.icon
           const isActive = router.pathname === item.href
@@ -69,7 +70,7 @@ export function BottomBar(): ReactNode {
           return (
             <BottomBarItem
               isEnabled={item.isEnabled}
-              key={item.label}
+              key={`bottombar-item-${index}`}
               isActive={isActive}
               href={href}
               icon={Icon}
@@ -77,14 +78,15 @@ export function BottomBar(): ReactNode {
             />
           )
         })}
-
         <li>
           <Link
             href="/account"
             className="flex flex-col items-center space-y-1"
           >
             <GearIcon className="h-6 w-6 text-black" />
-            <span className="text-xs text-black">Account</span>
+            <span className="text-xs text-black">
+              <FormattedMessage id="account" defaultMessage="Account" />
+            </span>
           </Link>
         </li>
       </ul>
