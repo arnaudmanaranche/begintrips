@@ -23,7 +23,7 @@ export function NavBar(): ReactNode {
       <nav className="mx-auto flex max-w-screen-xl items-center justify-between space-x-10">
         <Link href="/" className="text-3xl">
           Planner
-          <span className="text-accent">.so</span>
+          <span className="text-accent-dark">.so</span>
         </Link>
         <ul className="flex flex-1 items-center space-x-6 px-10 lg:px-0">
           {navItems.map((item) => {

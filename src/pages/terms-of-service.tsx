@@ -58,7 +58,7 @@ function TermsOfServicePage(): ReactNode {
           <nav className="flex flex-row items-center justify-between px-10 md:space-y-0 xl:px-0">
             <Link href="/" className="text-3xl">
               Planner
-              <span className="text-accent">.so</span>
+              <span className="text-accent-dark">.so</span>
             </Link>
             <Button
               onClick={() => router.push('/welcome')}
@@ -70,6 +70,7 @@ function TermsOfServicePage(): ReactNode {
               onClick={() => router.push('/account')}
               className="flex lg:hidden"
               icon={<PersonIcon />}
+              ariaLabel="My account"
             />
           </nav>
         </div>
@@ -77,7 +78,7 @@ function TermsOfServicePage(): ReactNode {
       <section className="bg-white px-6 pt-20 text-lg text-black md:px-0 md:py-20">
         <div className="mx-auto max-w-3xl">
           <div className="flex flex-col justify-center space-y-10">
-            <h1 className="text-5xl text-accent">
+            <h1 className="text-5xl text-accent-dark">
               <FormattedMessage
                 id="termsOfServicePage.title"
                 defaultMessage="Terms of service"
@@ -91,12 +92,12 @@ function TermsOfServicePage(): ReactNode {
             </p>
             <ul className="space-y-6">
               <li>
-                <p className="scroll-m-20 text-lg font-semibold tracking-tight">
+                <h2 className="scroll-m-20 text-lg font-semibold tracking-tight">
                   <FormattedMessage
                     id="termsOfServicePage.section1.title"
                     defaultMessage="1. Introduction"
                   />
-                </p>
+                </h2>
                 <p className="mt-2 max-w-prose">
                   <FormattedMessage
                     id="termsOfServicePage.section1.description"
@@ -105,12 +106,12 @@ function TermsOfServicePage(): ReactNode {
                 </p>
               </li>
               <li>
-                <p className="scroll-m-20 text-lg font-semibold tracking-tight">
+                <h2 className="scroll-m-20 text-lg font-semibold tracking-tight">
                   <FormattedMessage
                     id="termsOfServicePage.section2.title"
                     defaultMessage="2. Agreement to Terms and Conditions"
                   />
-                </p>
+                </h2>
                 <p className="mt-2 max-w-prose">
                   <FormattedMessage
                     id="termsOfServicePage.section2.description"
@@ -119,12 +120,12 @@ function TermsOfServicePage(): ReactNode {
                 </p>
               </li>
               <li>
-                <p className="scroll-m-20 text-lg font-semibold tracking-tight">
+                <h2 className="scroll-m-20 text-lg font-semibold tracking-tight">
                   <FormattedMessage
                     id="termsOfServicePage.section3.title"
                     defaultMessage="3. Services"
                   />
-                </p>
+                </h2>
                 <p className="mt-2 max-w-prose">
                   <FormattedMessage
                     id="termsOfServicePage.section3.description"
@@ -133,12 +134,12 @@ function TermsOfServicePage(): ReactNode {
                 </p>
               </li>
               <li>
-                <p className="scroll-m-20 text-lg font-semibold tracking-tight">
+                <h2 className="scroll-m-20 text-lg font-semibold tracking-tight">
                   <FormattedMessage
                     id="termsOfServicePage.section4.title"
                     defaultMessage="4. Refunds"
                   />
-                </p>
+                </h2>
                 <p className="mt-2 max-w-prose">
                   <FormattedMessage
                     id="termsOfServicePage.section4.description"
@@ -147,12 +148,12 @@ function TermsOfServicePage(): ReactNode {
                 </p>
               </li>
               <li>
-                <p className="scroll-m-20 text-lg font-semibold tracking-tight">
+                <h2 className="scroll-m-20 text-lg font-semibold tracking-tight">
                   <FormattedMessage
                     id="termsOfServicePage.section5.title"
                     defaultMessage="5. Fair Use Policy"
                   />
-                </p>
+                </h2>
                 <p className="mt-2 max-w-prose">
                   <FormattedMessage
                     id="termsOfServicePage.section5.description"
@@ -161,12 +162,12 @@ function TermsOfServicePage(): ReactNode {
                 </p>
               </li>
               <li>
-                <p className="scroll-m-20 text-lg font-semibold tracking-tight">
+                <h2 className="scroll-m-20 text-lg font-semibold tracking-tight">
                   <FormattedMessage
                     id="termsOfServicePage.section6.title"
                     defaultMessage="6. Disclaimer"
                   />
-                </p>
+                </h2>
                 <p className="mt-2 max-w-prose">
                   <FormattedMessage
                     id="termsOfServicePage.section6.description"
@@ -175,12 +176,12 @@ function TermsOfServicePage(): ReactNode {
                 </p>
               </li>
               <li>
-                <p className="scroll-m-20 text-lg font-semibold tracking-tight">
+                <h2 className="scroll-m-20 text-lg font-semibold tracking-tight">
                   <FormattedMessage
                     id="termsOfServicePage.section7.title"
                     defaultMessage="7. Warranties and Limitation of Liability"
                   />
-                </p>
+                </h2>
                 <p className="mt-2 max-w-prose">
                   <FormattedMessage
                     id="termsOfServicePage.section7.description"
@@ -189,12 +190,12 @@ function TermsOfServicePage(): ReactNode {
                 </p>
               </li>
               <li>
-                <p className="scroll-m-20 text-lg font-semibold tracking-tight">
+                <h2 className="scroll-m-20 text-lg font-semibold tracking-tight">
                   <FormattedMessage
                     id="termsOfServicePage.section8.title"
                     defaultMessage="8. Responsibilities"
                   />
-                </p>
+                </h2>
                 <p className="mt-2 max-w-prose">
                   <FormattedMessage
                     id="termsOfServicePage.section8.description"
@@ -203,12 +204,12 @@ function TermsOfServicePage(): ReactNode {
                 </p>
               </li>
               <li>
-                <p className="scroll-m-20 text-lg font-semibold tracking-tight">
+                <h2 className="scroll-m-20 text-lg font-semibold tracking-tight">
                   <FormattedMessage
                     id="termsOfServicePage.section9.title"
                     defaultMessage="9. Price Adjustments"
                   />
-                </p>
+                </h2>
                 <p className="mt-2 max-w-prose">
                   <FormattedMessage
                     id="termsOfServicePage.section9.description"
@@ -217,12 +218,12 @@ function TermsOfServicePage(): ReactNode {
                 </p>
               </li>
               <li>
-                <p className="scroll-m-20 text-lg font-semibold tracking-tight">
+                <h2 className="scroll-m-20 text-lg font-semibold tracking-tight">
                   <FormattedMessage
                     id="termsOfServicePage.section10.title"
                     defaultMessage="10. Intellectual Property"
                   />
-                </p>
+                </h2>
                 <p className="mt-2 max-w-prose">
                   <FormattedMessage
                     id="termsOfServicePage.section10.description"
@@ -231,12 +232,12 @@ function TermsOfServicePage(): ReactNode {
                 </p>
               </li>
               <li>
-                <p className="scroll-m-20 text-lg font-semibold tracking-tight">
+                <h2 className="scroll-m-20 text-lg font-semibold tracking-tight">
                   <FormattedMessage
                     id="termsOfServicePage.section11.title"
                     defaultMessage="11. Changes to Terms"
                   />
-                </p>
+                </h2>
                 <p className="mt-2 max-w-prose">
                   <FormattedMessage
                     id="termsOfServicePage.section11.description"
@@ -245,12 +246,12 @@ function TermsOfServicePage(): ReactNode {
                 </p>
               </li>
               <li>
-                <p className="scroll-m-20 text-lg font-semibold tracking-tight">
+                <h2 className="scroll-m-20 text-lg font-semibold tracking-tight">
                   <FormattedMessage
                     id="termsOfServicePage.section12.title"
                     defaultMessage="12. General Terms and Law"
                   />
-                </p>
+                </h2>
                 <p className="mt-2 max-w-prose">
                   <FormattedMessage
                     id="termsOfServicePage.section12.description"

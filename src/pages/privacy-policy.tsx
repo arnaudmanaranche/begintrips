@@ -58,7 +58,7 @@ function PrivacyPolicyPage(): ReactNode {
           <nav className="flex flex-row items-center justify-between px-10 md:space-y-0 xl:px-0">
             <Link href="/" className="text-3xl">
               Planner
-              <span className="text-accent">.so</span>
+              <span className="text-accent-dark">.so</span>
             </Link>
             <Button
               onClick={() => router.push('/welcome')}
@@ -70,6 +70,7 @@ function PrivacyPolicyPage(): ReactNode {
               onClick={() => router.push('/account')}
               className="flex lg:hidden"
               icon={<PersonIcon />}
+              ariaLabel="My account"
             />
           </nav>
         </div>
@@ -77,7 +78,7 @@ function PrivacyPolicyPage(): ReactNode {
       <section className="bg-white px-6 pt-20 text-lg text-black md:px-0 md:py-20">
         <div className="mx-auto max-w-3xl">
           <div className="flex flex-col justify-center space-y-10">
-            <h1 className="text-5xl text-accent">
+            <h1 className="text-5xl text-accent-dark">
               <FormattedMessage
                 id="privacyPolicy.title"
                 defaultMessage="Privacy Policy"
@@ -91,7 +92,7 @@ function PrivacyPolicyPage(): ReactNode {
               your rights regarding that information."
               />
             </p>
-            <h2 className="text-xl text-accent">
+            <h2 className="text-xl text-black">
               <FormattedMessage
                 id="privacyPolicySection2.title"
                 defaultMessage="Information We Collect"
@@ -122,7 +123,7 @@ function PrivacyPolicyPage(): ReactNode {
                 </li>
               </ul>
             </div>
-            <h2 className="text-xl text-accent">
+            <h2 className="text-xl text-black">
               <FormattedMessage
                 id="privacyPolicySection3.title"
                 defaultMessage="How We Use Your Information"
@@ -135,7 +136,7 @@ function PrivacyPolicyPage(): ReactNode {
                 personalize your experience, and communicate with you effectively."
               />
             </p>
-            <h2 className="text-xl text-accent">
+            <h2 className="text-xl text-black">
               <FormattedMessage
                 id="privacyPolicySection4.title"
                 defaultMessage="Your Rights"
