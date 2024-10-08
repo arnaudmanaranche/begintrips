@@ -117,7 +117,7 @@ export default function Onboarding(): ReactNode {
         <Link href="/account">
           <span className="text-2xl lg:text-3xl">
             Planner
-            <span className="text-accent">.so</span>
+            <span className="text-accent-dark">.so</span>
           </span>
         </Link>
         <div className="flex items-center justify-between">

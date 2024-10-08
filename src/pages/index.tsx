@@ -125,7 +125,7 @@ export default function HomePage({ user }: { user: User }): ReactNode {
             <nav className="flex flex-row items-center justify-between px-10 md:space-y-0 xl:px-0">
               <Link href="/" className="text-3xl">
                 Planner
-                <span className="text-accent">.so</span>
+                <span className="text-accent-dark">.so</span>
               </Link>
               {user ? (
                 <Button
@@ -149,6 +149,7 @@ export default function HomePage({ user }: { user: User }): ReactNode {
                 onClick={() => router.push('/account')}
                 className="flex lg:hidden"
                 icon={<PersonIcon />}
+                ariaLabel="My account"
               />
             </nav>
             <div className="flex grow flex-col flex-wrap justify-center space-y-4 text-center md:text-left">
@@ -229,9 +230,10 @@ export default function HomePage({ user }: { user: User }): ReactNode {
                 <button
                   className="flex items-center justify-center rounded-b-2xl bg-accent px-4 py-4 text-xl text-black/80 transition-colors hover:bg-accent-dark md:rounded-b-none md:rounded-br-2xl md:rounded-tr-2xl"
                   onClick={handleSubmit}
+                  aria-label="Plan my journey"
                 >
                   <ChevronRightIcon className="hidden h-6 w-6 text-white md:block" />
-                  <span className="block text-base md:hidden">
+                  <span className="block text-base text-black md:hidden">
                     <FormattedMessage
                       id="planMyJourney"
                       defaultMessage="Plan my journey"

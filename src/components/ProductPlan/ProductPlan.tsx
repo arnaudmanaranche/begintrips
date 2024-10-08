@@ -59,7 +59,7 @@ export function ProductPlan({
         </div>
       ) : null}
       {isDisabled ? (
-        <div className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-accent px-4 py-1 text-sm font-semibold text-white">
+        <div className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-accent px-4 py-1 text-sm font-semibold text-black">
           Coming soon
         </div>
       ) : null}

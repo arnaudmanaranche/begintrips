@@ -86,7 +86,7 @@ export default function WelcomePage(): ReactNode {
       <div className="mx-auto flex max-w-screen-xl px-10 pt-10 xl:px-0">
         <Link href="/" className="text-3xl">
           Planner
-          <span className="text-accent">.so</span>
+          <span className="text-accent-dark">.so</span>
         </Link>
       </div>
       <div className="mx-auto flex h-screen max-w-4xl flex-grow px-10 xl:px-0">

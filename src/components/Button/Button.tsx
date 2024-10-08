@@ -11,6 +11,7 @@ interface ButtonProps {
   stretch?: boolean
   isRounded?: boolean
   icon?: ReactNode
+  ariaLabel?: string
 }
 
 export function Button({
@@ -22,12 +23,13 @@ export function Button({
   stretch = false,
   isRounded = false,
   icon,
+  ariaLabel,
 }: ButtonProps): ReactNode {
   const variantClasses = {
     primary: clsx(
-      'bg-accent text-white hover:bg-accent-dark',
+      'bg-accent text-black hover:bg-accent-dark',
       isDisabled &&
-        'cursor-not-allowed bg-gray-400/50 text-black/60 disabled:hover:bg-gray-400/50'
+        'cursor-not-allowed bg-gray-400/50 text-black/70 disabled:hover:bg-gray-400/50'
     ),
     ghost: clsx(
       'bg-transparent text-accent border border-accent hover:bg-accent-dark hover:text-white',
@@ -47,6 +49,7 @@ export function Button({
         )}
         onClick={onClick}
         disabled={isDisabled}
+        aria-label={ariaLabel}
       >
         {icon}
       </button>
@@ -64,6 +67,7 @@ export function Button({
       )}
       onClick={onClick}
       disabled={isDisabled}
+      aria-label={ariaLabel}
     >
       {children}
     </button>

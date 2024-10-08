@@ -18,7 +18,7 @@ export default function Custom404(): ReactNode {
           <nav className="flex flex-row items-center justify-between px-10 md:space-y-0 xl:px-0">
             <Link href="/" className="text-3xl">
               Planner
-              <span className="text-accent">.so</span>
+              <span className="text-accent-dark">.so</span>
             </Link>
             <Button
               onClick={() => router.push('/welcome')}
@@ -30,6 +30,7 @@ export default function Custom404(): ReactNode {
               onClick={() => router.push('/account')}
               className="flex lg:hidden"
               icon={<PersonIcon />}
+              ariaLabel="My account"
             />
           </nav>
         </div>
