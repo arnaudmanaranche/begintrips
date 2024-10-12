@@ -9,6 +9,7 @@ const PATHS_TO_EXCLUDE = ['/account', '/my-journeys', '/onboarding', '/welcome']
 module.exports = {
   siteUrl: SITE_URL,
   generateRobotsTxt: true,
+  generateIndexSitemap: false,
   exclude: PATHS_TO_EXCLUDE,
   alternateRefs: [
     {
