@@ -14,6 +14,14 @@ const nextConfig = {
     locales: ['en', 'fr'],
     defaultLocale: 'en',
   },
+  rewrites: async () => {
+    return [
+      {
+        source: '/blog/en/one-day-trip-from-:city',
+        destination: '/blog/en/one-day-trip-from/:city',
+      },
+    ]
+  },
 }
 
 export default nextConfig
