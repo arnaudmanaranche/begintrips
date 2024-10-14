@@ -1,6 +1,6 @@
 {
   "plugins": ["@typescript-eslint", "simple-import-sort"],
-  "ignorePatterns": ["tailwind.config.js", "*.d.ts"],
+  "ignorePatterns": ["tailwind.config.js", "*.d.ts", "*.mjs"],
   "extends": [
     "next/core-web-vitals",
     "plugin:@typescript-eslint/recommended",
