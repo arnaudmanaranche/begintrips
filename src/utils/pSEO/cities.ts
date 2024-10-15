@@ -11,3 +11,5 @@ export const ONE_DAY_TRIP_FROM_CITIES = [
   'san-francisco',
   'bay-area',
 ]
+
+export const VOYAGE_AU_DEPART_DE_CITIES = ['lille']
