@@ -1,8 +1,10 @@
 import { PersonIcon } from '@radix-ui/react-icons'
 import fs from 'fs'
 import matter from 'gray-matter'
+import upperFirst from 'lodash.upperfirst'
 import type {
   GetStaticPaths,
+  GetStaticPathsResult,
   GetStaticProps,
   InferGetStaticPropsType,
 } from 'next'
@@ -13,73 +15,17 @@ import type { MDXRemoteSerializeResult } from 'next-mdx-remote'
 import { MDXRemote } from 'next-mdx-remote'
 import { serialize } from 'next-mdx-remote/serialize'
 import path from 'path'
-import type {
-  ClassAttributes,
-  HTMLAttributes,
-  JSX,
-  LiHTMLAttributes,
-  ReactNode,
-} from 'react'
+import { type ReactNode, useMemo } from 'react'
 import { FormattedMessage } from 'react-intl'
 
 import { Button } from '@/components/Button/Button'
 import { Footer } from '@/components/Footer/Footer'
-import { ONE_DAY_TRIP_FROM_CITIES } from '@/utils/pSEO/cities'
+import {
+  ONE_DAY_TRIP_FROM_CITIES,
+  VOYAGE_AU_DEPART_DE_CITIES,
+} from '@/utils/pSEO/cities'
+import { components } from '@/utils/pSEO/components'
 import { SITE_URL } from '@/utils/seo'
-
-const PromotionSection = () => {
-  const router = useRouter()
-
-  return (
-    <div className="my-10 flex flex-col items-center space-y-10 rounded-md bg-accent-light/40 p-6">
-      <div className="flex flex-col items-center space-y-4 text-3xl">
-        <p>Take the Stress Out of Travel</p>
-        <p>Simplify your Journey with Planner.so</p>
-      </div>
-      <Button
-        onClick={() => {
-          router.push('/welcome')
-        }}
-      >
-        Sign up for free
-      </Button>
-    </div>
-  )
-}
-
-const components = {
-  PromotionSection,
-  h1: (
-    props: JSX.IntrinsicAttributes &
-      ClassAttributes<HTMLHeadingElement> &
-      HTMLAttributes<HTMLHeadingElement>
-  ) => <h1 className="text-center text-5xl leading-normal" {...props} />,
-  h2: (
-    props: JSX.IntrinsicAttributes &
-      ClassAttributes<HTMLHeadingElement> &
-      HTMLAttributes<HTMLHeadingElement>
-  ) => <h2 className="my-4 text-3xl text-accent-dark" {...props} />,
-  h3: (
-    props: JSX.IntrinsicAttributes &
-      ClassAttributes<HTMLHeadingElement> &
-      HTMLAttributes<HTMLHeadingElement>
-  ) => <h2 className="my-4 text-xl" {...props} />,
-  p: (
-    props: JSX.IntrinsicAttributes &
-      ClassAttributes<HTMLParagraphElement> &
-      HTMLAttributes<HTMLParagraphElement>
-  ) => <p className="my-6 line-clamp-6 text-base" {...props} />,
-  ul: (
-    props: JSX.IntrinsicAttributes &
-      ClassAttributes<HTMLUListElement> &
-      HTMLAttributes<HTMLUListElement>
-  ) => <ul className="list-inside list-disc" {...props} />,
-  li: (
-    props: JSX.IntrinsicAttributes &
-      ClassAttributes<HTMLLIElement> &
-      LiHTMLAttributes<HTMLLIElement>
-  ) => <li className="text-base" {...props} />,
-}
 
 export default function OneDayTripFrom({
   content,
@@ -89,9 +35,16 @@ export default function OneDayTripFrom({
   const {
     query: { city },
     asPath,
+    locale,
   } = useRouter()
 
-  const PAGE_TITLE = `One day trip from ${city}`
+  const pageTitlePrefix = useMemo(() => {
+    return locale && locale === 'fr'
+      ? 'Voyage au départ de'
+      : 'One day trip from'
+  }, [locale])
+
+  const PAGE_TITLE = `${pageTitlePrefix} ${upperFirst(city as string)}`
   const PAGE_URL = `${SITE_URL}${asPath}`
 
   return (
@@ -138,12 +91,25 @@ export default function OneDayTripFrom({
   )
 }
 
-export const getStaticPaths = (async () => {
-  const paths = ONE_DAY_TRIP_FROM_CITIES.map((city) => ({
-    params: {
-      city,
-    },
-  }))
+export const getStaticPaths = (async ({ locales }) => {
+  const citiesByLocale: Record<string, string[]> = {
+    en: ONE_DAY_TRIP_FROM_CITIES,
+    fr: VOYAGE_AU_DEPART_DE_CITIES,
+  }
+
+  const paths: GetStaticPathsResult['paths'] = []
+
+  locales?.forEach((locale) => {
+    citiesByLocale[locale].forEach((city) => {
+      paths.push({
+        params: {
+          city,
+          slug: locale === 'en' ? 'one-day-trip-from' : 'voyage-au-depart-de',
+        },
+        locale,
+      })
+    })
+  })
 
   return {
     paths,
@@ -152,13 +118,9 @@ export const getStaticPaths = (async () => {
 }) satisfies GetStaticPaths
 
 export const getStaticProps = (async (context) => {
-  const { city } = context.params as { city: string }
+  const { city, slug } = context.params as { city: string; slug: string }
 
-  const filePath = path.join(
-    process.cwd(),
-    'assets/seo',
-    `one-day-trip-from-${city}.mdx`
-  )
+  const filePath = path.join(process.cwd(), `assets/seo/${slug}`, `${city}.mdx`)
 
   const fileContent = fs.readFileSync(filePath, 'utf-8')
 

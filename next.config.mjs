@@ -17,8 +17,12 @@ const nextConfig = {
   rewrites: async () => {
     return [
       {
-        source: '/blog/en/one-day-trip-from-:city',
-        destination: '/blog/en/one-day-trip-from/:city',
+        source: '/blog/one-day-trip-from-:city',
+        destination: '/blog/one-day-trip-from/:city',
+      },
+      {
+        source: '/blog/voyage-au-depart-de-:city',
+        destination: '/blog/voyage-au-depart-de/:city',
       },
     ]
   },
