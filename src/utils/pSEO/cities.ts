@@ -13,3 +13,5 @@ export const ONE_DAY_TRIP_FROM_CITIES = [
 ]
 
 export const VOYAGE_AU_DEPART_DE_CITIES = ['lille']
+
+export const VOYAGE_PAS_CHER = ['europe']

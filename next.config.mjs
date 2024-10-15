@@ -24,6 +24,10 @@ const nextConfig = {
         source: '/blog/voyage-au-depart-de-:city',
         destination: '/blog/voyage-au-depart-de/:city',
       },
+      {
+        source: '/blog/voyage-pas-cher-:destination',
+        destination: '/blog/voyage-pas-cher/:destination',
+      },
     ]
   },
 }
