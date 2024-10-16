@@ -43,7 +43,7 @@ export const Input = ({
         className={clsx(
           'duration-400 absolute left-3 top-1/2 -translate-y-1/2 transform px-1 text-sm transition-all ease-in-out',
           isFocused || value || value === 0
-            ? 'left-3 top-[-0.75rem] text-xs text-accent'
+            ? 'left-3 top-[-0.75rem] text-sm text-accent'
             : 'text-black/50'
         )}
       >

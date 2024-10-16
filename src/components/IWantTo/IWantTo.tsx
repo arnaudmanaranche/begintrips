@@ -16,7 +16,9 @@ import { IWantToView } from './IWantTo.View'
 interface IWantToProps {
   isOpen: boolean
   currentStep: IWantToStep
-  selectedDay: string | null
+  selectedExpense: {
+    startDate: string
+  }
 }
 
 function FormattedIWantToTitle({ currentStep }: { currentStep: IWantToStep }) {
@@ -58,7 +60,7 @@ function FormattedIWantToTitle({ currentStep }: { currentStep: IWantToStep }) {
 export function IWantTo({
   isOpen,
   currentStep,
-  selectedDay,
+  selectedExpense,
 }: IWantToProps): ReactNode {
   const { setCurrentStep, setIsOpen } = useQuickActionsModalActions()
   const {
@@ -121,7 +123,7 @@ export function IWantTo({
           </div>
           <IWantToView
             currentStep={currentStep}
-            selectedDay={selectedDay}
+            selectedExpense={selectedExpense}
             setCurrentStep={setCurrentStep}
             days={days as Day[]}
             journey={data?.journey as Journey}

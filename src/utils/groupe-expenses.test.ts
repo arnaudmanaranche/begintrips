@@ -15,7 +15,7 @@ describe('groupedExpensesByCategory', () => {
       {
         name: 'Concert',
         amount: 10,
-
+        endDate: '',
         startDate: new Date().toISOString(),
         journeyId: '1',
         created_at: new Date().toISOString(),
@@ -32,7 +32,7 @@ describe('groupedExpensesByCategory', () => {
       {
         name: 'Restaurant 1',
         amount: 10,
-
+        endDate: '',
         startDate: new Date().toISOString(),
         journeyId: '1',
         created_at: new Date().toISOString(),
@@ -49,7 +49,7 @@ describe('groupedExpensesByCategory', () => {
       {
         name: 'Restaurant 2',
         amount: 20,
-
+        endDate: '',
         startDate: new Date().toISOString(),
         journeyId: '1',
         created_at: new Date().toISOString(),
@@ -113,6 +113,7 @@ describe('groupedExpensesByCategory', () => {
         startDate: new Date().toISOString(),
         created_at: new Date().toISOString(),
         dayId: '1',
+        endDate: '',
         id: '1',
         journeyId: '1',
         category_id: '',
@@ -132,6 +133,7 @@ describe('groupedExpensesByCategory', () => {
         dayId: '1',
         id: '2',
         journeyId: '1',
+        endDate: '',
         category_id: '',
         categories: {
           name: 'restaurant',

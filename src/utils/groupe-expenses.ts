@@ -1,4 +1,4 @@
-import { formatISO } from 'date-fns'
+import { eachDayOfInterval, formatISO } from 'date-fns'
 import groupBy from 'lodash.groupby'
 
 import type {
@@ -45,16 +45,25 @@ export const groupedExpensesByDay = ({
 
   if (expenses) {
     expenses.forEach((expense) => {
-      if (expense.startDate) {
-        const dayKey = formatISO(new Date(expense.startDate), {
+      const startDate = new Date(expense.startDate)
+      const endDate = expense.endDate ? new Date(expense.endDate) : startDate
+
+      const daysInRange = eachDayOfInterval({
+        start: startDate,
+        end: endDate,
+      })
+
+      daysInRange.forEach((date) => {
+        const dayKey = formatISO(date, {
           representation: 'date',
         }) as DateString
+
         if (expensesByDay[dayKey]) {
           expensesByDay[dayKey].push(expense)
         } else {
           expensesByDay[dayKey] = [expense]
         }
-      }
+      })
     })
   }
 

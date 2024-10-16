@@ -17,7 +17,10 @@ interface IWantToViewProps {
   setCurrentStep: (step: IWantToStep) => void
   days: Day[]
   journey: Journey
-  selectedDay: string | null
+  selectedExpense: {
+    startDate: string
+    endDate?: string
+  }
 }
 
 export function IWantToView({
@@ -25,26 +28,23 @@ export function IWantToView({
   setCurrentStep,
   days,
   journey,
-  selectedDay,
+  selectedExpense,
 }: IWantToViewProps): ReactNode {
-  const dayId = selectedDay
-    ? days.find((day) => day.startDate === selectedDay)?.id || ''
+  const dayId = selectedExpense.startDate
+    ? days.find((day) => day.startDate === selectedExpense.startDate)?.id || ''
     : days[0].id
-
-  const startDate = selectedDay
-    ? days.find((day) => day.startDate === selectedDay)?.startDate || ''
-    : days[0].startDate
 
   const [newExpense, setNewExpense] = useState<AddExpenseWithCategories>({
     name: '',
     amount: 0,
     dayId,
     journeyId: journey.id,
-    startDate,
+    startDate: selectedExpense.startDate,
     category_id: '',
     categories: {
       name: '',
     },
+    endDate: selectedExpense.endDate,
   })
 
   switch (currentStep) {

@@ -4,16 +4,17 @@ import type { ReactNode } from 'react'
 import { useState } from 'react'
 import { FormattedMessage } from 'react-intl'
 
-import type { AddExpenseWithCategories } from '@/types'
+import type { AddExpenseWithCategories, Day } from '@/types'
 
 import { Button } from '../Button/Button'
 import { EditExpenseView } from './EditExpense.View'
 
 interface EditExpenseProps {
   expense: AddExpenseWithCategories
+  days: Day[]
 }
 
-export const EditExpense = ({ expense }: EditExpenseProps): ReactNode => {
+export const EditExpense = ({ expense, days }: EditExpenseProps): ReactNode => {
   const [open, setOpen] = useState(false)
 
   return (
@@ -51,7 +52,7 @@ export const EditExpense = ({ expense }: EditExpenseProps): ReactNode => {
               </button>
             </Dialog.Close>
           </div>
-          <EditExpenseView expense={expense} setOpen={setOpen} />
+          <EditExpenseView expense={expense} setOpen={setOpen} days={days} />
         </Dialog.Content>
       </Dialog.Portal>
     </Dialog.Root>
