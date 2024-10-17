@@ -11,16 +11,6 @@ module.exports = {
   generateRobotsTxt: true,
   generateIndexSitemap: false,
   exclude: PATHS_TO_EXCLUDE,
-  alternateRefs: [
-    {
-      href: SITE_URL,
-      hreflang: 'en',
-    },
-    {
-      href: `${SITE_URL}/fr`,
-      hreflang: 'fr',
-    },
-  ],
   robotsTxtOptions: {
     policies: [
       {
