@@ -1,14 +1,15 @@
-import clsx from 'clsx'
 import type { ReactNode } from 'react'
 import { useMemo } from 'react'
 
 import { mappedExpensesWithColors } from '@/utils/expense-labels'
 
+interface ExpenseLabelProps {
+  expenseCategory: string
+}
+
 export function ExpenseLabel({
   expenseCategory,
-}: {
-  expenseCategory: string
-}): ReactNode {
+}: ExpenseLabelProps): ReactNode {
   const color = useMemo(() => {
     return mappedExpensesWithColors.find(
       (expense) => expense.category === expenseCategory
@@ -17,10 +18,7 @@ export function ExpenseLabel({
 
   return (
     <div
-      className={clsx(
-        'flex items-center justify-center rounded-md border-[1px] px-2 py-1 text-xs font-medium',
-        `bg-[${color}] border-[${color}] text-[${color}] border-opacity-50 bg-opacity-5`
-      )}
+      className={`flex items-center justify-center rounded-md border-[1px] border-opacity-50 bg-opacity-5 px-1 py-[0.5] text-[11px] bg-[${color}] border-[${color}] text-[${color}] `}
     >
       <p>{expenseCategory}</p>
     </div>
