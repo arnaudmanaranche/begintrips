@@ -3,7 +3,7 @@ import type { ReactNode } from 'react'
 
 export default function Document(): ReactNode {
   return (
-    <Html lang="en">
+    <Html>
       <Head>
         <link
           rel="apple-touch-icon"
