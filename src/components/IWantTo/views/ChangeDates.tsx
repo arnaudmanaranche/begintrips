@@ -138,7 +138,14 @@ export function ChangeDates({
           }
           onClick={handleSubmit}
         >
-          <FormattedMessage id="changeDates" defaultMessage="Change dates" />
+          {isPending ? (
+            <FormattedMessage
+              id="changingDates"
+              defaultMessage="Changing dates..."
+            />
+          ) : (
+            <FormattedMessage id="changeDates" defaultMessage="Change dates" />
+          )}
         </Button>
       </div>
     </div>

@@ -84,7 +84,17 @@ export function UpdateBudget({
           isDisabled={isPending || budget === initialBudget}
           onClick={handleSubmit}
         >
-          <FormattedMessage id="updateBudget" defaultMessage="Update budget" />
+          {isPending ? (
+            <FormattedMessage
+              id="updatingBudget"
+              defaultMessage="Updating budget..."
+            />
+          ) : (
+            <FormattedMessage
+              id="updateBudget"
+              defaultMessage="Update budget"
+            />
+          )}
         </Button>
       </div>
     </div>
