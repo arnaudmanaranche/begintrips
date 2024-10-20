@@ -60,7 +60,7 @@ export const colorsAssociated: Record<string, string> = {
   transport: '#3F51B5',
 }
 
-export const mappedExpensesWithEmojis = (
+const mappedExpensesWithEmojis = (
   Object.keys(emojisAssociated) as Array<keyof typeof emojisAssociated>
 ).map((key) => {
   return {
