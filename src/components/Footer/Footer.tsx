@@ -46,6 +46,19 @@ export function Footer(): ReactNode {
               </li>
             </ul>
           </div>
+          <div>
+            <h3 className="font-semibol mb-4 text-lg">Social</h3>
+            <ul className="space-y-2">
+              <li>
+                <Link
+                  href="/blog"
+                  className="text-sm text-gray-600 hover:text-accent"
+                >
+                  <FormattedMessage id="blog" defaultMessage="Blog" />
+                </Link>
+              </li>
+            </ul>
+          </div>
         </div>
         <div className="mt-8 border-t border-gray-200 pt-8 text-center">
           <p className="text-sm text-gray-600">

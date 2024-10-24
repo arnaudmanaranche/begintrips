@@ -11,11 +11,11 @@ import { SITE_URL } from '@/utils/seo'
 
 const messages = defineMessages({
   title: {
-    id: 'termsOfServicePage.title',
+    id: 'termsOfServicePage.metaTitle',
     defaultMessage: 'Planner.so | Terms of service',
   },
   metaDescription: {
-    id: 'termsOfServicePage.subtitle',
+    id: 'termsOfServicePage.metaData',
     defaultMessage:
       'Read our Terms of Service to understand the rules, guidelines, and conditions for using Planner.so',
   },
