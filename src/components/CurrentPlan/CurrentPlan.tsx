@@ -16,7 +16,7 @@ export function CurrentPlan({
 }: CurrentPlanProps): ReactNode {
   return (
     <div className="flex items-center justify-between rounded-md bg-white p-4 text-black ring-1 ring-slate-200">
-      <div className="flex w-full flex-col justify-between space-y-4 md:flex-row md:items-center">
+      <div className="flex w-full flex-col justify-between space-y-4 md:flex-row md:items-center md:space-y-0">
         <div className="flex items-center justify-between space-y-2 text-black md:flex-col md:items-start">
           <p className="text-sm">
             <FormattedMessage id="plan" defaultMessage="Plan" />
