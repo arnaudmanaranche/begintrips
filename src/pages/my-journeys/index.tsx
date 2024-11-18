@@ -64,7 +64,7 @@ export default function MyJourneysPage({
         <MyJourneys journeys={journeys} isLoading={isFetching} />
       </div>
       <div className="mt-14 flex justify-center pb-[80px]">
-        {user.credits > 0 ? (
+        {user.credits > 0 && journeys?.length > 0 ? (
           <Button
             onClick={() => {
               router.push('/onboarding')

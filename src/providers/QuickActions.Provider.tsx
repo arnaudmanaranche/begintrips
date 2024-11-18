@@ -14,13 +14,21 @@ export type IWantToStep =
 interface QuickActionsModalState {
   isOpen: boolean
   currentStep: IWantToStep
-  selectedDay: string | null
+  selectedExpense: {
+    startDate: string
+  }
 }
 
 interface QuickActionsModalActions {
   setIsOpen: (value: boolean) => void
   setCurrentStep: (step: IWantToStep) => void
-  setSelectedDay: (day: string) => void
+  setSelectedExpense: ({
+    startDate,
+    endDate,
+  }: {
+    startDate: string
+    endDate?: string
+  }) => void
 }
 
 const QuickActionsModalStateContext = createContext<
@@ -37,13 +45,18 @@ export function QuickActionsModalProvider({
 }): ReactNode {
   const [isOpen, setIsOpen] = useState(false)
   const [currentStep, setCurrentStep] = useState<IWantToStep>('Select action')
-  const [selectedDay, setSelectedDay] = useState<string | null>(null)
+  const [selectedExpense, setSelectedExpense] = useState<{
+    startDate: string
+    endDate?: string
+  }>({
+    startDate: '',
+  })
 
-  const state: QuickActionsModalState = { isOpen, currentStep, selectedDay }
+  const state: QuickActionsModalState = { isOpen, currentStep, selectedExpense }
   const actions: QuickActionsModalActions = {
     setIsOpen,
     setCurrentStep,
-    setSelectedDay,
+    setSelectedExpense,
   }
 
   return (
@@ -53,7 +66,7 @@ export function QuickActionsModalProvider({
         <IWantTo
           isOpen={isOpen}
           currentStep={currentStep}
-          selectedDay={selectedDay}
+          selectedExpense={selectedExpense}
         />
       </QuickActionsModalActionsContext.Provider>
     </QuickActionsModalStateContext.Provider>

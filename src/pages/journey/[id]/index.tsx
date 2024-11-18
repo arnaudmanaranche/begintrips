@@ -30,7 +30,7 @@ import {
   QuickActionsModalProvider,
   useQuickActionsModalActions,
 } from '@/providers/QuickActions.Provider'
-import type { ExpensesByCategory, ExpensesByDay } from '@/types'
+import type { Day, ExpensesByCategory, ExpensesByDay } from '@/types'
 import { formatDate } from '@/utils/date'
 import { SITE_URL } from '@/utils/seo'
 
@@ -157,28 +157,26 @@ function JourneyView({ user }: JourneyProps): ReactNode {
           </div>
           <div className="col-span-12 rounded-lg px-2 lg:col-span-6 lg:h-screen lg:overflow-y-auto">
             <div className="flex justify-center p-4">
-              <h1 className="flex w-full items-baseline justify-center space-x-4 text-6xl leading-snug text-black lg:text-7xl">
-                {isFetchingJourney ? (
-                  <div className="h-[80px] w-full animate-pulse rounded-lg bg-slate-200" />
-                ) : (
-                  <>
-                    <span className="font-serif text-8xl text-accent">
-                      {daysLeftBeforeJourneyBegins < 0
-                        ? '0'
-                        : daysLeftBeforeJourneyBegins}
-                    </span>
-                    <span className="font-serif">
-                      <FormattedMessage
-                        id="journeyBegins"
-                        defaultMessage="{count, plural, one {day to go} other {days to go}}"
-                        values={{
-                          count: daysLeftBeforeJourneyBegins,
-                        }}
-                      />
-                    </span>
-                  </>
-                )}
-              </h1>
+              {isFetchingJourney ? (
+                <div className="h-[80px] w-full animate-pulse rounded-lg bg-slate-200" />
+              ) : (
+                <h1 className="flex w-full items-baseline justify-center space-x-4 text-6xl leading-snug text-black lg:text-7xl">
+                  <span className="font-serif text-8xl text-accent">
+                    {daysLeftBeforeJourneyBegins < 0
+                      ? '0'
+                      : daysLeftBeforeJourneyBegins}
+                  </span>
+                  <span className="font-serif">
+                    <FormattedMessage
+                      id="journeyBegins"
+                      defaultMessage="{count, plural, one {day to go} other {days to go}}"
+                      values={{
+                        count: daysLeftBeforeJourneyBegins,
+                      }}
+                    />
+                  </span>
+                </h1>
+              )}
             </div>
             <div className="mb-4 space-y-10 rounded-lg p-4">
               <h3 className="mb-2 text-3xl">
@@ -271,6 +269,7 @@ function JourneyView({ user }: JourneyProps): ReactNode {
                 departureDate={data?.journey?.departureDate as string}
                 expensesByDay={data?.expensesByDay as ExpensesByDay}
                 isLoading={isFetchingJourney}
+                days={data?.days as Day[]}
               />
             </JourneyCard>
           </div>

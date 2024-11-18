@@ -4,7 +4,7 @@ import { type ReactNode } from 'react'
 
 import { ExpenseLabel } from '@/components/ExpenseLabel/ExpenseLabel'
 import { useQuickActionsModalActions } from '@/providers/QuickActions.Provider'
-import type { DateString, ExpensesByDay } from '@/types'
+import type { DateString, Day, ExpensesByDay } from '@/types'
 import { formatDate } from '@/utils/date'
 import { hasJourneyPassed } from '@/utils/has-journey-passed'
 
@@ -14,14 +14,16 @@ interface UpcomingScheduleProps {
   departureDate: string
   expensesByDay: ExpensesByDay
   isLoading: boolean
+  days: Day[]
 }
 
 export function UpcomingSchedule({
   departureDate,
   expensesByDay,
   isLoading,
+  days,
 }: UpcomingScheduleProps): ReactNode {
-  const { setCurrentStep, setIsOpen, setSelectedDay } =
+  const { setCurrentStep, setIsOpen, setSelectedExpense } =
     useQuickActionsModalActions()
   const router = useRouter()
 
@@ -56,14 +58,14 @@ export function UpcomingSchedule({
                   onClick={() => {
                     setIsOpen(true)
                     setCurrentStep('Select category')
-                    setSelectedDay(
-                      formatDate(
+                    setSelectedExpense({
+                      startDate: formatDate(
                         new Date(date),
                         'yyyy-MM-dd',
                         true,
                         router.locale
-                      )
-                    )
+                      ),
+                    })
                   }}
                   className="cursor-pointer rounded-md px-2 py-1 ring-1 ring-slate-200 transition-colors hover:bg-slate-200"
                 >
@@ -85,7 +87,7 @@ export function UpcomingSchedule({
                       </div>
                       {!hasJourneyPassed(new Date(departureDate)) ? (
                         <div className="flex items-center space-x-2">
-                          <EditExpense expense={expense} />
+                          <EditExpense expense={expense} days={days} />
                         </div>
                       ) : null}
                     </div>

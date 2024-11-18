@@ -5,7 +5,7 @@ import {
   PlusIcon,
 } from '@radix-ui/react-icons'
 import clsx from 'clsx'
-import type { ReactNode } from 'react'
+import type { ReactElement, ReactNode } from 'react'
 import { useMemo } from 'react'
 import { FormattedMessage } from 'react-intl'
 
@@ -74,7 +74,7 @@ export function SelectAction({
     <div className="mt-10 grid grid-cols-2 gap-5">
       {actions.map((action) => (
         <div
-          key={action.label?.toString()}
+          key={(action.label as ReactElement)?.props?.id}
           className={clsx(
             'flex flex-col items-center justify-center space-y-2 rounded-lg border-[1px] border-neutral p-4 text-black transition-colors',
             action.disabled

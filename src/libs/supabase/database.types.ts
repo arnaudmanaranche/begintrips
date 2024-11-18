@@ -101,6 +101,7 @@ export interface Database {
           category_id: string | null
           created_at: string
           dayId: string
+          endDate: string | null
           id: string
           journeyId: string
           name: string
@@ -111,6 +112,7 @@ export interface Database {
           category_id?: string | null
           created_at?: string
           dayId: string
+          endDate?: string | null
           id?: string
           journeyId: string
           name: string
@@ -121,6 +123,7 @@ export interface Database {
           category_id?: string | null
           created_at?: string
           dayId?: string
+          endDate?: string | null
           id?: string
           journeyId?: string
           name?: string
@@ -345,30 +348,6 @@ export interface Database {
       [_ in never]: never
     }
     Functions: {
-      fetch_users_with_subscriptions: {
-        Args: {
-          input_user_id: string
-        }
-        Returns: {
-          user_id: string
-          username: string
-          credits: number
-          subscription_id: number
-          stripe_subscription_id: string
-          subscription_status: string
-          product_stripe_product_id: string
-          product_type: string
-          product_price: number
-        }[]
-      }
-      process_days: {
-        Args: {
-          start_date: string
-          end_date: string
-          journey_id: string
-        }
-        Returns: undefined
-      }
       update_journey_dates: {
         Args: {
           start_date: string
@@ -504,4 +483,19 @@ export type Enums<
   ? Database[PublicEnumNameOrOptions['schema']]['Enums'][EnumName]
   : PublicEnumNameOrOptions extends keyof PublicSchema['Enums']
     ? PublicSchema['Enums'][PublicEnumNameOrOptions]
+    : never
+
+export type CompositeTypes<
+  PublicCompositeTypeNameOrOptions extends
+    | keyof PublicSchema['CompositeTypes']
+    | { schema: keyof Database },
+  CompositeTypeName extends PublicCompositeTypeNameOrOptions extends {
+    schema: keyof Database
+  }
+    ? keyof Database[PublicCompositeTypeNameOrOptions['schema']]['CompositeTypes']
+    : never = never,
+> = PublicCompositeTypeNameOrOptions extends { schema: keyof Database }
+  ? Database[PublicCompositeTypeNameOrOptions['schema']]['CompositeTypes'][CompositeTypeName]
+  : PublicCompositeTypeNameOrOptions extends keyof PublicSchema['CompositeTypes']
+    ? PublicSchema['CompositeTypes'][PublicCompositeTypeNameOrOptions]
     : never

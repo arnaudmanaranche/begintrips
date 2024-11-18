@@ -15,6 +15,7 @@ describe('addExpenseByCategory', () => {
           dayId: '1',
           name: 'Food 1',
           created_at: '2022-01-01',
+          endDate: '',
           categories: {
             name: 'food',
             id: 'some-id',
@@ -32,6 +33,7 @@ describe('addExpenseByCategory', () => {
           journeyId: '1',
           dayId: '1',
           name: 'Bar 1',
+          endDate: '',
           created_at: '2022-01-03',
           categories: {
             name: 'bar',
