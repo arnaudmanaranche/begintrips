@@ -17,8 +17,8 @@ export default function Custom404(): ReactNode {
         <div className="mx-auto flex max-w-screen-xl flex-col justify-start space-y-16 px-10 pt-10">
           <nav className="flex flex-row items-center justify-between px-10 md:space-y-0 xl:px-0">
             <Link href="/" className="text-3xl">
-              Planner
-              <span className="text-accent-dark">.so</span>
+              Begin
+              <span className="text-accent-dark">trips</span>
             </Link>
             <Button
               onClick={() => router.push('/welcome')}
@@ -37,7 +37,7 @@ export default function Custom404(): ReactNode {
       </section>
       <div className="flex min-h-screen flex-col items-center justify-center px-4">
         <Head>
-          <title>Oops! Journey Delayed | Planner.so</title>
+          <title>Oops! Journey Delayed | Begintrips</title>
         </Head>
         <h1 className="mb-4 text-center text-4xl font-bold">
           <FormattedMessage

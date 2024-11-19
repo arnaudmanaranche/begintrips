@@ -103,12 +103,12 @@ export function useFaq(): {
     {
       title: intl.formatMessage({
         id: 'faq1Title',
-        defaultMessage: 'What is Planner.so ?',
+        defaultMessage: 'What is Begintrips ?',
       }),
       subtitle: intl.formatMessage({
         id: 'faq1Subtitle',
         defaultMessage:
-          'Planner.so is your ultimate travel companion, designed to simplify your travel planning. It offers an intuitive platform where you can effortlessly create, organize, and visualize all your trips in one convenient place.',
+          'Begintrips is your ultimate travel companion, designed to simplify your travel planning. It offers an intuitive platform where you can effortlessly create, organize, and visualize all your trips in one convenient place.',
       }),
     },
     {
@@ -119,7 +119,7 @@ export function useFaq(): {
       subtitle: intl.formatMessage({
         id: 'faq2Subtitle',
         defaultMessage:
-          'Your first journey is completely free! Enjoy full access to every feature, allowing you to explore the full potential of Planner.so at no cost.',
+          'Your first journey is completely free! Enjoy full access to every feature, allowing you to explore the full potential of Begintrips at no cost.',
       }),
     },
     {

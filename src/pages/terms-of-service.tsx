@@ -12,12 +12,12 @@ import { SITE_URL } from '@/utils/seo'
 const messages = defineMessages({
   title: {
     id: 'termsOfServicePage.metaTitle',
-    defaultMessage: 'Planner.so | Terms of service',
+    defaultMessage: 'Begintrips | Terms of service',
   },
   metaDescription: {
     id: 'termsOfServicePage.metaData',
     defaultMessage:
-      'Read our Terms of Service to understand the rules, guidelines, and conditions for using Planner.so',
+      'Read our Terms of Service to understand the rules, guidelines, and conditions for using Begintrips',
   },
 })
 
@@ -57,8 +57,8 @@ function TermsOfServicePage(): ReactNode {
         <div className="mx-auto flex max-w-screen-xl flex-col justify-start space-y-16 px-10 pt-10">
           <nav className="flex flex-row items-center justify-between px-10 md:space-y-0 xl:px-0">
             <Link href="/" className="text-3xl">
-              Planner
-              <span className="text-accent-dark">.so</span>
+              Begin
+              <span className="text-accent-dark">trips</span>
             </Link>
             <Button
               onClick={() => router.push('/welcome')}
@@ -101,7 +101,7 @@ function TermsOfServicePage(): ReactNode {
                 <p className="mt-2 max-w-prose">
                   <FormattedMessage
                     id="termsOfServicePage.section1.description"
-                    defaultMessage="By using Planner.so you confirm your acceptance of, and agree to be bound by, these terms and conditions."
+                    defaultMessage="By using Begintrips you confirm your acceptance of, and agree to be bound by, these terms and conditions."
                   />
                 </p>
               </li>
@@ -115,7 +115,7 @@ function TermsOfServicePage(): ReactNode {
                 <p className="mt-2 max-w-prose">
                   <FormattedMessage
                     id="termsOfServicePage.section2.description"
-                    defaultMessage="This Agreement takes effect on the date on which you first use the Planner.so application."
+                    defaultMessage="This Agreement takes effect on the date on which you first use the Begintrips application."
                   />
                 </p>
               </li>
@@ -143,7 +143,7 @@ function TermsOfServicePage(): ReactNode {
                 <p className="mt-2 max-w-prose">
                   <FormattedMessage
                     id="termsOfServicePage.section4.description"
-                    defaultMessage="Due to the nature of digital products, the Planner.so cannot be refunded or exchanged once access is granted."
+                    defaultMessage="Due to the nature of digital products, the Begintrips cannot be refunded or exchanged once access is granted."
                   />
                 </p>
               </li>
@@ -171,7 +171,7 @@ function TermsOfServicePage(): ReactNode {
                 <p className="mt-2 max-w-prose">
                   <FormattedMessage
                     id="termsOfServicePage.section6.description"
-                    defaultMessage="It is not warranted that Planner.so will meet your requirements or that its operation will be uninterrupted or error free. All express and implied warranties or conditions not stated in this Agreement (including without limitation, loss of profits, loss or corruption of data, business interruption or loss of contracts), so far as such exclusion or disclaimer is permitted under the applicable law are excluded and expressly disclaimed. This Agreement does not affect your statutory rights."
+                    defaultMessage="It is not warranted that Begintrips will meet your requirements or that its operation will be uninterrupted or error free. All express and implied warranties or conditions not stated in this Agreement (including without limitation, loss of profits, loss or corruption of data, business interruption or loss of contracts), so far as such exclusion or disclaimer is permitted under the applicable law are excluded and expressly disclaimed. This Agreement does not affect your statutory rights."
                   />
                 </p>
               </li>
@@ -185,7 +185,7 @@ function TermsOfServicePage(): ReactNode {
                 <p className="mt-2 max-w-prose">
                   <FormattedMessage
                     id="termsOfServicePage.section7.description"
-                    defaultMessage="Planner.so does not give any warranty, guarantee or other term as to the quality, fitness for purpose or otherwise of the software. Planner.so shall not be liable to you by reason of any representation (unless fraudulent), or any implied warranty, condition or other term, or any duty at common law, for any loss of profit or any indirect, special or consequential loss, damage, costs, expenses or other claims (whether caused by Planner.so's negligence or the negligence of its servants or agents or otherwise) which arise out of or in connection with the provision of any goods or services by Planner.so. Planner.so shall not be liable or deemed to be in breach of contract by reason of any delay in performing, or failure to perform, any of its obligations if the delay or failure was due to any cause beyond its reasonable control. Notwithstanding contrary clauses in this Agreement, in the event that Planner.so are deemed liable to you for breach of this Agreement, you agree that Planner.so's liability is limited to the amount actually paid by you for your services or software, which amount calculated in reliance upon this clause. You hereby release Planner.so from any and all obligations, liabilities and claims in excess of this limitation."
+                    defaultMessage="Begintrips does not give any warranty, guarantee or other term as to the quality, fitness for purpose or otherwise of the software. Begintrips shall not be liable to you by reason of any representation (unless fraudulent), or any implied warranty, condition or other term, or any duty at common law, for any loss of profit or any indirect, special or consequential loss, damage, costs, expenses or other claims (whether caused by Begintrips's negligence or the negligence of its servants or agents or otherwise) which arise out of or in connection with the provision of any goods or services by Begintrips. Begintrips shall not be liable or deemed to be in breach of contract by reason of any delay in performing, or failure to perform, any of its obligations if the delay or failure was due to any cause beyond its reasonable control. Notwithstanding contrary clauses in this Agreement, in the event that Begintrips are deemed liable to you for breach of this Agreement, you agree that Begintrips's liability is limited to the amount actually paid by you for your services or software, which amount calculated in reliance upon this clause. You hereby release Begintrips from any and all obligations, liabilities and claims in excess of this limitation."
                   />
                 </p>
               </li>
@@ -199,7 +199,7 @@ function TermsOfServicePage(): ReactNode {
                 <p className="mt-2 max-w-prose">
                   <FormattedMessage
                     id="termsOfServicePage.section8.description"
-                    defaultMessage="Planner.so is not responsible for what the user does with the user-generated content."
+                    defaultMessage="Begintrips is not responsible for what the user does with the user-generated content."
                   />
                 </p>
               </li>
@@ -213,7 +213,7 @@ function TermsOfServicePage(): ReactNode {
                 <p className="mt-2 max-w-prose">
                   <FormattedMessage
                     id="termsOfServicePage.section9.description"
-                    defaultMessage="As we continue to improve Planner.so and expand our offerings, the price may increase. The discount is provided to help customers secure the current price without being surprised by future increases."
+                    defaultMessage="As we continue to improve Begintrips and expand our offerings, the price may increase. The discount is provided to help customers secure the current price without being surprised by future increases."
                   />
                 </p>
               </li>
@@ -227,7 +227,7 @@ function TermsOfServicePage(): ReactNode {
                 <p className="mt-2 max-w-prose">
                   <FormattedMessage
                     id="termsOfServicePage.section10.description"
-                    defaultMessage="The content, organization, graphics, design, and other matters related to Planner.so are protected under applicable copyrights and other proprietary laws. Copying, redistribution, use or publication of any such matters or any part of Planner.so is prohibited."
+                    defaultMessage="The content, organization, graphics, design, and other matters related to Begintrips are protected under applicable copyrights and other proprietary laws. Copying, redistribution, use or publication of any such matters or any part of Begintrips is prohibited."
                   />
                 </p>
               </li>
@@ -255,7 +255,7 @@ function TermsOfServicePage(): ReactNode {
                 <p className="mt-2 max-w-prose">
                   <FormattedMessage
                     id="termsOfServicePage.section12.description"
-                    defaultMessage="This Agreement is governed by the laws of the United Kingdom of Great Britain and Northern Ireland. You acknowledge that no joint venture, partnership, employment, or agency relationship exists between you and Planner.so as a result of your use of these services. You agree not to hold yourself out as a representative, agent or employee of Planner.so. You agree that Planner.so will not be liable by reason of any representation, act or omission to act by you."
+                    defaultMessage="This Agreement is governed by the laws of the United Kingdom of Great Britain and Northern Ireland. You acknowledge that no joint venture, partnership, employment, or agency relationship exists between you and Begintrips as a result of your use of these services. You agree not to hold yourself out as a representative, agent or employee of Begintrips. You agree that Begintrips will not be liable by reason of any representation, act or omission to act by you."
                   />
                 </p>
               </li>

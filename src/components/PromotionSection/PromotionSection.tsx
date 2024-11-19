@@ -19,7 +19,7 @@ export const PromotionSection = (): ReactNode => {
         <p>
           <FormattedMessage
             id="promotionSection.subtitle"
-            defaultMessage="Simplify your Journey with Planner.so"
+            defaultMessage="Simplify your Journey with Begintrips"
           />
         </p>
       </div>

@@ -111,21 +111,21 @@ export default function HomePage({ user }: { user: User }): ReactNode {
         <meta property="og:url" content={SITE_URL} />
         <meta property="og:title" content={siteTitle} />
         <meta property="og:description" content={siteDescription} />
-        <meta property="og:image" content="/meta-image.png" />
+        <meta property="og:image" content={`${SITE_URL}/meta-image.png`} />
 
         <meta property="twitter:card" content="summary_large_image" />
         <meta property="twitter:url" content={siteTitle} />
         <meta property="twitter:title" content={SITE_URL} />
         <meta property="twitter:description" content={siteDescription} />
-        <meta property="twitter:image" content="/meta-image.png" />
+        <meta property="twitter:image" content={`${SITE_URL}/meta-image.png`} />
       </Head>
       <main>
         <section className="bg-accent-light bg-opacity-20 pb-4 md:min-h-[calc(100vh-20rem)] md:pb-0">
           <div className="mx-auto flex max-w-screen-xl flex-col justify-start space-y-16 px-10 pt-10">
             <nav className="flex flex-row items-center justify-between px-10 md:space-y-0 xl:px-0">
               <Link href="/" className="text-3xl">
-                Planner
-                <span className="text-accent-dark">.so</span>
+                Begin
+                <span className="text-accent-dark">trips</span>
               </Link>
               {user ? (
                 <Button

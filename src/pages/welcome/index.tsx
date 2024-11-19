@@ -17,7 +17,7 @@ import { SITE_URL } from '@/utils/seo'
 const messages = defineMessages({
   titleLogin: {
     id: 'welcome.title',
-    defaultMessage: 'Welcome to Planner.so',
+    defaultMessage: 'Welcome to Begintrips',
   },
   titleSignUp: {
     id: 'welcome.signUp',
@@ -26,7 +26,7 @@ const messages = defineMessages({
   metaDescription: {
     id: 'welcome.metaDescription',
     defaultMessage:
-      'Plan your journey with Planner.so - your ultimate travel companion',
+      'Plan your journey with Begintrips - your ultimate travel companion',
   },
 })
 
@@ -85,8 +85,8 @@ export default function WelcomePage(): ReactNode {
       </Head>
       <div className="mx-auto flex max-w-screen-xl px-10 pt-10 xl:px-0">
         <Link href="/" className="text-3xl">
-          Planner
-          <span className="text-accent-dark">.so</span>
+          Begin
+          <span className="text-accent-dark">trips</span>
         </Link>
       </div>
       <div className="mx-auto flex h-screen max-w-4xl flex-grow px-10 xl:px-0">
