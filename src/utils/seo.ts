@@ -3,7 +3,7 @@ import { useIntl } from 'react-intl'
 export const SITE_URL =
   process.env.NODE_ENV === 'development'
     ? 'http://localhost:3000'
-    : 'https://begintrips.com'
+    : 'https://www.begintrips.com'
 
 export function useSiteTitle(): string {
   const intl = useIntl()
