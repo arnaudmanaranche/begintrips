@@ -24,7 +24,7 @@ interface MyJourneysPageProps {
 const messages = defineMessages({
   title: {
     id: 'myJourneysPageTitle',
-    defaultMessage: 'Planenr.so | My journeys',
+    defaultMessage: 'Begintrips | My journeys',
   },
 })
 

@@ -14,7 +14,7 @@ export function Footer(): ReactNode {
             <p className="text-sm text-gray-600">
               <FormattedMessage
                 id="aboutUsSubtitle"
-                defaultMessage="Planner.so is your ultimate travel companion, helping you plan and organize your journeys with ease."
+                defaultMessage="Begintrips is your ultimate travel companion, helping you plan and organize your journeys with ease."
               />
             </p>
           </div>
@@ -62,7 +62,7 @@ export function Footer(): ReactNode {
         </div>
         <div className="mt-8 border-t border-gray-200 pt-8 text-center">
           <p className="text-sm text-gray-600">
-            &copy; {new Date().getFullYear()} Planner.so. All rights reserved.
+            &copy; {new Date().getFullYear()} Begintrips. All rights reserved.
           </p>
         </div>
       </div>

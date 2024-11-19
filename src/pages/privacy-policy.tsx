@@ -12,12 +12,12 @@ import { SITE_URL } from '@/utils/seo'
 const messages = defineMessages({
   title: {
     id: 'privacyPolicyPage.title',
-    defaultMessage: 'Planner.so | Privacy Policy',
+    defaultMessage: 'Begintrips | Privacy Policy',
   },
   metaDescription: {
     id: 'privacyPolicyPage.metaDescription',
     defaultMessage:
-      'Learn how Planner.so collects, uses, and protects your personal information in our Privacy Policy',
+      'Learn how Begintrips collects, uses, and protects your personal information in our Privacy Policy',
   },
 })
 
@@ -57,8 +57,8 @@ function PrivacyPolicyPage(): ReactNode {
         <div className="mx-auto flex max-w-screen-xl flex-col justify-start space-y-16 px-10 pt-10">
           <nav className="flex flex-row items-center justify-between px-10 md:space-y-0 xl:px-0">
             <Link href="/" className="text-3xl">
-              Planner
-              <span className="text-accent-dark">.so</span>
+              Begin
+              <span className="text-accent-dark">trips</span>
             </Link>
             <Button
               onClick={() => router.push('/welcome')}
@@ -87,7 +87,7 @@ function PrivacyPolicyPage(): ReactNode {
             <p className="text-lg">
               <FormattedMessage
                 id="privacyPolicy.subtitle"
-                defaultMessage="At Planner.so, we are dedicated to safeguarding your privacy. This
+                defaultMessage="At Begintrips, we are dedicated to safeguarding your privacy. This
               policy explains the information we collect, how we use it, and
               your rights regarding that information."
               />
@@ -186,7 +186,9 @@ function PrivacyPolicyPage(): ReactNode {
                 defaultMessage="If you have any questions or concerns regarding your privacy, please reach out to us at {email}."
                 values={{
                   email: (
-                    <a href="mailto:hello@enaut.dev">contact@planner.so</a>
+                    <a href="mailto:contact@begintrips.com">
+                      contact@begintrips.com
+                    </a>
                   ),
                 }}
               />

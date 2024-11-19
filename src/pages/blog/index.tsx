@@ -15,12 +15,12 @@ import { slugify } from '@/utils/slugify'
 const messages = defineMessages({
   metaTitle: {
     id: 'blogPage.metaTitle',
-    defaultMessage: 'Planner.so | Blog',
+    defaultMessage: 'Begintrips | Blog',
   },
   metaDescription: {
     id: 'blogPage.metaDescription',
     defaultMessage:
-      'Read our Blog to learn more about the features, tips, and tricks of Planner.so',
+      'Read our Blog to learn more about the features, tips, and tricks of Begintrips',
   },
 })
 
@@ -62,8 +62,8 @@ export default function Page({
         <div className="mx-auto flex max-w-screen-xl flex-col justify-start space-y-16 px-10 pt-10">
           <nav className="flex flex-row items-center justify-between px-10 md:space-y-0 xl:px-0">
             <Link href="/" className="text-3xl">
-              Planner
-              <span className="text-accent-dark">.so</span>
+              Begin
+              <span className="text-accent-dark">trips</span>
             </Link>
             <Button
               onClick={() => router.push('/welcome')}

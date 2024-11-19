@@ -28,7 +28,7 @@ const ONBOARDING_STEPS = [1, 2, 3]
 const messages = defineMessages({
   title: {
     id: 'onboardingPageTitle',
-    defaultMessage: 'Planner.so | Onboarding',
+    defaultMessage: 'Begintrips | Onboarding',
   },
 })
 
@@ -116,8 +116,8 @@ export default function Onboarding(): ReactNode {
       <header className="flex flex-col gap-4 px-4 py-6">
         <Link href="/account">
           <span className="text-2xl lg:text-3xl">
-            Planner
-            <span className="text-accent-dark">.so</span>
+            Begin
+            <span className="text-accent-dark">trips</span>
           </span>
         </Link>
         <div className="flex items-center justify-between">

@@ -37,7 +37,7 @@ export interface AccountPageProps {
 const messages = defineMessages({
   title: {
     id: 'accountPagetitle',
-    defaultMessage: 'Planner.so | Account',
+    defaultMessage: 'Begintrips | Account',
   },
   metaDescription: {
     id: 'accountPageDescription',

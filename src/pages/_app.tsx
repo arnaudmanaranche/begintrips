@@ -16,6 +16,8 @@ import { useMemo, useState } from 'react'
 import { IntlProvider } from 'react-intl'
 import { Toaster } from 'sonner'
 
+import { SITE_URL } from '@/utils/seo'
+
 import enMessages from '../../assets/translations/en.json'
 import frMessages from '../../assets/translations/fr.json'
 
@@ -58,9 +60,9 @@ export default function App({ Component, pageProps }: AppProps): ReactNode {
     <>
       <Head>
         <meta property="og:type" content="website" />
-        <meta property="og:image" content="/meta-image.png" />
+        <meta property="og:image" content={`${SITE_URL}/meta-image.png`} />
         <meta property="twitter:card" content="summary_large_image" />
-        <meta property="twitter:image" content="/meta-image.png" />
+        <meta property="twitter:image" content={`${SITE_URL}/meta-image.png`} />
       </Head>
       <IntlProvider
         messages={messages[currentLocale as 'en' | 'fr']}
