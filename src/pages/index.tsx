@@ -159,7 +159,7 @@ export default function HomePage({ user }: { user: User }): ReactNode {
               >
                 <FormattedMessage
                   id="homepageTitle"
-                  defaultMessage="Take the Stress Out of Travel Simplify your Journey"
+                  defaultMessage="Plan your trips effortlessly, stress-free"
                 />
               </h1>
             </div>
