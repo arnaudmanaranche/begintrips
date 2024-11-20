@@ -14,7 +14,7 @@
     "generate:types": "dotenv -- yarn _generate-types",
     "lint": "next lint",
     "start": "next start",
-    "storybook": "storybook dev -p 6006",
+    "storybook": "storybook dev -p 6006 --no-open",
     "stripe:listen": "stripe listen --forward-to=localhost:3000/api/stripe/webhook",
     "stripe:login": "stripe login",
     "test": "jest"
