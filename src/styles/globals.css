@@ -1,6 +1,6 @@
 :root {
   --font-open-sans: 'Open Sans', sans-serif;
-  --font-playfair: 'Playfair Display', serif;
+  --font-outfit: 'Outfit', serif;
 }
 
 @tailwind base;

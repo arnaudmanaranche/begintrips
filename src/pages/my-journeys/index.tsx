@@ -1,4 +1,4 @@
-import { GearIcon, PaperPlaneIcon } from '@radix-ui/react-icons'
+import { PaperPlaneIcon, PersonIcon } from '@radix-ui/react-icons'
 import { useQuery } from '@tanstack/react-query'
 import type { GetServerSideProps } from 'next'
 import Head from 'next/head'
@@ -95,9 +95,9 @@ export default function MyJourneysPage({
               href="/account"
               className="flex flex-col items-center text-black"
             >
-              <GearIcon className="h-6 w-6" />
+              <PersonIcon className="h-6 w-6" />
               <span>
-                <FormattedMessage id="settings" defaultMessage="Settings" />
+                <FormattedMessage id="myAccount" defaultMessage="My account" />
               </span>
             </Link>
           </li>

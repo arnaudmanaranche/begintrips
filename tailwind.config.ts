@@ -16,7 +16,7 @@ const config = {
     extend: {
       fontFamily: {
         sans: ['var(--font-open-sans)', 'sans-serif'],
-        serif: ['var(--font-playfair)', 'serif'],
+        serif: ['var(--font-outfit)', 'serif'],
       },
       keyframes: {
         overlayShow: {
@@ -45,7 +45,7 @@ const config = {
         black: '#23262d',
         accent: {
           light: '#FDBA74',
-          DEFAULT: '#E57C59',
+          DEFAULT: '#E3461E',
           dark: '#EA580C',
         },
         neutral: {

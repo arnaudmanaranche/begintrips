@@ -1,4 +1,4 @@
-import { GearIcon, PaperPlaneIcon } from '@radix-ui/react-icons'
+import { PaperPlaneIcon, PersonIcon } from '@radix-ui/react-icons'
 import clsx from 'clsx'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
@@ -12,7 +12,7 @@ const navItems = [
     href: '/my-journeys',
     icon: PaperPlaneIcon,
   },
-  { id: 'settings', name: 'Settings', href: '/account', icon: GearIcon },
+  { id: 'myAccount', name: 'My account', href: '/account', icon: PersonIcon },
 ]
 
 export function NavBar(): ReactNode {

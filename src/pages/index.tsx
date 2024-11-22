@@ -37,7 +37,7 @@ function Section({
 }) {
   return (
     <section
-      className={`bg-${backgroundColor} px-6 py-10 pt-20 md:px-0 md:py-20`}
+      className={`bg-${backgroundColor} bg-opacity-80 px-6 py-10 pt-20 md:px-0 md:py-20`}
     >
       <div className="mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8">
         <h2 className="mb-12 text-center text-4xl text-black">{title}</h2>
@@ -120,12 +120,12 @@ export default function HomePage({ user }: { user: User }): ReactNode {
         <meta property="twitter:image" content={`${SITE_URL}/meta-image.png`} />
       </Head>
       <main>
-        <section className="bg-accent-light bg-opacity-20 pb-4 md:min-h-[calc(100vh-20rem)] md:pb-0">
+        <section className="bg-[#FFF5EE] bg-opacity-30 pb-4 md:min-h-[calc(100vh-20rem)] md:pb-0">
           <div className="mx-auto flex max-w-screen-xl flex-col justify-start space-y-16 px-10 pt-10">
             <nav className="flex flex-row items-center justify-between px-10 md:space-y-0 xl:px-0">
-              <Link href="/" className="text-3xl">
+              <Link href="/" className="text-3xl font-bold">
                 Begin
-                <span className="text-accent-dark">trips</span>
+                <span className="font-normal text-accent-dark">trips</span>
               </Link>
               {user ? (
                 <Button
@@ -158,9 +158,16 @@ export default function HomePage({ user }: { user: User }): ReactNode {
                 className="text-4xl font-bold text-black sm:leading-tight md:text-6xl md:leading-[5rem] lg:max-w-[850px]"
               >
                 <FormattedMessage
-                  id="homepageTitle"
-                  defaultMessage="Plan your trips effortlessly, stress-free"
+                  id="homepageTitle1"
+                  defaultMessage="Plan your trips effortlessly,"
                 />
+                {` `}
+                <span className="font-normal italic text-accent">
+                  <FormattedMessage
+                    id="homepageTitle2"
+                    defaultMessage="stress-free"
+                  />
+                </span>
               </h1>
             </div>
             <div className="relative flex flex-col items-center space-y-10 md:items-start md:space-y-4">
@@ -281,7 +288,7 @@ export default function HomePage({ user }: { user: User }): ReactNode {
               defaultMessage="Your all-inclusive journey starts here"
             />
           }
-          backgroundColor="white"
+          backgroundColor="orange-50"
         >
           <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
             {mainFeatures.map((feature) => (
@@ -299,7 +306,7 @@ export default function HomePage({ user }: { user: User }): ReactNode {
           </div>
         </Section>
         <Section
-          backgroundColor="gray-50"
+          backgroundColor="white"
           title={
             <FormattedMessage
               defaultMessage="Popular destinations"
@@ -344,7 +351,7 @@ export default function HomePage({ user }: { user: User }): ReactNode {
           </div>
         </Section>
         <Section
-          backgroundColor="white"
+          backgroundColor="orange-50"
           title={
             <FormattedMessage
               id="payAsYouTravel"
@@ -359,7 +366,7 @@ export default function HomePage({ user }: { user: User }): ReactNode {
           </div>
         </Section>
         <Section
-          backgroundColor="gray-50"
+          backgroundColor="white"
           title={
             <FormattedMessage
               id="frequentlyAskedQuestions"

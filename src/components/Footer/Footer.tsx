@@ -4,7 +4,7 @@ import { FormattedMessage } from 'react-intl'
 
 export function Footer(): ReactNode {
   return (
-    <footer className="bg-white py-12">
+    <footer className="bg-orange-50 py-12">
       <div className="mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-4">
           <div>

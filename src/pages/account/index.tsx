@@ -2,8 +2,8 @@ import * as Dialog from '@radix-ui/react-dialog'
 import {
   ChevronRightIcon,
   Cross2Icon,
-  GearIcon,
   PaperPlaneIcon,
+  PersonIcon,
 } from '@radix-ui/react-icons'
 import { loadStripe } from '@stripe/stripe-js'
 import Avatar from 'boring-avatars'
@@ -280,8 +280,8 @@ export default function AccountPage({ user }: AccountPageProps): ReactNode {
                 href="/account"
                 className="flex flex-col items-center text-accent"
               >
-                <GearIcon className="h-6 w-6" />
-                <FormattedMessage id="settings" defaultMessage="Settings" />
+                <PersonIcon className="h-6 w-6" />
+                <FormattedMessage id="myAccount" defaultMessage="My account" />
               </Link>
             </li>
           </ul>

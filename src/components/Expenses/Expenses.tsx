@@ -32,7 +32,10 @@ export function Expenses({
   return Object.keys(expensesByCategory).length === 0 ? (
     <div className="flex items-center justify-center">
       <p className="text-lg text-black/30">
-        <FormattedMessage id="noExpenses" defaultMessage="No expenses yet" />
+        <FormattedMessage
+          id="noExpenses"
+          defaultMessage="No spending recorded yet"
+        />
       </p>
     </div>
   ) : (

@@ -1,4 +1,4 @@
-import { GearIcon } from '@radix-ui/react-icons'
+import { PersonIcon } from '@radix-ui/react-icons'
 import type { IconProps } from '@radix-ui/react-icons/dist/types'
 import clsx from 'clsx'
 import Link from 'next/link'
@@ -83,7 +83,7 @@ export function BottomBar(): ReactNode {
             href="/account"
             className="flex flex-col items-center space-y-1"
           >
-            <GearIcon className="h-6 w-6 text-black" />
+            <PersonIcon className="h-6 w-6 text-black" />
             <span className="text-xs text-black">
               <FormattedMessage id="account" defaultMessage="Account" />
             </span>

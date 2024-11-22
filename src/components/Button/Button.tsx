@@ -27,14 +27,14 @@ export function Button({
 }: ButtonProps): ReactNode {
   const variantClasses = {
     primary: clsx(
-      'bg-accent text-black hover:bg-accent-dark',
-      isDisabled &&
-        'cursor-not-allowed bg-gray-400/50 text-black/70 disabled:hover:bg-gray-400/50'
+      isDisabled
+        ? 'cursor-not-allowed bg-gray-400/50 text-black disabled:hover:bg-gray-400/50'
+        : 'text-white bg-accent hover:bg-accent-dark'
     ),
     ghost: clsx(
-      'bg-transparent text-accent border border-accent hover:bg-accent-dark hover:text-white',
-      isDisabled &&
-        'cursor-not-allowed bg-gray-400/30 text-black/60 disabled:hover:bg-transparent border-gray-400/30 disabled:hover:text-black/60'
+      isDisabled
+        ? 'cursor-not-allowed bg-gray-400/30 text-black/60 disabled:hover:bg-transparent border-gray-400/30 disabled:hover:text-black/60'
+        : 'bg-transparent text-accent border border-accent hover:bg-accent-dark hover:text-white'
     ),
   }
 
