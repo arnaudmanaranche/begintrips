@@ -7,7 +7,6 @@ import { AnimatePresence, motion } from 'framer-motion'
 import type { GetServerSideProps } from 'next'
 import Head from 'next/head'
 import Image from 'next/image'
-import Link from 'next/link'
 import router from 'next/router'
 import type { ChangeEvent, ReactNode } from 'react'
 import { Children, useEffect, useRef, useState } from 'react'
@@ -15,6 +14,7 @@ import { FormattedMessage } from 'react-intl'
 
 import { Button } from '@/components/Button/Button'
 import { Footer } from '@/components/Footer/Footer'
+import { Logo } from '@/components/Logo/Logo'
 import { Map } from '@/components/Map/Map'
 import { ProductPlan } from '@/components/ProductPlan/ProductPlan'
 import { useSearchDestination } from '@/hooks/useSearchDestination'
@@ -39,7 +39,7 @@ function Section({
 }) {
   return (
     <section
-      className={`bg-${backgroundColor} bg-opacity-80 px-6 py-10 pt-20 md:px-0 md:py-20`}
+      className={`bg-${backgroundColor} bg-opacity-30 px-6 py-10 pt-20 md:px-0 md:py-20`}
     >
       <div className="mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8">
         <h2 className="mb-12 text-center text-4xl text-black">{title}</h2>
@@ -183,10 +183,7 @@ export default function HomePage({ user }: { user: User }): ReactNode {
         <section className="bg-[#FFF5EE] bg-opacity-30 pb-4 md:min-h-[calc(100vh-20rem)] md:pb-0">
           <div className="mx-auto flex max-w-screen-xl flex-col justify-start space-y-16 px-10 pt-10">
             <nav className="flex flex-row items-center justify-between px-10 md:space-y-0 xl:px-0">
-              <Link href="/" className="text-3xl font-bold">
-                Begin
-                <span className="font-normal text-accent-dark">trips</span>
-              </Link>
+              <Logo />
               {user ? (
                 <Button
                   onClick={() => router.push('/my-journeys')}

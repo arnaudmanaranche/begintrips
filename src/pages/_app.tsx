@@ -72,7 +72,9 @@ export default function App({ Component, pageProps }: AppProps): ReactNode {
         <QueryClientProvider client={queryClient}>
           <HydrationBoundary state={pageProps.dehydratedState}>
             <Toaster richColors visibleToasts={1} />
-            <div className={`${outfit.variable} ${openSans.variable}`}>
+            <div
+              className={`${outfit.variable} ${openSans.variable} text-black`}
+            >
               <Component {...pageProps} />
             </div>
             <Analytics />

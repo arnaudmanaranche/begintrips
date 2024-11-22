@@ -6,7 +6,6 @@ import { isToday } from 'date-fns'
 import { motion } from 'framer-motion'
 import type { GetServerSideProps } from 'next'
 import Head from 'next/head'
-import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
 import { useRouter } from 'next/router'
 import type { ChangeEvent, ReactNode } from 'react'
@@ -17,6 +16,7 @@ import { createJourney } from '@/api/calls/journeys'
 import { Button } from '@/components/Button/Button'
 import { Callout } from '@/components/Callout/Callout'
 import { Input } from '@/components/Input/Input'
+import { Logo } from '@/components/Logo/Logo'
 import { useSearchDestination } from '@/hooks/useSearchDestination'
 import { createClient as createServerClient } from '@/libs/supabase/server-props'
 import { useOnboardingStore } from '@/stores/onboarding.store'
@@ -114,12 +114,7 @@ export default function Onboarding(): ReactNode {
         <meta property="twitter:url" content={`${SITE_URL}/onboarding`} />
       </Head>
       <header className="flex flex-col gap-4 px-4 py-6">
-        <Link href="/account">
-          <span className="text-2xl lg:text-3xl">
-            Begin
-            <span className="text-accent-dark">trips</span>
-          </span>
-        </Link>
+        <Logo />
         <div className="flex items-center justify-between">
           <div className="flex items-center text-sm">
             <span>

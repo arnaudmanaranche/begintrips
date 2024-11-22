@@ -8,6 +8,7 @@ import { defineMessages, FormattedMessage, useIntl } from 'react-intl'
 
 import { Callout } from '@/components/Callout/Callout'
 import { LogInForm } from '@/components/LogInForm/LogInForm'
+import { Logo } from '@/components/Logo/Logo'
 import { SignUpForm } from '@/components/SignUpForm/SignUpForm'
 import { createClient } from '@/libs/supabase/server-props'
 import { useOnboardingStore } from '@/stores/onboarding.store'
@@ -84,10 +85,7 @@ export default function WelcomePage(): ReactNode {
         />
       </Head>
       <div className="mx-auto flex max-w-screen-xl px-10 pt-10 xl:px-0">
-        <Link href="/" className="text-3xl">
-          Begin
-          <span className="text-accent-dark">trips</span>
-        </Link>
+        <Logo />
       </div>
       <div className="mx-auto flex h-screen max-w-4xl flex-grow px-10 xl:px-0">
         <div className="flex-1 bg-white">

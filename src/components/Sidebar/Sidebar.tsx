@@ -64,9 +64,9 @@ export function Sidebar(): ReactNode {
 
   return (
     <div className="hidden h-screen flex-col border-r-[1px] lg:flex">
-      <div className="px-6 pt-5 text-3xl">
+      <div className="px-6 pt-5 text-3xl font-bold">
         Begin
-        <span className="text-accent-dark">trips</span>
+        <span className="font-normal text-accent-dark">trips</span>
       </div>
       <ul className="flex flex-col justify-center pt-20">
         {jounryeNavigationItems.map((item, index) => {

@@ -57,12 +57,12 @@ export function useMainFeatures(): {
     {
       title: intl.formatMessage({
         id: 'mainFeatureJourneyTitle',
-        defaultMessage: 'Your Journey, Perfectly Planned',
+        defaultMessage: 'Tailored Trip Creation',
       }),
       description: intl.formatMessage({
         id: 'mainFeatureJourneyDescription',
         defaultMessage:
-          'Start your adventure by creating a personalized journey, tailored to your destination, dates, and budget.',
+          'Plan every detail of your trip, from where you go to how much you spend, in seconds.',
       }),
       image: GlobeIcon,
     },

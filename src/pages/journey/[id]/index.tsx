@@ -208,8 +208,8 @@ function JourneyView({ user }: JourneyProps): ReactNode {
                     <div className="flex flex-col">
                       <span className="text-sm text-gray-600">
                         <FormattedMessage
-                          id="departureDateLabel"
-                          defaultMessage="Departure date"
+                          id="overviewDates"
+                          defaultMessage="Dates"
                         />
                       </span>
                       <span className="capitalize text-black">

@@ -1,12 +1,12 @@
 import { PersonIcon } from '@radix-ui/react-icons'
 import Head from 'next/head'
-import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { type ReactNode } from 'react'
 import { FormattedMessage } from 'react-intl'
 
 import { Button } from '@/components/Button/Button'
 import { Footer } from '@/components/Footer/Footer'
+import { Logo } from '@/components/Logo/Logo'
 
 export default function Custom404(): ReactNode {
   const router = useRouter()
@@ -16,10 +16,7 @@ export default function Custom404(): ReactNode {
       <section className="pb-4">
         <div className="mx-auto flex max-w-screen-xl flex-col justify-start space-y-16 px-10 pt-10">
           <nav className="flex flex-row items-center justify-between px-10 md:space-y-0 xl:px-0">
-            <Link href="/" className="text-3xl">
-              Begin
-              <span className="text-accent-dark">trips</span>
-            </Link>
+            <Logo />
             <Button
               onClick={() => router.push('/welcome')}
               className="hidden lg:flex"
