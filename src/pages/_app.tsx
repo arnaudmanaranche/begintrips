@@ -8,7 +8,7 @@ import {
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { Analytics } from '@vercel/analytics/react'
 import type { AppProps } from 'next/app'
-import { Open_Sans, Playfair_Display } from 'next/font/google'
+import { Open_Sans, Outfit } from 'next/font/google'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import type { ReactNode } from 'react'
@@ -26,10 +26,10 @@ const messages = {
   fr: frMessages,
 }
 
-const playfair = Playfair_Display({
+const outfit = Outfit({
   subsets: ['latin'],
-  weight: ['400', '700'],
-  variable: '--font-playfair',
+  weight: ['400', '600'],
+  variable: '--font-outfit',
   display: 'optional',
 })
 
@@ -72,7 +72,7 @@ export default function App({ Component, pageProps }: AppProps): ReactNode {
         <QueryClientProvider client={queryClient}>
           <HydrationBoundary state={pageProps.dehydratedState}>
             <Toaster richColors visibleToasts={1} />
-            <div className={`${playfair.variable} ${openSans.variable}`}>
+            <div className={`${outfit.variable} ${openSans.variable}`}>
               <Component {...pageProps} />
             </div>
             <Analytics />
