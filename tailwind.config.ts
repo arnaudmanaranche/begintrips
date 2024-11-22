@@ -42,7 +42,7 @@ const config = {
           'slideRightAndFade 400ms cubic-bezier(0.16, 1, 0.3, 1)',
       },
       colors: {
-        black: '#23262d',
+        black: '#151035',
         accent: {
           light: '#FDBA74',
           DEFAULT: '#E3461E',

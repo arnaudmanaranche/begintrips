@@ -1,14 +1,16 @@
 import type { SearchBoxSuggestion, SessionToken } from '@mapbox/search-js-core'
 import { ChevronRightIcon, PersonIcon } from '@radix-ui/react-icons'
 import type { User } from '@supabase/supabase-js'
-import { motion } from 'framer-motion'
+import clsx from 'clsx'
+import type { Transition, Variants } from 'framer-motion'
+import { AnimatePresence, motion } from 'framer-motion'
 import type { GetServerSideProps } from 'next'
 import Head from 'next/head'
 import Image from 'next/image'
 import Link from 'next/link'
 import router from 'next/router'
 import type { ChangeEvent, ReactNode } from 'react'
-import { useRef, useState } from 'react'
+import { Children, useEffect, useRef, useState } from 'react'
 import { FormattedMessage } from 'react-intl'
 
 import { Button } from '@/components/Button/Button'
@@ -44,6 +46,64 @@ function Section({
         {children}
       </div>
     </section>
+  )
+}
+
+interface TextLoopProps {
+  children: React.ReactNode[]
+  className?: string
+  interval?: number
+  transition?: Transition
+  variants?: Variants
+  onIndexChange?: (index: number) => void
+}
+
+function TextLoop({
+  children,
+  className,
+  interval = 2,
+  transition = { duration: 0.3 },
+  variants,
+  onIndexChange,
+}: TextLoopProps) {
+  const [currentIndex, setCurrentIndex] = useState(0)
+  const items = Children.toArray(children)
+
+  useEffect(() => {
+    const intervalMs = interval * 1000
+
+    const timer = setInterval(() => {
+      setCurrentIndex((current) => {
+        const next = (current + 1) % items.length
+        onIndexChange?.(next)
+        return next
+      })
+    }, intervalMs)
+    return () => clearInterval(timer)
+  }, [items.length, interval, onIndexChange])
+
+  const motionVariants: Variants = {
+    initial: { y: 20, opacity: 0 },
+    animate: { y: 0, opacity: 1 },
+    exit: { y: -20, opacity: 0 },
+  }
+
+  return (
+    <div className={clsx('relative inline-block whitespace-nowrap', className)}>
+      <AnimatePresence mode="popLayout" initial={false}>
+        <motion.div
+          key={currentIndex}
+          initial="initial"
+          animate="animate"
+          className="font-normal italic text-accent"
+          exit="exit"
+          transition={transition}
+          variants={variants || motionVariants}
+        >
+          {items[currentIndex]}
+        </motion.div>
+      </AnimatePresence>
+    </div>
   )
 }
 
@@ -155,19 +215,32 @@ export default function HomePage({ user }: { user: User }): ReactNode {
             <div className="flex grow flex-col flex-wrap justify-center space-y-4 text-center md:text-left">
               <h1
                 ref={ref}
-                className="text-4xl font-bold text-black sm:leading-tight md:text-6xl md:leading-[5rem] lg:max-w-[850px]"
+                className="text-4xl font-bold text-black sm:leading-tight md:text-7xl md:leading-[5rem] lg:max-w-[850px]"
               >
                 <FormattedMessage
                   id="homepageTitle1"
-                  defaultMessage="Plan your trips effortlessly,"
+                  defaultMessage="Plan your trips,"
                 />
                 {` `}
-                <span className="font-normal italic text-accent">
-                  <FormattedMessage
-                    id="homepageTitle2"
-                    defaultMessage="stress-free"
-                  />
-                </span>
+                <TextLoop interval={4}>
+                  {[
+                    <FormattedMessage
+                      id="homepageSubtitle1"
+                      key="homepageSubtitle1"
+                      defaultMessage="effortlessly"
+                    />,
+                    <FormattedMessage
+                      id="homepageSubtitle2"
+                      key="homepageSubtitle2"
+                      defaultMessage="stress-free"
+                    />,
+                    <FormattedMessage
+                      id="homepageSubtitle3"
+                      key="homepageSubtitle3"
+                      defaultMessage="with ease"
+                    />,
+                  ]}
+                </TextLoop>
               </h1>
             </div>
             <div className="relative flex flex-col items-center space-y-10 md:items-start md:space-y-4">
@@ -235,12 +308,12 @@ export default function HomePage({ user }: { user: User }): ReactNode {
                   />
                 </div>
                 <button
-                  className="flex items-center justify-center rounded-b-2xl bg-accent px-4 py-4 text-xl text-black/80 transition-colors hover:bg-accent-dark md:rounded-b-none md:rounded-br-2xl md:rounded-tr-2xl"
+                  className="flex items-center justify-center rounded-b-2xl bg-accent px-4 py-4 text-xl text-white transition-colors hover:bg-accent-dark md:rounded-b-none md:rounded-br-2xl md:rounded-tr-2xl"
                   onClick={handleSubmit}
                   aria-label="Plan my journey"
                 >
                   <ChevronRightIcon className="hidden h-6 w-6 text-white md:block" />
-                  <span className="block text-base text-black md:hidden">
+                  <span className="block text-base text-white md:hidden">
                     <FormattedMessage
                       id="planMyJourney"
                       defaultMessage="Plan my journey"
