@@ -6,9 +6,9 @@ export function Footer(): ReactNode {
   return (
     <footer className="bg-orange-50 bg-opacity-30 py-12">
       <div className="mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-4">
+        <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
           <div>
-            <h3 className="font-semibol mb-4 text-lg">
+            <h3 className="mb-4 text-lg font-semibold">
               <FormattedMessage id="aboutUs" defaultMessage="About us" />
             </h3>
             <p className="text-sm text-gray-600">
@@ -18,52 +18,48 @@ export function Footer(): ReactNode {
               />
             </p>
           </div>
-
           <div>
-            <h3 className="font-semibol mb-4 text-lg">Legal</h3>
+            <h3 className="mb-4 text-lg font-semibold">
+              <FormattedMessage id="resources" defaultMessage="Resources" />
+            </h3>
             <ul className="space-y-2">
               <li>
-                <Link
-                  href="/privacy-policy"
-                  className="text-sm text-gray-600 hover:text-accent"
-                >
-                  <FormattedMessage
-                    id="privacyPolicy"
-                    defaultMessage="Privacy Policy"
-                  />
+                <Link href="/blog" className="text-sm text-gray-600 hover:text-accent">
+                  <FormattedMessage id="blog" defaultMessage="Blog" />
                 </Link>
               </li>
               <li>
-                <Link
-                  href="/terms-of-service"
-                  className="text-sm text-gray-600 hover:text-accent"
-                >
-                  <FormattedMessage
-                    id="termsOfService"
-                    defaultMessage="Terms of Service"
-                  />
+                <Link href="/#faq" className="text-sm text-gray-600 hover:text-accent">
+                  <FormattedMessage id="faq" defaultMessage="FAQ" />
                 </Link>
               </li>
             </ul>
           </div>
           <div>
-            <h3 className="font-semibol mb-4 text-lg">Social</h3>
+            <h3 className="mb-4 text-lg font-semibold">
+              <FormattedMessage id="legal" defaultMessage="Legal" />
+            </h3>
             <ul className="space-y-2">
               <li>
-                <Link
-                  href="/blog"
-                  className="text-sm text-gray-600 hover:text-accent"
-                >
-                  <FormattedMessage id="blog" defaultMessage="Blog" />
+                <Link href="/privacy-policy" className="text-sm text-gray-600 hover:text-accent">
+                  <FormattedMessage id="privacyPolicy" defaultMessage="Privacy Policy" />
+                </Link>
+              </li>
+              <li>
+                <Link href="/terms-of-service" className="text-sm text-gray-600 hover:text-accent">
+                  <FormattedMessage id="termsOfService" defaultMessage="Terms of Service" />
                 </Link>
               </li>
             </ul>
           </div>
         </div>
-        <div className="mt-8 border-t border-gray-200 pt-8 text-center">
-          <p className="text-sm text-gray-600">
-            &copy; {new Date().getFullYear()} Begintrips. All rights reserved.
-          </p>
+        <div className="mt-12 border-t border-gray-200 pt-8">
+          <div className="flex flex-col items-center justify-center space-y-4 text-center sm:flex-row sm:space-y-0 sm:text-left">
+            <p className="text-sm text-gray-600">
+              &copy; {new Date().getFullYear()} Begintrips. 
+              <FormattedMessage id="allRightsReserved" defaultMessage="All rights reserved." />
+            </p>
+          </div>
         </div>
       </div>
     </footer>

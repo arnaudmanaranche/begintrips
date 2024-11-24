@@ -1,135 +1,71 @@
 import type { SearchBoxSuggestion, SessionToken } from '@mapbox/search-js-core'
-import { ChevronRightIcon, PersonIcon } from '@radix-ui/react-icons'
+import { CalendarIcon, CheckIcon, ChevronRightIcon, PersonIcon } from '@radix-ui/react-icons'
 import type { User } from '@supabase/supabase-js'
 import clsx from 'clsx'
-import type { Transition, Variants } from 'framer-motion'
-import { AnimatePresence, motion } from 'framer-motion'
+import { motion } from 'framer-motion'
 import type { GetServerSideProps } from 'next'
 import Head from 'next/head'
-import Image from 'next/image'
 import router from 'next/router'
 import type { ChangeEvent, ReactNode } from 'react'
-import { Children, useEffect, useRef, useState } from 'react'
-import { FormattedMessage } from 'react-intl'
+import { useEffect, useRef, useState } from 'react'
+import { DateRange } from 'react-date-range'
+import 'react-date-range/dist/styles.css'
+import 'react-date-range/dist/theme/default.css'
+import { FormattedMessage, FormattedNumber } from 'react-intl'
 
 import { Button } from '@/components/Button/Button'
 import { Footer } from '@/components/Footer/Footer'
 import { Logo } from '@/components/Logo/Logo'
 import { Map } from '@/components/Map/Map'
-import { ProductPlan } from '@/components/ProductPlan/ProductPlan'
 import { useSearchDestination } from '@/hooks/useSearchDestination'
 import { createClient } from '@/libs/supabase/server-props'
 import { useOnboardingStore } from '@/stores/onboarding.store'
 import {
   useFaq,
-  useMainFeatures,
-  usePopularDestinations,
+  useMainFeatures
 } from '@/utils/homepage'
 import { PLANS } from '@/utils/product-plans'
 import { SITE_URL, useSiteDescription, useSiteTitle } from '@/utils/seo'
-
-function Section({
-  children,
-  backgroundColor,
-  title,
-}: {
-  children: ReactNode
-  backgroundColor: string
-  title: ReactNode
-}) {
-  return (
-    <section
-      className={`bg-${backgroundColor} bg-opacity-30 px-6 py-10 pt-20 md:px-0 md:py-20`}
-    >
-      <div className="mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8">
-        <h2 className="mb-12 text-center text-4xl text-black">{title}</h2>
-        {children}
-      </div>
-    </section>
-  )
-}
-
-interface TextLoopProps {
-  children: React.ReactNode[]
-  className?: string
-  interval?: number
-  transition?: Transition
-  variants?: Variants
-  onIndexChange?: (index: number) => void
-}
-
-function TextLoop({
-  children,
-  className,
-  interval = 2,
-  transition = { duration: 0.3 },
-  variants,
-  onIndexChange,
-}: TextLoopProps) {
-  const [currentIndex, setCurrentIndex] = useState(0)
-  const items = Children.toArray(children)
-
-  useEffect(() => {
-    const intervalMs = interval * 1000
-
-    const timer = setInterval(() => {
-      setCurrentIndex((current) => {
-        const next = (current + 1) % items.length
-        onIndexChange?.(next)
-        return next
-      })
-    }, intervalMs)
-    return () => clearInterval(timer)
-  }, [items.length, interval, onIndexChange])
-
-  const motionVariants: Variants = {
-    initial: { y: 20, opacity: 0 },
-    animate: { y: 0, opacity: 1 },
-    exit: { y: -20, opacity: 0 },
-  }
-
-  return (
-    <div className={clsx('relative inline-block whitespace-nowrap', className)}>
-      <AnimatePresence mode="popLayout" initial={false}>
-        <motion.div
-          key={currentIndex}
-          initial="initial"
-          animate="animate"
-          className="font-normal italic text-accent"
-          exit="exit"
-          transition={transition}
-          variants={variants || motionVariants}
-        >
-          {items[currentIndex]}
-        </motion.div>
-      </AnimatePresence>
-    </div>
-  )
-}
+import Image from 'next/image'
 
 export default function HomePage({ user }: { user: User }): ReactNode {
-  const mainFeatures = useMainFeatures()
-  const popularDestinations = usePopularDestinations()
   const siteTitle = useSiteTitle()
   const siteDescription = useSiteDescription()
   const faq = useFaq()
+  const mainFeatures = useMainFeatures()
   const { updateJourney, journey } = useOnboardingStore()
-  const ref = useRef(null)
   const { searchBoxRef, sessionTokenRef } = useSearchDestination()
   const [isFocused, setIsFocused] = useState(false)
   const [suggestions, setSuggestions] = useState<SearchBoxSuggestion[]>()
+  const [currentFeature, setCurrentFeature] = useState(0)
+  const [showDatePicker, setShowDatePicker] = useState(false)
+  const [dateRange, setDateRange] = useState({
+    startDate: journey.departureDate ? new Date(journey.departureDate) : new Date(),
+    endDate: journey.returnDate ? new Date(journey.returnDate) : new Date(),
+    key: 'selection'
+  })
 
-  const handleDepartureDateChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const selectedDepartureDate = e.target.value
-    updateJourney({ departureDate: selectedDepartureDate })
+  const datePickerRef = useRef<HTMLDivElement>(null)
 
-    if (journey.returnDate < selectedDepartureDate) {
-      updateJourney({ returnDate: selectedDepartureDate })
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (datePickerRef.current && !datePickerRef.current.contains(event.target as Node)) {
+        setShowDatePicker(false)
+      }
     }
-  }
 
-  const handleReturnDateChange = (e: ChangeEvent<HTMLInputElement>) => {
-    updateJourney({ returnDate: e.target.value })
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [])
+
+  const handleDateRangeChange = (ranges: any) => {
+    setDateRange(ranges.selection)
+    updateJourney({
+      departureDate: ranges.selection.startDate,
+      returnDate: ranges.selection.endDate,
+    })
   }
 
   async function handleSearchDestination(e: ChangeEvent<HTMLInputElement>) {
@@ -166,293 +102,444 @@ export default function HomePage({ user }: { user: User }): ReactNode {
         <title>{siteTitle}</title>
         <meta name="title" content={siteTitle} />
         <meta name="description" content={siteDescription} />
-
         <meta property="og:type" content="website" />
         <meta property="og:url" content={SITE_URL} />
         <meta property="og:title" content={siteTitle} />
         <meta property="og:description" content={siteDescription} />
         <meta property="og:image" content={`${SITE_URL}/meta-image.png`} />
-
         <meta property="twitter:card" content="summary_large_image" />
         <meta property="twitter:url" content={siteTitle} />
         <meta property="twitter:title" content={SITE_URL} />
         <meta property="twitter:description" content={siteDescription} />
         <meta property="twitter:image" content={`${SITE_URL}/meta-image.png`} />
       </Head>
-      <main>
-        <section className="bg-[#FFF5EE] bg-opacity-30 pb-4 md:min-h-[calc(100vh-20rem)] md:pb-0">
-          <div className="mx-auto flex max-w-screen-xl flex-col justify-start space-y-16 px-10 pt-10">
-            <nav className="flex flex-row items-center justify-between px-10 md:space-y-0 xl:px-0">
-              <Logo />
-              {user ? (
-                <Button
-                  onClick={() => router.push('/my-journeys')}
-                  className="hidden lg:flex"
+      <main className="space-y-24">
+        <section className="relative">
+          <div className="absolute inset-0 opacity-80">
+            <Map />
+          </div>
+          <div className="relative">
+            <div className="mx-auto flex max-w-screen-xl flex-col justify-start space-y-10 px-6 pt-10 md:px-10">
+              <nav className="flex flex-row items-center justify-between md:px-10 xl:px-0">
+                <motion.div
+                  initial={{ opacity: 0, y: -20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5 }}
                 >
-                  <FormattedMessage
-                    id="menuMyJourneys"
-                    defaultMessage="My journeys"
-                  />
-                </Button>
-              ) : (
+                  <Logo />
+                </motion.div>
+                {user ? (
+                  <Button
+                    onClick={() => router.push('/my-journeys')}
+                    className="hidden lg:flex"
+                  >
+                    <FormattedMessage
+                      id="menuMyJourneys"
+                      defaultMessage="My journeys"
+                    />
+                  </Button>
+                ) : (
+                  <motion.div
+                    initial={{ opacity: 0, y: -20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: 0.2 }}
+                  >
+                    <Button
+                      onClick={() => router.push('/welcome')}
+                      className="hidden lg:flex"
+                    >
+                      <FormattedMessage id="menuLogin" defaultMessage="Login" />
+                    </Button>
+                  </motion.div>
+                )}
                 <Button
-                  onClick={() => router.push('/welcome')}
-                  className="hidden lg:flex"
-                >
-                  <FormattedMessage id="menuLogin" defaultMessage="Login" />
-                </Button>
-              )}
-              <Button
-                onClick={() => router.push('/account')}
-                className="flex lg:hidden"
-                icon={<PersonIcon />}
-                ariaLabel="My account"
-              />
-            </nav>
-            <div className="flex grow flex-col flex-wrap justify-center space-y-4 text-center md:text-left">
-              <h1
-                ref={ref}
-                className="text-4xl font-bold text-black sm:leading-tight md:text-7xl md:leading-[5rem] lg:max-w-[850px]"
-              >
-                <FormattedMessage
-                  id="homepageTitle1"
-                  defaultMessage="Plan your trips,"
+                  onClick={() => router.push('/account')}
+                  className="flex lg:hidden"
+                  icon={<PersonIcon />}
+                  ariaLabel="My account"
                 />
-                {` `}
-                <TextLoop interval={4}>
-                  {[
-                    <FormattedMessage
-                      id="homepageSubtitle1"
-                      key="homepageSubtitle1"
-                      defaultMessage="effortlessly"
-                    />,
-                    <FormattedMessage
-                      id="homepageSubtitle2"
-                      key="homepageSubtitle2"
-                      defaultMessage="stress-free"
-                    />,
-                    <FormattedMessage
-                      id="homepageSubtitle3"
-                      key="homepageSubtitle3"
-                      defaultMessage="with ease"
-                    />,
-                  ]}
-                </TextLoop>
-              </h1>
-            </div>
-            <div className="relative flex flex-col items-center space-y-10 md:items-start md:space-y-4">
-              <div className="flex w-[calc(100%-2rem)] flex-col space-x-0 rounded-2xl bg-white shadow md:w-fit md:flex-row md:space-x-10">
-                <div className="flex flex-col py-4">
-                  <label
-                    className="flex-1 px-10 text-sm text-black/80"
-                    htmlFor="destination"
-                  >
-                    Destination
-                  </label>
-                  <input
-                    type="text"
-                    id="destination"
-                    onBlur={() => {
-                      setIsFocused(false)
-                    }}
-                    onFocus={() => {
-                      setIsFocused(true)
-                    }}
-                    className="py-4 pl-10 outline-none transition-all placeholder:text-black/50 focus:border-neutral-dark focus:outline-none"
-                    placeholder="New York"
-                    value={journey.destination}
-                    onChange={handleSearchDestination}
-                  />
-                </div>
-                <div className="flex flex-col py-4">
-                  <label
-                    className="px-10 text-sm text-black/80"
-                    htmlFor="departureDate"
-                  >
-                    <FormattedMessage
-                      id="departureDateLabel"
-                      defaultMessage="Departure date"
-                    />
-                  </label>
-                  <input
-                    placeholder="Departure date"
-                    className="w-full flex-1 border-gray-100 bg-transparent py-4 pl-10 outline-none transition-all placeholder:text-black/50 focus:border-neutral-dark focus:outline-none"
-                    id="departureDate"
-                    defaultValue={journey.departureDate}
-                    type="date"
-                    min={journey.departureDate}
-                    onChange={handleDepartureDateChange}
-                  />
-                </div>
-                <div className="flex flex-col py-4">
-                  <label
-                    className="px-10 text-sm text-black/80"
-                    htmlFor="returnDate"
-                  >
-                    <FormattedMessage
-                      id="returnDateLabel"
-                      defaultMessage="Return date"
-                    />
-                  </label>
-                  <input
-                    placeholder="Return date"
-                    className="w-full flex-1 border-gray-100 bg-transparent py-4 pl-10 outline-none transition-all placeholder:text-black/50 focus:border-neutral-dark focus:outline-none"
-                    id="returnDate"
-                    type="date"
-                    value={journey.returnDate}
-                    min={journey.departureDate}
-                    onChange={handleReturnDateChange}
-                  />
-                </div>
-                <button
-                  className="flex items-center justify-center rounded-b-2xl bg-accent px-4 py-4 text-xl text-white transition-colors hover:bg-accent-dark md:rounded-b-none md:rounded-br-2xl md:rounded-tr-2xl"
-                  onClick={handleSubmit}
-                  aria-label="Plan my journey"
+              </nav>
+              <div className="flex min-h-[70vh] grow flex-col items-center justify-center text-center md:items-start md:text-left">
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.7 }}
+                  className="space-y-6"
                 >
-                  <ChevronRightIcon className="hidden h-6 w-6 text-white md:block" />
-                  <span className="block text-base text-white md:hidden">
-                    <FormattedMessage
-                      id="planMyJourney"
-                      defaultMessage="Plan my journey"
-                    />
-                  </span>
-                </button>
+                  <div className="rounded-2xl py-8 space-y-4">
+                    <h1 className="text-4xl font-bold text-black sm:leading-tight md:text-7xl md:leading-[5rem] lg:max-w-[850px]">
+                      <FormattedMessage
+                        id="homepageHeadline1"
+                        defaultMessage="Plan in minutes."
+                      />
+                      <br />
+                      <span className="bg-gradient-to-r from-accent to-accent/80 bg-clip-text text-transparent font-serif">
+                        <FormattedMessage
+                          id="homepageHeadline2"
+                          defaultMessage="Enjoy every moment."
+                        />
+                      </span>
+                    </h1>
+                    <h2 className="text-xl text-black/80 md:text-2xl lg:max-w-[800px]">
+                      <FormattedMessage
+                        id="homepageSubtitle"
+                        defaultMessage="Your AI travel assistant that creates personalized itineraries, finds the best spots, and organizes your entire journey - all in one place."
+                      />
+                    </h2>
+                  </div>
+                </motion.div>
+
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.7, delay: 0.3 }}
+                  className="w-full max-w-2xl"
+                >
+                  <div className="rounded-2xl py-8">
+                    <div className="space-y-4">
+                      <div className="relative">
+                        <input
+                          type="text"
+                          placeholder="Where do you want to go?"
+                          value={journey.destination}
+                          onChange={handleSearchDestination}
+                          onFocus={() => setIsFocused(true)}
+                          onBlur={() => setTimeout(() => setIsFocused(false), 200)}
+                          className="w-full rounded-xl border border-gray-200 bg-white px-6 py-4 text-lg shadow-sm transition-all focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/20"
+                        />
+                        {suggestions && suggestions.length > 0 && isFocused && (
+                          <div className="absolute top-full z-10 mt-2 w-full rounded-xl border border-gray-100 bg-white p-2 shadow-lg">
+                            {suggestions.map((suggestion) => (
+                              <button
+                                key={suggestion.mapbox_id}
+                                onClick={() => {
+                                  updateJourney({ destination: suggestion.name })
+                                  setSuggestions([])
+                                }}
+                                className="flex w-full items-center space-x-2 rounded-lg px-4 py-3 text-left hover:bg-gray-50"
+                              >
+                                <span className="flex-1">{suggestion.name}</span>
+                                <ChevronRightIcon className="h-4 w-4 text-gray-400" />
+                              </button>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+
+                      <div className="flex flex-col space-y-4 sm:flex-row sm:space-x-4 sm:space-y-0">
+                        <div className="relative flex-1">
+                          <button
+                            onClick={() => setShowDatePicker(!showDatePicker)}
+                            className="flex w-full items-center rounded-xl border border-gray-200 bg-white px-6 py-4 text-left text-gray-700 shadow-sm transition-all hover:border-accent focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/20"
+                          >
+                            <CalendarIcon className="mr-2 h-5 w-5 text-gray-400" />
+                            <span>
+                              {journey.departureDate && journey.returnDate
+                                ? `${new Date(journey.departureDate).toLocaleDateString()} - ${new Date(
+                                    journey.returnDate
+                                  ).toLocaleDateString()}`
+                                : 'Select dates'}
+                            </span>
+                          </button>
+                          {showDatePicker && (
+                            <div ref={datePickerRef} className="absolute left-0 top-full z-50 mt-2">
+                              <div className="rounded-lg bg-white p-4 shadow-lg ring-1 ring-black ring-opacity-5">
+                                <DateRange
+                                  ranges={[dateRange]}
+                                  onChange={handleDateRangeChange}
+                                  minDate={new Date()}
+                                  rangeColors={['#E3461E']}
+                                  showMonthAndYearPickers={false}
+                                  direction="horizontal"
+                                  months={2}
+                                />
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                      <Button
+                        onClick={handleSubmit}
+
+                        className="w-full py-4 text-lg font-medium"
+                      >
+                        <FormattedMessage
+                          id="homepageStartPlanning"
+                          defaultMessage="Start Planning"
+                        />
+                      </Button>
+                    </div>
+                  </div>
+                </motion.div>
               </div>
-              <motion.ul
-                className="absolute left-0 top-[100%] mt-2 max-h-[200px] w-full max-w-xl overflow-y-scroll rounded-md bg-white shadow-md"
-                animate={{
-                  height: suggestions?.length && isFocused ? 'auto' : 0,
-                }}
-              >
-                {suggestions?.length
-                  ? suggestions.map((suggestion) => {
-                      return (
-                        <li
-                          key={suggestion.mapbox_id}
-                          className="flex cursor-pointer flex-col px-4 py-2 text-start hover:bg-slate-100"
-                          tabIndex={-1}
-                          onClick={() => {
-                            updateJourney({
-                              destination: suggestion.name,
-                            })
-                            setSuggestions([])
-                          }}
-                        >
-                          <p className="text-black">{suggestion.name}</p>
-                          <span className="text-sm text-black/70">
-                            {suggestion.place_formatted}
-                          </span>
-                        </li>
-                      )
-                    })
-                  : null}
-              </motion.ul>
             </div>
           </div>
-          <Map />
         </section>
-        <Section
-          title={
-            <FormattedMessage
-              id="yourAllInclusiveJourneyStartsHere"
-              defaultMessage="Your all-inclusive journey starts here"
-            />
-          }
-          backgroundColor="orange-50"
-        >
-          <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
-            {mainFeatures.map((feature) => (
-              <div
-                key={feature.title}
-                className="flex cursor-default flex-col items-center gap-6 rounded-lg p-6 text-center transition-colors hover:border-accent hover:bg-accent-light/10"
-              >
-                <div className="flex flex-col items-center space-y-2">
-                  <feature.image className="h-6 w-6 text-accent" />
-                  <h2 className="mb-4 text-2xl">{feature.title}</h2>
-                </div>
-                <p className="text-black/70">{feature.description}</p>
+        <section>
+          <div className="mx-auto max-w-screen-xl px-6 md:px-10">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.7 }}
+              className="mb-16 text-center"
+            >
+              <h2 className="mb-4 text-4xl font-bold md:text-5xl">
+                <FormattedMessage
+                  id="featuresTitle"
+                  defaultMessage="Everything you need to plan your perfect trip"
+                />
+              </h2>
+              <p className="mt-6 text-lg leading-8 text-gray-600">
+                <FormattedMessage
+                  id="featuresSubtitle"
+                  defaultMessage="From itinerary planning to expense tracking, we've got you covered with powerful features designed to make your travel planning seamless."
+                />
+              </p>
+            </motion.div>
+            <div className="grid gap-8 md:grid-cols-2">
+              <div className="relative space-y-4">
+                {mainFeatures.map((feature, index) => (
+                  <motion.div
+                    key={feature.title}
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ 
+                      opacity: index === currentFeature ? 1 : 0.5,
+                      x: 0,
+                      scale: index === currentFeature ? 1 : 0.98
+                    }}
+                    transition={{ duration: 0.5 }}
+                    className={clsx(
+                      "relative rounded-xl p-6 transition-all overflow-hidden",
+                      index === currentFeature ? "ring-1 ring-accent" : ""
+                    )}
+                  >
+                    <h3 className="mb-3 text-xl font-semibold">{feature.title}</h3>
+                    <p className="text-gray-600">{feature.description}</p>
+                    {index === currentFeature && (
+                      <div className="absolute bottom-0 left-0 right-0">
+                        <div className="h-1 w-full overflow-hidden rounded-xl bg-red-200">
+                          <motion.div
+                            className="h-full bg-accent rounded-xl"
+                            initial={{ width: "0%" }}
+                            animate={{ width: "100%" }}
+                            transition={{
+                              duration: 5,
+                              ease: "linear",
+                              repeat: 0
+                            }}
+                            onAnimationComplete={() => {
+                              setCurrentFeature(
+                                (prev) => (prev + 1) % mainFeatures.length
+                              );
+                            }}
+                          />
+                        </div>
+                      </div>
+                    )}
+                  </motion.div>
+                ))}
               </div>
-            ))}
-          </div>
-        </Section>
-        <Section
-          backgroundColor="white"
-          title={
-            <FormattedMessage
-              defaultMessage="Popular destinations"
-              id="components.home.popularDestinations"
-            />
-          }
-        >
-          <div className="space-y-10 text-center">
-            <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
-              {popularDestinations.map((destination) => (
-                <div key={destination.name} className="relative">
+              <div className="relative justify-center items-center h-full max-h-[500px] overflow-hidden">
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.5 }}
+                  key={currentFeature}
+                  className='overflow-hidden'
+                >
                   <Image
-                    src={destination.image}
-                    alt={`${destination.name} cityscape`}
-                    width="300"
-                    height="300"
-                    className="h-64 w-full rounded-lg object-cover"
+                    src={mainFeatures[currentFeature].imageUrl}
+                    alt={mainFeatures[currentFeature].title}
+                    height="100"
+                    width="800"
                   />
-                  <div className="absolute inset-0 flex flex-col items-center justify-center rounded-lg bg-black bg-opacity-30 p-6 text-white">
-                    <p className="mb-2 text-2xl font-bold">
-                      {destination.name}
-                    </p>
-                    <p className="mb-4 text-center">
-                      {destination.description}
-                    </p>
-                  </div>
+                </motion.div>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section className="py-10" id='faq'>
+          <div className="mx-auto max-w-screen-xl px-6 md:px-10">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.7 }}
+              className="mb-16 text-center"
+            >
+              <h2 className="mb-4 text-4xl font-bold md:text-5xl">
+                <FormattedMessage
+                  id="frequentlyAskedQuestions"
+                  defaultMessage="Frequently Asked Questions"
+                />
+              </h2>
+            </motion.div>
+            <div className="space-y-8">
+              {faq.map((item, index) => (
+                <div key={index} className="border-b pb-4">
+                  <h3 className="text-2xl font-semibold">
+                    {item.title}
+                  </h3>
+                  <p className="mt-2 text-lg text-gray-600">
+                    {item.subtitle}
+                  </p>
                 </div>
               ))}
             </div>
-            <p className="text-lg">
-              <FormattedMessage
-                id="homepageSubtitle"
-                defaultMessage="Create an account and start planning your dream trip now"
-              />
-            </p>
-            <Button onClick={() => router.push('/welcome')}>
-              <FormattedMessage
-                id="signUpForFree"
-                defaultMessage="Sign up for free"
-              />
-            </Button>
           </div>
-        </Section>
-        <Section
-          backgroundColor="orange-50"
-          title={
-            <FormattedMessage
-              id="payAsYouTravel"
-              defaultMessage="Pay as you travel"
-            />
-          }
-        >
-          <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
-            {Object.entries(PLANS).map(([plan, details]) => (
-              <ProductPlan key={plan} {...details} />
-            ))}
+        </section>
+        <section className="relative overflow-hidden">
+          <div className="mx-auto max-w-7xl px-6 lg:px-8">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5 }}
+              className="mx-auto max-w-4xl text-center"
+            >
+              <h2 className="mb-6 text-4xl font-bold md:text-5xl">
+                <FormattedMessage
+                  id="pricing.title"
+                  defaultMessage="Simple pricing for everyone"
+                />
+              </h2>
+              <p className="mt-6 text-lg leading-8 text-gray-600">
+                <FormattedMessage
+                  id="pricing.subtitle"
+                  defaultMessage="Choose the plan that best suits your travel style"
+                />
+              </p>
+            </motion.div>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+              className="isolate mx-auto mt-16 grid max-w-md grid-cols-1 gap-8 lg:mx-0 lg:max-w-none lg:grid-cols-3"
+            >
+              {Object.values(PLANS).map((plan, index) => (
+                <motion.div
+                  key={plan.title}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                  className={clsx(
+                    'relative rounded-2xl p-8 transition-all',
+                    plan.isMostPopular && 'border-2 border-accent shadow-md'
+                  )}
+                >
+                  {plan.isMostPopular && (
+                    <div className="absolute -top-4 left-1/2 -translate-x-1/2 rounded-full bg-accent px-4 py-1 text-sm font-medium text-white">
+                      <FormattedMessage
+                        id="pricing.mostPopular"
+                        defaultMessage="Most popular"
+                      />
+                    </div>
+                  )}
+                  <div className="flex flex-col">
+                    <h3 className="text-xl font-semibold leading-8 text-gray-900">
+                      {plan.title}
+                    </h3>
+                    <p className="mt-6 flex items-baseline gap-x-1">
+                      <span className="text-4xl font-bold tracking-tight text-gray-900">
+                        <FormattedNumber
+                          value={plan.price}
+                          style="currency"
+                          currency="USD"
+                          currencyDisplay="narrowSymbol"
+                        />
+                      </span>
+                      {plan.mode === 'payment' ? (
+                        <span className="text-sm font-semibold leading-6 text-gray-600">
+                          <FormattedMessage
+                            id="pricing.oneTimePayment"
+                            defaultMessage="one time payment"
+                          />
+                        </span>
+                      ) : null}
+                      {plan.mode === 'subscription'? (
+                        <span className="text-sm font-semibold leading-6 text-gray-600">
+                          <FormattedMessage
+                            id="pricing.perMonth"
+                            defaultMessage="per month"
+                          />
+                        </span>
+                      ) : null}
+                    </p>
+                    <ul className="mt-8 space-y-3 text-sm leading-6 text-gray-600">
+                      {plan.items.map((feature) => (
+                        <li key={feature} className="flex gap-x-3">
+                          <CheckIcon
+                            className="h-6 w-5 flex-none text-accent"
+                            aria-hidden="true"
+                          />
+                          {feature}
+                        </li>
+                      ))}
+                    </ul>
+                    <Button
+                      onClick={() => router.push('/welcome')}
+                      isDisabled={plan.isDisabled}
+                      className="mt-8"
+                      stretch
+                    >
+                      {plan.isDisabled ? (
+                        <FormattedMessage
+                          id="pricing.comingSoon"
+                          defaultMessage="Coming soon"
+                        />
+                      ) : <FormattedMessage
+                      id="pricing.getStarted"
+                      defaultMessage="Get started"
+                    />}
+                    </Button>
+                  </div>
+                </motion.div>
+              ))}
+            </motion.div>
           </div>
-        </Section>
-        <Section
-          backgroundColor="white"
-          title={
-            <FormattedMessage
-              id="frequentlyAskedQuestions"
-              defaultMessage="Frequently Asked Questions"
-            />
-          }
-        >
-          <div className="text-left">
-            {faq.map(({ title, subtitle }) => (
-              <div key={title}>
-                <h3 className="text-lg font-semibold">{title}</h3>
-                <p className="mb-6 mt-2">{subtitle}</p>
+        </section>
+        <section className="mx-auto max-w-screen-xl px-6 md:px-10">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.7 }}
+              className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-accent to-accent/80 px-6 py-20 text-center text-white md:px-20"
+            >
+              <div className="absolute inset-0 opacity-10">
+                <div className="absolute -left-4 -top-4 h-32 w-32 rotate-45 rounded-xl bg-white" />
+                <div className="absolute -bottom-4 -right-4 h-32 w-32 rotate-45 rounded-xl bg-white" />
               </div>
-            ))}
-          </div>
-        </Section>
+              
+              <div className="relative">
+                <h2 className="mb-6 text-4xl font-bold md:text-5xl">
+                  <FormattedMessage
+                    id="readyToStart"
+                    defaultMessage="Ready to start your journey?"
+                  />
+                </h2>
+                <p className="mx-auto mb-8 max-w-2xl text-lg text-white/90">
+                  <FormattedMessage
+                    id="readyToStartSubtitle"
+                    defaultMessage="Join thousands of travelers who trust BeginTrips to create their perfect journey. Start planning your next adventure today!"
+                  />
+                </p>
+                <Button
+                  onClick={() => router.push('/welcome')}
+                  className="bg-white text-black"
+                  variant="ghost"
+                >
+                  <FormattedMessage
+                    id="getStartedForFree"
+                    defaultMessage="Get Started for Free"
+                  />
+                </Button>
+              </div>
+            </motion.div>
+        </section> 
         <Footer />
       </main>
     </>

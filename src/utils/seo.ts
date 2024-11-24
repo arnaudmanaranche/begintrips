@@ -10,7 +10,7 @@ export function useSiteTitle(): string {
 
   return intl.formatMessage({
     id: 'siteTitle',
-    defaultMessage: 'Begintrips - Simplify Your Journey',
+    defaultMessage: 'Begintrips - Plan in minutes. Enjoy every moment',
   })
 }
 

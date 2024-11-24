@@ -11,7 +11,7 @@ export const PLANS: Record<ProductPlanTitleEnum, ProductPlanProps> = {
     price: 0,
     title: 'Free',
     externalProductId: '',
-    mode: 'payment',
+    mode: '',
     internalProductId: 'ebd93461-f1ff-45ca-8bbe-f476c69c5eb2',
     isDisabled: false,
     isMostPopular: false,
@@ -29,7 +29,7 @@ export const PLANS: Record<ProductPlanTitleEnum, ProductPlanProps> = {
     mode: 'payment',
     internalProductId: '8827fdcf-0b57-4b5d-b3ea-546ae94073a7',
     isDisabled: false,
-    isMostPopular: false,
+    isMostPopular: true,
   },
   GLOBETROTTER: {
     items: [
