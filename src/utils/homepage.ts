@@ -1,55 +1,9 @@
-import { CalendarIcon, GlobeIcon, PieChartIcon } from '@radix-ui/react-icons'
-import type { IconProps } from '@radix-ui/react-icons/dist/types'
-import type { ForwardRefExoticComponent, RefAttributes } from 'react'
 import { useIntl } from 'react-intl'
-
-export function usePopularDestinations(): {
-  name: string
-  description: string
-  image: string
-}[] {
-  const intl = useIntl()
-  return [
-    {
-      name: intl.formatMessage({
-        id: 'popularDestinationParisName',
-        defaultMessage: 'Paris',
-      }),
-      description: intl.formatMessage({
-        id: 'popularDestinationParisDescription',
-        defaultMessage: 'The City of Light',
-      }),
-      image: '/paris.avif',
-    },
-    {
-      name: intl.formatMessage({
-        id: 'popularDestinationLondonName',
-        defaultMessage: 'London',
-      }),
-      description: intl.formatMessage({
-        id: 'popularDestinationLondonDescription',
-        defaultMessage: 'Where History Meets Modernity',
-      }),
-      image: '/london.avif',
-    },
-    {
-      name: intl.formatMessage({
-        id: 'popularDestinationNewYorkName',
-        defaultMessage: 'New York',
-      }),
-      description: intl.formatMessage({
-        id: 'popularDestinationNewYorkDescription',
-        defaultMessage: 'The City That Never Sleeps',
-      }),
-      image: '/new-york.avif',
-    },
-  ]
-}
 
 export function useMainFeatures(): {
   title: string
   description: string
-  image: ForwardRefExoticComponent<IconProps & RefAttributes<SVGSVGElement>>
+  imageUrl: string
 }[] {
   const intl = useIntl()
 
@@ -57,14 +11,14 @@ export function useMainFeatures(): {
     {
       title: intl.formatMessage({
         id: 'mainFeatureJourneyTitle',
-        defaultMessage: 'Tailored Trip Creation',
+        defaultMessage: 'Expense categorisation',
       }),
       description: intl.formatMessage({
         id: 'mainFeatureJourneyDescription',
         defaultMessage:
-          'Plan every detail of your trip, from where you go to how much you spend, in seconds.',
+          'Categorise your expenses to make your trip more organised.',
       }),
-      image: GlobeIcon,
+      imageUrl: '/categories.png',
     },
     {
       title: intl.formatMessage({
@@ -76,7 +30,7 @@ export function useMainFeatures(): {
         defaultMessage:
           'Effortlessly add and manage your daily events and expenses, categorized for clear organization and tracking.',
       }),
-      image: CalendarIcon,
+      imageUrl: '/seamless-daily-planning.png',
     },
     {
       title: intl.formatMessage({
@@ -88,7 +42,7 @@ export function useMainFeatures(): {
         defaultMessage:
           'Stay on top of your budget with a clear overview of your expenses, broken down by day and category for easy management.',
       }),
-      image: PieChartIcon,
+      imageUrl: '/expense-tracking.png',
     },
   ]
 }

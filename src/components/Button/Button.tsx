@@ -28,12 +28,12 @@ export function Button({
   const variantClasses = {
     primary: clsx(
       isDisabled
-        ? 'cursor-not-allowed bg-gray-400/50 text-black disabled:hover:bg-gray-400/50'
-        : 'text-white bg-accent hover:bg-accent-dark'
+        ? 'cursor-not-allowed bg-gray-400/50 disabled:hover:bg-gray-400/50'
+        : 'bg-accent hover:bg-accent-dark text-white'
     ),
     ghost: clsx(
       isDisabled
-        ? 'cursor-not-allowed bg-gray-400/30 text-black/60 disabled:hover:bg-transparent border-gray-400/30 disabled:hover:text-black/60'
+        ? 'cursor-not-allowed bg-gray-400/30 disabled:hover:bg-transparent border-gray-400/30 disabled:hover:text-white'
         : 'bg-transparent text-accent border border-accent hover:bg-accent-dark hover:text-white'
     ),
   }
@@ -45,7 +45,7 @@ export function Button({
           'flex h-12 w-12 items-center justify-center rounded-full outline-none transition-colors',
           variantClasses[variant],
           className,
-          stretch && 'w-full'
+          stretch && 'w-full',
         )}
         onClick={onClick}
         disabled={isDisabled}
@@ -63,7 +63,7 @@ export function Button({
         variantClasses[variant],
         className,
         stretch && 'w-full',
-        isRounded ? 'h-12 w-12 rounded-full' : 'rounded-md px-10 py-3'
+        isRounded ? 'h-12 w-12 rounded-full' : 'rounded-md px-10 py-3',
       )}
       onClick={onClick}
       disabled={isDisabled}
