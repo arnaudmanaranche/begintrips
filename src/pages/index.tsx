@@ -1,16 +1,23 @@
+import 'react-date-range/dist/styles.css'
+import 'react-date-range/dist/theme/default.css'
+
 import type { SearchBoxSuggestion, SessionToken } from '@mapbox/search-js-core'
-import { CalendarIcon, CheckIcon, ChevronRightIcon, PersonIcon } from '@radix-ui/react-icons'
+import {
+  CalendarIcon,
+  CheckIcon,
+  ChevronRightIcon,
+  PersonIcon,
+} from '@radix-ui/react-icons'
 import type { User } from '@supabase/supabase-js'
 import clsx from 'clsx'
 import { motion } from 'framer-motion'
 import type { GetServerSideProps } from 'next'
 import Head from 'next/head'
+import Image from 'next/image'
 import router from 'next/router'
 import type { ChangeEvent, ReactNode } from 'react'
 import { useEffect, useRef, useState } from 'react'
 import { DateRange } from 'react-date-range'
-import 'react-date-range/dist/styles.css'
-import 'react-date-range/dist/theme/default.css'
 import { FormattedMessage, FormattedNumber } from 'react-intl'
 
 import { Button } from '@/components/Button/Button'
@@ -20,13 +27,9 @@ import { Map } from '@/components/Map/Map'
 import { useSearchDestination } from '@/hooks/useSearchDestination'
 import { createClient } from '@/libs/supabase/server-props'
 import { useOnboardingStore } from '@/stores/onboarding.store'
-import {
-  useFaq,
-  useMainFeatures
-} from '@/utils/homepage'
+import { useFaq, useMainFeatures } from '@/utils/homepage'
 import { PLANS } from '@/utils/product-plans'
 import { SITE_URL, useSiteDescription, useSiteTitle } from '@/utils/seo'
-import Image from 'next/image'
 
 export default function HomePage({ user }: { user: User }): ReactNode {
   const siteTitle = useSiteTitle()
@@ -40,16 +43,21 @@ export default function HomePage({ user }: { user: User }): ReactNode {
   const [currentFeature, setCurrentFeature] = useState(0)
   const [showDatePicker, setShowDatePicker] = useState(false)
   const [dateRange, setDateRange] = useState({
-    startDate: journey.departureDate ? new Date(journey.departureDate) : new Date(),
+    startDate: journey.departureDate
+      ? new Date(journey.departureDate)
+      : new Date(),
     endDate: journey.returnDate ? new Date(journey.returnDate) : new Date(),
-    key: 'selection'
+    key: 'selection',
   })
 
   const datePickerRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
-      if (datePickerRef.current && !datePickerRef.current.contains(event.target as Node)) {
+      if (
+        datePickerRef.current &&
+        !datePickerRef.current.contains(event.target as Node)
+      ) {
         setShowDatePicker(false)
       }
     }
@@ -60,6 +68,7 @@ export default function HomePage({ user }: { user: User }): ReactNode {
     }
   }, [])
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleDateRangeChange = (ranges: any) => {
     setDateRange(ranges.selection)
     updateJourney({
@@ -166,14 +175,14 @@ export default function HomePage({ user }: { user: User }): ReactNode {
                   transition={{ duration: 0.7 }}
                   className="space-y-6"
                 >
-                  <div className="rounded-2xl py-8 space-y-4">
+                  <div className="space-y-4 rounded-2xl py-8">
                     <h1 className="text-4xl font-bold text-black sm:leading-tight md:text-7xl md:leading-[5rem] lg:max-w-[850px]">
                       <FormattedMessage
                         id="homepageHeadline1"
                         defaultMessage="Plan in minutes."
                       />
                       <br />
-                      <span className="bg-gradient-to-r from-accent to-accent/80 bg-clip-text text-transparent font-serif">
+                      <span className="bg-gradient-to-r from-accent to-accent/80 bg-clip-text font-serif text-transparent">
                         <FormattedMessage
                           id="homepageHeadline2"
                           defaultMessage="Enjoy every moment."
@@ -204,7 +213,9 @@ export default function HomePage({ user }: { user: User }): ReactNode {
                           value={journey.destination}
                           onChange={handleSearchDestination}
                           onFocus={() => setIsFocused(true)}
-                          onBlur={() => setTimeout(() => setIsFocused(false), 200)}
+                          onBlur={() =>
+                            setTimeout(() => setIsFocused(false), 200)
+                          }
                           className="w-full rounded-xl border border-gray-200 bg-white px-6 py-4 text-lg shadow-sm transition-all focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/20"
                         />
                         {suggestions && suggestions.length > 0 && isFocused && (
@@ -213,12 +224,16 @@ export default function HomePage({ user }: { user: User }): ReactNode {
                               <button
                                 key={suggestion.mapbox_id}
                                 onClick={() => {
-                                  updateJourney({ destination: suggestion.name })
+                                  updateJourney({
+                                    destination: suggestion.name,
+                                  })
                                   setSuggestions([])
                                 }}
                                 className="flex w-full items-center space-x-2 rounded-lg px-4 py-3 text-left hover:bg-gray-50"
                               >
-                                <span className="flex-1">{suggestion.name}</span>
+                                <span className="flex-1">
+                                  {suggestion.name}
+                                </span>
                                 <ChevronRightIcon className="h-4 w-4 text-gray-400" />
                               </button>
                             ))}
@@ -242,7 +257,10 @@ export default function HomePage({ user }: { user: User }): ReactNode {
                             </span>
                           </button>
                           {showDatePicker && (
-                            <div ref={datePickerRef} className="absolute left-0 top-full z-50 mt-2">
+                            <div
+                              ref={datePickerRef}
+                              className="absolute left-0 top-full z-50 mt-2"
+                            >
                               <div className="rounded-lg bg-white p-4 shadow-lg ring-1 ring-black ring-opacity-5">
                                 <DateRange
                                   ranges={[dateRange]}
@@ -260,7 +278,6 @@ export default function HomePage({ user }: { user: User }): ReactNode {
                       </div>
                       <Button
                         onClick={handleSubmit}
-
                         className="w-full py-4 text-lg font-medium"
                       >
                         <FormattedMessage
@@ -303,35 +320,37 @@ export default function HomePage({ user }: { user: User }): ReactNode {
                   <motion.div
                     key={feature.title}
                     initial={{ opacity: 0, x: -20 }}
-                    animate={{ 
+                    animate={{
                       opacity: index === currentFeature ? 1 : 0.5,
                       x: 0,
-                      scale: index === currentFeature ? 1 : 0.98
+                      scale: index === currentFeature ? 1 : 0.98,
                     }}
                     transition={{ duration: 0.5 }}
                     className={clsx(
-                      "relative rounded-xl p-6 transition-all overflow-hidden",
-                      index === currentFeature ? "ring-1 ring-accent" : ""
+                      'relative overflow-hidden rounded-xl p-6 transition-all',
+                      index === currentFeature ? 'ring-1 ring-accent' : ''
                     )}
                   >
-                    <h3 className="mb-3 text-xl font-semibold">{feature.title}</h3>
+                    <h3 className="mb-3 text-xl font-semibold">
+                      {feature.title}
+                    </h3>
                     <p className="text-gray-600">{feature.description}</p>
                     {index === currentFeature && (
                       <div className="absolute bottom-0 left-0 right-0">
                         <div className="h-1 w-full overflow-hidden rounded-xl bg-red-200">
                           <motion.div
-                            className="h-full bg-accent rounded-xl"
-                            initial={{ width: "0%" }}
-                            animate={{ width: "100%" }}
+                            className="h-full rounded-xl bg-accent"
+                            initial={{ width: '0%' }}
+                            animate={{ width: '100%' }}
                             transition={{
                               duration: 5,
-                              ease: "linear",
-                              repeat: 0
+                              ease: 'linear',
+                              repeat: 0,
                             }}
                             onAnimationComplete={() => {
                               setCurrentFeature(
                                 (prev) => (prev + 1) % mainFeatures.length
-                              );
+                              )
                             }}
                           />
                         </div>
@@ -340,13 +359,13 @@ export default function HomePage({ user }: { user: User }): ReactNode {
                   </motion.div>
                 ))}
               </div>
-              <div className="relative justify-center items-center h-full max-h-[500px] overflow-hidden">
+              <div className="relative h-full max-h-[500px] items-center justify-center overflow-hidden">
                 <motion.div
                   initial={{ opacity: 0, scale: 0.95 }}
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ duration: 0.5 }}
                   key={currentFeature}
-                  className='overflow-hidden'
+                  className="overflow-hidden"
                 >
                   <Image
                     src={mainFeatures[currentFeature].imageUrl}
@@ -359,7 +378,7 @@ export default function HomePage({ user }: { user: User }): ReactNode {
             </div>
           </div>
         </section>
-        <section className="py-10" id='faq'>
+        <section className="py-10" id="faq">
           <div className="mx-auto max-w-screen-xl px-6 md:px-10">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -378,12 +397,8 @@ export default function HomePage({ user }: { user: User }): ReactNode {
             <div className="space-y-8">
               {faq.map((item, index) => (
                 <div key={index} className="border-b pb-4">
-                  <h3 className="text-2xl font-semibold">
-                    {item.title}
-                  </h3>
-                  <p className="mt-2 text-lg text-gray-600">
-                    {item.subtitle}
-                  </p>
+                  <h3 className="text-2xl font-semibold">{item.title}</h3>
+                  <p className="mt-2 text-lg text-gray-600">{item.subtitle}</p>
                 </div>
               ))}
             </div>
@@ -459,7 +474,7 @@ export default function HomePage({ user }: { user: User }): ReactNode {
                           />
                         </span>
                       ) : null}
-                      {plan.mode === 'subscription'? (
+                      {plan.mode === 'subscription' ? (
                         <span className="text-sm font-semibold leading-6 text-gray-600">
                           <FormattedMessage
                             id="pricing.perMonth"
@@ -490,10 +505,12 @@ export default function HomePage({ user }: { user: User }): ReactNode {
                           id="pricing.comingSoon"
                           defaultMessage="Coming soon"
                         />
-                      ) : <FormattedMessage
-                      id="pricing.getStarted"
-                      defaultMessage="Get started"
-                    />}
+                      ) : (
+                        <FormattedMessage
+                          id="pricing.getStarted"
+                          defaultMessage="Get started"
+                        />
+                      )}
                     </Button>
                   </div>
                 </motion.div>
@@ -502,44 +519,44 @@ export default function HomePage({ user }: { user: User }): ReactNode {
           </div>
         </section>
         <section className="mx-auto max-w-screen-xl px-6 md:px-10">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.7 }}
-              className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-accent to-accent/80 px-6 py-20 text-center text-white md:px-20"
-            >
-              <div className="absolute inset-0 opacity-10">
-                <div className="absolute -left-4 -top-4 h-32 w-32 rotate-45 rounded-xl bg-white" />
-                <div className="absolute -bottom-4 -right-4 h-32 w-32 rotate-45 rounded-xl bg-white" />
-              </div>
-              
-              <div className="relative">
-                <h2 className="mb-6 text-4xl font-bold md:text-5xl">
-                  <FormattedMessage
-                    id="readyToStart"
-                    defaultMessage="Ready to start your journey?"
-                  />
-                </h2>
-                <p className="mx-auto mb-8 max-w-2xl text-lg text-white/90">
-                  <FormattedMessage
-                    id="readyToStartSubtitle"
-                    defaultMessage="Join thousands of travelers who trust BeginTrips to create their perfect journey. Start planning your next adventure today!"
-                  />
-                </p>
-                <Button
-                  onClick={() => router.push('/welcome')}
-                  className="bg-white text-black"
-                  variant="ghost"
-                >
-                  <FormattedMessage
-                    id="getStartedForFree"
-                    defaultMessage="Get Started for Free"
-                  />
-                </Button>
-              </div>
-            </motion.div>
-        </section> 
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7 }}
+            className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-accent to-accent/80 px-6 py-20 text-center text-white md:px-20"
+          >
+            <div className="absolute inset-0 opacity-10">
+              <div className="absolute -left-4 -top-4 h-32 w-32 rotate-45 rounded-xl bg-white" />
+              <div className="absolute -bottom-4 -right-4 h-32 w-32 rotate-45 rounded-xl bg-white" />
+            </div>
+
+            <div className="relative">
+              <h2 className="mb-6 text-4xl font-bold md:text-5xl">
+                <FormattedMessage
+                  id="readyToStart"
+                  defaultMessage="Ready to start your journey?"
+                />
+              </h2>
+              <p className="mx-auto mb-8 max-w-2xl text-lg text-white/90">
+                <FormattedMessage
+                  id="readyToStartSubtitle"
+                  defaultMessage="Join thousands of travelers who trust BeginTrips to create their perfect journey. Start planning your next adventure today!"
+                />
+              </p>
+              <Button
+                onClick={() => router.push('/welcome')}
+                className="bg-white text-black"
+                variant="ghost"
+              >
+                <FormattedMessage
+                  id="getStartedForFree"
+                  defaultMessage="Get Started for Free"
+                />
+              </Button>
+            </div>
+          </motion.div>
+        </section>
         <Footer />
       </main>
     </>
