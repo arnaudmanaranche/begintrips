@@ -4,17 +4,16 @@ import Head from 'next/head'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { type ReactNode } from 'react'
-import { defineMessages, FormattedMessage, useIntl } from 'react-intl'
+import { FormattedMessage, useIntl } from 'react-intl'
 
 import { Button } from '@/components/Button/Button'
 import { Footer } from '@/components/Footer/Footer'
 import { Logo } from '@/components/Logo/Logo'
 import { BLOG_LIST_PER_LOCALE } from '@/utils/pSEO/cities'
 import { SITE_URL } from '@/utils/seo'
-import { slugify } from '@/utils/slugify'
 
-const messages = defineMessages({
-  metaTitle: {
+const messages = {
+  title: {
     id: 'blogPage.metaTitle',
     defaultMessage: 'Begintrips | Blog',
   },
@@ -23,7 +22,16 @@ const messages = defineMessages({
     defaultMessage:
       'Read our Blog to learn more about the features, tips, and tricks of Begintrips',
   },
-})
+  blogTitle: {
+    id: 'blogPage.title',
+    defaultMessage: 'Travel Stories & Tips',
+  },
+  blogSubtitle: {
+    id: 'blogPage.subtitle',
+    defaultMessage:
+      'Discover travel insights, tips, and stories to help you plan better and travel smarter with Begintrips.',
+  },
+}
 
 export default function Page({
   data,
@@ -34,24 +42,21 @@ export default function Page({
   return (
     <main>
       <Head>
-        <title>{intl.formatMessage(messages.metaTitle)}</title>
-        <meta name="title" content={intl.formatMessage(messages.metaTitle)} />
+        <title>{intl.formatMessage(messages.title)}</title>
+        <meta name="title" content={intl.formatMessage(messages.title)} />
         <meta
           name="description"
           content={intl.formatMessage(messages.metaDescription)}
         />
         <meta property="og:url" content={`${SITE_URL}/blog`} />
-        <meta
-          property="og:title"
-          content={intl.formatMessage(messages.metaTitle)}
-        />
+        <meta property="og:title" content={intl.formatMessage(messages.title)} />
         <meta
           property="og:description"
           content={intl.formatMessage(messages.metaDescription)}
         />
         <meta
           property="twitter:title"
-          content={intl.formatMessage(messages.metaTitle)}
+          content={intl.formatMessage(messages.title)}
         />
         <meta property="twitter:url" content={`${SITE_URL}/blog`} />
         <meta
@@ -78,26 +83,51 @@ export default function Page({
           </nav>
         </div>
       </section>
-      <section className="bg-white px-6 pt-20 text-lg text-black md:px-0 md:py-20">
-        <div className="mx-auto max-w-4xl space-y-10">
-          <h1 className="text-5xl text-accent-dark">
-            <FormattedMessage id="blog" defaultMessage="Blog" />
+      <section className="bg-accent-light/30 px-6 py-20 md:px-0">
+        <div className="mx-auto max-w-4xl text-center">
+          <h1 className="mb-6 text-4xl font-bold text-accent-dark md:text-5xl lg:text-6xl">
+            <FormattedMessage
+              id="blogPage.title"
+              defaultMessage="Travel Stories & Tips"
+            />
           </h1>
-          {data.map((list) => (
-            <div key={list.category} className="space-y-8">
-              <h2 className="text-3xl capitalize">{list.category}</h2>
-              <ul className="grid grid-cols-1 gap-4 md:grid-cols-3">
-                {list.destinations.map((destination) => (
-                  <li className="capitalize" key={destination}>
-                    <Link
-                      prefetch={false}
-                      href={`blog/${slugify(list.category)}-${destination}`}
-                    >
-                      {destination}
+          <p className="mx-auto mb-8 max-w-2xl text-lg text-gray-600">
+            <FormattedMessage
+              id="blogPage.subtitle"
+              defaultMessage="Discover travel insights, tips, and stories to help you plan better and travel smarter with Begintrips."
+            />
+          </p>
+        </div>
+      </section>
+      <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+        <div className="space-y-16">
+          {data.map(({ category, title, destinations }) => (
+            <div key={category} className="space-y-8">
+              <div className="flex items-center justify-between">
+                <h2 className="text-3xl font-bold text-accent-dark capitalize">
+                  {title}
+                </h2>
+              </div>
+              <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+                {destinations.map((destination) => (
+                  <article
+                    key={destination}
+                    className="group relative flex flex-col overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm transition-all hover:shadow-md"
+                  >
+                    <Link href={`/blog/${category}/${destination}`}>
+                      <div className="flex flex-1 flex-col justify-between p-6">
+                        <div className="flex-1">
+                          <div className="block">
+                            <h3 className="text-xl font-semibold text-gray-900 group-hover:text-accent capitalize">
+                              {destination.replace(/-/g, ' ')}
+                            </h3>
+                          </div>
+                        </div>
+                      </div>
                     </Link>
-                  </li>
+                  </article>
                 ))}
-              </ul>
+              </div>
             </div>
           ))}
         </div>
@@ -112,5 +142,5 @@ export const getStaticProps = (async (context) => {
 
   return { props: { data: BLOG_LIST_PER_LOCALE[locale] } }
 }) satisfies GetStaticProps<{
-  data: { category: string; destinations: string[] }[]
+  data: { title: string; category: string; destinations: string[] }[]
 }>

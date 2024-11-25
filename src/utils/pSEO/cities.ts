@@ -10,29 +10,59 @@ export const ONE_DAY_TRIP_FROM_CITIES = [
   'london',
   'san-francisco',
   'bay-area',
+] 
+
+export const VOYAGE_AU_DEPART_DE_CITIES = ['lille'] 
+
+export const VOYAGE_PAS_CHER = ['europe'] 
+
+export const MARCHE_DE_NOEL = [
+  'strasbourg',
+  'rennes',
+  'colmar',
+  'paris',
+  'lyon',
+  'lille',
 ]
 
-export const VOYAGE_AU_DEPART_DE_CITIES = ['lille']
-
-export const VOYAGE_PAS_CHER = ['europe']
+export const CHRISTMAS_MARKET = [
+  'koziars',
+  'seattle',
+]
 
 type BlogListPerLocale = Record<
   string,
-  { category: string; destinations: string[] }[]
+  { title: string; category: string; destinations: string[] }[]
 >
 
 export const BLOG_LIST_PER_LOCALE: BlogListPerLocale = {
   fr: [
     {
-      category: 'voyage au depart de',
+      title: 'Voyage au départ de',
+      category: 'voyage-au-depart-de',
       destinations: VOYAGE_AU_DEPART_DE_CITIES,
     },
     {
-      category: 'voyage pas cher',
+      title: 'Voyage pas cher',
+      category: 'voyage-pas-cher',
       destinations: VOYAGE_PAS_CHER,
+    },
+    {
+      title: 'Marché de Noël',
+      category: 'noel',
+      destinations: MARCHE_DE_NOEL,
     },
   ],
   en: [
-    { category: 'one day trip from', destinations: ONE_DAY_TRIP_FROM_CITIES },
+    {
+      title: 'One day trip from',
+      category: 'one-day-trip-from',
+      destinations: ONE_DAY_TRIP_FROM_CITIES,
+    },
+    {
+      title: 'Christmas market',
+      category: 'christmas',
+      destinations: CHRISTMAS_MARKET,
+    }
   ],
 }

@@ -1,81 +1,138 @@
+import { PersonIcon } from '@radix-ui/react-icons'
 import fs from 'fs'
 import matter from 'gray-matter'
-import upperFirst from 'lodash.upperfirst'
-import type {
-  GetStaticPaths,
-  GetStaticPathsResult,
-  GetStaticProps,
-  InferGetStaticPropsType,
-} from 'next'
+import type { GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from 'next'
+import Head from 'next/head'
 import { useRouter } from 'next/router'
-import type { MDXRemoteSerializeResult } from 'next-mdx-remote'
 import { serialize } from 'next-mdx-remote/serialize'
 import path from 'path'
-import { type ReactNode, useMemo } from 'react'
+import { type ReactNode } from 'react'
+import { FormattedMessage, useIntl } from 'react-intl'
 
+import { Button } from '@/components/Button/Button'
+import { Logo } from '@/components/Logo/Logo'
 import { Article } from '@/sections/Article/Article'
-import {
-  ONE_DAY_TRIP_FROM_CITIES,
-  VOYAGE_AU_DEPART_DE_CITIES,
-} from '@/utils/pSEO/cities'
+import { BLOG_LIST_PER_LOCALE } from '@/utils/pSEO/cities'
+import { SITE_URL } from '@/utils/seo'
 
-export default function OneDayTripFrom({
-  content,
-  metaData,
+export default function CityPage({
+  data,
 }: InferGetStaticPropsType<typeof getStaticProps>): ReactNode {
-  const {
-    query: { city },
-
-    locale,
-  } = useRouter()
-
-  const pageTitlePrefix = useMemo(() => {
-    return locale && locale === 'fr'
-      ? 'Voyage au départ de'
-      : 'One day trip from'
-  }, [locale])
-
-  const PAGE_TITLE = `${pageTitlePrefix} ${upperFirst(city as string)}`
+  const router = useRouter()
+  const intl = useIntl()
 
   return (
     <main>
+      <Head>
+        <title>
+          {data.destination.replace(/-/g, ' ')} | {data.category.title} |{' '}
+          {intl.formatMessage({ id: 'blogPage.metaTitle' })}
+        </title>
+        <meta
+          name="title"
+          content={`${data.destination.replace(/-/g, ' ')} | ${
+            data.category.title
+          } | ${intl.formatMessage({
+            id: 'blogPage.metaTitle',
+          })}`}
+        />
+        <meta
+          property="og:url"
+          content={`${SITE_URL}/blog/${data.category.category}/${data.destination}`}
+        />
+        <meta
+          property="og:title"
+          content={`${data.destination.replace(/-/g, ' ')} | ${
+            data.category.title
+          } | ${intl.formatMessage({
+            id: 'blogPage.metaTitle',
+          })}`}
+        />
+        <meta
+          property="twitter:title"
+          content={`${data.destination.replace(/-/g, ' ')} | ${
+            data.category.title
+          } | ${intl.formatMessage({
+            id: 'blogPage.metaTitle',
+          })}`}
+        />
+        <meta
+          property="twitter:url"
+          content={`${SITE_URL}/blog/${data.category.category}/${data.destination}`}
+        />
+      </Head>
+      <section className="pb-4">
+        <div className="mx-auto flex max-w-screen-xl flex-col justify-start space-y-16 px-10 pt-10">
+          <nav className="flex flex-row items-center justify-between px-10 md:space-y-0 xl:px-0">
+            <Logo />
+            <Button
+              onClick={() => router.push('/welcome')}
+              className="hidden lg:flex"
+            >
+              <FormattedMessage id="menuLogin" defaultMessage="Login" />
+            </Button>
+            <Button
+              onClick={() => router.push('/account')}
+              className="flex lg:hidden"
+              icon={<PersonIcon />}
+              ariaLabel="My account"
+            />
+          </nav>
+        </div>
+      </section>
       <Article
-        content={content}
-        metaDataDescription={metaData.description}
-        pageTitle={PAGE_TITLE}
+        content={data.content}
+        metaDataDescription={data.metaData.description}
+        pageTitle={`${data.destination.replace(/-/g, ' ')} | ${
+          data.category.title
+        }`}
       />
     </main>
   )
 }
 
-export const getStaticPaths = (async ({ locales }) => {
-  const citiesByLocale: Record<string, string[]> = {
-    en: ONE_DAY_TRIP_FROM_CITIES,
-    fr: VOYAGE_AU_DEPART_DE_CITIES,
-  }
-
-  const paths: GetStaticPathsResult['paths'] = []
-
-  locales?.forEach((locale) => {
-    citiesByLocale[locale].forEach((city) => {
-      paths.push({
+export const getStaticPaths: GetStaticPaths = async ({ locales = [] }) => {
+  const paths = locales.flatMap((locale) =>
+    Object.values(BLOG_LIST_PER_LOCALE[locale]).flatMap((category) =>
+      category.destinations.map((destination) => ({
         params: {
-          city,
-          slug: locale === 'en' ? 'one-day-trip-from' : 'voyage-au-depart-de',
+          slug: category.category,
+          city: destination,
         },
         locale,
-      })
-    })
-  })
+      })),
+    ),
+  )
 
   return {
     paths,
     fallback: false,
   }
-}) satisfies GetStaticPaths
+}
 
-export const getStaticProps = (async (context) => {
-  const { city, slug } = context.params as { city: string; slug: string }
+export const getStaticProps = (async ({ params, locale = 'en' }) => {
+  const slug = params?.slug as string
+  const city = params?.city as string
+
+  const categoryData = BLOG_LIST_PER_LOCALE[locale].find(
+    (item) => item.category === slug,
+  )
+
+  if (!categoryData) {
+    return {
+      notFound: true,
+    }
+  }
+
+  const destinationData = categoryData.destinations.find(
+    (item) => item === city,
+  )
+
+  if (!destinationData) {
+    return {
+      notFound: true,
+    }
+  }
 
   const filePath = path.join(process.cwd(), `assets/seo/${slug}`, `${city}.mdx`)
 
@@ -85,8 +142,14 @@ export const getStaticProps = (async (context) => {
 
   const mdxSource = await serialize(content)
 
-  return { props: { content: mdxSource, metaData: data } }
-}) satisfies GetStaticProps<{
-  content: MDXRemoteSerializeResult<Record<string, unknown>>
-  metaData: Record<string, string>
-}>
+  return {
+    props: {
+      data: {
+        category: categoryData,
+        destination: destinationData,
+        content: mdxSource,
+        metaData: data,
+      },
+    },
+  }
+}) satisfies GetStaticProps
