@@ -4400,7 +4400,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react-date-range@npm:^1.4.9":
+"@types/react-date-range@npm:1.4.9":
   version: 1.4.9
   resolution: "@types/react-date-range@npm:1.4.9"
   dependencies:
@@ -5824,7 +5824,7 @@ __metadata:
     "@types/lodash.upperfirst": "npm:4.3.9"
     "@types/node": "npm:20"
     "@types/react": "npm:18"
-    "@types/react-date-range": "npm:^1.4.9"
+    "@types/react-date-range": "npm:1.4.9"
     "@types/react-dom": "npm:18"
     "@typescript-eslint/eslint-plugin": "npm:8.5.0"
     "@typescript-eslint/parser": "npm:8.5.0"
@@ -5832,7 +5832,7 @@ __metadata:
     axios: "npm:1.7.4"
     boring-avatars: "npm:1.11.1"
     clsx: "npm:2.1.1"
-    date-fns: "npm:^4.1.0"
+    date-fns: "npm:4.1.0"
     dotenv-cli: "npm:7.4.2"
     eslint: "npm:8"
     eslint-config-next: "npm:14.2.10"
@@ -5857,7 +5857,7 @@ __metadata:
     prettier-plugin-packagejson: "npm:2.4.5"
     prettier-plugin-tailwindcss: "npm:0.5.7"
     react: "npm:18"
-    react-date-range: "npm:^2.0.1"
+    react-date-range: "npm:2.0.1"
     react-dom: "npm:18"
     react-intl: "npm:6.7.0"
     recharts: "npm:2.12.7"
@@ -7168,19 +7168,19 @@ __metadata:
   languageName: node
   linkType: hard
 
+"date-fns@npm:4.1.0":
+  version: 4.1.0
+  resolution: "date-fns@npm:4.1.0"
+  checksum: 10c0/b79ff32830e6b7faa009590af6ae0fb8c3fd9ffad46d930548fbb5acf473773b4712ae887e156ba91a7b3dc30591ce0f517d69fd83bd9c38650fdc03b4e0bac8
+  languageName: node
+  linkType: hard
+
 "date-fns@npm:^2.16.1":
   version: 2.30.0
   resolution: "date-fns@npm:2.30.0"
   dependencies:
     "@babel/runtime": "npm:^7.21.0"
   checksum: 10c0/e4b521fbf22bc8c3db332bbfb7b094fd3e7627de0259a9d17c7551e2d2702608a7307a449206065916538e384f37b181565447ce2637ae09828427aed9cb5581
-  languageName: node
-  linkType: hard
-
-"date-fns@npm:^4.1.0":
-  version: 4.1.0
-  resolution: "date-fns@npm:4.1.0"
-  checksum: 10c0/b79ff32830e6b7faa009590af6ae0fb8c3fd9ffad46d930548fbb5acf473773b4712ae887e156ba91a7b3dc30591ce0f517d69fd83bd9c38650fdc03b4e0bac8
   languageName: node
   linkType: hard
 
@@ -13883,7 +13883,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-date-range@npm:^2.0.1":
+"react-date-range@npm:2.0.1":
   version: 2.0.1
   resolution: "react-date-range@npm:2.0.1"
   dependencies:
