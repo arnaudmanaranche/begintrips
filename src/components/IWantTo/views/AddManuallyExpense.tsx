@@ -61,7 +61,7 @@ export function AddManuallyExpense({
         }))
       }
     },
-    [newExpense.startDate]
+    [newExpense.startDate, setNewExpense]
   )
 
   const handleStartDateChange = useCallback(
@@ -90,7 +90,7 @@ export function AddManuallyExpense({
         }))
       }
     },
-    [days, newExpense.endDate]
+    [days, newExpense.endDate, setNewExpense]
   )
 
   const handleEndDateChange = useCallback(
@@ -122,7 +122,7 @@ export function AddManuallyExpense({
         }))
       }
     },
-    [days, newExpense.startDate]
+    [days, newExpense.startDate, setNewExpense]
   )
 
   return (
