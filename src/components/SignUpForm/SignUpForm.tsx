@@ -3,9 +3,11 @@ import { useRouter } from 'next/router'
 import type { MouseEvent, ReactNode } from 'react'
 import { useState } from 'react'
 import { FormattedMessage } from 'react-intl'
+import { toast } from 'sonner'
 
 import { Button } from '@/components/Button/Button'
 import { createClient } from '@/libs/supabase/client'
+import { EMAIL_TEMPLATES } from '@/utils/emails/get-template'
 
 import { Callout } from '../Callout/Callout'
 import { Input } from '../Input/Input'
@@ -55,7 +57,21 @@ export function SignUpForm(): ReactNode {
       return
     }
 
-    router.push('/onboarding')
+    try {
+      await fetch('/api/send-email', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, template: EMAIL_TEMPLATES.WELCOME }),
+      })
+
+      router.push('/onboarding')
+    } catch {
+      // Send error to Sentry
+      toast.error('Error sending welcome email')
+      return
+    }
   }
 
   return (
@@ -64,8 +80,12 @@ export function SignUpForm(): ReactNode {
       animate={{ opacity: 1 }}
       className="w-full space-y-4"
     >
-      {error ? <Callout.Danger>{error}</Callout.Danger> : null}
-      <form className="flex flex-col space-y-6">
+      {error ? (
+        <div className="mb-8">
+          <Callout.Danger>{error}</Callout.Danger>
+        </div>
+      ) : null}
+      <form className="flex flex-col space-y-8">
         <div className="flex flex-col">
           <Input
             label={
@@ -110,7 +130,7 @@ export function SignUpForm(): ReactNode {
           onClick={async (e: MouseEvent<HTMLButtonElement>) =>
             await handleSignUp(e)
           }
-          isDisabled={isLoading || (!email && !password && !confirmPassword)}
+          isDisabled={isLoading || !email || !password || !confirmPassword}
         >
           {isLoading ? (
             <FormattedMessage id="signingUp" defaultMessage="Signing up..." />

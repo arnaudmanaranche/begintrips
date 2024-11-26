@@ -1,3 +1,5 @@
+import { CalendarIcon, GlobeIcon } from '@radix-ui/react-icons'
+import { motion } from 'framer-motion'
 import type { GetServerSideProps } from 'next'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
@@ -5,176 +7,257 @@ import type { ReactNode } from 'react'
 import { useState } from 'react'
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl'
 
-import { Callout } from '@/components/Callout/Callout'
 import { LogInForm } from '@/components/LogInForm/LogInForm'
 import { Logo } from '@/components/Logo/Logo'
 import { SignUpForm } from '@/components/SignUpForm/SignUpForm'
 import { createClient } from '@/libs/supabase/server-props'
 import { useOnboardingStore } from '@/stores/onboarding.store'
 import { formatDate } from '@/utils/date'
+import { useMainFeatures } from '@/utils/homepage'
 import { SITE_URL } from '@/utils/seo'
 
 const messages = defineMessages({
-  titleLogin: {
-    id: 'welcome.title',
+  // Metadata
+  pageMetaTitle: {
+    id: 'page.welcome.meta.title',
     defaultMessage: 'Welcome to Begintrips',
   },
-  titleSignUp: {
-    id: 'welcome.signUp',
-    defaultMessage: 'Create your account',
-  },
-  metaDescription: {
-    id: 'welcome.metaDescription',
+  pageMetaDescription: {
+    id: 'page.welcome.meta.description',
     defaultMessage:
       'Plan your journey with Begintrips - your ultimate travel companion',
+  },
+  // Page content
+  pageSignUpTitle: {
+    id: 'page.welcome.title.signup',
+    defaultMessage: 'Create your account',
+  },
+  pageLoginTitle: {
+    id: 'page.welcome.title.login',
+    defaultMessage: 'Welcome back',
+  },
+  pageSignUpSubtitle: {
+    id: 'page.welcome.subtitle.signup',
+    defaultMessage: 'Join Begintrips to start planning your next adventure',
+  },
+  pageLoginSubtitle: {
+    id: 'page.welcome.subtitle.login',
+    defaultMessage: 'Sign in to continue your journey',
+  },
+  noAccount: {
+    id: 'page.welcome.noAccount',
+    defaultMessage: "Don't have an account ?",
+  },
+  signUp: {
+    id: 'page.welcome.form.signup.cta',
+    defaultMessage: 'Sign up',
+  },
+  alreadyHaveAccount: {
+    id: 'page.welcome.alreadyHaveAccount',
+    defaultMessage: 'Already have an account ?',
+  },
+  signIn: {
+    id: 'page.welcome.form.login.cta',
+    defaultMessage: 'Sign in',
+  },
+  welcomeJourneyDetails: {
+    id: 'page.welcome.welcomeJourneyDetails',
+    defaultMessage: 'Welcome to your new trip',
+  },
+  welcomeWhyChooseBeginTrips: {
+    id: 'page.welcome.welcomeWhyChooseBeginTrips',
+    defaultMessage: 'Why choose BeginTrips?',
   },
 })
 
 export default function WelcomePage(): ReactNode {
-  const [form, setForm] = useState<'login' | 'signup'>('login')
+  const [form, setForm] = useState<'login' | 'signup'>('signup')
   const { journey } = useOnboardingStore()
+  const features = useMainFeatures()
   const router = useRouter()
   const intl = useIntl()
 
   return (
-    <main>
+    <main className="min-h-screen bg-[#faf9f8]">
       <Head>
-        <title>
-          {form === 'login'
-            ? intl.formatMessage(messages.titleLogin)
-            : intl.formatMessage(messages.titleSignUp)}
-        </title>
+        <title>{intl.formatMessage(messages.pageMetaTitle)}</title>
         <meta
           name="title"
-          content={
-            form === 'login'
-              ? intl.formatMessage(messages.titleLogin)
-              : intl.formatMessage(messages.titleSignUp)
-          }
+          content={intl.formatMessage(messages.pageMetaTitle)}
         />
         <meta
           name="description"
-          content={intl.formatMessage(messages.metaDescription)}
+          content={intl.formatMessage(messages.pageMetaDescription)}
         />
         <meta property="og:url" content={`${SITE_URL}/welcome`} />
         <meta
           property="og:title"
-          content={
-            form === 'login'
-              ? intl.formatMessage(messages.titleLogin)
-              : intl.formatMessage(messages.titleSignUp)
-          }
+          content={intl.formatMessage(messages.pageMetaTitle)}
         />
         <meta
           property="og:description"
-          content={intl.formatMessage(messages.metaDescription)}
+          content={intl.formatMessage(messages.pageMetaDescription)}
         />
         <meta
           property="twitter:title"
-          content={
-            form === 'login'
-              ? intl.formatMessage(messages.titleLogin)
-              : intl.formatMessage(messages.titleSignUp)
-          }
+          content={intl.formatMessage(messages.pageMetaTitle)}
         />
         <meta property="twitter:url" content={`${SITE_URL}/welcome`} />
         <meta
           property="twitter:description"
-          content={intl.formatMessage(messages.metaDescription)}
+          content={intl.formatMessage(messages.pageMetaDescription)}
         />
       </Head>
-      <div className="mx-auto flex max-w-screen-xl px-10 pt-10 xl:px-0">
+      <div className="absolute left-0 right-0 top-0 mx-auto flex max-w-screen-xl px-6 pt-10 xl:px-8">
         <Logo />
       </div>
-      <div className="mx-auto flex h-screen max-w-4xl flex-grow px-10 xl:px-0">
-        <div className="flex-1 bg-white">
-          <div className="relative flex h-full w-full flex-col justify-center space-y-10 md:pt-0">
-            <h2 className="flex text-4xl">
-              {form === 'signup' ? (
-                <FormattedMessage
-                  id="welcomeCreateAccount"
-                  defaultMessage="Create your account"
-                />
-              ) : (
-                <FormattedMessage
-                  id="welcomeWelcomeBack"
-                  defaultMessage="Welcome back"
-                />
-              )}
-            </h2>
-            {journey.destination ? (
-              <Callout.Info>
-                You can change your journey details later in your account.
-              </Callout.Info>
-            ) : null}
-            <div className="flex flex-col justify-between space-y-10 md:space-y-0 lg:flex-row">
+      <div className="flex min-h-screen w-full">
+        <div className="flex w-full flex-col lg:flex-row">
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.6 }}
+            className="flex flex-[0.8] flex-col items-center justify-center bg-accent/5 px-6 py-32 lg:px-16"
+          >
+            <div className="w-full max-w-lg">
+              <h1 className="mb-8 text-2xl font-semibold text-gray-900">
+                {journey.destination
+                  ? intl.formatMessage(messages.welcomeJourneyDetails)
+                  : intl.formatMessage(messages.welcomeWhyChooseBeginTrips)}
+              </h1>
               {journey.destination ? (
-                <div className="flex flex-1 flex-col space-y-8">
-                  <div className="flex flex-col justify-center space-y-4">
-                    <h2 className="text-2xl">Recap your journey</h2>
-                    <ul className="flex flex-col space-y-4">
-                      <li className="flex flex-col space-y-1 text-base font-medium">
-                        <span>Destination</span>
-                        <span className="font-light">
+                <div className="rounded-xl bg-white p-8 shadow-sm ring-1 ring-gray-900/5">
+                  <div className="space-y-6">
+                    <div className="flex items-start gap-3">
+                      <GlobeIcon className="mt-1 h-5 w-5 text-accent" />
+                      <div>
+                        <p className="text-sm font-medium text-gray-600">
+                          <FormattedMessage
+                            id="welcomeDestination"
+                            defaultMessage="Destination"
+                          />
+                        </p>
+                        <p className="mt-1 text-base text-gray-900">
                           {journey.destination}
-                        </span>
-                      </li>
-                      <li className="flex flex-col space-y-1 text-base font-medium">
-                        <span>Departure date</span>
-                        <span className="font-light">
-                          {formatDate(
-                            journey.departureDate,
-                            'EEEE - dd MMMM yyyy',
-                            true,
-                            router.locale
-                          )}
-                        </span>
-                      </li>
-                      <li className="flex flex-col space-y-1 text-base font-medium">
-                        <span>Return date</span>
-                        <span className="font-light">
-                          {formatDate(
-                            journey.returnDate,
-                            'EEEE - dd MMMM yyyy',
-                            true,
-                            router.locale
-                          )}
-                        </span>
-                      </li>
-                    </ul>
+                        </p>
+                      </div>
+                    </div>
+                    <div className="flex items-start gap-3">
+                      <CalendarIcon className="mt-1 h-5 w-5 text-accent" />
+                      <div className="space-y-3">
+                        <div>
+                          <p className="text-sm font-medium text-gray-600">
+                            <FormattedMessage
+                              id="departureDateLabel"
+                              defaultMessage="Departure date"
+                            />
+                          </p>
+                          <p className="mt-1 text-base text-gray-900">
+                            {formatDate(
+                              journey.departureDate,
+                              'EEEE, dd MMMM yyyy',
+                              true,
+                              router.locale
+                            )}
+                          </p>
+                        </div>
+                        <div>
+                          <p className="text-sm font-medium text-gray-600">
+                            <FormattedMessage
+                              id="endDate"
+                              defaultMessage="Return date"
+                            />
+                          </p>
+                          <p className="mt-1 text-base text-gray-900">
+                            {formatDate(
+                              journey.returnDate,
+                              'EEEE, dd MMMM yyyy',
+                              true,
+                              router.locale
+                            )}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
                   </div>
+                  <p className="mt-6 text-sm text-gray-500">
+                    <FormattedMessage
+                      id="welcomeChangeDetailsLater"
+                      defaultMessage="You can change these details later in your journey settings."
+                    />
+                  </p>
                 </div>
-              ) : null}
-              <div className="flex flex-1 flex-col items-center justify-center space-y-4 pb-10 md:space-y-10 md:pb-0">
+              ) : (
+                <div className="grid gap-6">
+                  {features.map((feature, index) => (
+                    <motion.div
+                      key={feature.title}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.6, delay: 0.2 + index * 0.1 }}
+                      className="rounded-xl bg-white p-6 shadow-sm ring-1 ring-gray-900/5"
+                    >
+                      <h3 className="text-lg font-semibold text-gray-900">
+                        {feature.title}
+                      </h3>
+                      <p className="mt-2 text-gray-600">
+                        {feature.description}
+                      </p>
+                    </motion.div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.6 }}
+            className="flex flex-[1.2] flex-col items-center justify-center bg-[#faf9f8] px-6 py-32 lg:px-16"
+          >
+            <div className="w-full max-w-md">
+              <div className="mb-8 text-center">
+                <h1 className="text-4xl font-semibold text-gray-900">
+                  {form === 'signup'
+                    ? intl.formatMessage(messages.pageSignUpTitle)
+                    : intl.formatMessage(messages.pageLoginTitle)}
+                </h1>
+                <p className="mt-3 text-lg text-gray-600">
+                  {form === 'signup'
+                    ? intl.formatMessage(messages.pageSignUpSubtitle)
+                    : intl.formatMessage(messages.pageLoginSubtitle)}
+                </p>
+              </div>
+              <div className="rounded-xl bg-white p-8 shadow-sm ring-1 ring-gray-900/5">
                 {form === 'signup' ? <SignUpForm /> : <LogInForm />}
-                <span className="flex gap-1 text-sm">
+                <div className="mt-4 text-center text-sm text-gray-600">
                   {form === 'login' ? (
-                    <FormattedMessage
-                      id="welcomeDontHaveAccount"
-                      defaultMessage="Don't have an account?"
-                    />
+                    <>
+                      {intl.formatMessage(messages.noAccount)}{' '}
+                      <button
+                        type="button"
+                        className="font-medium text-accent hover:text-accent/80"
+                        onClick={() => setForm('signup')}
+                      >
+                        {intl.formatMessage(messages.signUp)}
+                      </button>
+                    </>
                   ) : (
-                    <FormattedMessage
-                      id="welcomeAlreadyMember"
-                      defaultMessage="Already a member?"
-                    />
+                    <>
+                      {intl.formatMessage(messages.alreadyHaveAccount)}{' '}
+                      <button
+                        type="button"
+                        className="font-medium text-accent hover:text-accent/80"
+                        onClick={() => setForm('login')}
+                      >
+                        {intl.formatMessage(messages.signIn)}
+                      </button>
+                    </>
                   )}
-                  <button
-                    className="hover:underline"
-                    onClick={() =>
-                      setForm(form === 'login' ? 'signup' : 'login')
-                    }
-                  >
-                    {form === 'login' ? (
-                      <FormattedMessage id="signUp" defaultMessage="Sign up" />
-                    ) : (
-                      <FormattedMessage id="login" defaultMessage="Log in" />
-                    )}
-                  </button>
-                </span>
+                </div>
               </div>
             </div>
-          </div>
+          </motion.div>
         </div>
       </div>
     </main>
