@@ -18,7 +18,7 @@ import router from 'next/router'
 import type { ChangeEvent, ReactNode } from 'react'
 import { useEffect, useRef, useState } from 'react'
 import { DateRange } from 'react-date-range'
-import { FormattedMessage, FormattedNumber } from 'react-intl'
+import { FormattedMessage, FormattedNumber, useIntl } from 'react-intl'
 
 import { Button } from '@/components/Button/Button'
 import { Footer } from '@/components/Footer/Footer'
@@ -35,6 +35,7 @@ export default function HomePage({ user }: { user: User }): ReactNode {
   const siteTitle = useSiteTitle()
   const siteDescription = useSiteDescription()
   const faq = useFaq()
+  const intl = useIntl()
   const mainFeatures = useMainFeatures()
   const { updateJourney, journey } = useOnboardingStore()
   const { searchBoxRef, sessionTokenRef } = useSearchDestination()
@@ -209,7 +210,10 @@ export default function HomePage({ user }: { user: User }): ReactNode {
                       <div className="relative">
                         <input
                           type="text"
-                          placeholder="Where do you want to go?"
+                          placeholder={intl.formatMessage({
+                            id: 'onboardingStep1Title',
+                            defaultMessage: 'Where do you want to go ?',
+                          })}
                           value={journey.destination}
                           onChange={handleSearchDestination}
                           onFocus={() => setIsFocused(true)}
@@ -240,7 +244,6 @@ export default function HomePage({ user }: { user: User }): ReactNode {
                           </div>
                         )}
                       </div>
-
                       <div className="flex flex-col space-y-4 sm:flex-row sm:space-x-4 sm:space-y-0">
                         <div className="relative flex-1">
                           <button
@@ -455,7 +458,10 @@ export default function HomePage({ user }: { user: User }): ReactNode {
                   )}
                   <div className="flex flex-col">
                     <h3 className="text-xl font-semibold leading-8 text-gray-900">
-                      {plan.title}
+                      <FormattedMessage
+                        id={plan.title}
+                        defaultMessage={plan.title}
+                      />
                     </h3>
                     <p className="mt-6 flex items-baseline gap-x-1">
                       <span className="text-4xl font-bold tracking-tight text-gray-900">
@@ -490,7 +496,10 @@ export default function HomePage({ user }: { user: User }): ReactNode {
                             className="h-6 w-5 flex-none text-accent"
                             aria-hidden="true"
                           />
-                          {feature}
+                          <FormattedMessage
+                        id={feature}
+                        defaultMessage={feature}
+                      />
                         </li>
                       ))}
                     </ul>

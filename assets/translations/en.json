@@ -216,5 +216,19 @@
   "termsAccept": "I accept the {terms} and {privacy}",
   "welcomeCreateAccountSubtitle": "Join thousands of travelers planning their perfect trips",
   "welcomeWelcomeBackSubtitle": "Continue planning your perfect journey",
-  "welcomeJourneyNote": "You can modify these details later in your account settings"
+  "welcomeJourneyNote": "You can modify these details later in your account settings",
+  "plans.plan1.title": "Free",
+  "plans.plan2.title": "Casual Explorer",
+  "plans.plan3.title": "Globetrotter",
+  "plans.plan1.items.1": "Access to all features for up to 1 journey",
+      "plans.plan1.items.2": "Track expenses by category",
+      "plans.plan1.items.3": "View activities available on your selected dates",
+      "plans.plan1.items.4": "Monitor your budget in real-time",
+  "plans.plan2.items.1": "Access to all features for up to 5 journey",
+      "plans.plan2.items.2": "Track expenses by category",
+      "plans.plan2.items.3": "View activities available on your selected dates",
+      "plans.plan2.items.4": "Monitor your budget in real-time",
+  "plans.plan3.items.1": "Unlimited journeys with all features",
+      "plans.plan3.items.2": "Full access to every feature",
+      "plans.plan3.items.3": "Unlimited AI-generated suggestions"
 }

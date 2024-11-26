@@ -55,12 +55,6 @@ export interface JourneyPage {
   journey: Journey
 }
 
-export enum ProductPlanTitleEnum {
-  FREE = 'FREE',
-  CASUAL_EXPLORER = 'CASUAL_EXPLORER',
-  GLOBETROTTER = 'GLOBETROTTER',
-}
-
 export interface ProductPlanProps {
   externalProductId: string
   internalProductId: string

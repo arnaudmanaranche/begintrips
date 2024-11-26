@@ -232,5 +232,22 @@
   "faq": "FAQ",
   "legal": "Mentions Légales",
   "cookiePolicy": "Politique de Cookies",
-  "allRightsReserved": "Tous droits réservés."
+  "allRightsReserved": "Tous droits réservés.",
+  "plans.plan1.title": "Gratuit",
+  "plans.plan2.title": "Voyageur",
+  "plans.plan3.title": "Globetrotter",
+  "plans.plan1.items.1": "Accès à toutes les fonctionnalités pour 1 voyage",
+      "plans.plan1.items.2": "Suivi des dépenses par catégorie",
+      "plans.plan1.items.3": "Voir les activités disponibles aux dates sélectionnées",
+      "plans.plan1.items.4": "Suivi de votre budget en temps réel",
+  "plans.plan2.items.1": "Accès à toutes les fonctionnalités pour 5 voyages",
+      "plans.plan2.items.2": "Suivi des dépenses par catégorie",
+      "plans.plan2.items.3": "Voir les activités disponibles aux dates sélectionnées",
+      "plans.plan2.items.4": "Suivi de votre budget en temps réel",
+  "plans.plan3.items.1": "Voyages illimités avec toutes les fonctionnalités",
+      "plans.plan3.items.2": "Accès complet à toutes les fonctionnalités",
+      "plans.plan3.items.3": "Suggestions générées par IA illimitées",
+      "pricing.oneTimePayment": "paiement unique",
+      "pricing.mostPopular": "Plus populaire"
+  
 }
