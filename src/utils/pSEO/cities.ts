@@ -1,4 +1,4 @@
-export const ONE_DAY_TRIP_FROM_CITIES = [
+const ONE_DAY_TRIP_FROM_CITIES = [
   'paris',
   'nyc',
   'los-angeles',
@@ -12,11 +12,11 @@ export const ONE_DAY_TRIP_FROM_CITIES = [
   'bay-area',
 ] 
 
-export const VOYAGE_AU_DEPART_DE_CITIES = ['lille'] 
+const VOYAGE_AU_DEPART_DE_CITIES = ['lille'] 
 
-export const VOYAGE_PAS_CHER = ['europe'] 
+const VOYAGE_PAS_CHER = ['europe'] 
 
-export const MARCHE_DE_NOEL = [
+const MARCHE_DE_NOEL = [
   'strasbourg',
   'rennes',
   'colmar',
@@ -25,7 +25,7 @@ export const MARCHE_DE_NOEL = [
   'lille',
 ]
 
-export const CHRISTMAS_MARKET = [
+const CHRISTMAS_MARKET = [
   'koziars',
   'seattle',
 ]

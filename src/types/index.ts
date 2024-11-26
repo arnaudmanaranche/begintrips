@@ -12,7 +12,7 @@ export type Journey = Tables<'journeys'>
 export type Day = Tables<'days'>
 export type Expense = Tables<'expenses'>
 export type Payments = Tables<'payments'>
-export type Category = Tables<'categories'>
+type Category = Tables<'categories'>
 export interface User extends Tables<'users'> {
   email: string
 }
@@ -29,7 +29,7 @@ export interface ExpenseWithCategories extends Expense {
 // CREATE
 export type AddJourney = TablesInsert<'journeys'>
 export type AddDay = TablesInsert<'days'>
-export type AddCategory = TablesInsert<'categories'>
+type AddCategory = TablesInsert<'categories'>
 export interface AddExpenseWithCategories extends TablesInsert<'expenses'> {
   categories: AddCategory
 }
