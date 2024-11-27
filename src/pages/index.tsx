@@ -53,6 +53,13 @@ export default function HomePage({ user }: { user: User }): ReactNode {
 
   const datePickerRef = useRef<HTMLDivElement>(null)
 
+  const scrollToSection = (sectionId: string) => {
+    const section = document.getElementById(sectionId)
+    if (section) {
+      section.scrollIntoView({ behavior: 'smooth' })
+    }
+  }
+
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (
@@ -124,52 +131,76 @@ export default function HomePage({ user }: { user: User }): ReactNode {
         <meta property="twitter:image" content={`${SITE_URL}/meta-image.png`} />
       </Head>
       <main className="space-y-24">
-        <section className="relative">
-          <div className="absolute inset-0 opacity-80">
-            <Map />
+        <section className="relative" id="hero">
+          <div className="absolute inset-0">
+            <Image
+              src="/home-background.jpeg"
+              alt="Calm mountain lake with reflection"
+              fill
+              className="object-cover brightness-[0.65]"
+              priority
+            />
           </div>
           <div className="relative">
             <div className="mx-auto flex max-w-screen-xl flex-col justify-start space-y-10 px-6 pt-10 md:px-10">
               <nav className="flex flex-row items-center justify-between md:px-10 xl:px-0">
+                <div className="flex items-center space-x-12">
                 <motion.div
-                  initial={{ opacity: 0, y: -20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5 }}
-                >
-                  <Logo />
-                </motion.div>
-                {user ? (
-                  <Button
-                    onClick={() => router.push('/my-journeys')}
-                    className="hidden lg:flex"
-                  >
-                    <FormattedMessage
-                      id="menuMyJourneys"
-                      defaultMessage="My journeys"
-                    />
-                  </Button>
-                ) : (
-                  <motion.div
                     initial={{ opacity: 0, y: -20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5, delay: 0.2 }}
+                    transition={{ duration: 0.5 }}
                   >
-                    <Button
-                      onClick={() => router.push('/welcome')}
-                      className="hidden lg:flex"
-                    >
-                      <FormattedMessage id="menuLogin" defaultMessage="Login" />
-                    </Button>
+                    <Logo isBlack={false} />
                   </motion.div>
-                )}
-                <Button
-                  onClick={() => router.push('/account')}
-                  className="flex lg:hidden"
-                  icon={<PersonIcon />}
-                  ariaLabel="My account"
-                />
+                  <div className="hidden items-center space-x-8 lg:flex">
+                    <button
+                      onClick={() => scrollToSection('features')}
+                      className="text-white hover:text-accent"
+                    >
+                      <FormattedMessage id="menuFeatures" defaultMessage="Features" />
+                    </button>
+                    <button
+                      onClick={() => scrollToSection('pricing')}
+                      className="text-white hover:text-accent"
+                    >
+                      <FormattedMessage id="menuPricing" defaultMessage="Pricing" />
+                    </button>
+                    <button
+                      onClick={() => scrollToSection('faq')}
+                      className="text-white hover:text-accent"
+                    >
+                      <FormattedMessage id="menuFaq" defaultMessage="FAQ" />
+                    </button>
+                  </div>
+                </div>
+                <div className="flex items-center space-x-4">
+                  {user ? (
+                    <Button onClick={() => router.push('/my-journeys')} className='hidden lg:flex'>
+                      <FormattedMessage
+                        id="menuMyJourneys"
+                        defaultMessage="My journeys"
+                      />
+                    </Button>
+                  ) : (
+                    <motion.div
+                      initial={{ opacity: 0, y: -20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.5, delay: 0.2 }}
+                    >
+                      <Button onClick={() => router.push('/welcome')}>
+                        <FormattedMessage id="menuLogin" defaultMessage="Login" />
+                      </Button>
+                    </motion.div>
+                  )}
+                  <Button
+                    onClick={() => router.push('/account')}
+                    className="flex lg:hidden"
+                    icon={<PersonIcon />}
+                    ariaLabel="My account"
+                  />
+                </div>
               </nav>
-              <div className="flex min-h-[70vh] grow flex-col items-center justify-center text-center md:items-start md:text-left">
+              <div className="flex min-h-[71vh] grow flex-col items-center justify-center text-center md:items-start md:text-left">
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -177,20 +208,20 @@ export default function HomePage({ user }: { user: User }): ReactNode {
                   className="space-y-6"
                 >
                   <div className="space-y-4 rounded-2xl py-8">
-                    <h1 className="text-4xl font-bold text-black sm:leading-tight md:text-7xl md:leading-[5rem] lg:max-w-[850px]">
+                    <h1 className="text-4xl font-bold text-white sm:leading-tight md:text-7xl md:leading-[5rem] lg:max-w-[850px]">
                       <FormattedMessage
                         id="homepageHeadline1"
                         defaultMessage="Plan in minutes."
                       />
                       <br />
-                      <span className="bg-gradient-to-r from-accent to-accent/80 bg-clip-text font-serif text-transparent">
+                      <span className="bg-gradient-to-r from-accent to-accent/80 bg-clip-text font-serif">
                         <FormattedMessage
                           id="homepageHeadline2"
-                          defaultMessage="Enjoy every moment."
+                          defaultMessage="Travel stress-free"
                         />
                       </span>
                     </h1>
-                    <h2 className="text-xl text-black/80 md:text-2xl lg:max-w-[800px]">
+                    <h2 className="text-lg text-white md:text-2xl lg:max-w-[800px]">
                       <FormattedMessage
                         id="homepageSubtitle"
                         defaultMessage="Your AI travel assistant that creates personalized itineraries, finds the best spots, and organizes your entire journey - all in one place."
@@ -198,12 +229,11 @@ export default function HomePage({ user }: { user: User }): ReactNode {
                     </h2>
                   </div>
                 </motion.div>
-
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.7, delay: 0.3 }}
-                  className="w-full max-w-2xl"
+                  className="w-full max-w-lg"
                 >
                   <div className="rounded-2xl py-8">
                     <div className="space-y-4">
@@ -220,10 +250,10 @@ export default function HomePage({ user }: { user: User }): ReactNode {
                           onBlur={() =>
                             setTimeout(() => setIsFocused(false), 200)
                           }
-                          className="w-full rounded-xl border border-gray-200 bg-white px-6 py-4 text-lg shadow-sm transition-all focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/20"
+                          className="w-full rounded-md border border-gray-200 bg-white px-6 py-4 text-lg shadow-sm transition-all focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/20"
                         />
                         {suggestions && suggestions.length > 0 && isFocused && (
-                          <div className="absolute top-full z-10 mt-2 w-full rounded-xl border border-gray-100 bg-white p-2 shadow-lg">
+                          <div className="absolute top-full z-10 mt-2 w-full rounded-md border border-gray-100 bg-white p-2 shadow-lg">
                             {suggestions.map((suggestion) => (
                               <button
                                 key={suggestion.mapbox_id}
@@ -248,7 +278,7 @@ export default function HomePage({ user }: { user: User }): ReactNode {
                         <div className="relative flex-1">
                           <button
                             onClick={() => setShowDatePicker(!showDatePicker)}
-                            className="flex w-full items-center rounded-xl border border-gray-200 bg-white px-6 py-4 text-left text-gray-700 shadow-sm transition-all hover:border-accent focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/20"
+                            className="flex w-full items-center rounded-md border border-gray-200 bg-white px-6 py-4 text-left text-gray-700 shadow-sm transition-all hover:border-accent focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/20"
                           >
                             <CalendarIcon className="mr-2 h-5 w-5 text-gray-400" />
                             <span>
@@ -295,7 +325,7 @@ export default function HomePage({ user }: { user: User }): ReactNode {
             </div>
           </div>
         </section>
-        <section>
+        <section className="relative bg-white" id="features">
           <div className="mx-auto max-w-screen-xl px-6 md:px-10">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -381,33 +411,7 @@ export default function HomePage({ user }: { user: User }): ReactNode {
             </div>
           </div>
         </section>
-        <section className="py-10" id="faq">
-          <div className="mx-auto max-w-screen-xl px-6 md:px-10">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.7 }}
-              className="mb-16 text-center"
-            >
-              <h2 className="mb-4 text-4xl font-bold md:text-5xl">
-                <FormattedMessage
-                  id="frequentlyAskedQuestions"
-                  defaultMessage="Frequently Asked Questions"
-                />
-              </h2>
-            </motion.div>
-            <div className="space-y-8">
-              {faq.map((item, index) => (
-                <div key={index} className="border-b pb-4">
-                  <h3 className="text-2xl font-semibold">{item.title}</h3>
-                  <p className="mt-2 text-lg text-gray-600">{item.subtitle}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-        <section className="relative overflow-hidden">
+        <section className="relative bg-white" id="pricing">
           <div className="mx-auto max-w-7xl px-6 lg:px-8">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -497,9 +501,9 @@ export default function HomePage({ user }: { user: User }): ReactNode {
                             aria-hidden="true"
                           />
                           <FormattedMessage
-                        id={feature}
-                        defaultMessage={feature}
-                      />
+                            id={feature}
+                            defaultMessage={feature}
+                          />
                         </li>
                       ))}
                     </ul>
@@ -525,6 +529,32 @@ export default function HomePage({ user }: { user: User }): ReactNode {
                 </motion.div>
               ))}
             </motion.div>
+          </div>
+        </section>
+        <section className="relative bg-white" id="faq">
+          <div className="mx-auto max-w-screen-xl px-6 md:px-10">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.7 }}
+              className="mb-16 text-center"
+            >
+              <h2 className="mb-4 text-4xl font-bold md:text-5xl">
+                <FormattedMessage
+                  id="frequentlyAskedQuestions"
+                  defaultMessage="Frequently Asked Questions"
+                />
+              </h2>
+            </motion.div>
+            <div className="space-y-8">
+              {faq.map((item, index) => (
+                <div key={index} className="border-b pb-4">
+                  <h3 className="text-2xl font-semibold">{item.title}</h3>
+                  <p className="mt-2 text-lg text-gray-600">{item.subtitle}</p>
+                </div>
+              ))}
+            </div>
           </div>
         </section>
         <section className="mx-auto max-w-screen-xl px-6 md:px-10">
