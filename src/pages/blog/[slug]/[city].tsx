@@ -60,6 +60,39 @@ export default function CityPage({
           property="twitter:url"
           content={`${SITE_URL}/blog/${data.category.category}/${data.destination}`}
         />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              '@context': 'https://schema.org',
+              '@type': 'BlogPosting',
+              headline: `${data.destination.replace(/-/g, ' ')} | ${data.category.title}`,
+              description: data.metaData.description,
+              url: `${SITE_URL}/blog/${data.category.category}/${data.destination}`,
+              mainEntityOfPage: {
+                '@type': 'WebPage',
+                '@id': `${SITE_URL}/blog/${data.category.category}/${data.destination}`
+              },
+              about: {
+                '@type': 'TouristDestination',
+                name: data.destination.replace(/-/g, ' '),
+                description: data.metaData.description,
+                touristType: data.category.title
+              },
+              publisher: {
+                '@type': 'Organization',
+                name: 'BeginTrips',
+                url: SITE_URL
+              },
+              inLanguage: intl.locale,
+              isPartOf: {
+                '@type': 'Blog',
+                name: intl.formatMessage({ id: 'blogPage.metaTitle' }),
+                url: `${SITE_URL}/blog`
+              }
+            })
+          }}
+        />
       </Head>
       <section className="pb-4">
         <div className="mx-auto flex max-w-screen-xl flex-col justify-start space-y-16 px-10 pt-10">
