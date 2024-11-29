@@ -75,26 +75,26 @@ export default function CityPage({
               url: `${SITE_URL}/blog/${data.category.category}/${data.destination}`,
               mainEntityOfPage: {
                 '@type': 'WebPage',
-                '@id': `${SITE_URL}/blog/${data.category.category}/${data.destination}`
+                '@id': `${SITE_URL}/blog/${data.category.category}/${data.destination}`,
               },
               about: {
                 '@type': 'TouristDestination',
                 name: data.destination.replace(/-/g, ' '),
                 description: data.metaData.description,
-                touristType: data.category.title
+                touristType: data.category.title,
               },
               publisher: {
                 '@type': 'Organization',
                 name: 'BeginTrips',
-                url: SITE_URL
+                url: SITE_URL,
               },
               inLanguage: intl.locale,
               isPartOf: {
                 '@type': 'Blog',
                 name: intl.formatMessage({ id: 'blogPage.metaTitle' }),
-                url: `${SITE_URL}/blog`
-              }
-            })
+                url: `${SITE_URL}/blog`,
+              },
+            }),
           }}
         />
       </Head>
