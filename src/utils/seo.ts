@@ -19,6 +19,6 @@ export function useSiteDescription(): string {
 
   return intl.formatMessage({
     id: 'siteDescription',
-    defaultMessage: 'Plan your journey',
+    defaultMessage: 'Plan your journey day by day, track your expenses by category, and keep all your travel details organized in one place',
   })
 }

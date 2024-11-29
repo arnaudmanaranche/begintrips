@@ -242,7 +242,7 @@ export default function HomePage({ user }: { user: User }): ReactNode {
                     <h2 className="text-lg text-white md:text-2xl lg:max-w-[800px]">
                       <FormattedMessage
                         id="homepageSubtitle"
-                        defaultMessage="Your AI travel assistant that creates personalized itineraries, finds the best spots, and organizes your entire journey - all in one place."
+                        defaultMessage="Plan your journey day by day, track your expenses by category, and keep all your travel details organized in one place."
                       />
                     </h2>
                   </div>
