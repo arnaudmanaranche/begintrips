@@ -28,6 +28,7 @@ import { createClient } from '@/libs/supabase/server-props'
 import { useOnboardingStore } from '@/stores/onboarding.store'
 import { useFaq, useMainFeatures } from '@/utils/homepage'
 import { PLANS } from '@/utils/product-plans'
+import { useFaqSchema } from '@/utils/schemas/faq.schema'
 import { SITE_URL, useSiteDescription, useSiteTitle } from '@/utils/seo'
 
 export default function HomePage({ user }: { user: User }): ReactNode {
@@ -35,6 +36,7 @@ export default function HomePage({ user }: { user: User }): ReactNode {
   const siteDescription = useSiteDescription()
   const faq = useFaq()
   const intl = useIntl()
+  const faqSchema = useFaqSchema()
   const mainFeatures = useMainFeatures()
   const { updateJourney, journey } = useOnboardingStore()
   const { searchBoxRef, sessionTokenRef } = useSearchDestination()
@@ -128,6 +130,11 @@ export default function HomePage({ user }: { user: User }): ReactNode {
         <meta property="twitter:title" content={SITE_URL} />
         <meta property="twitter:description" content={siteDescription} />
         <meta property="twitter:image" content={`${SITE_URL}/meta-image.png`} />
+        {/* Schema */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+        />
       </Head>
       <main className="space-y-24">
         <section className="relative" id="hero">
@@ -144,7 +151,7 @@ export default function HomePage({ user }: { user: User }): ReactNode {
             <div className="mx-auto flex max-w-screen-xl flex-col justify-start space-y-10 px-6 pt-10 md:px-10">
               <nav className="flex flex-row items-center justify-between md:px-10 xl:px-0">
                 <div className="flex items-center space-x-12">
-                <motion.div
+                  <motion.div
                     initial={{ opacity: 0, y: -20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5 }}
@@ -156,13 +163,19 @@ export default function HomePage({ user }: { user: User }): ReactNode {
                       onClick={() => scrollToSection('features')}
                       className="text-white hover:text-accent"
                     >
-                      <FormattedMessage id="menuFeatures" defaultMessage="Features" />
+                      <FormattedMessage
+                        id="menuFeatures"
+                        defaultMessage="Features"
+                      />
                     </button>
                     <button
                       onClick={() => scrollToSection('pricing')}
                       className="text-white hover:text-accent"
                     >
-                      <FormattedMessage id="menuPricing" defaultMessage="Pricing" />
+                      <FormattedMessage
+                        id="menuPricing"
+                        defaultMessage="Pricing"
+                      />
                     </button>
                     <button
                       onClick={() => scrollToSection('faq')}
@@ -174,7 +187,10 @@ export default function HomePage({ user }: { user: User }): ReactNode {
                 </div>
                 <div className="flex items-center space-x-4">
                   {user ? (
-                    <Button onClick={() => router.push('/my-journeys')} className='hidden lg:flex'>
+                    <Button
+                      onClick={() => router.push('/my-journeys')}
+                      className="hidden lg:flex"
+                    >
                       <FormattedMessage
                         id="menuMyJourneys"
                         defaultMessage="My journeys"
@@ -187,7 +203,10 @@ export default function HomePage({ user }: { user: User }): ReactNode {
                       transition={{ duration: 0.5, delay: 0.2 }}
                     >
                       <Button onClick={() => router.push('/welcome')}>
-                        <FormattedMessage id="menuLogin" defaultMessage="Login" />
+                        <FormattedMessage
+                          id="menuLogin"
+                          defaultMessage="Login"
+                        />
                       </Button>
                     </motion.div>
                   )}
