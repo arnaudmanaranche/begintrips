@@ -7,6 +7,7 @@ import {
 } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { Analytics } from '@vercel/analytics/react'
+import { SpeedInsights } from '@vercel/speed-insights/next'
 import type { AppProps } from 'next/app'
 import { Open_Sans, Outfit } from 'next/font/google'
 import Head from 'next/head'
@@ -76,6 +77,7 @@ export default function App({ Component, pageProps }: AppProps): ReactNode {
               className={`${outfit.variable} ${openSans.variable} text-black`}
             >
               <Component {...pageProps} />
+              <SpeedInsights />
             </div>
             <Analytics />
           </HydrationBoundary>
