@@ -49,7 +49,10 @@ export default function Page({
           content={intl.formatMessage(messages.metaDescription)}
         />
         <meta property="og:url" content={`${SITE_URL}/blog`} />
-        <meta property="og:title" content={intl.formatMessage(messages.title)} />
+        <meta
+          property="og:title"
+          content={intl.formatMessage(messages.title)}
+        />
         <meta
           property="og:description"
           content={intl.formatMessage(messages.metaDescription)}
@@ -104,7 +107,7 @@ export default function Page({
           {data.map(({ category, title, destinations }) => (
             <div key={category} className="space-y-8">
               <div className="flex items-center justify-between">
-                <h2 className="text-3xl font-bold text-accent-dark capitalize">
+                <h2 className="text-3xl font-bold capitalize text-accent-dark">
                   {title}
                 </h2>
               </div>
@@ -118,7 +121,7 @@ export default function Page({
                       <div className="flex flex-1 flex-col justify-between p-6">
                         <div className="flex-1">
                           <div className="block">
-                            <h3 className="text-xl font-semibold text-gray-900 group-hover:text-accent capitalize">
+                            <h3 className="text-xl font-semibold capitalize text-gray-900 group-hover:text-accent">
                               {destination.replace(/-/g, ' ')}
                             </h3>
                           </div>

@@ -1,7 +1,11 @@
 import { PersonIcon } from '@radix-ui/react-icons'
 import fs from 'fs'
 import matter from 'gray-matter'
-import type { GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from 'next'
+import type {
+  GetStaticPaths,
+  GetStaticProps,
+  InferGetStaticPropsType,
+} from 'next'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { serialize } from 'next-mdx-remote/serialize'
@@ -133,8 +137,8 @@ export const getStaticPaths: GetStaticPaths = async ({ locales = [] }) => {
           city: destination,
         },
         locale,
-      })),
-    ),
+      }))
+    )
   )
 
   return {
@@ -148,7 +152,7 @@ export const getStaticProps = (async ({ params, locale = 'en' }) => {
   const city = params?.city as string
 
   const categoryData = BLOG_LIST_PER_LOCALE[locale].find(
-    (item) => item.category === slug,
+    (item) => item.category === slug
   )
 
   if (!categoryData) {
@@ -158,7 +162,7 @@ export const getStaticProps = (async ({ params, locale = 'en' }) => {
   }
 
   const destinationData = categoryData.destinations.find(
-    (item) => item === city,
+    (item) => item === city
   )
 
   if (!destinationData) {

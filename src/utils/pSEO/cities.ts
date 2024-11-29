@@ -10,11 +10,11 @@ const ONE_DAY_TRIP_FROM_CITIES = [
   'london',
   'san-francisco',
   'bay-area',
-] 
+]
 
-const VOYAGE_AU_DEPART_DE_CITIES = ['lille'] 
+const VOYAGE_AU_DEPART_DE_CITIES = ['lille']
 
-const VOYAGE_PAS_CHER = ['europe'] 
+const VOYAGE_PAS_CHER = ['europe']
 
 const MARCHE_DE_NOEL = [
   'strasbourg',
@@ -25,10 +25,7 @@ const MARCHE_DE_NOEL = [
   'lille',
 ]
 
-const CHRISTMAS_MARKET = [
-  'koziars',
-  'seattle',
-]
+const CHRISTMAS_MARKET = ['koziars', 'seattle']
 
 type BlogListPerLocale = Record<
   string,
@@ -63,6 +60,6 @@ export const BLOG_LIST_PER_LOCALE: BlogListPerLocale = {
       title: 'Christmas market',
       category: 'christmas',
       destinations: CHRISTMAS_MARKET,
-    }
+    },
   ],
 }

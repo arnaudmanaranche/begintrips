@@ -45,7 +45,7 @@ export function Button({
           'flex h-12 w-12 items-center justify-center rounded-full outline-none transition-colors',
           variantClasses[variant],
           className,
-          stretch && 'w-full',
+          stretch && 'w-full'
         )}
         onClick={onClick}
         disabled={isDisabled}
@@ -63,7 +63,7 @@ export function Button({
         variantClasses[variant],
         className,
         stretch && 'w-full',
-        isRounded ? 'h-12 w-12 rounded-full' : 'rounded-md px-10 py-3',
+        isRounded ? 'h-12 w-12 rounded-full' : 'rounded-md px-10 py-3'
       )}
       onClick={onClick}
       disabled={isDisabled}

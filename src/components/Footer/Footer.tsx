@@ -24,12 +24,18 @@ export function Footer(): ReactNode {
             </h3>
             <ul className="space-y-2">
               <li>
-                <Link href="/blog" className="text-sm text-gray-600 hover:text-accent">
+                <Link
+                  href="/blog"
+                  className="text-sm text-gray-600 hover:text-accent"
+                >
                   <FormattedMessage id="blog" defaultMessage="Blog" />
                 </Link>
               </li>
               <li>
-                <Link href="/#faq" className="text-sm text-gray-600 hover:text-accent">
+                <Link
+                  href="/#faq"
+                  className="text-sm text-gray-600 hover:text-accent"
+                >
                   <FormattedMessage id="faq" defaultMessage="FAQ" />
                 </Link>
               </li>
@@ -41,13 +47,25 @@ export function Footer(): ReactNode {
             </h3>
             <ul className="space-y-2">
               <li>
-                <Link href="/privacy-policy" className="text-sm text-gray-600 hover:text-accent">
-                  <FormattedMessage id="privacyPolicy" defaultMessage="Privacy Policy" />
+                <Link
+                  href="/privacy-policy"
+                  className="text-sm text-gray-600 hover:text-accent"
+                >
+                  <FormattedMessage
+                    id="privacyPolicy"
+                    defaultMessage="Privacy Policy"
+                  />
                 </Link>
               </li>
               <li>
-                <Link href="/terms-of-service" className="text-sm text-gray-600 hover:text-accent">
-                  <FormattedMessage id="termsOfService" defaultMessage="Terms of Service" />
+                <Link
+                  href="/terms-of-service"
+                  className="text-sm text-gray-600 hover:text-accent"
+                >
+                  <FormattedMessage
+                    id="termsOfService"
+                    defaultMessage="Terms of Service"
+                  />
                 </Link>
               </li>
             </ul>
@@ -56,8 +74,11 @@ export function Footer(): ReactNode {
         <div className="mt-12 border-t border-gray-200 pt-8">
           <div className="flex flex-col items-center justify-center space-y-4 text-center sm:flex-row sm:space-y-0 sm:text-left">
             <p className="text-sm text-gray-600">
-              &copy; {new Date().getFullYear()} Begintrips. 
-              <FormattedMessage id="allRightsReserved" defaultMessage="All rights reserved." />
+              &copy; {new Date().getFullYear()} Begintrips.
+              <FormattedMessage
+                id="allRightsReserved"
+                defaultMessage="All rights reserved."
+              />
             </p>
           </div>
         </div>

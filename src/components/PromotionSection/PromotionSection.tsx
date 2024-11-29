@@ -61,9 +61,7 @@ export const PromotionSection = (): ReactNode => {
                 <h3 className="mt-4 text-lg font-semibold text-gray-900">
                   {feature.title}
                 </h3>
-                <p className="mt-2 text-gray-600">
-                  {feature.description}
-                </p>
+                <p className="mt-2 text-gray-600">{feature.description}</p>
               </motion.div>
             ))}
           </div>
@@ -78,7 +76,10 @@ export const PromotionSection = (): ReactNode => {
             onClick={() => router.push('/welcome')}
             className="group inline-flex items-center justify-center gap-2 px-8 py-4 text-lg"
           >
-            <FormattedMessage id="signUpForFree" defaultMessage="Sign up for free" />
+            <FormattedMessage
+              id="signUpForFree"
+              defaultMessage="Sign up for free"
+            />
             <ArrowRightIcon className="h-5 w-5 transition-transform group-hover:translate-x-1" />
           </Button>
           <p className="mt-4 text-sm text-gray-600">
