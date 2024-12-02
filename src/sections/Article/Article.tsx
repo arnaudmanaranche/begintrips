@@ -26,11 +26,8 @@ export function Article({
   return (
     <>
       <Head>
-        <title>{pageTitle}</title>
         <meta name="title" content={pageTitle} />
         <meta property="og:url" content={PAGE_URL} />
-        <meta property="og:title" content={pageTitle} />
-        <meta property="twitter:title" content={pageTitle} />
         <meta property="twitter:url" content={PAGE_URL} />
         <meta name="description" content={metaDataDescription} />
         <meta name="og:description" content={metaDataDescription} />

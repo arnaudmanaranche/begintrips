@@ -25,40 +25,18 @@ export default function CityPage({
   const router = useRouter()
   const intl = useIntl()
 
+  const PAGE_TITLE = `${data.category.title} ${data.destination.replace(/-/g, ' ')}`
+
   return (
     <main>
       <Head>
-        <title>
-          {data.destination.replace(/-/g, ' ')} | {data.category.title} |{' '}
-          {intl.formatMessage({ id: 'blogPage.metaTitle' })}
-        </title>
-        <meta
-          name="title"
-          content={`${data.destination.replace(/-/g, ' ')} | ${
-            data.category.title
-          } | ${intl.formatMessage({
-            id: 'blogPage.metaTitle',
-          })}`}
-        />
+        <title>{PAGE_TITLE}</title>
+        <meta name="title" content={PAGE_TITLE} />
+        <meta property="og:title" content={PAGE_TITLE} />
+        <meta property="twitter:title" content={PAGE_TITLE} />
         <meta
           property="og:url"
           content={`${SITE_URL}/blog/${data.category.category}/${data.destination}`}
-        />
-        <meta
-          property="og:title"
-          content={`${data.destination.replace(/-/g, ' ')} | ${
-            data.category.title
-          } | ${intl.formatMessage({
-            id: 'blogPage.metaTitle',
-          })}`}
-        />
-        <meta
-          property="twitter:title"
-          content={`${data.destination.replace(/-/g, ' ')} | ${
-            data.category.title
-          } | ${intl.formatMessage({
-            id: 'blogPage.metaTitle',
-          })}`}
         />
         <meta
           property="twitter:url"
@@ -91,7 +69,10 @@ export default function CityPage({
               inLanguage: intl.locale,
               isPartOf: {
                 '@type': 'Blog',
-                name: intl.formatMessage({ id: 'blogPage.metaTitle' }),
+                name: intl.formatMessage({
+                  id: 'blogPage.metaTitle',
+                  defaultMessage: 'Blog',
+                }),
                 url: `${SITE_URL}/blog`,
               },
             }),
