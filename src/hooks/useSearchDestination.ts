@@ -1,4 +1,5 @@
 import { SearchBoxCore, SessionToken } from '@mapbox/search-js-core'
+import { useRouter } from 'next/router'
 import type { MutableRefObject } from 'react'
 import { useEffect, useRef } from 'react'
 
@@ -8,12 +9,13 @@ export const useSearchDestination = (): {
 } => {
   const searchBoxRef = useRef<SearchBoxCore | null>(null)
   const sessionTokenRef = useRef<SessionToken | ''>()
+  const router = useRouter()
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const searchBoxInstance = new SearchBoxCore({
         accessToken: process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN,
-        language: 'en',
+        language: router.locale,
         types: 'city',
         limit: 7,
       })
@@ -29,7 +31,7 @@ export const useSearchDestination = (): {
         }
       }
     }
-  }, [])
+  }, [router.locale])
 
   return {
     searchBoxRef,

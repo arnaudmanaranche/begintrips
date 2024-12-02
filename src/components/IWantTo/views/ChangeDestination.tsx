@@ -21,14 +21,17 @@ interface ChangeDestinationProps {
 export function ChangeDestination({
   destination: initialDestination,
 }: ChangeDestinationProps): ReactNode {
-  const [destination, setDestination] = useState(initialDestination)
+  const [destination, setDestination] = useState({
+    id: '',
+    name: initialDestination,
+  })
   const { id: journeyId } = useParams()
   const queryClient = useQueryClient()
   const { searchBoxRef, sessionTokenRef } = useSearchDestination()
   const [suggestions, setSuggestions] = useState<SearchBoxSuggestion[]>()
 
   async function handleChange(e: ChangeEvent<HTMLInputElement>) {
-    setDestination(e.target.value)
+    setDestination({ id: '', name: e.target.value })
 
     if (e.target.value.length >= 2) {
       const response = await searchBoxRef.current?.suggest(e.target.value, {
@@ -46,7 +49,7 @@ export function ChangeDestination({
   const { mutateAsync: handleSubmit, isPending } = useMutation({
     mutationFn: () =>
       updateJourneyDestination({
-        destination,
+        destination: destination.id,
         journeyId: journeyId as string,
       }),
     onMutate: async () => {
@@ -84,7 +87,7 @@ export function ChangeDestination({
               defaultMessage="Destination"
             />
           }
-          value={destination}
+          value={destination.name}
           id="destination"
           type="text"
           onChange={(e) => handleChange(e)}
@@ -103,7 +106,10 @@ export function ChangeDestination({
                     className="flex cursor-pointer flex-col px-4 py-2 text-start hover:bg-slate-100"
                     tabIndex={-1}
                     onClick={() => {
-                      setDestination(suggestion.name)
+                      setDestination({
+                        id: suggestion.mapbox_id,
+                        name: suggestion.name,
+                      })
                       setSuggestions([])
                     }}
                   >
@@ -120,7 +126,7 @@ export function ChangeDestination({
       <Dialog.Close asChild>
         <Button
           isDisabled={
-            isPending || destination === initialDestination || !destination
+            isPending || destination.name === initialDestination || !destination
           }
           onClick={handleSubmit}
         >
