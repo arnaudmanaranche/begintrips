@@ -49,7 +49,7 @@ export function LogInForm(): ReactNode {
       animate={{ opacity: 1 }}
       className="w-full space-y-4"
     >
-      <form className="flex flex-col space-y-6">
+      <form className="flex flex-col space-y-8">
         <div className="flex flex-col">
           <Input
             label={

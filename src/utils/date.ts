@@ -9,7 +9,7 @@ export const isInvalidDate = (date: Date): boolean =>
   isPast(stripTime(date)) && !isToday(stripTime(date))
 
 type DateFormatEnumType =
-  | 'EEEE - dd MMMM yyyy'
+  | 'EEEE, dd MMMM yyyy'
   | 'dd/MM/yyyy'
   | 'EEEE dd MMMM'
   | 'yyyy-MM-dd'

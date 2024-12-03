@@ -203,7 +203,7 @@ export const EditExpenseView = ({
                   >
                     {formatDate(
                       day.startDate,
-                      'EEEE - dd MMMM yyyy',
+                      'EEEE, dd MMMM yyyy',
                       true,
                       router.locale
                     )}
@@ -241,7 +241,7 @@ export const EditExpenseView = ({
                     >
                       {formatDate(
                         day.startDate,
-                        'EEEE - dd MMMM yyyy',
+                        'EEEE, dd MMMM yyyy',
                         true,
                         router.locale
                       )}

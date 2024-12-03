@@ -212,7 +212,7 @@ export function AddManuallyExpense({
                   >
                     {formatDate(
                       day.startDate,
-                      'EEEE - dd MMMM yyyy',
+                      'EEEE, dd MMMM yyyy',
                       true,
                       router.locale
                     )}
@@ -250,7 +250,7 @@ export function AddManuallyExpense({
                     >
                       {formatDate(
                         day.startDate,
-                        'EEEE - dd MMMM yyyy',
+                        'EEEE, dd MMMM yyyy',
                         true,
                         router.locale
                       )}

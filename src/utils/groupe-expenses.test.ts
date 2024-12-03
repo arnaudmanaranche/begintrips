@@ -72,34 +72,55 @@ describe('groupedExpensesByCategory', () => {
         {
           name: 'Concert',
           amount: 10,
-
           startDate: new Date().toISOString(),
           journeyId: '1',
           created_at: new Date().toISOString(),
+          endDate: '',
+          category_id: '',
           dayId: '1',
           id: '1',
+          categories: {
+            name: 'concert',
+            id: '1',
+            emoji: '🎶',
+            created_at: new Date().toISOString(),
+          },
         },
       ],
       restaurant: [
         {
           name: 'Restaurant 1',
           amount: 10,
-
           startDate: new Date().toISOString(),
           journeyId: '1',
           created_at: new Date().toISOString(),
           dayId: '1',
           id: '2',
+          endDate: '',
+          category_id: '',
+          categories: {
+            name: 'restaurant',
+            id: '2',
+            emoji: '🍔',
+            created_at: new Date().toISOString(),
+          },
         },
         {
           name: 'Restaurant 2',
           amount: 20,
-
           startDate: new Date().toISOString(),
           journeyId: '1',
           created_at: new Date().toISOString(),
           dayId: '1',
           id: '3',
+          endDate: '',
+          category_id: '',
+          categories: {
+            name: 'restaurant',
+            id: '2',
+            emoji: '🍔',
+            created_at: new Date().toISOString(),
+          },
         },
       ],
     })
@@ -109,7 +130,6 @@ describe('groupedExpensesByCategory', () => {
       {
         name: 'Concert',
         amount: 10,
-
         startDate: new Date().toISOString(),
         created_at: new Date().toISOString(),
         dayId: '1',
@@ -127,7 +147,6 @@ describe('groupedExpensesByCategory', () => {
       {
         name: 'Restaurant 1',
         amount: 10,
-
         startDate: new Date().toISOString(),
         created_at: new Date().toISOString(),
         dayId: '1',
@@ -149,22 +168,36 @@ describe('groupedExpensesByCategory', () => {
         {
           name: 'Concert',
           amount: 10,
-
           startDate: new Date().toISOString(),
           created_at: new Date().toISOString(),
           dayId: '1',
           id: '1',
           journeyId: '1',
+          category_id: '',
+          endDate: '',
+          categories: {
+            name: 'concert',
+            id: '1',
+            emoji: '🎶',
+            created_at: new Date().toISOString(),
+          },
         },
         {
           name: 'Restaurant 1',
           amount: 10,
-
           startDate: new Date().toISOString(),
           created_at: new Date().toISOString(),
           dayId: '1',
           id: '2',
           journeyId: '1',
+          category_id: '',
+          endDate: '',
+          categories: {
+            name: 'restaurant',
+            id: '2',
+            emoji: '🍔',
+            created_at: new Date().toISOString(),
+          },
         },
       ],
     })

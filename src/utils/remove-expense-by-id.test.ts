@@ -41,11 +41,13 @@ describe('removeExpenseById', () => {
     expect(removedExpense).toEqual({
       id: '2',
       name: 'Expense 2',
+      category_id: '2',
     })
     expect(updatedRecord).toEqual({
       attraction: [
         {
           id: '1',
+          category_id: '1',
           name: 'Expense 1',
         } as Expense,
       ],
