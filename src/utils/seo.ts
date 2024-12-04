@@ -10,7 +10,7 @@ export function useSiteTitle(): string {
 
   return intl.formatMessage({
     id: 'siteTitle',
-    defaultMessage: 'Begintrips - Plan in minutes. Enjoy every moment',
+    defaultMessage: 'Begintrips - Plan in minutes. Travel stress-free',
   })
 }
 
@@ -19,6 +19,7 @@ export function useSiteDescription(): string {
 
   return intl.formatMessage({
     id: 'siteDescription',
-    defaultMessage: 'Plan your journey day by day, track your expenses by category, and keep all your travel details organized in one place',
+    defaultMessage:
+      'Plan your journey day by day, track your expenses by category, and keep all your travel details organized in one place',
   })
 }
