@@ -21,6 +21,10 @@ module.exports = {
         userAgent: '*',
         allow: '/',
       },
+      {
+        userAgent: 'Twitterbot',
+        disallow: '',
+      },
     ],
   },
 }
