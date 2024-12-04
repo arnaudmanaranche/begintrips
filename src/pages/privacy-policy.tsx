@@ -44,12 +44,12 @@ function PrivacyPolicyPage(): ReactNode {
           content={intl.formatMessage(messages.metaDescription)}
         />
         <meta
-          property="twitter:title"
+          name="twitter:title"
           content={intl.formatMessage(messages.title)}
         />
-        <meta property="twitter:url" content={`${SITE_URL}/privacy-policy`} />
+        <meta name="twitter:url" content={`${SITE_URL}/privacy-policy`} />
         <meta
-          property="twitter:description"
+          name="twitter:description"
           content={intl.formatMessage(messages.metaDescription)}
         />
       </Head>

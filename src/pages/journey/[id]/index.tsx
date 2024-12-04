@@ -98,12 +98,12 @@ function JourneyView({ user }: JourneyProps): ReactNode {
         />
 
         <meta
-          property="twitter:title"
+          name="twitter:title"
           content={intl.formatMessage(messages.title, {
             destination: data?.journey?.destination,
           })}
         />
-        <meta property="twitter:url" content={`${SITE_URL}`} />
+        <meta name="twitter:url" content={`${SITE_URL}`} />
       </Head>
       <Sidebar />
       <div className="flex flex-1 flex-col">

@@ -107,10 +107,10 @@ export default function JourneyCategories({
           content={intl.formatMessage(messages.title)}
         />
         <meta
-          property="twitter:title"
+          name="twitter:title"
           content={intl.formatMessage(messages.title)}
         />
-        <meta property="twitter:url" content={`${SITE_URL}`} />
+        <meta name="twitter:url" content={`${SITE_URL}`} />
       </Head>
       <Sidebar />
       <div className="flex flex-1 flex-col">

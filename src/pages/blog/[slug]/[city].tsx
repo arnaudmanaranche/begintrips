@@ -33,13 +33,13 @@ export default function CityPage({
         <title>{PAGE_TITLE}</title>
         <meta name="title" content={PAGE_TITLE} />
         <meta property="og:title" content={PAGE_TITLE} />
-        <meta property="twitter:title" content={PAGE_TITLE} />
+        <meta name="twitter:title" content={PAGE_TITLE} />
         <meta
           property="og:url"
           content={`${SITE_URL}/blog/${data.category.category}/${data.destination}`}
         />
         <meta
-          property="twitter:url"
+          name="twitter:url"
           content={`${SITE_URL}/blog/${data.category.category}/${data.destination}`}
         />
         <script

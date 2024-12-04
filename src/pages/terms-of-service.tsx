@@ -44,12 +44,12 @@ function TermsOfServicePage(): ReactNode {
           content={intl.formatMessage(messages.metaDescription)}
         />
         <meta
-          property="twitter:title"
+          name="twitter:title"
           content={intl.formatMessage(messages.title)}
         />
-        <meta property="twitter:url" content={`${SITE_URL}/terms-of-service`} />
+        <meta name="twitter:url" content={`${SITE_URL}/terms-of-service`} />
         <meta
-          property="twitter:description"
+          name="twitter:description"
           content={intl.formatMessage(messages.metaDescription)}
         />
       </Head>

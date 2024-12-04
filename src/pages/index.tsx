@@ -124,10 +124,9 @@ export default function HomePage({ user }: { user: User }): ReactNode {
         <meta property="og:url" content={SITE_URL} />
         <meta property="og:title" content={siteTitle} />
         <meta property="og:description" content={siteDescription} />
-        <meta property="twitter:card" content="summary_large_image" />
-        <meta property="twitter:url" content={siteTitle} />
-        <meta property="twitter:title" content={SITE_URL} />
-        <meta property="twitter:description" content={siteDescription} />
+        <meta name="twitter:url" content={siteTitle} />
+        <meta name="twitter:title" content={SITE_URL} />
+        <meta name="twitter:description" content={siteDescription} />
         {/* Schema */}
         <script
           type="application/ld+json"

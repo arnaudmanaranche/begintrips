@@ -28,7 +28,7 @@ export function Article({
       <Head>
         <meta name="title" content={pageTitle} />
         <meta property="og:url" content={PAGE_URL} />
-        <meta property="twitter:url" content={PAGE_URL} />
+        <meta name="twitter:url" content={PAGE_URL} />
         <meta name="description" content={metaDataDescription} />
         <meta name="og:description" content={metaDataDescription} />
       </Head>

@@ -65,9 +65,9 @@ export default function App({ Component, pageProps }: AppProps): ReactNode {
           property="og:image"
           content="https://begintrips.com/meta-image-v1.png?v1"
         />
-        <meta property="twitter:card" content="summary_large_image" />
+        <meta name="twitter:card" content="summary_large_image" />
         <meta
-          property="twitter:image"
+          name="twitter:image"
           content="https://begintrips.com/meta-image-v1.png?v1"
         />
         <link rel="canonical" href={`${SITE_URL}/${router.asPath}`} />

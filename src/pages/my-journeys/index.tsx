@@ -51,10 +51,10 @@ export default function MyJourneysPage({
           content={intl.formatMessage(messages.title)}
         />
         <meta
-          property="twitter:title"
+          name="twitter:title"
           content={intl.formatMessage(messages.title)}
         />
-        <meta property="twitter:url" content={`${SITE_URL}/my-journeys`} />
+        <meta name="twitter:url" content={`${SITE_URL}/my-journeys`} />
       </Head>
       <NavBar />
       <div className="mx-auto flex max-w-screen-sm flex-1 flex-col justify-center gap-10 px-10 lg:px-0">

@@ -99,12 +99,12 @@ export default function WelcomePage(): ReactNode {
           content={intl.formatMessage(messages.pageMetaDescription)}
         />
         <meta
-          property="twitter:title"
+          name="twitter:title"
           content={intl.formatMessage(messages.pageMetaTitle)}
         />
-        <meta property="twitter:url" content={`${SITE_URL}/welcome`} />
+        <meta name="twitter:url" content={`${SITE_URL}/welcome`} />
         <meta
-          property="twitter:description"
+          name="twitter:description"
           content={intl.formatMessage(messages.pageMetaDescription)}
         />
       </Head>

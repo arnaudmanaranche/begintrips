@@ -108,10 +108,10 @@ export default function Onboarding(): ReactNode {
           content={intl.formatMessage(messages.title)}
         />
         <meta
-          property="twitter:title"
+          name="twitter:title"
           content={intl.formatMessage(messages.title)}
         />
-        <meta property="twitter:url" content={`${SITE_URL}/onboarding`} />
+        <meta name="twitter:url" content={`${SITE_URL}/onboarding`} />
       </Head>
       <header className="flex flex-col gap-4 px-4 py-6">
         <Logo />
