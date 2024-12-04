@@ -71,7 +71,7 @@ const messages = defineMessages({
 })
 
 export default function WelcomePage(): ReactNode {
-  const [form, setForm] = useState<'login' | 'signup'>('signup')
+  const [form, setForm] = useState<'login' | 'signup'>('login')
   const { journey } = useOnboardingStore()
   const features = useMainFeatures()
   const router = useRouter()
@@ -125,7 +125,7 @@ export default function WelcomePage(): ReactNode {
                   ? intl.formatMessage(messages.welcomeJourneyDetails)
                   : intl.formatMessage(messages.welcomeWhyChooseBeginTrips)}
               </h1>
-              {journey.destination ? (
+              {journey.destination.name ? (
                 <div className="rounded-xl bg-white p-8 shadow-sm ring-1 ring-gray-900/5">
                   <div className="space-y-6">
                     <div className="flex items-start gap-3">
