@@ -87,9 +87,9 @@ export default function HomePage({ user }: { user: User }): ReactNode {
   }
 
   async function handleSearchDestination(e: ChangeEvent<HTMLInputElement>) {
-    updateJourney({ destination: e.target.value })
+    updateJourney({ destination: { id: '', name: e.target.value } })
 
-    if (e.target.value.length >= 3) {
+    if (e.target.value.length >= 2) {
       const response = await searchBoxRef.current?.suggest(e.target.value, {
         sessionToken: sessionTokenRef.current as SessionToken,
       })
@@ -260,7 +260,7 @@ export default function HomePage({ user }: { user: User }): ReactNode {
                             id: 'onboardingStep1Title',
                             defaultMessage: 'Where do you want to go ?',
                           })}
-                          value={journey.destination}
+                          value={journey.destination.name}
                           onChange={handleSearchDestination}
                           onFocus={() => setIsFocused(true)}
                           onBlur={() =>
@@ -275,7 +275,10 @@ export default function HomePage({ user }: { user: User }): ReactNode {
                                 key={suggestion.mapbox_id}
                                 onClick={() => {
                                   updateJourney({
-                                    destination: suggestion.name,
+                                    destination: {
+                                      id: suggestion.mapbox_id,
+                                      name: suggestion.name,
+                                    },
                                   })
                                   setSuggestions([])
                                 }}

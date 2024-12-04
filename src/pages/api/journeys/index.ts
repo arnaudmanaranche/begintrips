@@ -2,16 +2,17 @@ import { addDays, differenceInDays } from 'date-fns'
 import type { NextApiRequest, NextApiResponse } from 'next'
 
 import createClient from '@/libs/supabase/api'
+import type { AddJourneyOnboarding } from '@/stores/onboarding.store'
 import type { AddDay, AddJourney } from '@/types'
 import { formatDate } from '@/utils/date'
 
-async function createJourney(data: AddJourney): Promise<AddJourney> {
+async function createJourney(data: AddJourneyOnboarding): Promise<AddJourney> {
   const { departureDate, returnDate, destination, budget } = data
 
   return {
     departureDate,
     returnDate,
-    destination: destination ?? '',
+    destination: destination.id ?? '',
     budget: budget ?? 0,
   }
 }

@@ -138,7 +138,7 @@ export default function WelcomePage(): ReactNode {
                           />
                         </p>
                         <p className="mt-1 text-base text-gray-900">
-                          {journey.destination}
+                          {journey.destination.name}
                         </p>
                       </div>
                     </div>

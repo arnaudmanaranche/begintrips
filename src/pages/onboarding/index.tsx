@@ -223,7 +223,7 @@ function Step1({ error }: { error: ReactNode }) {
   const [suggestions, setSuggestions] = useState<SearchBoxSuggestion[]>()
 
   async function handleSearchDestination(e: ChangeEvent<HTMLInputElement>) {
-    updateJourney({ destination: e.target.value })
+    updateJourney({ destination: { id: '', name: e.target.value } })
 
     if (e.target.value.length >= 3) {
       const response = await searchBoxRef.current?.suggest(e.target.value, {
@@ -256,7 +256,7 @@ function Step1({ error }: { error: ReactNode }) {
             />
           }
           id="destination"
-          value={journey.destination}
+          value={journey.destination.name}
           onChange={handleSearchDestination}
         />
         <motion.ul
@@ -274,7 +274,10 @@ function Step1({ error }: { error: ReactNode }) {
                     tabIndex={-1}
                     onClick={() => {
                       updateJourney({
-                        destination: suggestion.name,
+                        destination: {
+                          name: suggestion.name,
+                          id: suggestion.mapbox_id,
+                        },
                       })
                       setSuggestions([])
                     }}
@@ -326,7 +329,7 @@ function Step2({ error }: { error: ReactNode }) {
           id="onboarding.step2.title"
           defaultMessage={`When do you plan to go to {destination} ?`}
           values={{
-            destination: journey.destination,
+            destination: journey.destination.name,
           }}
         />
       }

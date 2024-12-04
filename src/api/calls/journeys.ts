@@ -1,4 +1,5 @@
-import type { AddJourney, Day, JourneyPage } from '@/types'
+import type { AddJourneyOnboarding } from '@/stores/onboarding.store'
+import type { Day, JourneyPage } from '@/types'
 import { isInvalidDate } from '@/utils/date'
 
 import { apiInstance } from '../config'
@@ -8,7 +9,7 @@ interface GetJourneyParams {
 }
 
 export const createJourney = async (
-  journey: AddJourney
+  journey: AddJourneyOnboarding
 ): Promise<{ message: string; journeyId: string }> => {
   const { data } = await apiInstance.post('/journeys', journey)
 
