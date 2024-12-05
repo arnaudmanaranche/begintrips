@@ -35,7 +35,7 @@ export function LogInForm(): ReactNode {
       return
     }
 
-    if (journey.destination) {
+    if (journey.destination.name) {
       router.push('/onboarding?step=2')
       return
     }
