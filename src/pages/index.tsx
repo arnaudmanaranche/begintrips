@@ -51,6 +51,7 @@ export default function HomePage({ user }: { user: User }): ReactNode {
     endDate: journey.returnDate ? new Date(journey.returnDate) : new Date(),
     key: 'selection',
   })
+  const isMobile = window.innerWidth < 768
 
   const datePickerRef = useRef<HTMLDivElement>(null)
 
@@ -308,7 +309,7 @@ export default function HomePage({ user }: { user: User }): ReactNode {
                                 : 'Select dates'}
                             </span>
                           </button>
-                          {showDatePicker && (
+                          {showDatePicker ? (
                             <div
                               ref={datePickerRef}
                               className="absolute left-0 top-full z-50 mt-2"
@@ -321,11 +322,11 @@ export default function HomePage({ user }: { user: User }): ReactNode {
                                   rangeColors={['#E3461E']}
                                   showMonthAndYearPickers={false}
                                   direction="horizontal"
-                                  months={2}
+                                  months={isMobile ? 1 : 2}
                                 />
                               </div>
                             </div>
-                          )}
+                          ) : null}
                         </div>
                       </div>
                       <Button
