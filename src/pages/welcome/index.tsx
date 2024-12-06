@@ -117,7 +117,7 @@ export default function WelcomePage(): ReactNode {
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6 }}
-            className="flex flex-[0.8] flex-col items-center justify-center bg-accent/5 px-6 py-32 lg:px-16"
+            className="hidden flex-[0.8] flex-col items-center justify-center bg-accent/5 px-6 py-32 lg:flex lg:px-16"
           >
             <div className="w-full max-w-lg">
               <h1 className="mb-8 text-2xl font-semibold text-gray-900">
