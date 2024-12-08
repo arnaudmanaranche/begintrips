@@ -1,6 +1,6 @@
 import { PersonIcon } from '@radix-ui/react-icons'
 import Head from 'next/head'
-import router, { useRouter } from 'next/router'
+import { useRouter } from 'next/router'
 import type { ReactNode } from 'react'
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl'
 
