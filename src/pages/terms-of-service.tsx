@@ -1,6 +1,6 @@
 import { PersonIcon } from '@radix-ui/react-icons'
 import Head from 'next/head'
-import { useRouter } from 'next/router'
+import router, { useRouter } from 'next/router'
 import type { ReactNode } from 'react'
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl'
 
@@ -257,7 +257,22 @@ function TermsOfServicePage(): ReactNode {
                 </p>
               </li>
             </ul>
-            <p className="text-sm">Last edit on September 27, 2024.</p>
+            <p className="text-sm">
+              <FormattedMessage
+                id="termsOfServicePage.lastEdited"
+                defaultMessage="Last edit on {lastEdit}"
+                values={{
+                  lastEdit: new Date('2024-09-27').toLocaleString(
+                    router.locale,
+                    {
+                      day: 'numeric',
+                      month: 'long',
+                      year: 'numeric',
+                    }
+                  ),
+                }}
+              />
+            </p>
           </div>
         </div>
       </section>

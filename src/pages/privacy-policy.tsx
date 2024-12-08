@@ -190,7 +190,22 @@ function PrivacyPolicyPage(): ReactNode {
                 }}
               />
             </p>
-            <p className="text-sm">Last edit on September 27, 2024.</p>
+            <p className="text-sm">
+              <FormattedMessage
+                id="privacyPolicySection4.lastEdited"
+                defaultMessage="Last edit on {lastEdit}"
+                values={{
+                  lastEdit: new Date('2024-09-27').toLocaleString(
+                    router.locale,
+                    {
+                      day: 'numeric',
+                      month: 'long',
+                      year: 'numeric',
+                    }
+                  ),
+                }}
+              />
+            </p>
           </div>
         </div>
       </section>

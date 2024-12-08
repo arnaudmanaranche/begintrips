@@ -266,5 +266,7 @@
   "page.welcome.meta.description": "Planifiez votre voyage avec BeginTrips - votre compagnon de voyage ultime",
   "menuFaq": "FAQ",
   "menuPricing": "Tarification",
-  "menuFeatures": "Fonctionnalités"
+  "menuFeatures": "Fonctionnalités",
+  "privacyPolicySection4.lastEdited": "Dernière modification le {lastEdit}",
+  "termsOfServicePage.lastEdited": "Dernière modification le {lastEdit}"
 }
