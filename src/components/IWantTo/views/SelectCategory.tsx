@@ -22,7 +22,7 @@ export function SelectCategory({
   })
 
   return (
-    <div className="mt-10 grid max-h-[500px] grid-cols-2 gap-5 overflow-y-scroll">
+    <div className="grid max-h-[500px] grid-cols-2 gap-5 overflow-y-scroll">
       {isPending ? (
         <>
           <div className="h-[40px] animate-pulse rounded-lg bg-slate-100" />

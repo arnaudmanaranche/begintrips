@@ -1,13 +1,15 @@
-import type { IconProps } from '@radix-ui/react-icons/dist/types'
+import { PersonIcon } from '@radix-ui/react-icons'
 import clsx from 'clsx'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import type { ForwardRefExoticComponent, RefAttributes } from 'react'
-import React, { type ReactNode } from 'react'
+import { type ReactNode } from 'react'
 import { FormattedMessage } from 'react-intl'
+import { Drawer } from 'vaul'
 
-import { jounryeNavigationItems } from '@/utils/navigationItems'
+import { journeyNavigationItems } from '@/utils/navigationItems'
 
+import { Button } from '../Button/Button'
+import { Logo } from '../Logo/Logo'
 import { Logo } from '../Logo/Logo'
 
 function SidebarItem({
@@ -18,35 +20,22 @@ function SidebarItem({
   label,
 }: {
   href: string
-  icon: ForwardRefExoticComponent<IconProps & RefAttributes<SVGSVGElement>>
+  icon: (props: { isActive: boolean }) => ReactNode
   label: ReactNode
   isActive: boolean
   isEnabled: boolean
 }): ReactNode {
-  const Icon = icon
-
   return (
     <li>
       <Link
         href={href}
         className={clsx(
-          'flex w-full items-center space-x-2 px-6 py-4',
-          isActive
-            ? ' border-accent bg-accent-light/10 text-accent'
-            : ' border-transparent text-black',
-          !isEnabled
-            ? 'pointer-events-none border-l-0 text-black/50'
-            : 'border-l-4'
+          'flex w-full items-center space-x-2 rounded-md px-4 py-2 hover:bg-gray-100 hover:font-bold',
+          isActive ? 'bg-gray-100 font-medium' : 'text-black',
+          !isEnabled ? 'pointer-events-none text-black/50' : ''
         )}
       >
-        <Icon
-          className={clsx(
-            'h-5 w-5',
-            isActive ? 'text-accent' : 'text-black',
-            !isEnabled ? 'text-black/50' : ''
-          )}
-        />
-
+        {icon({ isActive })}
         <div className="flex items-center space-x-2">
           <span>{label}</span>
           {!isEnabled ? (
@@ -69,10 +58,9 @@ export function Sidebar(): ReactNode {
       <div className="px-6 pt-5 text-3xl font-bold">
         <Logo isBlack />
       </div>
-      <ul className="flex flex-col justify-center pt-20">
-        {jounryeNavigationItems.map((item, index) => {
+      <ul className="mx-4 flex flex-1 flex-col justify-start space-y-2 pt-10">
+        {journeyNavigationItems.map((item, index) => {
           const href = item.href.replace('[id]', id)
-          const Icon = item.icon
           const isActive = router.pathname === item.href
 
           return (
@@ -81,11 +69,26 @@ export function Sidebar(): ReactNode {
               key={`sidebar-item-${index}`}
               isActive={isActive}
               href={href}
-              icon={Icon}
               label={item.label}
+              icon={item.icon}
             />
           )
         })}
+      </ul>
+      <ul className="mx-4 flex flex-1 flex-col justify-end space-y-2 pb-10">
+        <SidebarItem
+          href="/account"
+          label="Account"
+          icon={() => <PersonIcon />}
+          isActive={router.pathname === '/account'}
+          isEnabled
+        />
+        <Drawer.Trigger
+          className="cursor-pointer rounded-md bg-accent px-4 py-2 text-center text-white"
+          asChild
+        >
+          <li>Help Us Improve</li>
+        </Drawer.Trigger>
       </ul>
     </div>
   )

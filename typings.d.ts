@@ -14,5 +14,8 @@ namespace NodeJS {
     NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: string
     STRIPE_SECRET_KEY: string
     STRIPE_WEBHOOK_SECRET: string
+    // Feedbackr
+    FEEEDBACKR_APP_ID: string
+    FEEEDBACKR_API_KEY: string
   }
 }

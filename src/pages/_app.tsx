@@ -17,6 +17,7 @@ import { useMemo, useState } from 'react'
 import { IntlProvider } from 'react-intl'
 import { Toaster } from 'sonner'
 
+import { DrawerProvider } from '@/providers/Drawer/Drawer.Provider'
 import { SITE_URL } from '@/utils/seo'
 
 import enMessages from '../../assets/translations/en.json'
@@ -36,7 +37,7 @@ const outfit = Outfit({
 
 const openSans = Open_Sans({
   subsets: ['latin'],
-  weight: ['400', '600'],
+  weight: ['400', '500', '600'],
   variable: '--font-open-sans',
   display: 'optional',
 })
@@ -79,14 +80,16 @@ export default function App({ Component, pageProps }: AppProps): ReactNode {
       >
         <QueryClientProvider client={queryClient}>
           <HydrationBoundary state={pageProps.dehydratedState}>
-            <Toaster richColors visibleToasts={1} />
-            <div
-              className={`${outfit.variable} ${openSans.variable} text-black`}
-            >
-              <Component {...pageProps} />
-              <SpeedInsights />
-            </div>
-            <Analytics />
+            <DrawerProvider>
+              <Toaster richColors visibleToasts={1} />
+              <div
+                className={`${outfit.variable} ${openSans.variable} text-black`}
+              >
+                <Component {...pageProps} />
+                <SpeedInsights />
+              </div>
+              <Analytics />
+            </DrawerProvider>
           </HydrationBoundary>
           <ReactQueryDevtools buttonPosition="top-right" />
         </QueryClientProvider>

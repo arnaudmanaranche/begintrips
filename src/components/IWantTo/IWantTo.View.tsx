@@ -21,6 +21,17 @@ interface IWantToViewProps {
     startDate: string
     endDate?: string
   }
+  setFooter: (
+    footer:
+      | {
+          cta: {
+            label: string
+            onClick: () => void
+            disabled?: boolean
+          }
+        }
+      | undefined
+  ) => void
 }
 
 export function IWantToView({
@@ -29,6 +40,7 @@ export function IWantToView({
   days,
   journey,
   selectedExpense,
+  setFooter,
 }: IWantToViewProps): ReactNode {
   const dayId = selectedExpense.startDate
     ? days.find((day) => day.startDate === selectedExpense.startDate)?.id || ''
@@ -67,18 +79,27 @@ export function IWantToView({
         <ChangeDates
           departureDate={journey.departureDate}
           returnDate={journey.returnDate}
+          setFooter={setFooter}
         />
       )
     case 'Change destination':
-      return <ChangeDestination destination={journey.destination} />
+      return (
+        <ChangeDestination
+          destination={journey.destination}
+          setFooter={setFooter}
+        />
+      )
     case 'Update budget':
-      return <UpdateBudget budget={journey.budget as number} />
+      return (
+        <UpdateBudget budget={journey.budget as number} setFooter={setFooter} />
+      )
     default:
       return (
         <AddManuallyExpense
           newExpense={newExpense}
           setNewExpense={setNewExpense}
           days={days}
+          setFooter={setFooter}
         />
       )
   }

@@ -1,7 +1,7 @@
 import {
   BarChartIcon,
   CalendarIcon,
-  CaretRightIcon,
+  FileIcon,
   SewingPinIcon,
 } from '@radix-ui/react-icons'
 import type { User } from '@supabase/supabase-js'
@@ -19,19 +19,16 @@ import { getUserFavoriteCategories } from '@/api/calls/users'
 import { QUERY_KEYS } from '@/api/queryKeys'
 import { BottomBar } from '@/components/BottomBar/BottomBar'
 import { Budget } from '@/components/Budget/Budget'
-import { Button } from '@/components/Button/Button'
 import { Checklist } from '@/components/Checklist/Checklist'
 import { Expenses } from '@/components/Expenses/Expenses'
 import { JourneyCard } from '@/components/JourneyCard/JourneyCard'
 import { Sidebar } from '@/components/Sidebar/Sidebar'
-import { UpcomingSchedule } from '@/components/UpcomingSchedule/UpcomingSchedule'
 import { createClient } from '@/libs/supabase/server-props'
 import {
   QuickActionsModalProvider,
   useQuickActionsModalActions,
 } from '@/providers/QuickActions.Provider'
-import type { Day, ExpensesByCategory, ExpensesByDay } from '@/types'
-import { formatDate } from '@/utils/date'
+import type { ExpensesByDay } from '@/types'
 import { SITE_URL } from '@/utils/seo'
 
 interface JourneyProps {
@@ -106,58 +103,113 @@ function JourneyView({ user }: JourneyProps): ReactNode {
         <meta name="twitter:url" content={`${SITE_URL}`} />
       </Head>
       <Sidebar />
-      <div className="flex flex-1 flex-col">
-        <nav className="relative hidden min-h-[70px] items-center justify-between border-b-[1px] px-10 lg:flex">
-          <div>
-            <h2 className="text-3xl font-thin">
-              Hello,{` `}
-              <span className="text-xl font-normal">
-                {user.email?.split('@')[0]}
-              </span>
-              !
-            </h2>
-          </div>
-          <Button onClick={() => router.push('/account')} isRounded>
-            {user.email?.split('@')[0]?.slice(0, 2)}
-          </Button>
-        </nav>
-        <div className="mb-[80px] grid h-full grid-cols-12 gap-6 bg-gray-50 px-6 lg:pb-0">
+      <div className="m-2 flex flex-1 flex-col rounded-md border-[1px] bg-white">
+        <div className="relative hidden justify-between space-y-2 px-10 py-4 lg:flex lg:flex-col">
+          <h2 className="text-4xl font-thin">
+            <FormattedMessage
+              id="greeting"
+              defaultMessage="Have a nice day, {name}!"
+              values={{ name: user.email?.split('@')[0] }}
+            />
+          </h2>
+          <h3 className="text-3xl font-thin">
+            <FormattedMessage
+              id="daysLeftBeforeJourneyBegins"
+              defaultMessage="{days} days left before your journey begins."
+              values={{
+                days: (
+                  <span className="font-bold text-accent">
+                    {daysLeftBeforeJourneyBegins}
+                  </span>
+                ),
+              }}
+            />
+          </h3>
+        </div>
+        <div className="mb-[80px] grid h-full grid-cols-12 gap-6 px-6 lg:pb-0">
           <div className="col-span-12 space-y-4 pt-4 lg:col-span-3">
             <JourneyCard
               title={
                 <FormattedMessage
-                  id="quickAction"
-                  defaultMessage="Quick action"
+                  id="myTripOverview"
+                  defaultMessage="My trip overview"
                 />
               }
-              isHiddenOnSmallScreens
               isFetching={isFetchingJourney}
             >
-              <div className="flex" onClick={() => setIsOpen(true)}>
-                <div className="flex-1 cursor-pointer rounded-md bg-gray-50 p-4 text-black/50 outline-none transition-all">
-                  <FormattedMessage
-                    id="iWantTo"
-                    defaultMessage="I want to..."
-                  />
+              <div className="flex flex-col">
+                <div className="group relative flex items-center space-x-2 px-4 py-2 hover:bg-slate-50">
+                  <div className="rounded-full p-2">
+                    <SewingPinIcon className="h-5 w-5 text-accent" />
+                  </div>
+                  <div className="flex flex-col">
+                    <span className="text-sm text-gray-600">Destination</span>
+                    <span className="text-black">
+                      {data?.journey?.destination}
+                    </span>
+                  </div>
+                  <div className="absolute right-4 top-1/2 -translate-y-1/2 opacity-0 transition-opacity group-hover:opacity-100">
+                    <div className="rounded bg-accent px-2 py-1 text-xs text-white">
+                      Edit
+                    </div>
+                  </div>
                 </div>
-                <button className="rounded-r-lg bg-accent text-white">
-                  <CaretRightIcon height={20} width={20} />
-                </button>
+                <div className="group relative flex items-center space-x-2 px-4 py-2 hover:bg-slate-50">
+                  <div className="rounded-full p-2">
+                    <CalendarIcon className="h-5 w-5 text-accent" />
+                  </div>
+                  <div className="flex flex-col">
+                    <span className="text-sm text-gray-600">
+                      <FormattedMessage
+                        id="overviewDates"
+                        defaultMessage="Dates"
+                      />
+                    </span>
+                    <span className="capitalize text-black">
+                      {/* {formatDate(
+                        new Date(data?.journey?.departureDate as string),
+                        'dd MMMM yyyy',
+                        false,
+                        router?.locale
+                      )}
+                      {` `}-{' '}
+                      {formatDate(
+                        new Date(data?.journey?.returnDate as string),
+                        'dd MMMM yyyy',
+                        false,
+                        router?.locale
+                      )} */}
+                    </span>
+                  </div>
+                  <div className="absolute right-4 top-1/2 -translate-y-1/2 opacity-0 transition-opacity group-hover:opacity-100">
+                    <div className="rounded bg-accent px-2 py-1 text-xs text-white">
+                      Edit
+                    </div>
+                  </div>
+                </div>
+                <div className="group relative flex items-center space-x-2 px-4 py-2 hover:bg-slate-50">
+                  <div className="rounded-full p-2">
+                    <BarChartIcon className="h-5 w-5 text-accent" />
+                  </div>
+                  <div className="flex flex-col">
+                    <span className="text-sm text-gray-600">Budget</span>
+                    <span className="text-black">{data?.journey?.budget}$</span>
+                  </div>
+                  <div className="absolute right-4 top-1/2 -translate-y-1/2 opacity-0 transition-opacity group-hover:opacity-100">
+                    <div className="rounded bg-accent px-2 py-1 text-xs text-white">
+                      Edit
+                    </div>
+                  </div>
+                </div>
               </div>
-            </JourneyCard>
-            <JourneyCard title="Budget" isFetching={isFetchingJourney}>
-              <Budget
-                totalBudget={data?.journey?.budget ?? 0}
-                budgetSpent={data?.budgetSpent ?? 0}
-              />
             </JourneyCard>
             <JourneyCard isHiddenOnSmallScreens title="Checklist">
               <Checklist />
             </JourneyCard>
           </div>
-          <div className="col-span-12 rounded-lg px-2 lg:col-span-6 lg:h-screen lg:overflow-y-auto">
-            <div className="flex justify-center p-4">
-              {isFetchingJourney ? (
+          <div className="col-span-12 rounded-lg px-2 pt-4 lg:col-span-6 lg:h-screen lg:overflow-y-auto">
+            <div className="flex justify-center">
+              {/* {isFetchingJourney ? (
                 <div className="h-[80px] w-full animate-pulse rounded-lg bg-slate-200" />
               ) : (
                 <h1 className="flex w-full items-baseline justify-center space-x-4 text-6xl leading-snug text-black lg:text-7xl">
@@ -176,100 +228,59 @@ function JourneyView({ user }: JourneyProps): ReactNode {
                     />
                   </span>
                 </h1>
-              )}
+              )} */}
             </div>
-            <div className="mb-4 space-y-10 rounded-lg p-4">
-              <h3 className="mb-2 text-3xl">
-                <FormattedMessage id="overview" defaultMessage="Overview" />
-              </h3>
-              {isFetchingJourney || !data ? (
-                <div className="flex flex-col space-y-6 lg:flex-row lg:items-center lg:space-x-10 lg:space-y-0">
-                  <div className="h-[20px] w-[100px] animate-pulse rounded-lg bg-slate-200" />
-                  <div className="h-[20px] w-[100px] animate-pulse rounded-lg bg-slate-200" />
-                  <div className="h-[20px] w-[100px] animate-pulse rounded-lg bg-slate-200" />
-                </div>
-              ) : (
-                <div className="flex flex-col space-y-6 lg:flex-row lg:items-center lg:space-x-10 lg:space-y-0">
-                  <div className="flex items-center space-x-2">
-                    <div className="rounded-full bg-slate-200 p-2">
-                      <SewingPinIcon className="h-5 w-5 text-accent" />
-                    </div>
-                    <div className="flex flex-col">
-                      <span className="text-sm text-gray-600">Destination</span>
-                      <span className="text-black">
-                        {data?.journey?.destination}
-                      </span>
-                    </div>
+            <div className="mx-auto grid max-w-4xl gap-6 pb-4 md:grid-cols-1">
+              <div className="group relative overflow-hidden rounded-md">
+                <div className="absolute inset-0 bg-gradient-to-br from-blue-100 to-blue-50" />
+                <div className="absolute inset-0 opacity-50">
+                  <div className="absolute right-12 top-4 text-2xl text-purple-200">
+                    ✧
                   </div>
-                  <div className="flex items-center space-x-2">
-                    <div className="rounded-full bg-slate-200 p-2">
-                      <CalendarIcon className="h-5 w-5 text-accent" />
-                    </div>
-                    <div className="flex flex-col">
-                      <span className="text-sm text-gray-600">
-                        <FormattedMessage
-                          id="overviewDates"
-                          defaultMessage="Dates"
-                        />
-                      </span>
-                      <span className="capitalize text-black">
-                        {formatDate(
-                          new Date(data.journey.departureDate),
-                          'dd MMMM yyyy',
-                          false,
-                          router.locale
-                        )}
-                        {` `}-{' '}
-                        {formatDate(
-                          new Date(data.journey.returnDate),
-                          'dd MMMM yyyy',
-                          false,
-                          router.locale
-                        )}
-                      </span>
-                    </div>
+                  <div className="absolute right-24 top-12 text-xl text-purple-200">
+                    ✦
                   </div>
-                  <div className="flex items-center space-x-2">
-                    <div className="rounded-full bg-slate-200 p-2">
-                      <BarChartIcon className="h-5 w-5 text-accent" />
-                    </div>
-                    <div className="flex flex-col">
-                      <span className="text-sm text-gray-600">Budget</span>
-                      <span className="text-black">{data.journey.budget}$</span>
-                    </div>
+                  <div className="absolute right-16 top-20 text-lg text-purple-200">
+                    ✧
                   </div>
                 </div>
-              )}
+                <div className="relative space-y-4 p-6">
+                  <FileIcon className="h-8 w-8 text-accent" />
+                  <div className="space-y-2">
+                    <h3 className="text-2xl font-semibold text-accent">
+                      New Expense
+                    </h3>
+                    <p className="text-gray-500">
+                      Register a new categorized expense and add it to your
+                      budget
+                    </p>
+                  </div>
+                  <button className="absolute right-6 top-6 rounded-full bg-white px-4 py-2 text-blue-600 shadow-sm transition-shadow hover:shadow-md">
+                    Add
+                  </button>
+                </div>
+              </div>
             </div>
             <JourneyCard
               title={
-                <FormattedMessage id="expenses" defaultMessage="Expenses" />
+                <FormattedMessage
+                  id="expensesByDay"
+                  defaultMessage="Expenses by day"
+                />
               }
               isFetching={isFetchingJourney}
             >
               <Expenses
-                expensesByCategory={
-                  data?.expensesByCategory as ExpensesByCategory
-                }
+                expensesByCategory={data?.expensesByDay as ExpensesByDay}
                 isLoading={isFetchingJourney}
               />
             </JourneyCard>
           </div>
           <div className="col-span-12 pt-4 lg:col-span-3">
-            <JourneyCard
-              title={
-                <FormattedMessage
-                  id="eventsByDay"
-                  defaultMessage="Events by day"
-                />
-              }
-              isFetching={isFetchingJourney || !data}
-            >
-              <UpcomingSchedule
-                departureDate={data?.journey?.departureDate as string}
-                expensesByDay={data?.expensesByDay as ExpensesByDay}
-                isLoading={isFetchingJourney}
-                days={data?.days as Day[]}
+            <JourneyCard title="Budget" isFetching={isFetchingJourney}>
+              <Budget
+                totalBudget={data?.journey?.budget ?? 0}
+                budgetSpent={data?.budgetSpent ?? 0}
               />
             </JourneyCard>
           </div>

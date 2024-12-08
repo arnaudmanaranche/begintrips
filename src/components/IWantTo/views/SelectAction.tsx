@@ -71,12 +71,12 @@ export function SelectAction({
   }, [departureDate])
 
   return (
-    <div className="mt-10 grid grid-cols-2 gap-5">
+    <div className="grid grid-cols-2 gap-5">
       {actions.map((action) => (
         <div
           key={(action.label as ReactElement)?.props?.id}
           className={clsx(
-            'flex flex-col items-center justify-center space-y-2 rounded-lg border-[1px] border-neutral p-4 text-black transition-colors',
+            'flex flex-col items-center justify-center space-y-2 rounded-lg border-[0.5px] border-neutral p-4 text-black transition-colors',
             action.disabled
               ? 'cursor-not-allowed opacity-50 hover:border-neutral hover:bg-transparent'
               : 'cursor-pointer hover:border-accent-dark hover:bg-accent-light/30'

@@ -1,5 +1,6 @@
 import { format, isPast, isToday, isValid, startOfDay } from 'date-fns'
 import { enUS, fr } from 'date-fns/locale'
+import { useRouter } from 'next/router'
 
 export function stripTime(date: Date): Date {
   return startOfDay(date)

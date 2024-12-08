@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useParams } from 'next/navigation'
 import type { ChangeEvent, ReactNode } from 'react'
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { FormattedMessage } from 'react-intl'
 
 import { updateJourneyDates } from '@/api/calls/journeys'
@@ -15,11 +15,23 @@ import type { Journey } from '@/types'
 interface ChangeDatesProps {
   departureDate: string
   returnDate: string
+  setFooter: (
+    footer:
+      | {
+          cta: {
+            label: string
+            onClick: () => void
+            disabled?: boolean
+          }
+        }
+      | undefined
+  ) => void
 }
 
 export function ChangeDates({
   departureDate: initialDepartureDate,
   returnDate: initialReturnDate,
+  setFooter,
 }: ChangeDatesProps): ReactNode {
   const [departureDate, setDepartureDate] = useState(initialDepartureDate)
   const [returnDate, setReturnDate] = useState(initialReturnDate)
@@ -92,6 +104,16 @@ export function ChangeDates({
     },
   })
 
+  useEffect(() => {
+    setFooter({
+      cta: {
+        label: 'Change dates',
+        onClick: handleSubmit,
+        disabled: isPending || !hasDatesBeenChanged,
+      },
+    })
+  }, [isPending, handleSubmit, hasDatesBeenChanged, setFooter])
+
   return (
     <div className="flex flex-col space-y-10">
       {mutateError ? (
@@ -132,7 +154,7 @@ export function ChangeDates({
           min={departureDate}
           onChange={(e) => handleReturnDateChange(e)}
         />
-        <Button
+        {/* <Button
           isDisabled={
             isPending || !hasDatesBeenChanged || !departureDate || !returnDate
           }
@@ -146,7 +168,7 @@ export function ChangeDates({
           ) : (
             <FormattedMessage id="changeDates" defaultMessage="Change dates" />
           )}
-        </Button>
+        </Button> */}
       </div>
     </div>
   )

@@ -1,25 +1,31 @@
 import type { SearchBoxSuggestion, SessionToken } from '@mapbox/search-js-core'
-import * as Dialog from '@radix-ui/react-dialog'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { motion } from 'framer-motion'
 import { useParams } from 'next/navigation'
 import type { ChangeEvent, ReactNode } from 'react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { FormattedMessage } from 'react-intl'
 
 import { updateJourneyDestination } from '@/api/calls/journeys'
 import { QUERY_KEYS } from '@/api/queryKeys'
-import { Button } from '@/components/Button/Button'
 import { Input } from '@/components/Input/Input'
 import { useSearchDestination } from '@/hooks/useSearchDestination'
 import type { Journey } from '@/types'
 
 interface ChangeDestinationProps {
   destination: string
+  setFooter: (footer: {
+    cta: {
+      label: string
+      onClick: () => void
+      disabled?: boolean
+    }
+  }) => void
 }
 
 export function ChangeDestination({
   destination: initialDestination,
+  setFooter,
 }: ChangeDestinationProps): ReactNode {
   const [destination, setDestination] = useState({
     id: '',
@@ -77,8 +83,19 @@ export function ChangeDestination({
     },
   })
 
+  useEffect(() => {
+    setFooter({
+      cta: {
+        label: 'Change destination',
+        onClick: handleSubmit,
+        disabled:
+          isPending || destination.name === initialDestination || !destination,
+      },
+    })
+  }, [destination, initialDestination, isPending, handleSubmit, setFooter])
+
   return (
-    <div className="mt-10 flex h-fit flex-col space-y-4">
+    <div className="flex h-fit flex-col space-y-4">
       <div className="relative">
         <Input
           label={
@@ -123,19 +140,6 @@ export function ChangeDestination({
             : null}
         </motion.ul>
       </div>
-      <Dialog.Close asChild>
-        <Button
-          isDisabled={
-            isPending || destination.name === initialDestination || !destination
-          }
-          onClick={handleSubmit}
-        >
-          <FormattedMessage
-            id="changeDestination"
-            defaultMessage="Change destination"
-          />
-        </Button>
-      </Dialog.Close>
     </div>
   )
 }

@@ -28,7 +28,7 @@ export function Button({
   const variantClasses = {
     primary: clsx(
       isDisabled
-        ? 'cursor-not-allowed bg-gray-400/50 disabled:hover:bg-gray-400/50'
+        ? 'cursor-not-allowed bg-gray-400/50 disabled:hover:bg-gray-400/50 text-gray-500'
         : 'bg-accent hover:bg-accent-dark text-white'
     ),
     ghost: clsx(

@@ -38,62 +38,75 @@ export function UpcomingSchedule({
   }
 
   return (
-    <div className="lg:max-h-[500px] lg:overflow-y-scroll">
+    <div className="space-y-6 lg:max-h-[500px] lg:overflow-y-auto">
       {expensesByDay &&
         Object.keys(expensesByDay).map((_, index) => {
           const date = addDays(new Date(departureDate), index)
-
-          const expenses =
-            expensesByDay[
-              formatDate(date, 'yyyy-MM-dd', true, router.locale) as DateString
-            ]
+          const formattedDate = formatDate(
+            date,
+            'yyyy-MM-dd',
+            true,
+            router.locale
+          ) as DateString
+          const expenses = expensesByDay[formattedDate]
 
           return (
-            <div key={index} className="flex flex-col rounded-lg">
-              <div className="flex items-center justify-between p-4">
-                <span className="text-base capitalize text-black">
+            <div
+              key={index}
+              className="rounded-lg border border-gray-200 bg-white shadow-sm"
+            >
+              <div className="flex items-center justify-between bg-gray-50 px-6 py-4">
+                <h3 className="text-lg font-semibold capitalize text-gray-800">
                   {formatDate(date, 'EEEE dd MMMM', true, router.locale)}
-                </span>
-                <div
+                </h3>
+                <button
                   onClick={() => {
                     setIsOpen(true)
                     setCurrentStep('Select category')
-                    setSelectedExpense({
-                      startDate: formatDate(
-                        new Date(date),
-                        'yyyy-MM-dd',
-                        true,
-                        router.locale
-                      ),
-                    })
+                    setSelectedExpense({ startDate: formattedDate })
                   }}
-                  className="cursor-pointer rounded-md px-2 py-1 ring-1 ring-slate-200 transition-colors hover:bg-slate-200"
+                  className="rounded-full bg-blue-500 p-2 text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
                 >
-                  +
-                </div>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-5 w-5"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                </button>
               </div>
               {expenses?.length > 0 ? (
-                <ul className="flex w-full flex-col space-y-2 px-4 pb-4">
+                <ul className="divide-y divide-gray-200">
                   {expenses.map((expense) => (
-                    <div
+                    <li
                       key={expense.id}
-                      className="flex justify-between rounded-lg border-[1px] border-gray-400/30 bg-white px-4 py-4"
+                      className="flex items-center justify-between px-6 py-4"
                     >
-                      <div className="flex items-center space-x-2 truncate">
-                        <span className="truncate">{expense.name}</span>
+                      <div className="flex items-center space-x-3">
+                        <span className="text-lg font-medium text-gray-900">
+                          {expense.name}
+                        </span>
                         <ExpenseLabel
                           expenseCategory={expense.categories.name}
                         />
                       </div>
-                      {!hasJourneyPassed(new Date(departureDate)) ? (
-                        <div className="flex items-center space-x-2">
-                          <EditExpense expense={expense} days={days} />
-                        </div>
-                      ) : null}
-                    </div>
+                      {!hasJourneyPassed(new Date(departureDate)) && (
+                        <EditExpense expense={expense} days={days} />
+                      )}
+                    </li>
                   ))}
                 </ul>
-              ) : null}
+              ) : (
+                <p className="px-6 py-4 text-center text-gray-500">
+                  No activities planned for this day
+                </p>
+              )}
             </div>
           )
         })}

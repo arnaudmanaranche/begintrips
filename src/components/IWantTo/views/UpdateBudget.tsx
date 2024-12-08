@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useParams } from 'next/navigation'
 import type { ReactNode } from 'react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { FormattedMessage } from 'react-intl'
 
 import { updateJourneyBudget } from '@/api/calls/journeys'
@@ -14,10 +14,22 @@ import type { Journey } from '@/types'
 
 interface UpdateBudgetProps {
   budget: number
+  setFooter: (
+    footer:
+      | {
+          cta: {
+            label: string
+            onClick: () => void
+            disabled?: boolean
+          }
+        }
+      | undefined
+  ) => void
 }
 
 export function UpdateBudget({
   budget: initialBudget,
+  setFooter,
 }: UpdateBudgetProps): ReactNode {
   const [budget, setBudget] = useState(initialBudget)
   const { id: journeyId } = useParams()
@@ -63,8 +75,18 @@ export function UpdateBudget({
     },
   })
 
+  useEffect(() => {
+    setFooter({
+      cta: {
+        label: 'Update budget',
+        onClick: handleSubmit,
+        disabled: isPending || budget === initialBudget,
+      },
+    })
+  }, [budget, initialBudget, isPending, handleSubmit, setFooter])
+
   return (
-    <div className="mt-10 flex flex-col space-y-10">
+    <div className="flex flex-col space-y-10">
       {mutateError ? (
         <Callout.Danger>{mutateError.message}</Callout.Danger>
       ) : null}
@@ -80,7 +102,7 @@ export function UpdateBudget({
           onChange={(e) => setBudget(Number(e.target.value))}
         />
 
-        <Button
+        {/* <Button
           isDisabled={isPending || budget === initialBudget}
           onClick={handleSubmit}
         >
@@ -95,7 +117,7 @@ export function UpdateBudget({
               defaultMessage="Update budget"
             />
           )}
-        </Button>
+        </Button> */}
       </div>
     </div>
   )

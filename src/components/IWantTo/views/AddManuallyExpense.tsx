@@ -126,7 +126,7 @@ export function AddManuallyExpense({
   )
 
   return (
-    <div className="flex flex-col space-y-10">
+    <div className="flex flex-col space-y-6">
       {isError ? (
         <motion.div
           initial={{ opacity: 0 }}

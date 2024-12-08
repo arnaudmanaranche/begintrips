@@ -35,16 +35,22 @@ export const Input = ({
         disabled={isDisabled}
         onChange={onChange}
         min={min}
-        placeholder=" " // Keeps the placeholder space for the label
-        className="duration-400 w-full rounded-md border border-gray-100 bg-slate-50 px-4 py-3 transition-all ease-in-out focus:border-neutral-dark focus:outline-none disabled:bg-gray-300 disabled:text-gray-500"
+        className={clsx(
+          'w-full rounded-lg border bg-white px-4 py-3 text-gray-700 transition-all duration-300 focus:outline-none',
+          isDisabled
+            ? 'cursor-not-allowed bg-gray-100'
+            : 'focus:border-accent focus:ring focus:ring-accent focus:ring-opacity-40',
+          isFocused || value ? 'border-accent' : 'border-gray-300'
+        )}
+        placeholder=" "
       />
       <label
         htmlFor={id}
         className={clsx(
-          'duration-400 absolute left-3 top-1/2 -translate-y-1/2 transform px-1 text-sm transition-all ease-in-out',
-          isFocused || value || value === 0
-            ? 'left-3 top-[-0.75rem] text-sm text-accent'
-            : 'text-black/50'
+          'pointer-events-none absolute left-3 transition-all duration-300',
+          isFocused || value
+            ? '-top-2 bg-white px-1 text-xs text-accent'
+            : 'top-3 text-gray-500'
         )}
       >
         {label}
