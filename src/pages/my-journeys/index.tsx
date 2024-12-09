@@ -41,7 +41,7 @@ export default function MyJourneysPage({
   const intl = useIntl()
 
   return (
-    <div className="relative min-h-screen flex-1 bg-[#faf9f8] pt-10 lg:pt-0">
+    <div className="relative min-h-screen flex-1 bg-white pt-10 lg:pt-0">
       <Head>
         <title>{intl.formatMessage(messages.title)}</title>
         <meta name="title" content={intl.formatMessage(messages.title)} />

@@ -45,7 +45,7 @@ const config = {
         black: '#151035',
         accent: {
           light: '#FDBA74',
-          DEFAULT: '#E3461E',
+          DEFAULT: '#F85231',
           dark: '#EA580C',
         },
         neutral: {

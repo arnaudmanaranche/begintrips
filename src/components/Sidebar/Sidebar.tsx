@@ -8,6 +8,8 @@ import { FormattedMessage } from 'react-intl'
 
 import { jounryeNavigationItems } from '@/utils/navigationItems'
 
+import { Logo } from '../Logo/Logo'
+
 function SidebarItem({
   href,
   icon,
@@ -65,8 +67,7 @@ export function Sidebar(): ReactNode {
   return (
     <div className="hidden h-screen flex-col border-r-[1px] lg:flex">
       <div className="px-6 pt-5 text-3xl font-bold">
-        Begin
-        <span className="font-normal text-accent-dark">trips</span>
+        <Logo isBlack />
       </div>
       <ul className="flex flex-col justify-center pt-20">
         {jounryeNavigationItems.map((item, index) => {

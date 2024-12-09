@@ -21,7 +21,7 @@ export function NavBar(): ReactNode {
   const router = useRouter()
 
   return (
-    <div className="mb-10 hidden bg-white px-6 ring-1 ring-slate-200 lg:block">
+    <div className="mb-10 hidden bg-[#113B57] px-6 ring-1 ring-slate-200 lg:block">
       <nav className="mx-auto flex max-w-screen-xl items-center justify-between space-x-10">
         <Logo />
         <ul className="flex flex-1 items-center space-x-6 px-10 lg:px-0">
@@ -32,8 +32,8 @@ export function NavBar(): ReactNode {
             return (
               <li
                 className={clsx(
-                  'flex items-center border-b-2 px-2 ',
-                  isActive ? 'border-accent' : 'border-transparent'
+                  'flex items-center border-b-2 px-2',
+                  isActive ? 'border-white' : 'border-transparent'
                 )}
                 key={item.name}
               >
@@ -41,15 +41,8 @@ export function NavBar(): ReactNode {
                   href={item.href}
                   className="flex items-center space-x-2 py-6"
                 >
-                  <Icon
-                    className={clsx(
-                      'h-6 w-6',
-                      isActive ? 'text-accent' : 'text-black'
-                    )}
-                  />
-                  <span
-                    className={clsx(isActive ? 'text-accent' : 'text-black')}
-                  >
+                  <Icon className="h-6 w-6 text-white" />
+                  <span className="text-white">
                     <FormattedMessage
                       id={item.id}
                       defaultMessage={`{name}`}

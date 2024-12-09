@@ -78,7 +78,7 @@ export default function WelcomePage(): ReactNode {
   const intl = useIntl()
 
   return (
-    <main className="min-h-screen bg-[#faf9f8]">
+    <main className="min-h-screen bg-[#113B57]">
       <Head>
         <title>{intl.formatMessage(messages.pageMetaTitle)}</title>
         <meta
@@ -120,7 +120,7 @@ export default function WelcomePage(): ReactNode {
             className="hidden flex-[0.8] flex-col items-center justify-center bg-accent/5 px-6 py-32 lg:flex lg:px-16"
           >
             <div className="w-full max-w-lg">
-              <h1 className="mb-8 text-2xl font-semibold text-gray-900">
+              <h1 className="mb-8 text-2xl font-semibold text-white">
                 {journey.destination
                   ? intl.formatMessage(messages.welcomeJourneyDetails)
                   : intl.formatMessage(messages.welcomeWhyChooseBeginTrips)}
@@ -137,7 +137,7 @@ export default function WelcomePage(): ReactNode {
                             defaultMessage="Destination"
                           />
                         </p>
-                        <p className="mt-1 text-base text-gray-900">
+                        <p className="mt-1 text-base text-black">
                           {journey.destination.name}
                         </p>
                       </div>
@@ -152,7 +152,7 @@ export default function WelcomePage(): ReactNode {
                               defaultMessage="Departure date"
                             />
                           </p>
-                          <p className="mt-1 text-base text-gray-900">
+                          <p className="mt-1 text-base text-black">
                             {formatDate(
                               journey.departureDate,
                               'EEEE, dd MMMM yyyy',
@@ -168,7 +168,7 @@ export default function WelcomePage(): ReactNode {
                               defaultMessage="Return date"
                             />
                           </p>
-                          <p className="mt-1 text-base text-gray-900">
+                          <p className="mt-1 text-base text-black">
                             {formatDate(
                               journey.returnDate,
                               'EEEE, dd MMMM yyyy',
@@ -197,10 +197,10 @@ export default function WelcomePage(): ReactNode {
                       transition={{ duration: 0.6, delay: 0.2 + index * 0.1 }}
                       className="rounded-xl bg-white p-6 shadow-sm ring-1 ring-gray-900/5"
                     >
-                      <h3 className="text-lg font-semibold text-gray-900">
+                      <h3 className="text-lg font-semibold text-black">
                         {feature.title}
                       </h3>
-                      <p className="mt-2 text-gray-600">
+                      <p className="mt-2 text-gray-800">
                         {feature.description}
                       </p>
                     </motion.div>
@@ -213,11 +213,11 @@ export default function WelcomePage(): ReactNode {
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6 }}
-            className="flex flex-[1.2] flex-col items-center justify-center bg-[#faf9f8] px-6 py-32 lg:px-16"
+            className="flex flex-[1.2] flex-col items-center justify-center bg-[#ffffff] px-6 py-32 lg:px-16"
           >
             <div className="w-full max-w-md">
               <div className="mb-8 text-center">
-                <h1 className="text-4xl font-semibold text-gray-900">
+                <h1 className="text-4xl font-semibold text-black">
                   {form === 'signup'
                     ? intl.formatMessage(messages.pageSignUpTitle)
                     : intl.formatMessage(messages.pageLoginTitle)}
