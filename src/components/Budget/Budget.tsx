@@ -1,11 +1,8 @@
 import { type ReactNode } from 'react'
 import { FormattedMessage, FormattedNumber } from 'react-intl'
-import { Cell, Pie, PieChart, ResponsiveContainer } from 'recharts'
+import { VictoryPie, VictoryTheme, VictoryTooltip } from 'victory'
 
-import { useQuickActionsModalActions } from '@/providers/QuickActions.Provider'
-
-const iR = 50
-const oR = 100
+import { useDrawerActions } from '@/providers/Drawer/Drawer.Provider'
 
 interface BudgetProps {
   budgetSpent: number
@@ -13,11 +10,11 @@ interface BudgetProps {
 }
 
 export function Budget({ budgetSpent, totalBudget }: BudgetProps): ReactNode {
-  const { setCurrentStep, setIsOpen } = useQuickActionsModalActions()
+  const { setCurrentType, setIsOpen } = useDrawerActions()
 
   if (totalBudget === 0) {
     return (
-      <div className="flex w-full flex-col items-center justify-center space-y-4">
+      <div className="flex w-full flex-col items-center justify-center space-y-4 p-4 text-center">
         <span className="text-black/30">
           <FormattedMessage
             id="noBudget"
@@ -26,10 +23,10 @@ export function Budget({ budgetSpent, totalBudget }: BudgetProps): ReactNode {
               setBudget: (
                 <p
                   onClick={() => {
-                    setCurrentStep('Update budget')
+                    setCurrentType('EditTrip')
                     setIsOpen(true)
                   }}
-                  className="cursor-pointer text-accent"
+                  className="text-accent cursor-pointer"
                 >
                   <FormattedMessage
                     id="addBudget"
@@ -57,33 +54,32 @@ export function Budget({ budgetSpent, totalBudget }: BudgetProps): ReactNode {
   }
 
   const data = [
-    { name: 'Spent', value: percentageSpent, fill: color },
-    { name: 'Remaining', value: remainingPercentage, fill: '#E0E0E0' },
+    {
+      x: 'Remaining',
+      y: remainingPercentage,
+      value: totalBudget - budgetSpent,
+    },
+    { x: 'Spent', y: percentageSpent, value: budgetSpent },
   ]
 
   return (
-    <div style={{ width: '100%', height: 200 }} className="relative">
-      <ResponsiveContainer>
-        <PieChart>
-          <Pie
-            data={data}
-            startAngle={180}
-            endAngle={0}
-            innerRadius={iR}
-            outerRadius={oR}
-            dataKey="value"
-          >
-            {data.map((entry, index) => (
-              <Cell key={`cell-${index}`} fill={entry.fill} />
-            ))}
-          </Pie>
-        </PieChart>
-      </ResponsiveContainer>
-      <div className="absolute bottom-16 left-0 h-max w-full text-center text-black">
-        <div className="text-2xl font-bold">
-          {`${Math.min(Math.round(percentageSpent), 100)}%`}
-        </div>
-        <div className="text-xs">
+    <div className="relative">
+      <svg width={280} height={200} className="mx-auto">
+        <VictoryPie
+          standalone={false}
+          width={280}
+          startAngle={90}
+          endAngle={-90}
+          data={data}
+          theme={VictoryTheme.clean}
+          colorScale={['#a5a0a0', color]}
+          labelIndicator={false}
+          labels={({ datum }) => `${datum.value}€`}
+          labelComponent={<VictoryTooltip />}
+        />
+      </svg>
+      <div className="absolute left-0 top-0 h-max w-full text-center text-black">
+        <div className="text-lg">
           <FormattedMessage
             id="budgetSpent"
             defaultMessage={`{budgetSpent} of {totalBudget} spent`}
@@ -91,7 +87,7 @@ export function Budget({ budgetSpent, totalBudget }: BudgetProps): ReactNode {
               budgetSpent: (
                 <FormattedNumber
                   value={budgetSpent}
-                  currency="EUR"
+                  currency="USD"
                   style="currency"
                   maximumFractionDigits={1}
                 />
@@ -99,7 +95,7 @@ export function Budget({ budgetSpent, totalBudget }: BudgetProps): ReactNode {
               totalBudget: (
                 <FormattedNumber
                   value={totalBudget}
-                  currency="EUR"
+                  currency="USD"
                   style="currency"
                   maximumFractionDigits={1}
                 />

@@ -6,12 +6,12 @@ import type { ExpenseWithCategories } from '@/types'
 import { ExpensesCharts } from '../ExpensesCharts/ExpensesCharts'
 
 interface ExpensesProps {
-  expensesByCategory: Record<string, ExpenseWithCategories[]>
+  expensesByDay: Record<string, ExpenseWithCategories[]>
   isLoading: boolean
 }
 
 export function Expenses({
-  expensesByCategory,
+  expensesByDay,
   isLoading,
 }: ExpensesProps): ReactNode {
   if (isLoading) {
@@ -27,10 +27,10 @@ export function Expenses({
     )
   }
 
-  if (expensesByCategory === undefined) return
+  if (expensesByDay === undefined) return
 
-  return Object.keys(expensesByCategory).length === 0 ? (
-    <div className="flex items-center justify-center">
+  return Object.keys(expensesByDay).length === 0 ? (
+    <div className="flex items-center justify-center p-4 text-center">
       <p className="text-black/30">
         <FormattedMessage
           id="noExpenses"
@@ -39,6 +39,6 @@ export function Expenses({
       </p>
     </div>
   ) : (
-    <ExpensesCharts expensesByDay={expensesByCategory} />
+    <ExpensesCharts expensesByDay={expensesByDay} />
   )
 }

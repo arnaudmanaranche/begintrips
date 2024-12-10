@@ -100,8 +100,8 @@ export interface Database {
           amount: number
           category_id: string | null
           created_at: string
-          dayId: string
-          endDate: string | null
+          dayId: string | null
+          endDate: string
           id: string
           journeyId: string
           name: string
@@ -111,8 +111,8 @@ export interface Database {
           amount: number
           category_id?: string | null
           created_at?: string
-          dayId: string
-          endDate?: string | null
+          dayId?: string | null
+          endDate: string | null
           id?: string
           journeyId: string
           name: string
@@ -122,8 +122,8 @@ export interface Database {
           amount?: number
           category_id?: string | null
           created_at?: string
-          dayId?: string
-          endDate?: string | null
+          dayId?: string | null
+          endDate: string | null
           id?: string
           journeyId?: string
           name?: string

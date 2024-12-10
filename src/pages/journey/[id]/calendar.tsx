@@ -1,48 +1,17 @@
-import {
-  BarChartIcon,
-  CalendarIcon,
-  CaretRightIcon,
-  SewingPinIcon,
-} from '@radix-ui/react-icons'
 import type { User } from '@supabase/supabase-js'
 import { useQuery } from '@tanstack/react-query'
-import { differenceInDays } from 'date-fns'
 import type { GetServerSideProps } from 'next'
 import Head from 'next/head'
 import router, { useRouter } from 'next/router'
 import type { ReactNode } from 'react'
-import { useMemo } from 'react'
-import { defineMessages, FormattedMessage, useIntl } from 'react-intl'
+import { defineMessages, useIntl } from 'react-intl'
 
 import { getJourney } from '@/api/calls/journeys'
-import { getUserFavoriteCategories } from '@/api/calls/users'
 import { QUERY_KEYS } from '@/api/queryKeys'
-import { BottomBar } from '@/components/BottomBar/BottomBar'
-import { Budget } from '@/components/Budget/Budget'
-import { Button } from '@/components/Button/Button'
-import { CalendarApp } from '@/components/Calendar/Calendar'
-import { Checklist } from '@/components/Checklist/Checklist'
-import { Expenses } from '@/components/Expenses/Expenses'
-import { JourneyCard } from '@/components/JourneyCard/JourneyCard'
-import { Sidebar } from '@/components/Sidebar/Sidebar'
-import { UpcomingSchedule } from '@/components/UpcomingSchedule/UpcomingSchedule'
+import { Calendar } from '@/components/Calendar/Calendar'
+import { DashboardLayout } from '@/components/DashboardLayout/DashboardLayout'
 import { createClient } from '@/libs/supabase/server-props'
-import {
-  QuickActionsModalProvider,
-  useQuickActionsModalActions,
-} from '@/providers/QuickActions.Provider'
-import type {
-  Day,
-  ExpensesByCategory,
-  ExpensesByDay,
-  ExpensesByDay,
-} from '@/types'
-import { formatDate } from '@/utils/date'
 import { SITE_URL } from '@/utils/seo'
-
-interface JourneyProps {
-  user: User
-}
 
 const messages = defineMessages({
   title: {
@@ -51,11 +20,10 @@ const messages = defineMessages({
   },
 })
 
-function JourneyView({ user }: JourneyProps): ReactNode {
+export default function Page(): ReactNode {
   const {
     query: { id: journeyId },
   } = useRouter()
-  const { setIsOpen } = useQuickActionsModalActions()
   const intl = useIntl()
   const { data, isPending: isFetchingJourney } = useQuery({
     queryKey: QUERY_KEYS.JOURNEY(journeyId as string),
@@ -66,79 +34,47 @@ function JourneyView({ user }: JourneyProps): ReactNode {
     },
   })
 
-  useQuery({
-    queryKey: QUERY_KEYS.USER_FAVORITE_CATEGORIES(),
-    queryFn: () => getUserFavoriteCategories(),
-  })
-
-  const daysLeftBeforeJourneyBegins = useMemo(
-    () =>
-      differenceInDays(
-        new Date(data?.journey?.departureDate as string),
-        new Date()
-      ) + 1,
-    [data?.journey?.departureDate]
-  )
-
   return (
-    <div className="relative flex">
+    <div className="max-h-screen">
       <Head>
         <title>
           {intl.formatMessage(messages.title, {
-            destination: data?.journey?.destination,
+            destination: data?.journey?.destination.name,
           })}
         </title>
         <meta
           name="title"
           content={intl.formatMessage(messages.title, {
-            destination: data?.journey?.destination,
+            destination: data?.journey?.destination.name,
           })}
         />
-
         <meta property="og:url" content={`${SITE_URL}`} />
         <meta
           property="og:title"
           content={intl.formatMessage(messages.title, {
-            destination: data?.journey?.destination,
+            destination: data?.journey?.destination.name,
           })}
         />
-
         <meta
           name="twitter:title"
           content={intl.formatMessage(messages.title, {
-            destination: data?.journey?.destination,
+            destination: data?.journey?.destination.name,
           })}
         />
         <meta name="twitter:url" content={`${SITE_URL}`} />
       </Head>
-      <Sidebar />
-      <div className="flex flex-1 flex-col">
-        <nav className="relative hidden min-h-[70px] items-center justify-between border-b-[1px] px-10 lg:flex">
-          <div>
-            <h2 className="text-3xl font-thin">
-              Hello,{` `}
-              <span className="text-xl font-normal">
-                {user.email?.split('@')[0]}
-              </span>
-              !
-            </h2>
+      <DashboardLayout>
+        {isFetchingJourney || (!isFetchingJourney && !data) ? (
+          <div className="flex flex-1 flex-col space-y-2 bg-white p-6">
+            <div className="h-[100px] w-full animate-pulse rounded-lg bg-slate-200" />
+            <div className="h-[50px] w-full animate-pulse rounded-lg bg-slate-200" />
+            <div className="h-[400px] w-full animate-pulse rounded-lg bg-slate-200" />
           </div>
-          <Button onClick={() => router.push('/account')} isRounded>
-            {user.email?.split('@')[0]?.slice(0, 2)}
-          </Button>
-        </nav>
-        <CalendarApp />
-      </div>
-      <BottomBar />
+        ) : (
+          <Calendar events={data} />
+        )}
+      </DashboardLayout>
     </div>
-  )
-}
-
-export default function Journey({ user }: JourneyProps): ReactNode {
-  return (
-    <QuickActionsModalProvider>
-      <JourneyView user={user} />
-    </QuickActionsModalProvider>
   )
 }
 

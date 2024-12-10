@@ -28,7 +28,7 @@ export const WELCOME_EMAIL_TEMPLATE = `
           ">
             <tr>
               <td style="
-                background-color: #E3461E;
+                background-color: #F85231;
                 padding: 40px 40px;
                 text-align: center;
               ">
@@ -71,7 +71,7 @@ export const WELCOME_EMAIL_TEMPLATE = `
                 </ul>
                 <a href="https://begintrips.com/onboarding" style="
                   display: inline-block;
-                  background-color: #E3461E;
+                  background-color: #F85231;
                   color: white;
                   text-decoration: none;
                   padding: 12px 24px;

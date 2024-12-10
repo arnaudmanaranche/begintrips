@@ -16,7 +16,9 @@ type DateFormatEnumType =
   | 'yyyy-MM-dd'
   | "yyyy-MM-dd'T'HH:mm:ss'Z'"
   | 'dd MMMM yyyy - HH:mm'
+  | 'dd MMMM yyyy HH:mm'
   | 'dd MMMM yyyy'
+  | 'dd MMM yyyy'
 
 export const formatDate = (
   date: string | Date,

@@ -27,3 +27,12 @@ h6 {
 ::-webkit-scrollbar-track {
   background: transparent;
 }
+
+.sx__week-header {
+  z-index: 0 !important;
+}
+
+.sx__calendar {
+  border: 0 !important;
+  border-radius: 1.5rem !important;
+}

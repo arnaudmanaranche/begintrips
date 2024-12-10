@@ -128,6 +128,7 @@ export function SearchEvents({ journey, days }: SearchEventsProps): ReactNode {
                         0,
                       name: event.name,
                       startDate: event.dates?.start.dateTime as string,
+                      endDate: '',
                       category_id: '',
                       categories: {
                         name: 'other',

@@ -1,16 +1,14 @@
-import { differenceInDays, parseISO } from 'date-fns'
 import type { ReactNode } from 'react'
-import { useMemo } from 'react'
 import {
-  Bar,
-  BarChart,
-  CartesianGrid,
-  Legend,
-  ResponsiveContainer,
-  Tooltip,
-  XAxis,
-  YAxis,
-} from 'recharts'
+  VictoryAxis,
+  VictoryBar,
+  VictoryChart,
+  VictoryLegend,
+  VictoryStack,
+  VictoryTheme,
+  VictoryTooltip,
+  VictoryZoomContainer,
+} from 'victory'
 
 import type { ExpensesByDay } from '@/types'
 import { colorsAssociated } from '@/utils/expense-labels'
@@ -22,66 +20,69 @@ interface ExpensesChartsProps {
 export function ExpensesCharts({
   expensesByDay,
 }: ExpensesChartsProps): ReactNode {
-  const data = useMemo(() => {
-    return Object.entries(expensesByDay).map(([date, expenses]) => {
-      const expensesByCategory = expenses.reduce(
-        (acc, expense) => {
-          const category = expense.categories.name
-          const startDate = parseISO(expense.startDate)
-          const endDate = expense.endDate
-            ? parseISO(expense.endDate)
-            : startDate
-          const days = Math.max(differenceInDays(endDate, startDate) + 1, 1)
-          const amountPerDay = expense.amount / days
-          acc[category] = (acc[category] || 0) + amountPerDay
+  console.log('expensesByDay', expensesByDay)
+  const transformedData = Object.entries(expensesByDay).map(
+    ([date, expenses]) => {
+      const categories = expenses.reduce(
+        (acc: { [key: string]: number }, expense) => {
+          acc[expense.categories.name] =
+            (acc[expense.categories.name] || 0) + expense.amount
           return acc
         },
-        {} as Record<string, number>
+        {}
       )
 
-      return {
-        date,
-        ...expensesByCategory,
-      }
-    })
-  }, [expensesByDay])
+      return { date, ...categories }
+    }
+  )
 
-  const categories = useMemo(() => {
-    const allCategories = new Set<string>()
-    data.forEach((day) => {
-      Object.keys(day).forEach((key) => {
-        if (key !== 'date') allCategories.add(key)
-      })
-    })
-    return Array.from(allCategories)
-  }, [data])
+  const categories = [
+    ...new Set(
+      transformedData.flatMap((d) =>
+        Object.keys(d).filter((key) => key !== 'date')
+      )
+    ),
+  ]
 
   return (
-    <ResponsiveContainer width="100%" height={400}>
-      <BarChart data={data} barSize={20} barGap={20}>
-        <XAxis
-          dataKey="date"
-          tickFormatter={(value) =>
-            new Date(value).toLocaleDateString(undefined, {
-              month: 'short',
-              day: 'numeric',
-            })
-          }
-        />
-        <YAxis />
-        <Tooltip formatter={(value) => `$${Number(value).toFixed(2)}`} />
-        <Legend />
+    <VictoryChart
+      domainPadding={{ x: 30 }}
+      theme={VictoryTheme.clean}
+      containerComponent={<VictoryZoomContainer />}
+    >
+      <VictoryLegend
+        x={50}
+        y={10}
+        orientation="horizontal"
+        gutter={20}
+        style={{
+          labels: { fontSize: 10 },
+          border: { stroke: 'none' },
+          title: { fontSize: 12 },
+        }}
+        data={categories.map((category) => ({
+          name: category,
+          symbol: { fill: colorsAssociated[category] || '#ccc' }, // Default color if not mapped
+        }))}
+      />
+      <VictoryAxis tickFormat={transformedData.map((_, index) => index)} />
+      <VictoryAxis dependentAxis tickFormat={(x) => `$${x}`} />
+      <VictoryStack>
         {categories.map((category) => (
-          <Bar
+          <VictoryBar
             key={category}
-            label={{ position: 'top' }}
-            dataKey={category}
-            stackId="a"
-            fill={colorsAssociated[category] || '#000000'}
-            // radius={[4, 4, 0, 0]}
+            data={transformedData.map((d) => ({
+              x: d.date,
+              y: d[category] || 0,
+            }))}
+            labels={({ datum }) => datum.y}
+            labelComponent={<VictoryTooltip />}
+            style={{
+              data: { fill: colorsAssociated[category] || '#ccc' }, // Default color if not mapped
+            }}
           />
         ))}
-      </BarChart>
-    </ResponsiveContainer>
+      </VictoryStack>
+    </VictoryChart>
   )
 }

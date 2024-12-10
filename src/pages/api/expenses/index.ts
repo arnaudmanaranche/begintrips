@@ -12,12 +12,11 @@ export default async function handler(
   if (req.method === 'POST') {
     const { body } = req
 
-    await supabase
+    const { error } = await supabase
       .from('expenses')
       .insert({
         amount: body.amount,
         category_id: body.category_id,
-        dayId: body.dayId,
         startDate: body.startDate,
         endDate: body.endDate,
         name: body.name,
@@ -25,7 +24,17 @@ export default async function handler(
       })
       .eq('dayId', id!)
 
-    res.status(201).json({ message: 'Expense created' })
+    if (error) {
+      res.status(400).json({
+        status: 'error',
+        message: error.message,
+      })
+    } else {
+      res.status(201).json({
+        status: 'success',
+        message: 'Expense created',
+      })
+    }
   } else if (req.method === 'GET') {
     const { data } = await supabase
       .from('expenses')

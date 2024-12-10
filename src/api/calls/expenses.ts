@@ -1,4 +1,4 @@
-import type { UpdateExpense } from '@/types'
+import type { AddExpenseWithCategories, Expense, UpdateExpense } from '@/types'
 
 import { apiInstance } from '../config'
 
@@ -23,6 +23,20 @@ export const updateExpense = async ({
     `/expenses/${expense.id}`,
     expense
   )
+
+  return data
+}
+
+export const createExpense = async ({
+  expense,
+}: {
+  expense: AddExpenseWithCategories
+}): Promise<Expense> => {
+  if (!expense.name) {
+    throw new Error('You need to fill in the name field')
+  }
+
+  const { data } = await apiInstance.post<Expense>(`/expenses`, expense)
 
   return data
 }

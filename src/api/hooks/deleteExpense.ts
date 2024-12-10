@@ -48,23 +48,17 @@ export const useDeleteExpense = ({
           if (!oldData) return oldData
 
           const { updatedRecord, removedExpense } = removeExpenseById(
-            oldData.expensesByCategory,
+            oldData.expensesByDay,
             expenseId
           )
 
           if (!removedExpense) return oldData
 
-          const { updatedRecord: updatedRecord2 } = removeExpenseById(
-            oldData.expensesByDay,
-            expenseId
-          )
-
           const newBudgetSpent = oldData.budgetSpent - removedExpense.amount
 
           return {
             ...oldData,
-            expensesByCategory: updatedRecord,
-            expensesByDay: updatedRecord2,
+            expensesByDay: updatedRecord,
             budgetSpent: newBudgetSpent,
           }
         }

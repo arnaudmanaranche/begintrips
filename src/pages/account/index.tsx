@@ -116,7 +116,7 @@ export default function AccountPage({ user }: AccountPageProps): ReactNode {
       await stripe.redirectToCheckout({
         sessionId: session.id,
       })
-    } catch {
+    } catch (error) {
       toast.error(
         <FormattedMessage
           id="paymentError"
@@ -176,7 +176,6 @@ export default function AccountPage({ user }: AccountPageProps): ReactNode {
               size={70}
               colors={['#fb6900', '#E57C59', '#9d6969', '#59c2c4', '#304141']}
             />
-
             <span className="text-black">{user.email}</span>
           </div>
           <div className="space-y-4">

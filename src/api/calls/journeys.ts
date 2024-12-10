@@ -1,5 +1,5 @@
 import type { AddJourneyOnboarding } from '@/stores/onboarding.store'
-import type { Day, JourneyPage } from '@/types'
+import type { JourneyPage } from '@/types'
 import { isInvalidDate } from '@/utils/date'
 
 import { apiInstance } from '../config'
@@ -24,16 +24,6 @@ export const getJourney = async ({
   if (!data.journey.status) {
     throw new Error('Journey is not active')
   }
-
-  return data
-}
-
-export const getJourneyDays = async ({
-  journeyId,
-}: {
-  journeyId: string
-}): Promise<Day[]> => {
-  const { data } = await apiInstance.get<Day[]>(`/journeys/${journeyId}/days`)
 
   return data
 }
@@ -65,34 +55,26 @@ export const updateJourneyDates = async ({
   return data
 }
 
-export const updateJourneyDestination = async ({
-  journeyId,
-  destination,
-}: {
-  journeyId: string
-  destination: string
-}): Promise<{ message: string }> => {
-  const { data } = await apiInstance.patch<{ message: string }>(
-    `/journeys/${journeyId}/destination`,
-    {
-      destination,
-    }
-  )
-
-  return data
-}
-
-export const updateJourneyBudget = async ({
+export const updateJourney = async ({
   journeyId,
   budget,
+  destination,
+  departureDate,
+  returnDate,
 }: {
   journeyId: string
   budget: number
+  destination: string
+  departureDate: string
+  returnDate: string
 }): Promise<{ message: string }> => {
   const { data } = await apiInstance.patch<{ message: string }>(
-    `/journeys/${journeyId}/budget`,
+    `/journeys/${journeyId}`,
     {
       budget,
+      destination,
+      departureDate,
+      returnDate,
     }
   )
 

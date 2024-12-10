@@ -1,8 +1,4 @@
-import type {
-  Expense,
-  ExpensesByCategory,
-  ExpenseWithCategories,
-} from '@/types'
+import type { Expense, ExpenseWithCategories } from '@/types'
 
 import { removeExpenseById } from './remove-expense-by-id'
 
@@ -31,7 +27,7 @@ describe('removeExpenseById', () => {
           name: 'Expense 4',
         } as ExpenseWithCategories,
       ],
-    } as ExpensesByCategory
+    }
 
     const { updatedRecord, removedExpense } = removeExpenseById(
       expensesByCategory,

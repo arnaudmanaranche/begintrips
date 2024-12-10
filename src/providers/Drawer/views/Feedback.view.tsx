@@ -7,9 +7,12 @@ import { Drawer } from 'vaul'
 import { postFeedback } from '@/api/calls/feedback'
 import { Button } from '@/components/Button/Button'
 
+import { useDrawerActions } from '../Drawer.Provider'
+
 export function FeedbackView(): ReactNode {
   const [comment, setComment] = useState('')
   const [isLoading, setIsLoading] = useState(false)
+  const { setIsOpen } = useDrawerActions()
 
   const handlePostFeedback = async () => {
     setIsLoading(true)
@@ -24,11 +27,12 @@ export function FeedbackView(): ReactNode {
       )
     } finally {
       setIsLoading(false)
+      setIsOpen(false)
     }
   }
 
   return (
-    <div className="flex h-full w-full grow flex-col rounded-[16px] bg-zinc-50 p-5">
+    <div className="flex h-full w-full grow flex-col rounded-[16px] bg-white p-5">
       <div className="mx-auto max-w-md">
         <Drawer.Title
           className="mb-2 text-2xl font-medium text-zinc-900"
@@ -53,14 +57,14 @@ export function FeedbackView(): ReactNode {
             value={comment}
             rows={4}
             onChange={(e) => setComment(e.target.value)}
-            className="w-full rounded-md border border-gray-300 px-4 py-2 text-gray-900 placeholder:text-gray-400 focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent"
+            className="focus:border-accent focus:ring-accent w-full rounded-md border border-gray-300 px-4 py-2 text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2"
           />
           <Button
             onClick={() => {
               handlePostFeedback()
             }}
             isDisabled={!comment || isLoading}
-            className="w-full rounded-md bg-accent px-4 py-2 text-white"
+            className="bg-accent w-full rounded-md px-4 py-2 text-white"
           >
             {isLoading ? (
               <FormattedMessage

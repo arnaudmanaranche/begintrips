@@ -30,6 +30,7 @@ export interface ExpenseWithCategories extends Expense {
 export type AddJourney = TablesInsert<'journeys'>
 export type AddDay = TablesInsert<'days'>
 type AddCategory = TablesInsert<'categories'>
+export type AddExpense = TablesInsert<'expenses'>
 export interface AddExpenseWithCategories extends TablesInsert<'expenses'> {
   categories: AddCategory
 }
@@ -44,15 +45,27 @@ export type ExpenseCategoryEnum = Enums<'expense_category'>
 export type PaymentStatusEnum = Enums<'payment_status'>
 
 // App types
-export type ExpensesByCategory = Record<string, ExpenseWithCategories[]>
 export type ExpensesByDay = Record<DateString, ExpenseWithCategories[]>
+
+type JourneyFormatted = Omit<Journey, 'destination'> & {
+  destination: {
+    id: string
+    name: string
+  }
+}
 
 export interface JourneyPage {
   budgetSpent: number
   days: Day[]
-  expensesByCategory: ExpensesByCategory
   expensesByDay: ExpensesByDay
-  journey: Journey
+  calendarExpenses: {
+    id: string
+    title: string
+    start: string
+    end: string
+    color: string
+  }[]
+  journey: JourneyFormatted
 }
 
 export interface ProductPlanProps {
