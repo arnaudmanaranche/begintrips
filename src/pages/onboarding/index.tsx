@@ -114,7 +114,7 @@ export default function Onboarding(): ReactNode {
         <meta name="twitter:url" content={`${SITE_URL}/onboarding`} />
       </Head>
       <header className="flex flex-col gap-4 px-4 py-6">
-        <Logo />
+        <Logo isBlack />
         <div className="flex items-center justify-between">
           <div className="flex items-center text-sm">
             <span>

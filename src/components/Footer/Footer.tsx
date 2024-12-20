@@ -70,11 +70,39 @@ export function Footer(): ReactNode {
               </li>
             </ul>
           </div>
+          <div>
+            <h3 className="mb-4 text-lg font-semibold">
+              <FormattedMessage id="social" defaultMessage="Social" />
+            </h3>
+            <ul className="space-y-2">
+              <li>
+                <Link
+                  href="https://www.linkedin.com/company/begintrips/"
+                  className="text-sm text-gray-600 hover:text-accent"
+                  rel="noreferrer"
+                  target="_blank"
+                >
+                  <FormattedMessage id="linkedin" defaultMessage="LinkedIn" />
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="https://www.instagram.com/begintrips_/"
+                  className="text-sm text-gray-600 hover:text-accent"
+                  rel="noreferrer"
+                  target="_blank"
+                >
+                  <FormattedMessage id="instagram" defaultMessage="Instagram" />
+                </Link>
+              </li>
+            </ul>
+          </div>
         </div>
         <div className="mt-12 border-t border-gray-200 pt-8">
           <div className="flex flex-col items-center justify-center space-y-4 text-center sm:flex-row sm:space-y-0 sm:text-left">
             <p className="text-sm text-gray-600">
               &copy; {new Date().getFullYear()} Begintrips.
+              {` `}
               <FormattedMessage
                 id="allRightsReserved"
                 defaultMessage="All rights reserved."

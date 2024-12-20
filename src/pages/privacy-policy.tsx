@@ -56,7 +56,7 @@ function PrivacyPolicyPage(): ReactNode {
       <section className="pb-4">
         <div className="mx-auto flex max-w-screen-xl flex-col justify-start space-y-16 px-10 pt-10">
           <nav className="flex flex-row items-center justify-between px-10 md:space-y-0 xl:px-0">
-            <Logo />
+            <Logo isBlack />
             <Button
               onClick={() => router.push('/welcome')}
               className="hidden lg:flex"
