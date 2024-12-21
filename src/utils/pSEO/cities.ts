@@ -27,6 +27,15 @@ const MARCHE_DE_NOEL = [
 
 const CHRISTMAS_MARKET = ['koziars', 'seattle']
 
+const QUE_FAIRE_A = [
+  'lyon',
+  'bordeaux',
+  'toulouse',
+  'londres',
+  'annecy',
+  'marseille',
+]
+
 type BlogListPerLocale = Record<
   string,
   { title: string; category: string; destinations: string[] }[]
@@ -48,6 +57,11 @@ export const BLOG_LIST_PER_LOCALE: BlogListPerLocale = {
       title: 'Marché de Noël',
       category: 'noel',
       destinations: MARCHE_DE_NOEL,
+    },
+    {
+      title: 'Que faire à',
+      category: 'que-faire-a',
+      destinations: QUE_FAIRE_A,
     },
   ],
   en: [

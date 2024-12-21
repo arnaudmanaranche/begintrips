@@ -7,6 +7,7 @@ import type {
   InferGetStaticPropsType,
 } from 'next'
 import Head from 'next/head'
+import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { serialize } from 'next-mdx-remote/serialize'
 import path from 'path'
@@ -16,6 +17,7 @@ import { FormattedMessage, useIntl } from 'react-intl'
 import { Button } from '@/components/Button/Button'
 import { Logo } from '@/components/Logo/Logo'
 import { Article } from '@/sections/Article/Article'
+import { capitalizeFirstLetter } from '@/utils/capitalize-first-letter'
 import { BLOG_LIST_PER_LOCALE } from '@/utils/pSEO/cities'
 import { SITE_URL } from '@/utils/seo'
 
@@ -25,7 +27,7 @@ export default function CityPage({
   const router = useRouter()
   const intl = useIntl()
 
-  const PAGE_TITLE = `${data.category.title} ${data.destination.replace(/-/g, ' ')}`
+  const PAGE_TITLE = `${data.category.title} ${capitalizeFirstLetter(data.destination.replace(/-/g, ' '))}`
 
   return (
     <main>
@@ -42,6 +44,8 @@ export default function CityPage({
           name="twitter:url"
           content={`${SITE_URL}/blog/${data.category.category}/${data.destination}`}
         />
+        <meta name="description" content={data.metaData.description} />
+        <meta name="og:description" content={data.metaData.description} />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -98,13 +102,14 @@ export default function CityPage({
           </nav>
         </div>
       </section>
-      <Article
-        content={data.content}
-        metaDataDescription={data.metaData.description}
-        pageTitle={`${data.destination.replace(/-/g, ' ')} | ${
-          data.category.title
-        }`}
-      />
+      <div className="mx-auto flex max-w-4xl space-x-1 pt-20">
+        <Link href="/blog" locale={router.locale} className="hover:underline">
+          <FormattedMessage id="blog" defaultMessage="Blog" />
+        </Link>
+        <span className="text-gray-700">/ {data.category.title} /</span>
+        <span className="capitalize text-gray-700">{data.destination}</span>
+      </div>
+      <Article content={data.content} />
     </main>
   )
 }
