@@ -21,7 +21,7 @@ import { Callout } from '@/components/Callout/Callout'
 import { InputTime } from '@/components/DateTimePicker/DateTimePicker'
 import { Input } from '@/components/Input/Input'
 import type { AddExpenseWithCategories } from '@/types'
-import { formatDate } from '@/utils/date'
+import { formatDate, isValidDateTimeFormat } from '@/utils/date'
 
 import { useDrawerActions } from '../Drawer.Provider'
 
@@ -441,7 +441,9 @@ export function AddExpenseView({
                 newExpense.name === '' ||
                 newExpense.category_id === '' ||
                 newExpense.startDate === '' ||
-                newExpense.endDate === ''
+                newExpense.endDate === '' ||
+                (!isOnSeveralDays &&
+                  !isValidDateTimeFormat(newExpense.startDate))
               }
             >
               {isPending ? (

@@ -33,10 +33,6 @@ export const createExpense = async ({
 }: {
   expense: AddExpenseWithCategories
 }): Promise<Expense> => {
-  if (!isValidDateTimeFormat(expense.startDate)) {
-    throw new Error('invalideStartDateFormat')
-  }
-
   const { data } = await apiInstance.post<Expense>(`/expenses`, expense)
 
   return data
