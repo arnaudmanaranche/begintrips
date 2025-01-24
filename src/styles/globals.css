@@ -41,3 +41,7 @@ h6 {
 .rdp-root {
   --rdp-accent-color: #1a4867 !important;
 }
+
+.sx__event-modal.is-open {
+  display: none;
+}
