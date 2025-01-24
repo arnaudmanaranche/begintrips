@@ -63,8 +63,6 @@
   "inputPasswordLabel": "Password",
   "inputReturnDateLabel": "Return date",
   "journeyBegins": "{count, plural, one {day to go} other {days to go}}",
-  "journeyCategoriesTitle": "My journey | Categories",
-  "journeyTitle": "My journey to {destination}",
   "logginInCta": "Logging in...",
   "login": "Log in",
   "loginCta": "Log in",

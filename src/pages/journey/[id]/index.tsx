@@ -12,12 +12,7 @@ import Head from 'next/head'
 import { useRouter } from 'next/router'
 import type { ReactNode } from 'react'
 import { useEffect, useMemo, useState } from 'react'
-import {
-  defineMessages,
-  FormattedMessage,
-  FormattedNumber,
-  useIntl,
-} from 'react-intl'
+import { FormattedMessage, FormattedNumber } from 'react-intl'
 import { Drawer } from 'vaul'
 
 import { getJourney } from '@/api/calls/journeys'
@@ -32,28 +27,22 @@ import { createClient } from '@/libs/supabase/server-props'
 import { useDrawerActions } from '@/providers/Drawer/Drawer.Provider'
 import type { ExpensesByDay } from '@/types'
 import { formatDate } from '@/utils/date'
-import { SITE_URL } from '@/utils/seo'
+import { useSiteTitle } from '@/utils/seo'
 
 interface JourneyProps {
   user: User
 }
 
-const messages = defineMessages({
-  title: {
-    id: 'journeyTitle',
-    defaultMessage: 'My journey to {destination}',
-  },
-})
-
 export default function Page({ user }: JourneyProps): ReactNode {
   const [currency, setCurrency] = useState<string | null>(null)
+  const title = useSiteTitle()
   const {
     query: { id: journeyId },
     locale,
     replace,
   } = useRouter()
   const { setIsOpen, setCurrentType } = useDrawerActions()
-  const intl = useIntl()
+
   const { data, isPending: isFetchingJourney } = useQuery({
     queryKey: QUERY_KEYS.JOURNEY(journeyId as string),
     queryFn: () => getJourney({ journeyId: journeyId as string }),
@@ -84,33 +73,7 @@ export default function Page({ user }: JourneyProps): ReactNode {
   return (
     <div className="max-h-screen">
       <Head>
-        <title>
-          {intl.formatMessage(messages.title, {
-            destination: data?.journey?.destination.name,
-          })}
-        </title>
-        <meta
-          name="title"
-          content={intl.formatMessage(messages.title, {
-            destination: data?.journey?.destination.name,
-          })}
-        />
-
-        <meta property="og:url" content={`${SITE_URL}`} />
-        <meta
-          property="og:title"
-          content={intl.formatMessage(messages.title, {
-            destination: data?.journey?.destination.name,
-          })}
-        />
-
-        <meta
-          name="twitter:title"
-          content={intl.formatMessage(messages.title, {
-            destination: data?.journey?.destination.name,
-          })}
-        />
-        <meta name="twitter:url" content={`${SITE_URL}`} />
+        <title>{title}</title>
       </Head>
       <DashboardLayout>
         <div className="flex flex-1 flex-col bg-white lg:rounded-l-3xl">

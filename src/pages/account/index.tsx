@@ -8,6 +8,7 @@ import {
 import { loadStripe } from '@stripe/stripe-js'
 import Avatar from 'boring-avatars'
 import type { GetServerSideProps } from 'next'
+import { Open_Sans, Outfit } from 'next/font/google'
 import Head from 'next/head'
 import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
@@ -43,6 +44,20 @@ const messages = defineMessages({
     id: 'accountPageDescription',
     defaultMessage: 'Manage your account',
   },
+})
+
+const outfit = Outfit({
+  subsets: ['latin'],
+  weight: ['400', '600'],
+  variable: '--font-outfit',
+  display: 'optional',
+})
+
+const openSans = Open_Sans({
+  subsets: ['latin'],
+  weight: ['400', '500', '600'],
+  variable: '--font-open-sans',
+  display: 'optional',
 })
 
 function FormattedTitle({ modalType }: { modalType: string | null }) {
@@ -219,7 +234,7 @@ export default function AccountPage({ user }: AccountPageProps): ReactNode {
             <Dialog.Portal>
               <Dialog.Overlay className="fixed inset-0 bg-black/30 data-[state=open]:animate-overlayShow" />
               <Dialog.Content
-                className="fixed left-[50%] top-[50%] max-h-[90vh] min-h-[500px] w-[90vw] max-w-[650px] translate-x-[-50%] translate-y-[-50%] rounded-[6px] bg-white p-[25px] shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] focus:outline-none data-[state=open]:animate-contentShow"
+                className={`fixed left-[50%] top-[50%] max-h-[90vh] min-h-[500px] w-[90vw] max-w-[650px] translate-x-[-50%] translate-y-[-50%] rounded-[6px] bg-white p-[25px] shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] focus:outline-none data-[state=open]:animate-contentShow ${outfit.variable} ${openSans.variable}`}
                 aria-describedby={undefined}
               >
                 <div className="mb-5 flex justify-between">

@@ -1,4 +1,4 @@
-import { format, isPast, isToday, isValid, startOfDay } from 'date-fns'
+import { format, isPast, isToday, isValid, parse, startOfDay } from 'date-fns'
 import { enUS, fr } from 'date-fns/locale'
 
 export function stripTime(date: Date): Date {
@@ -42,4 +42,15 @@ export const formatDate = (
   return format(formatedDate as Date, dateFormat, {
     locale: dateLocale,
   })
+}
+
+export function isValidDateTimeFormat(dateTime: string): boolean {
+  // Define the expected format
+  const format = 'yyyy-MM-dd HH:mm'
+
+  // Parse the date string using the given format
+  const parsedDate = parse(dateTime, format, new Date())
+
+  // Check if the parsed date is valid
+  return isValid(parsedDate)
 }

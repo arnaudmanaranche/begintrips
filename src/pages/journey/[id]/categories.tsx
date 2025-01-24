@@ -4,6 +4,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import clsx from 'clsx'
 import { AnimatePresence, motion } from 'framer-motion'
 import type { GetServerSideProps } from 'next'
+import Head from 'next/head'
 import type { ReactNode } from 'react'
 import { defineMessages, useIntl } from 'react-intl'
 
@@ -15,6 +16,7 @@ import { QUERY_KEYS } from '@/api/queryKeys'
 import { DashboardLayout } from '@/components/DashboardLayout/DashboardLayout'
 import { createClient } from '@/libs/supabase/server-props'
 import type { UserFavoriteCategories } from '@/types'
+import { useSiteTitle } from '@/utils/seo'
 
 interface JourneyCategoriesProps {
   user: User
@@ -31,6 +33,7 @@ const messages = defineMessages({
 export default function JourneyCategories({
   user,
 }: JourneyCategoriesProps): ReactNode {
+  const title = useSiteTitle()
   const intl = useIntl()
   const queryClient = useQueryClient()
   const { data, isPending } = useQuery({
@@ -94,71 +97,76 @@ export default function JourneyCategories({
   })
 
   return (
-    <DashboardLayout>
-      <p className="px-10 pt-6 text-lg text-black">
-        {intl.formatMessage(messages.categoriesDescription)}
-      </p>
-      {isPending || !data ? (
-        <div className="grid grid-cols-1 gap-4 px-10 pt-10 lg:grid-cols-4">
-          <div className="h-[60px] w-full animate-pulse rounded-md bg-slate-200" />
-          <div className="h-[60px] w-full animate-pulse rounded-md bg-slate-200" />
-          <div className="h-[60px] w-full animate-pulse rounded-md bg-slate-200" />
-          <div className="h-[60px] w-full animate-pulse rounded-md bg-slate-200" />
-          <div className="h-[60px] w-full animate-pulse rounded-md bg-slate-200" />
-          <div className="h-[60px] w-full animate-pulse rounded-md bg-slate-200" />
-          <div className="h-[60px] w-full animate-pulse rounded-md bg-slate-200" />
-          <div className="h-[60px] w-full animate-pulse rounded-md bg-slate-200" />
-        </div>
-      ) : (
-        <motion.div
-          className="mb-[80px] grid grid-cols-2 gap-6 px-10 pt-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
-          layout
-        >
-          <AnimatePresence>
-            {data.map((category) => (
-              <motion.div
-                key={category.id}
-                layout
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.8 }}
-                transition={{ duration: 0.2 }}
-              >
-                <motion.button
-                  onClick={() => mutateAsync(category.id)}
-                  className={clsx(
-                    'bg-card text-card-foreground hover:text-accent-foreground hover:bg-accent flex w-full items-center justify-between rounded-lg border p-4 shadow-sm transition-colors',
-                    category.isFavorite && 'border-primary'
-                  )}
-                  whileTap={{ scale: 0.95 }}
+    <>
+      <Head>
+        <title>{title}</title>
+      </Head>
+      <DashboardLayout>
+        <p className="px-10 pt-6 text-lg text-black">
+          {intl.formatMessage(messages.categoriesDescription)}
+        </p>
+        {isPending || !data ? (
+          <div className="grid grid-cols-1 gap-4 px-10 pt-10 lg:grid-cols-4">
+            <div className="h-[60px] w-full animate-pulse rounded-md bg-slate-200" />
+            <div className="h-[60px] w-full animate-pulse rounded-md bg-slate-200" />
+            <div className="h-[60px] w-full animate-pulse rounded-md bg-slate-200" />
+            <div className="h-[60px] w-full animate-pulse rounded-md bg-slate-200" />
+            <div className="h-[60px] w-full animate-pulse rounded-md bg-slate-200" />
+            <div className="h-[60px] w-full animate-pulse rounded-md bg-slate-200" />
+            <div className="h-[60px] w-full animate-pulse rounded-md bg-slate-200" />
+            <div className="h-[60px] w-full animate-pulse rounded-md bg-slate-200" />
+          </div>
+        ) : (
+          <motion.div
+            className="mb-[80px] grid grid-cols-2 gap-6 px-10 pt-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
+            layout
+          >
+            <AnimatePresence>
+              {data.map((category) => (
+                <motion.div
+                  key={category.id}
+                  layout
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.8 }}
+                  transition={{ duration: 0.2 }}
                 >
-                  <div className="flex items-center gap-3">
-                    <span
-                      className="text-xl"
-                      role="img"
-                      aria-label={category.name}
-                    >
-                      {category.emoji}
-                    </span>
-                    <span className="font-medium">{category.name}</span>
-                  </div>
-                  <div>
-                    <StarIcon
-                      className={clsx(
-                        'h-5 w-5 transition-colors',
-                        category.isFavorite
-                          ? 'fill-primary text-primary'
-                          : 'text-muted-foreground'
-                      )}
-                    />
-                  </div>
-                </motion.button>
-              </motion.div>
-            ))}
-          </AnimatePresence>
-        </motion.div>
-      )}
-    </DashboardLayout>
+                  <motion.button
+                    onClick={() => mutateAsync(category.id)}
+                    className={clsx(
+                      'bg-card text-card-foreground hover:text-accent-foreground hover:bg-accent flex w-full items-center justify-between rounded-lg border p-4 shadow-sm transition-colors',
+                      category.isFavorite && 'border-primary'
+                    )}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    <div className="flex items-center gap-3">
+                      <span
+                        className="text-xl"
+                        role="img"
+                        aria-label={category.name}
+                      >
+                        {category.emoji}
+                      </span>
+                      <span className="font-medium">{category.name}</span>
+                    </div>
+                    <div>
+                      <StarIcon
+                        className={clsx(
+                          'h-5 w-5 transition-colors',
+                          category.isFavorite
+                            ? 'fill-primary text-primary'
+                            : 'text-muted-foreground'
+                        )}
+                      />
+                    </div>
+                  </motion.button>
+                </motion.div>
+              ))}
+            </AnimatePresence>
+          </motion.div>
+        )}
+      </DashboardLayout>
+    </>
   )
 }
 

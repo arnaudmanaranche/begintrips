@@ -252,7 +252,9 @@ export function AddExpenseView({
             animate={{ opacity: 1 }}
             className="transition-opacity"
           >
-            <Callout.Danger>{error?.message}</Callout.Danger>
+            <Callout.Danger>
+              <FormattedMessage id={error?.message} />
+            </Callout.Danger>
           </motion.div>
         ) : null}
         <Input

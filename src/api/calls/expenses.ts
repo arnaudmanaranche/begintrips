@@ -1,4 +1,5 @@
 import type { AddExpenseWithCategories, Expense, UpdateExpense } from '@/types'
+import { isValidDateTimeFormat } from '@/utils/date'
 
 import { apiInstance } from '../config'
 
@@ -32,6 +33,10 @@ export const createExpense = async ({
 }: {
   expense: AddExpenseWithCategories
 }): Promise<Expense> => {
+  if (!isValidDateTimeFormat(expense.startDate)) {
+    throw new Error('invalideStartDateFormat')
+  }
+
   const { data } = await apiInstance.post<Expense>(`/expenses`, expense)
 
   return data
