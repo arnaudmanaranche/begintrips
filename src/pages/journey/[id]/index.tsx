@@ -86,18 +86,20 @@ export default function Page({ user }: JourneyProps): ReactNode {
               />
             </h2>
             <h3 className="text-3xl font-thin">
-              <FormattedMessage
-                id="daysLeftBeforeJourneyBegins"
-                defaultMessage="{count, plural, one {{days} day left before your journey begins.} other {{days} days left before your journey begins.}}"
-                values={{
-                  count: daysLeftBeforeJourneyBegins,
-                  days: (
-                    <span className="font-medium text-primary">
-                      {daysLeftBeforeJourneyBegins}
-                    </span>
-                  ),
-                }}
-              />
+              {daysLeftBeforeJourneyBegins > 0 ? (
+                <FormattedMessage
+                  id="daysLeftBeforeJourneyBegins"
+                  defaultMessage="{count, plural, one {{days} day left before your journey begins.} other {{days} days left before your journey begins.}}"
+                  values={{
+                    count: 0,
+                    days: (
+                      <span className="font-medium text-primary">
+                        {daysLeftBeforeJourneyBegins}
+                      </span>
+                    ),
+                  }}
+                />
+              ) : null}
             </h3>
           </div>
           <div className="mb-[80px] grid h-full grid-cols-12 gap-6 px-6 xl:pb-0">
