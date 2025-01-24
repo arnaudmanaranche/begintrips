@@ -157,14 +157,5 @@ export function Calendar({ events }: CalendarAppProps): ReactNode {
     calendar.eventsService.getAll()
   }, [calendar.eventsService])
 
-  return (
-    <ScheduleXCalendar
-      calendarApp={calendar}
-      customComponents={{
-        eventModal: () => {
-          return null
-        },
-      }}
-    />
-  )
+  return <ScheduleXCalendar calendarApp={calendar} />
 }
