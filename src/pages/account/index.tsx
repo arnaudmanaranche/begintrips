@@ -107,9 +107,9 @@ export default function AccountPage({ user }: AccountPageProps): ReactNode {
 
     try {
       const session = await checkoutSession({
-        externalProductId: PLANS['CASUAL_EXPLORER'].externalProductId,
-        mode: PLANS['CASUAL_EXPLORER'].mode,
-        internalProductId: PLANS['CASUAL_EXPLORER'].internalProductId,
+        externalProductId: PLANS['PLANS.PLAN2.TITLE'].externalProductId,
+        mode: PLANS['PLANS.PLAN2.TITLE'].mode,
+        internalProductId: PLANS['PLANS.PLAN2.TITLE'].internalProductId,
         email: user.email,
       })
 
@@ -278,7 +278,7 @@ export default function AccountPage({ user }: AccountPageProps): ReactNode {
             <li className="flex items-center">
               <Link
                 href="/account"
-                className="flex flex-col items-center text-accent"
+                className="text-accent flex flex-col items-center"
               >
                 <PersonIcon className="h-6 w-6" />
                 <FormattedMessage id="myAccount" defaultMessage="My account" />
