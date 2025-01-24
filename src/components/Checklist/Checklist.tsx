@@ -6,7 +6,6 @@ import {
   StarFilledIcon,
   StarIcon,
 } from '@radix-ui/react-icons'
-import { ar } from 'date-fns/locale'
 import { motion } from 'framer-motion'
 import type { ReactNode } from 'react'
 import { useId, useState } from 'react'

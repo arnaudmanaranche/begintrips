@@ -116,7 +116,7 @@ export default function AccountPage({ user }: AccountPageProps): ReactNode {
       await stripe.redirectToCheckout({
         sessionId: session.id,
       })
-    } catch (error) {
+    } catch {
       toast.error(
         <FormattedMessage
           id="paymentError"
