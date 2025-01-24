@@ -32,10 +32,6 @@ export const createExpense = async ({
 }: {
   expense: AddExpenseWithCategories
 }): Promise<Expense> => {
-  if (!expense.name) {
-    throw new Error('You need to fill in the name field')
-  }
-
   const { data } = await apiInstance.post<Expense>(`/expenses`, expense)
 
   return data

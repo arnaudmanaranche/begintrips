@@ -5,10 +5,6 @@ export const postFeedback = async ({
 }: {
   comment: string
 }): Promise<void> => {
-  if (!comment) {
-    throw new Error('feedback.comment')
-  }
-
   await apiInstance.post('/feedback', {
     content: comment,
   })
