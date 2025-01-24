@@ -76,7 +76,7 @@ export default function Page({ user }: JourneyProps): ReactNode {
         <title>{title}</title>
       </Head>
       <DashboardLayout>
-        <div className="flex flex-1 flex-col bg-white lg:rounded-l-3xl">
+        <div className="flex flex-1 flex-col">
           <div className="relative justify-between space-y-2 px-10 py-4 lg:flex lg:flex-col">
             <h2 className="text-4xl font-thin">
               <FormattedMessage
@@ -106,15 +106,26 @@ export default function Page({ user }: JourneyProps): ReactNode {
             <div className="col-span-12 space-y-4 pt-4 xl:col-span-3">
               <JourneyCard
                 title={
-                  <FormattedMessage
-                    id="myTripOverview"
-                    defaultMessage="My trip overview"
-                  />
+                  <div className="flex justify-between">
+                    <FormattedMessage
+                      id="myTripOverview"
+                      defaultMessage="My trip overview"
+                    />
+                    <Drawer.Trigger
+                      className="cursor-pointer rounded bg-primary px-2 py-1 text-xs text-white lg:hidden"
+                      onClick={() => {
+                        setIsOpen(true)
+                        setCurrentType('EditTrip')
+                      }}
+                    >
+                      <FormattedMessage id="edit" defaultMessage="Edit" />
+                    </Drawer.Trigger>
+                  </div>
                 }
                 isFetching={isFetchingJourney}
               >
                 <div className="flex flex-col">
-                  <div className="group relative flex items-center space-x-2 px-4 py-2 hover:bg-slate-50">
+                  <div className="group relative flex items-center space-x-2 px-4 py-2 hover:bg-slate-100 active:bg-transparent">
                     <div className="rounded-full p-2">
                       <SewingPinIcon className="text-accent h-5 w-5" />
                     </div>
@@ -124,7 +135,7 @@ export default function Page({ user }: JourneyProps): ReactNode {
                         {data?.journey?.destination.name}
                       </span>
                     </div>
-                    <div className="absolute right-4 top-1/2 -translate-y-1/2 opacity-0 transition-opacity group-hover:opacity-100">
+                    <div className="absolute right-4 top-1/2 hidden -translate-y-1/2 opacity-0 transition-opacity group-hover:opacity-100 lg:flex">
                       <Drawer.Trigger
                         className="cursor-pointer rounded bg-primary px-2 py-1 text-xs text-white"
                         onClick={() => {
@@ -136,7 +147,7 @@ export default function Page({ user }: JourneyProps): ReactNode {
                       </Drawer.Trigger>
                     </div>
                   </div>
-                  <div className="group relative flex items-center space-x-2 px-4 py-2 hover:bg-slate-100">
+                  <div className="group relative flex items-center space-x-2 px-4 py-2 hover:bg-slate-100 active:bg-transparent">
                     <div className="rounded-full p-2">
                       <CalendarIcon className="text-accent h-5 w-5" />
                     </div>
@@ -167,7 +178,7 @@ export default function Page({ user }: JourneyProps): ReactNode {
                           : ''}
                       </span>
                     </div>
-                    <div className="absolute right-4 top-1/2 -translate-y-1/2 opacity-0 transition-opacity group-hover:opacity-100">
+                    <div className="absolute right-4 top-1/2 hidden -translate-y-1/2 opacity-0 transition-opacity group-hover:opacity-100 lg:flex">
                       <Drawer.Trigger
                         className="cursor-pointer rounded bg-primary px-2 py-1 text-xs text-white"
                         onClick={() => {
@@ -179,7 +190,7 @@ export default function Page({ user }: JourneyProps): ReactNode {
                       </Drawer.Trigger>
                     </div>
                   </div>
-                  <div className="group relative flex items-center space-x-2 px-4 py-2 hover:bg-slate-50">
+                  <div className="group relative flex items-center space-x-2 px-4 py-2 hover:bg-slate-100 active:bg-transparent">
                     <div className="rounded-full p-2">
                       <BarChartIcon className="text-accent h-5 w-5" />
                     </div>
@@ -191,7 +202,7 @@ export default function Page({ user }: JourneyProps): ReactNode {
                         currency={currency ?? 'EUR'}
                       />
                     </div>
-                    <div className="absolute right-4 top-1/2 -translate-y-1/2 opacity-0 transition-opacity group-hover:opacity-100">
+                    <div className="absolute right-4 top-1/2 hidden -translate-y-1/2 opacity-0 transition-opacity group-hover:opacity-100 lg:flex">
                       <Drawer.Trigger
                         className="cursor-pointer rounded bg-primary px-2 py-1 text-xs text-white"
                         onClick={() => {
