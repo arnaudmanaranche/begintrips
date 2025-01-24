@@ -44,6 +44,9 @@ export function Calendar({ events }: CalendarAppProps): ReactNode {
         endTime: formattedEndTime,
         name: '',
         amount: 0,
+        categories: {
+          name: '',
+        },
       })
     },
     [setCurrentType, setIsOpen, setSelectedExpense]
@@ -57,6 +60,16 @@ export function Calendar({ events }: CalendarAppProps): ReactNode {
         createViewMonthGrid(),
         createViewMonthAgenda(),
       ],
+      calendars: {
+        personal: {
+          colorName: 'personal',
+          lightColors: {
+            main: '#F85231',
+            container: '#FF6E4E',
+            onContainer: '#fff',
+          },
+        },
+      },
       selectedDate: events.journey.departureDate,
       events: events?.calendarExpenses,
       weekOptions: {
@@ -91,7 +104,7 @@ export function Calendar({ events }: CalendarAppProps): ReactNode {
                 end: e.endDate,
                 start: e.startDate,
                 title: e.name,
-                color: '#FF0000',
+                calendarId: 'personal',
               })
               const newEvents = eventsServicePlugin.getAll()
               eventsServicePlugin.set(newEvents)
@@ -109,6 +122,9 @@ export function Calendar({ events }: CalendarAppProps): ReactNode {
             amount: event.amount as number,
             id: event.id as string,
             category_id: event.category_id,
+            categories: {
+              name: event.categoryName,
+            },
           })
 
           ref.current = (
@@ -121,6 +137,7 @@ export function Calendar({ events }: CalendarAppProps): ReactNode {
                 end: e.endDate,
                 start: e.startDate,
                 title: e.name,
+                calendarId: 'personal',
               })
             } else if (action === 'delete') {
               eventsServicePlugin.remove(e.id)

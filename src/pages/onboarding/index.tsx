@@ -126,7 +126,7 @@ export default function Onboarding(): ReactNode {
           </div>
           <div className="relative h-2 min-w-[200px] rounded-sm bg-slate-100">
             <div
-              className="absolute inset-0 z-20 h-2 rounded-sm bg-accent transition-all duration-500"
+              className="absolute inset-0 z-20 h-2 rounded-sm bg-primary transition-all duration-500"
               style={{ width: progressWidth }}
             />
           </div>
@@ -410,6 +410,7 @@ function Step3({ error }: { error: ReactNode }) {
             <FormattedMessage id="inputBudgetLabel" defaultMessage="Budget" />
           }
           id="budget"
+          type="number"
           value={journey.budget ?? ''}
           placeholder="e.g 3600$"
           onChange={(e) => updateJourney({ budget: parseInt(e.target.value) })}

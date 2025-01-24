@@ -86,9 +86,9 @@ export default function Page({
           </nav>
         </div>
       </section>
-      <section className="bg-accent-light/30 px-6 py-20 md:px-0">
+      <section className="bg-primary-light/30 px-6 py-20 md:px-0">
         <div className="mx-auto max-w-4xl text-center">
-          <h1 className="mb-6 text-4xl font-bold text-accent-dark md:text-5xl lg:text-6xl">
+          <h1 className="mb-6 text-4xl font-bold text-primary-dark md:text-5xl lg:text-6xl">
             <FormattedMessage
               id="blogPage.title"
               defaultMessage="Travel Stories & Tips"
@@ -107,7 +107,7 @@ export default function Page({
           {data.map(({ category, title, destinations }) => (
             <div key={category} className="space-y-8">
               <div className="flex items-center justify-between">
-                <h2 className="text-3xl font-bold capitalize text-accent-dark">
+                <h2 className="text-3xl font-bold capitalize text-primary-dark">
                   {title}
                 </h2>
               </div>
@@ -121,7 +121,7 @@ export default function Page({
                       <div className="flex flex-1 flex-col justify-between p-6">
                         <div className="flex-1">
                           <div className="block">
-                            <h3 className="text-xl font-semibold capitalize text-gray-900 group-hover:text-accent">
+                            <h3 className="text-xl font-semibold capitalize text-gray-900 group-hover:text-primary">
                               {destination.replace(/-/g, ' ')}
                             </h3>
                           </div>

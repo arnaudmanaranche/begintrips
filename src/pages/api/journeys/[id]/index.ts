@@ -30,6 +30,11 @@ export default async function handler(
 
     const locale = req.headers['accept-language']?.split('-')[0] || 'en'
 
+    const formattedDestination = {
+      id: '',
+      name: '',
+    }
+
     try {
       const response = await fetch(
         `https://api.mapbox.com/search/geocode/v6/forward?q=${journey.destination}&language=${locale}&access_token=${process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN}`
@@ -38,10 +43,8 @@ export default async function handler(
       const data = await response.json()
 
       if (data.features.length > 0) {
-        journey.destination = {
-          id: journey.destination,
-          name: data.features[0]?.properties.name,
-        }
+        formattedDestination.id = journey.destination
+        formattedDestination.name = data.features[0]?.properties.name
       } else {
         return res.status(500).json({
           message: `Error fetching origin for journey ${id}`,
@@ -95,12 +98,15 @@ export default async function handler(
           name: expense.categories?.name,
         },
         end: expense.endDate,
-        color: '#FF0000',
+        calendarId: 'personal',
       }
     })
 
     res.status(200).json({
-      journey,
+      journey: {
+        ...journey,
+        destination: formattedDestination,
+      },
       days,
       budgetSpent,
       expensesByDay,

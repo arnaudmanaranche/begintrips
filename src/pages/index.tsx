@@ -174,7 +174,7 @@ export default function HomePage({ user }: { user: User }): ReactNode {
                   <div className="hidden items-center space-x-8 lg:flex">
                     <button
                       onClick={() => scrollToSection('features')}
-                      className="hover:text-accent text-white"
+                      className="text-white hover:text-primary"
                     >
                       <FormattedMessage
                         id="menuFeatures"
@@ -183,7 +183,7 @@ export default function HomePage({ user }: { user: User }): ReactNode {
                     </button>
                     <button
                       onClick={() => scrollToSection('pricing')}
-                      className="hover:text-accent text-white"
+                      className="text-white hover:text-primary"
                     >
                       <FormattedMessage
                         id="menuPricing"
@@ -192,7 +192,7 @@ export default function HomePage({ user }: { user: User }): ReactNode {
                     </button>
                     <button
                       onClick={() => scrollToSection('faq')}
-                      className="hover:text-accent text-white"
+                      className="text-white hover:text-primary"
                     >
                       <FormattedMessage id="menuFaq" defaultMessage="FAQ" />
                     </button>
@@ -246,7 +246,7 @@ export default function HomePage({ user }: { user: User }): ReactNode {
                         defaultMessage="Plan in minutes."
                       />
                       <br />
-                      <span className="from-accent to-accent/80 bg-gradient-to-r bg-clip-text font-serif">
+                      <span className="font-serif">
                         <FormattedMessage
                           id="homepageHeadline2"
                           defaultMessage="Travel stress-free"
@@ -282,7 +282,7 @@ export default function HomePage({ user }: { user: User }): ReactNode {
                           onBlur={() =>
                             setTimeout(() => setIsFocused(false), 200)
                           }
-                          className="focus:border-accent focus:ring-accent/20 w-full rounded-md border border-gray-200 bg-white px-6 py-4 text-lg shadow-sm transition-all focus:outline-none focus:ring-2"
+                          className="w-full rounded-md border border-gray-200 bg-white px-6 py-4 text-lg shadow-sm transition-all focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
                         />
                         {suggestions && suggestions.length > 0 && isFocused && (
                           <div className="absolute top-full z-10 mt-2 w-full rounded-md border border-gray-100 bg-white p-2 shadow-lg">
@@ -313,7 +313,7 @@ export default function HomePage({ user }: { user: User }): ReactNode {
                         <div className="relative flex-1">
                           <button
                             onClick={() => setShowDatePicker(!showDatePicker)}
-                            className="hover:border-accent focus:border-accent focus:ring-accent/20 flex w-full items-center rounded-md border border-gray-200 bg-white px-6 py-4 text-left text-gray-700 shadow-sm transition-all focus:outline-none focus:ring-2"
+                            className="flex w-full items-center rounded-md border border-gray-200 bg-white px-6 py-4 text-left text-gray-700 shadow-sm transition-all hover:border-primary focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
                           >
                             <CalendarIcon className="mr-2 h-5 w-5 text-gray-400" />
                             <span>
@@ -411,7 +411,7 @@ export default function HomePage({ user }: { user: User }): ReactNode {
                     transition={{ duration: 0.5 }}
                     className={clsx(
                       'relative overflow-hidden rounded-xl p-6 transition-all',
-                      index === currentFeature ? 'ring-accent ring-1' : ''
+                      index === currentFeature ? 'ring-1 ring-primary' : ''
                     )}
                   >
                     <h3 className="mb-3 text-xl font-semibold">
@@ -422,7 +422,7 @@ export default function HomePage({ user }: { user: User }): ReactNode {
                       <div className="absolute bottom-0 left-0 right-0">
                         <div className="h-1 w-full overflow-hidden rounded-xl bg-red-200">
                           <motion.div
-                            className="bg-accent h-full rounded-xl"
+                            className="h-full rounded-xl bg-primary"
                             initial={{ width: '0%' }}
                             animate={{ width: '100%' }}
                             transition={{
@@ -499,11 +499,11 @@ export default function HomePage({ user }: { user: User }): ReactNode {
                   transition={{ duration: 0.5, delay: index * 0.1 }}
                   className={clsx(
                     'relative rounded-2xl p-8 transition-all',
-                    plan.isMostPopular && 'border-accent border-2 shadow-md'
+                    plan.isMostPopular && 'border-2 border-primary shadow-md'
                   )}
                 >
                   {plan.isMostPopular && (
-                    <div className="bg-accent absolute -top-4 left-1/2 -translate-x-1/2 rounded-full px-4 py-1 text-sm font-medium text-white">
+                    <div className="absolute -top-4 left-1/2 -translate-x-1/2 rounded-full bg-primary px-4 py-1 text-sm font-medium text-white">
                       <FormattedMessage
                         id="pricing.mostPopular"
                         defaultMessage="Most popular"
@@ -547,7 +547,7 @@ export default function HomePage({ user }: { user: User }): ReactNode {
                       {plan.items.map((feature) => (
                         <li key={feature} className="flex gap-x-3">
                           <CheckIcon
-                            className="text-accent h-6 w-5 flex-none"
+                            className="h-6 w-5 flex-none text-primary"
                             aria-hidden="true"
                           />
                           <FormattedMessage
@@ -613,7 +613,7 @@ export default function HomePage({ user }: { user: User }): ReactNode {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.7 }}
-            className="from-accent to-accent/80 relative overflow-hidden rounded-3xl bg-gradient-to-r px-6 py-20 text-center text-white md:px-20"
+            className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-primary to-primary/80 px-6 py-20 text-center text-white md:px-20"
           >
             <div className="absolute inset-0 opacity-10">
               <div className="absolute -left-4 -top-4 h-32 w-32 rotate-45 rounded-xl bg-white" />

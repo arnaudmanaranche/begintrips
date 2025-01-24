@@ -256,7 +256,7 @@ export default function AccountPage({ user }: AccountPageProps): ReactNode {
           </div>
           <div className="flex justify-end">
             <span
-              className="cursor-pointer text-accent-dark"
+              className="cursor-pointer text-primary-dark"
               onClick={handleLogout}
             >
               <FormattedMessage id="logout" defaultMessage="Logout" />
@@ -277,7 +277,7 @@ export default function AccountPage({ user }: AccountPageProps): ReactNode {
             <li className="flex items-center">
               <Link
                 href="/account"
-                className="text-accent flex flex-col items-center"
+                className="flex flex-col items-center text-primary"
               >
                 <PersonIcon className="h-6 w-6" />
                 <FormattedMessage id="myAccount" defaultMessage="My account" />

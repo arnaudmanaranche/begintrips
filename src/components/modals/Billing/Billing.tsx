@@ -65,7 +65,7 @@ export function PaymentModalView({ userId }: PaymentModalViewProps): ReactNode {
               key={payment.id}
               className="border-b-[1px] border-gray-50 hover:bg-gray-50"
             >
-              <td className="px-4 py-2 font-light text-accent">$29</td>
+              <td className="px-4 py-2 font-light text-primary">$29</td>
               <td className="px-4 py-2 font-light">
                 {format(new Date(payment.created_at as string), 'MM-dd-yyyy')}
               </td>

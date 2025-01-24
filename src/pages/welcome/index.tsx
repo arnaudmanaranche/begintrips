@@ -117,7 +117,7 @@ export default function WelcomePage(): ReactNode {
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6 }}
-            className="hidden flex-[0.8] flex-col items-center justify-center bg-accent/5 px-6 py-32 lg:flex lg:px-16"
+            className="hidden flex-[0.8] flex-col items-center justify-center bg-primary/5 px-6 py-32 lg:flex lg:px-16"
           >
             <div className="w-full max-w-lg">
               <h1 className="mb-8 text-2xl font-semibold text-white">
@@ -129,7 +129,7 @@ export default function WelcomePage(): ReactNode {
                 <div className="rounded-xl bg-white p-8 shadow-sm ring-1 ring-gray-900/5">
                   <div className="space-y-6">
                     <div className="flex items-start gap-3">
-                      <GlobeIcon className="mt-1 h-5 w-5 text-accent" />
+                      <GlobeIcon className="mt-1 h-5 w-5 text-primary" />
                       <div>
                         <p className="text-sm font-medium text-gray-600">
                           <FormattedMessage
@@ -143,7 +143,7 @@ export default function WelcomePage(): ReactNode {
                       </div>
                     </div>
                     <div className="flex items-start gap-3">
-                      <CalendarIcon className="mt-1 h-5 w-5 text-accent" />
+                      <CalendarIcon className="mt-1 h-5 w-5 text-primary" />
                       <div className="space-y-3">
                         <div>
                           <p className="text-sm font-medium text-gray-600">
@@ -236,7 +236,7 @@ export default function WelcomePage(): ReactNode {
                       {intl.formatMessage(messages.noAccount)}{' '}
                       <button
                         type="button"
-                        className="font-medium text-accent hover:text-accent/80"
+                        className="font-medium text-primary hover:text-primary/80"
                         onClick={() => setForm('signup')}
                       >
                         {intl.formatMessage(messages.signUp)}
@@ -247,7 +247,7 @@ export default function WelcomePage(): ReactNode {
                       {intl.formatMessage(messages.alreadyHaveAccount)}{' '}
                       <button
                         type="button"
-                        className="font-medium text-accent hover:text-accent/80"
+                        className="font-medium text-primary hover:text-primary/80"
                         onClick={() => setForm('login')}
                       >
                         {intl.formatMessage(messages.signIn)}

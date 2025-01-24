@@ -1,6 +1,7 @@
 :root {
   --font-open-sans: 'Open Sans', sans-serif;
   --font-outfit: 'Outfit', serif;
+  --sx-color-primary: #1a4867 !important;
 }
 
 @tailwind base;
@@ -35,4 +36,8 @@ h6 {
 .sx__calendar {
   border: 0 !important;
   border-radius: 1.5rem !important;
+}
+
+.rdp-root {
+  --rdp-accent-color: #1a4867 !important;
 }

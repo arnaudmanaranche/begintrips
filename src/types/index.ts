@@ -63,7 +63,6 @@ export interface JourneyPage {
     title: string
     start: string
     end: string
-    color: string
   }[]
   journey: JourneyFormatted
 }

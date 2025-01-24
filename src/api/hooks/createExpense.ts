@@ -45,8 +45,9 @@ export const useCreateExpense = ({
 
       queryClient.setQueryData<JourneyPage>(
         QUERY_KEYS.JOURNEY(journeyId as string),
+        // @ts-expect-error TODO
         (oldData) => {
-          if (!oldData) return oldData
+          if (!oldData) return
 
           const expensesByDay = addExpenseByDay(expense, oldData.expensesByDay)
 
@@ -60,7 +61,8 @@ export const useCreateExpense = ({
               ...oldData.calendarExpenses,
               {
                 ...expense,
-                id: '14fc1a11-b7c0-4d2a-9b1a-f7b720128e03',
+                id: 'temp',
+                calendarId: 'personal',
               },
             ],
           }

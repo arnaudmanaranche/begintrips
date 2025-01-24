@@ -127,8 +127,8 @@ export default function Page({ user }: JourneyProps): ReactNode {
               />
             </h3>
           </div>
-          <div className="mb-[80px] grid h-full grid-cols-12 gap-6 px-6 lg:pb-0">
-            <div className="col-span-12 space-y-4 pt-4 lg:col-span-3">
+          <div className="mb-[80px] grid h-full grid-cols-12 gap-6 px-6 xl:pb-0">
+            <div className="col-span-12 space-y-4 pt-4 xl:col-span-3">
               <JourneyCard
                 title={
                   <FormattedMessage
@@ -151,7 +151,6 @@ export default function Page({ user }: JourneyProps): ReactNode {
                     </div>
                     <div className="absolute right-4 top-1/2 -translate-y-1/2 opacity-0 transition-opacity group-hover:opacity-100">
                       <Drawer.Trigger
-                        asChild
                         className="cursor-pointer rounded bg-primary px-2 py-1 text-xs text-white"
                         onClick={() => {
                           setIsOpen(true)
@@ -195,7 +194,6 @@ export default function Page({ user }: JourneyProps): ReactNode {
                     </div>
                     <div className="absolute right-4 top-1/2 -translate-y-1/2 opacity-0 transition-opacity group-hover:opacity-100">
                       <Drawer.Trigger
-                        asChild
                         className="cursor-pointer rounded bg-primary px-2 py-1 text-xs text-white"
                         onClick={() => {
                           setIsOpen(true)
@@ -218,7 +216,6 @@ export default function Page({ user }: JourneyProps): ReactNode {
                     </div>
                     <div className="absolute right-4 top-1/2 -translate-y-1/2 opacity-0 transition-opacity group-hover:opacity-100">
                       <Drawer.Trigger
-                        asChild
                         className="cursor-pointer rounded bg-primary px-2 py-1 text-xs text-white"
                         onClick={() => {
                           setIsOpen(true)
@@ -235,7 +232,7 @@ export default function Page({ user }: JourneyProps): ReactNode {
                 <Checklist />
               </JourneyCard>
             </div>
-            <div className="col-span-12 rounded-lg px-2 pt-4 lg:col-span-6 lg:overflow-y-scroll ">
+            <div className="col-span-12 rounded-lg px-2 pt-4 xl:col-span-6 xl:overflow-y-scroll">
               <div className="mx-auto grid max-w-4xl gap-6 pb-4 md:grid-cols-1">
                 <div className="group relative overflow-hidden rounded-md border border-black/10">
                   {/* <div className="absolute inset-0 bg-gradient-to-br from-orange-100 to-white" /> */}
@@ -297,7 +294,7 @@ export default function Page({ user }: JourneyProps): ReactNode {
                 />
               </JourneyCard>
             </div>
-            <div className="col-span-12 pt-4 lg:col-span-3">
+            <div className="col-span-12 pt-4 xl:col-span-3">
               <JourneyCard title="Budget" isFetching={isFetchingJourney}>
                 <Budget
                   totalBudget={data?.journey?.budget ?? 0}

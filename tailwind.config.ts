@@ -43,16 +43,6 @@ const config = {
       },
       colors: {
         black: '#151035',
-        // accent: {
-        //   light: '#FDBA74',
-        //   DEFAULT: '#F85231',
-        //   dark: '#EA580C',
-        // },
-        // neutral: {
-        //   light: '#F3F4F6',
-        //   DEFAULT: '#D1D5DB',
-        //   dark: '#9CA3AF',
-        // },
         info: {
           light: '#BFDBFE',
           DEFAULT: '#3B82F6',
@@ -85,7 +75,3 @@ const config = {
 } satisfies Config
 
 export default config
-
-// #113B57 / #0D3553
-// #F85231 // Primary
-// #485763/ #4E5C69

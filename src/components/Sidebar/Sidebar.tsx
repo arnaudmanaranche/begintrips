@@ -38,7 +38,7 @@ function SidebarItem({
         <div className="flex items-center space-x-2">
           <span>{label}</span>
           {!isEnabled ? (
-            <span className="bg-accent rounded-md px-2 text-xs text-white">
+            <span className="rounded-md bg-primary px-2 text-xs text-white">
               <FormattedMessage id="soon" defaultMessage="Soon" />
             </span>
           ) : null}
@@ -95,7 +95,7 @@ export function Sidebar(): ReactNode {
           }}
         >
           <li>
-            <FormattedMessage id="feedback" defaultMessage="Feedback" />
+            <FormattedMessage id="feedback" defaultMessage="Help us improve" />
           </li>
         </Drawer.Trigger>
       </ul>

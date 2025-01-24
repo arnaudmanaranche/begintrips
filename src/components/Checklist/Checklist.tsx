@@ -129,7 +129,7 @@ export function Checklist(): ReactNode {
       ) : null}
       <input
         type="text"
-        className="w-full rounded-md border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        className="w-full rounded-md border border-gray-200 p-2 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
         placeholder={intl.formatMessage({
           id: 'checklistPlaceholder',
           defaultMessage: 'Add an item and press Enter',

@@ -1,6 +1,6 @@
 import { ChevronRightIcon } from '@radix-ui/react-icons'
 import type { CalendarEventExternal } from '@schedule-x/calendar'
-import { useQueries } from '@tanstack/react-query'
+import { useQuery } from '@tanstack/react-query'
 import { addDays } from 'date-fns'
 import { motion } from 'framer-motion'
 import { useParams } from 'next/navigation'
@@ -27,15 +27,15 @@ import { useDrawerActions } from '../Drawer.Provider'
 
 interface AddExpenseViewProps {
   selectedExpense: {
-    id: string
+    id?: string
     startDate: string
     startTime: string
     endTime: string
     endDate?: string
     name: string
     amount: number
-    category_id: string
-    categories: {
+    category_id?: string
+    categories?: {
       name: string
     }
   }
@@ -66,25 +66,16 @@ export function AddExpenseView({
     journeyId: journeyId as string,
   })
   const [isOnSeveralDays, setOnSeveralDays] = useState(false)
-  const { setIsOpen } = useDrawerActions()
+  const { setIsOpen, setSelectedExpense } = useDrawerActions()
 
-  const data = useQueries({
-    queries: [
-      {
-        queryKey: QUERY_KEYS.USER_FAVORITE_CATEGORIES(),
-        queryFn: () => getUserFavoriteCategories(),
-      },
-      {
-        queryKey: QUERY_KEYS.JOURNEY(journeyId as string),
-        queryFn: () => getJourney({ journeyId: journeyId as string }),
-      },
-    ],
-    combine: (results) => {
-      return {
-        data: results.map((result) => result.data),
-        pending: results.some((result) => result.isPending),
-      }
-    },
+  const { data: userFavoriteCategories } = useQuery({
+    queryKey: QUERY_KEYS.USER_FAVORITE_CATEGORIES(),
+    queryFn: () => getUserFavoriteCategories(),
+  })
+
+  const { data } = useQuery({
+    queryKey: QUERY_KEYS.JOURNEY(journeyId as string),
+    queryFn: () => getJourney({ journeyId: journeyId as string }),
   })
 
   const { handleCreateExpense, isPending, isError, error } = useCreateExpense({
@@ -99,6 +90,18 @@ export function AddExpenseView({
   const { handleUpdateExpense, isPending: isPendingUpdate } = useUpdateExpense({
     onSuccessCallback: () => {
       setIsOpen(false)
+      setSelectedExpense({
+        startDate: '',
+        endTime: '',
+        startTime: '',
+        id: '',
+        category_id: '',
+        categories: {
+          name: '',
+        },
+        name: '',
+        amount: 0,
+      })
       if (calendarRef) {
         calendarRef.current(
           newExpense as unknown as CalendarEventExternal,
@@ -107,9 +110,22 @@ export function AddExpenseView({
       }
     },
   })
+
   const { handleDeleteExpense, isPending: isPendingDelete } = useDeleteExpense({
     onSuccessCallback: () => {
       setIsOpen(false)
+      setSelectedExpense({
+        startDate: '',
+        endTime: '',
+        startTime: '',
+        id: '',
+        category_id: '',
+        categories: {
+          name: '',
+        },
+        name: '',
+        amount: 0,
+      })
       if (calendarRef) {
         calendarRef.current(
           newExpense as unknown as CalendarEventExternal,
@@ -124,24 +140,28 @@ export function AddExpenseView({
       const isChecked = e.target.checked
       setOnSeveralDays(isChecked)
 
-      if (isChecked) {
+      if (isChecked && data) {
         if (newExpense?.startDate !== ' ') {
           setNewExpense((prev) => ({
             ...prev,
-            endDate: formatDate(
-              addDays(new Date(prev.startDate), 1),
-              'yyyy-MM-dd'
-            ),
+            endDate:
+              newExpense.startDate.split(' ')[0] ===
+              formatDate(new Date(data.journey.returnDate), 'yyyy-MM-dd')
+                ? formatDate(new Date(prev.startDate), 'yyyy-MM-dd')
+                : formatDate(
+                    addDays(new Date(prev.startDate), 1),
+                    'yyyy-MM-dd'
+                  ),
           }))
         } else {
           setNewExpense((prev) => ({
             ...prev,
             startDate: formatDate(
-              new Date(data.data.journey.departureDate),
+              new Date(data.journey.departureDate),
               'yyyy-MM-dd'
             ),
             endDate: formatDate(
-              addDays(new Date(data.data.journey.departureDate), 1),
+              addDays(new Date(data.journey.departureDate), 1),
               'yyyy-MM-dd'
             ),
           }))
@@ -154,7 +174,7 @@ export function AddExpenseView({
         }))
       }
     },
-    [data.data[1].journey.departureDate, newExpense?.startDate]
+    [data, newExpense?.startDate]
   )
 
   const handleOnChangeStartTime = (e: ChangeEvent<HTMLInputElement>) => {
@@ -163,7 +183,7 @@ export function AddExpenseView({
     setStartTime(time)
 
     setNewExpense((prev) => {
-      const [date] = prev.startDate.split(' ') // Extract only the date part
+      const [date] = prev.startDate.split(' ')
       const newStartDate = `${date} ${time}`
       const newEndDate = endTime < time ? newStartDate : prev.endDate
 
@@ -185,15 +205,19 @@ export function AddExpenseView({
     setEndTime(time)
 
     setNewExpense((prev) => {
-      const [date] = prev.endDate.split(' ')
-      return {
-        ...prev,
-        endDate: `${date} ${time}`,
+      if (prev.endDate) {
+        const [date] = prev.endDate.split(' ')
+        return {
+          ...prev,
+          endDate: `${date} ${time}`,
+        }
       }
+
+      return prev
     })
   }
 
-  function handleDaySelect(date: DateRange | Date | undefined) {
+  const handleDaySelect = (date: DateRange | Date | undefined) => {
     if (!date) return
 
     if (!isOnSeveralDays) {
@@ -209,10 +233,6 @@ export function AddExpenseView({
         endDate: formatDate((date as DateRange).to as Date, 'yyyy-MM-dd'),
       }))
     }
-  }
-
-  if (data.pending) {
-    return null
   }
 
   return (
@@ -258,16 +278,16 @@ export function AddExpenseView({
             })
           }
         />
-        <div className="flex flex-col space-y-1">
+        <div className="relative flex flex-col space-y-1">
           <label
             htmlFor="expense-category"
-            className="text-accent px-4 text-xs"
+            className="text-accent pointer-events-none absolute -top-2 left-3 bg-white px-1 text-xs transition-all duration-300"
           >
             <FormattedMessage id="categories" defaultMessage="Categories" />
           </label>
           <select
             id="expense-category"
-            className="appearance-none rounded-md border-2 border-gray-100 bg-slate-50 px-4 py-4 outline-none transition-all placeholder:text-black/50 focus:border-neutral-dark focus:outline-none"
+            className="focus:border-accent focus:ring-accent appearance-none rounded-md border border-gray-300 px-4 py-4 outline-none transition-all focus:outline-none focus:ring focus:ring-opacity-40"
             onChange={(e) => {
               setNewExpense({
                 ...newExpense,
@@ -277,9 +297,15 @@ export function AddExpenseView({
                 },
               })
             }}
-            defaultValue={selectedExpense.category_id ?? data.data[0][0].id}
+            defaultValue={newExpense.category_id as string}
           >
-            {data.data[0].map((category) => {
+            <option value="" disabled>
+              <FormattedMessage
+                id="selectCategory"
+                defaultMessage="Select category"
+              />
+            </option>
+            {userFavoriteCategories?.map((category) => {
               return (
                 <option key={category.id} value={category.id}>
                   {category.name}
@@ -319,24 +345,24 @@ export function AddExpenseView({
                   selectedDates={{
                     from: newExpense.startDate
                       ? new Date(newExpense.startDate)
-                      : new Date(data.data[1].journey.departureDate),
+                      : new Date(data?.journey.departureDate as string),
                     to: newExpense.endDate
                       ? new Date(newExpense.endDate)
                       : addDays(
-                          new Date(data.data[1].journey.departureDate),
+                          new Date(data?.journey.departureDate as string),
                           1
                         ),
                   }}
-                  minDate={new Date(data.data[1].journey.departureDate)}
-                  maxDate={new Date(data.data[1].journey.returnDate)}
+                  minDate={new Date(data?.journey.departureDate as string)}
+                  maxDate={new Date(data?.journey.returnDate as string)}
                   mode="range"
                   onSelectDate={handleDaySelect}
                 />
               ) : (
                 <InputTime
                   selectedDates={new Date(newExpense.startDate)}
-                  minDate={new Date(data.data[1].journey.departureDate)}
-                  maxDate={new Date(data.data[1].journey.returnDate)}
+                  minDate={new Date(data?.journey.departureDate as string)}
+                  maxDate={new Date(data?.journey.returnDate as string)}
                   mode="single"
                   onSelectDate={handleDaySelect}
                 />
@@ -390,11 +416,7 @@ export function AddExpenseView({
                 onClick={() => {
                   handleUpdateExpense(newExpense)
                 }}
-                isDisabled={
-                  isPendingUpdate ||
-                  isPendingDelete ||
-                  newExpense === selectedExpense
-                }
+                isDisabled={isPendingUpdate || isPendingDelete}
               >
                 {isPendingUpdate ? (
                   <FormattedMessage
@@ -412,7 +434,13 @@ export function AddExpenseView({
           ) : (
             <Button
               onClick={() => handleCreateExpense({ expense: newExpense })}
-              isDisabled={isPending}
+              isDisabled={
+                isPending ||
+                newExpense.name === '' ||
+                newExpense.category_id === '' ||
+                newExpense.startDate === '' ||
+                newExpense.endDate === ''
+              }
             >
               {isPending ? (
                 <FormattedMessage

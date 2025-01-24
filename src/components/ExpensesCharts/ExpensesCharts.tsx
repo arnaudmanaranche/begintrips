@@ -11,17 +11,22 @@ import {
 } from 'victory'
 
 import type { ExpensesByDay } from '@/types'
+import { formatDate } from '@/utils/date'
 import { colorsAssociated } from '@/utils/expense-labels'
 
 interface ExpensesChartsProps {
   expensesByDay: ExpensesByDay
 }
 
+interface TransformedData {
+  date: string
+  [key: string]: number | string
+}
+
 export function ExpensesCharts({
   expensesByDay,
 }: ExpensesChartsProps): ReactNode {
-  console.log('expensesByDay', expensesByDay)
-  const transformedData = Object.entries(expensesByDay).map(
+  const transformedData: TransformedData[] = Object.entries(expensesByDay).map(
     ([date, expenses]) => {
       const categories = expenses.reduce(
         (acc: { [key: string]: number }, expense) => {
@@ -37,9 +42,11 @@ export function ExpensesCharts({
   )
 
   const categories = [
-    ...new Set(
-      transformedData.flatMap((d) =>
-        Object.keys(d).filter((key) => key !== 'date')
+    ...Array.from(
+      new Set(
+        transformedData.flatMap((d) =>
+          Object.keys(d).filter((key) => key !== 'date')
+        )
       )
     ),
   ]
@@ -65,7 +72,9 @@ export function ExpensesCharts({
           symbol: { fill: colorsAssociated[category] || '#ccc' }, // Default color if not mapped
         }))}
       />
-      <VictoryAxis tickFormat={transformedData.map((_, index) => index)} />
+      <VictoryAxis
+        tickFormat={transformedData.map((d) => formatDate(d.date, 'dd MMM'))}
+      />
       <VictoryAxis dependentAxis tickFormat={(x) => `$${x}`} />
       <VictoryStack>
         {categories.map((category) => (

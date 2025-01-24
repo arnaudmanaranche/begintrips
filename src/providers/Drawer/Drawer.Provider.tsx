@@ -24,6 +24,9 @@ interface DrawerState {
     name: string
     id?: string
     amount: number
+    categories?: {
+      name: string
+    }
     category_id?: string
   }
 }
@@ -39,12 +42,16 @@ interface DrawerActions {
     name,
     endDate,
     id,
+    categories,
     category_id,
   }: {
     startDate: string
     startTime: string
     name: string
     amount: number
+    categories: {
+      name: string
+    }
     endTime: string
     endDate?: string
     id?: string
@@ -87,6 +94,9 @@ export function DrawerProvider({
     amount: number
     endDate?: string
     id?: string
+    categories?: {
+      name: string
+    }
     category_id?: string
   }>({
     startDate: '',
@@ -94,10 +104,15 @@ export function DrawerProvider({
     startTime: '',
     id: '',
     category_id: '',
+    categories: {
+      name: '',
+    },
     name: '',
     amount: 0,
   })
-  const ref = useRef(null)
+  const ref = useRef<
+    (e: CalendarEventExternal, action?: 'patch' | 'delete') => void | null
+  >(() => {})
 
   const matches = useMediaQuery('(min-width: 1024px)')
 
@@ -115,7 +130,21 @@ export function DrawerProvider({
         <Drawer.Root
           direction={matches ? 'right' : 'bottom'}
           open={isOpen}
-          onOpenChange={setIsOpen}
+          onOpenChange={(open) => {
+            setIsOpen(open)
+            setSelectedExpense({
+              startDate: '',
+              endTime: '',
+              startTime: '',
+              id: '',
+              category_id: '',
+              categories: {
+                name: '',
+              },
+              name: '',
+              amount: 0,
+            })
+          }}
         >
           <Drawer.Portal>
             <Drawer.Overlay className="fixed inset-0 bg-black/40" />

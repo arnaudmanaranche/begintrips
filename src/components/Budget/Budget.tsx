@@ -26,7 +26,7 @@ export function Budget({ budgetSpent, totalBudget }: BudgetProps): ReactNode {
                     setCurrentType('EditTrip')
                     setIsOpen(true)
                   }}
-                  className="text-accent cursor-pointer"
+                  className="cursor-pointer text-primary"
                 >
                   <FormattedMessage
                     id="addBudget"

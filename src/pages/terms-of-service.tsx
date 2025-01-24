@@ -75,7 +75,7 @@ function TermsOfServicePage(): ReactNode {
       <section className="bg-white px-6 pt-20 text-lg text-black md:px-0 md:py-20">
         <div className="mx-auto max-w-3xl">
           <div className="flex flex-col justify-center space-y-10">
-            <h1 className="text-5xl text-accent-dark">
+            <h1 className="text-5xl text-primary-dark">
               <FormattedMessage
                 id="termsOfServicePage.title"
                 defaultMessage="Terms of service"
