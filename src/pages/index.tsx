@@ -52,8 +52,6 @@ export default function HomePage({ user }: { user: User }): ReactNode {
   })
   const [isMobile, setIsMobile] = useState(false)
 
-  const currency = localStorage.getItem('currency')
-
   useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.innerWidth < 768)
@@ -524,7 +522,7 @@ export default function HomePage({ user }: { user: User }): ReactNode {
                         <FormattedNumber
                           value={plan.price}
                           style="currency"
-                          currency={currency ?? 'EUR'}
+                          currency="EUR"
                           currencyDisplay="narrowSymbol"
                         />
                       </span>
