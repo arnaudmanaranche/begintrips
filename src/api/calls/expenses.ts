@@ -1,5 +1,4 @@
 import type { AddExpenseWithCategories, Expense, UpdateExpense } from '@/types'
-import { isValidDateTimeFormat } from '@/utils/date'
 
 import { apiInstance } from '../config'
 
