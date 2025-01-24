@@ -1,31 +1,11 @@
 import { eachDayOfInterval, formatISO } from 'date-fns'
-import groupBy from 'lodash.groupby'
 
 import type {
   DateString,
   Day,
-  ExpensesByCategory,
   ExpensesByDay,
   ExpenseWithCategories,
 } from '@/types'
-
-export const groupedExpensesByCategory = ({
-  expenses,
-}: {
-  expenses: ExpenseWithCategories[]
-}): ExpensesByCategory => {
-  const expensesByCategory = groupBy(expenses, 'categories.name')
-
-  const sortedExpensesByCategory = Object.keys(expensesByCategory)
-    .sort((a, b) => a.localeCompare(b))
-    .reduce((acc: ExpensesByCategory, key) => {
-      const categoryKey = key
-      acc[categoryKey] = expensesByCategory[categoryKey] || []
-      return acc
-    }, {})
-
-  return sortedExpensesByCategory
-}
 
 export const groupedExpensesByDay = ({
   days,

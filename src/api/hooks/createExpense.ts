@@ -3,10 +3,9 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useParams } from 'next/navigation'
 
 import type { AddExpenseWithCategories, Expense, JourneyPage } from '@/types'
-import { addExpenseByCategory } from '@/utils/add-expense-by-category'
 import { addExpenseByDay } from '@/utils/add-expense-by-day'
 
-import { createExpense } from '../calls/days'
+import { createExpense } from '../calls/expenses'
 import { QUERY_KEYS } from '../queryKeys'
 
 interface UseCreateExpenseProps {
@@ -46,22 +45,26 @@ export const useCreateExpense = ({
 
       queryClient.setQueryData<JourneyPage>(
         QUERY_KEYS.JOURNEY(journeyId as string),
+        // @ts-expect-error TODO
         (oldData) => {
-          if (!oldData) return oldData
+          if (!oldData) return
 
-          const expensesByCategory = addExpenseByCategory(
-            expense,
-            oldData.expensesByCategory
-          )
           const expensesByDay = addExpenseByDay(expense, oldData.expensesByDay)
 
           const newBudgetSpent = oldData.budgetSpent + expense.amount
 
           return {
             ...oldData,
-            expensesByCategory,
             expensesByDay,
             budgetSpent: newBudgetSpent,
+            calendarExpenses: [
+              ...oldData.calendarExpenses,
+              {
+                ...expense,
+                id: 'temp',
+                calendarId: 'personal',
+              },
+            ],
           }
         }
       )

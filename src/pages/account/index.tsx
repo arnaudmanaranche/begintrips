@@ -8,6 +8,7 @@ import {
 import { loadStripe } from '@stripe/stripe-js'
 import Avatar from 'boring-avatars'
 import type { GetServerSideProps } from 'next'
+import { Open_Sans, Outfit } from 'next/font/google'
 import Head from 'next/head'
 import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
@@ -45,6 +46,20 @@ const messages = defineMessages({
   },
 })
 
+const outfit = Outfit({
+  subsets: ['latin'],
+  weight: ['400', '600'],
+  variable: '--font-outfit',
+  display: 'optional',
+})
+
+const openSans = Open_Sans({
+  subsets: ['latin'],
+  weight: ['400', '500', '600'],
+  variable: '--font-open-sans',
+  display: 'optional',
+})
+
 function FormattedTitle({ modalType }: { modalType: string | null }) {
   switch (modalType) {
     case 'Change password':
@@ -69,6 +84,7 @@ export default function AccountPage({ user }: AccountPageProps): ReactNode {
   const [isLoading, setIsLoading] = useState(false)
   const { resetJourney } = useOnboardingStore()
   const [open, setOpen] = useState(false)
+  const [currency, setCurrency] = useState<string | null>(null)
   const [modalType, setModalType] = useState<
     'Change password' | 'Payments' | null
   >(null)
@@ -129,6 +145,10 @@ export default function AccountPage({ user }: AccountPageProps): ReactNode {
     }
   }
 
+  useEffect(() => {
+    setCurrency(localStorage.getItem('currency'))
+  }, [])
+
   return (
     <Dialog.Root
       open={open}
@@ -176,7 +196,6 @@ export default function AccountPage({ user }: AccountPageProps): ReactNode {
               size={70}
               colors={['#fb6900', '#E57C59', '#9d6969', '#59c2c4', '#304141']}
             />
-
             <span className="text-black">{user.email}</span>
           </div>
           <div className="space-y-4">
@@ -191,10 +210,31 @@ export default function AccountPage({ user }: AccountPageProps): ReactNode {
               isLoading={isLoading}
               onCheckout={handleOnCheckout}
             />
+            <div className="flex cursor-pointer items-center justify-between rounded-md bg-white p-4 ring-1 ring-slate-200">
+              <label className="text-black" htmlFor="currency">
+                <FormattedMessage
+                  id="baseCurrency"
+                  defaultMessage="Base currency"
+                />
+              </label>
+              <select
+                className="text-black/50"
+                name="currency"
+                id="currency"
+                defaultValue={currency ?? 'EUR'}
+                onChange={(e) => {
+                  localStorage.setItem('currency', e.target.value)
+                }}
+              >
+                <option value="USD">USD</option>
+                <option value="EUR">EUR</option>
+                <option value="GBP">GBP</option>
+              </select>
+            </div>
             <Dialog.Portal>
               <Dialog.Overlay className="fixed inset-0 bg-black/30 data-[state=open]:animate-overlayShow" />
               <Dialog.Content
-                className="fixed left-[50%] top-[50%] max-h-[90vh] min-h-[500px] w-[90vw] max-w-[650px] translate-x-[-50%] translate-y-[-50%] rounded-[6px] bg-white p-[25px] shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] focus:outline-none data-[state=open]:animate-contentShow"
+                className={`fixed left-[50%] top-[50%] max-h-[90vh] min-h-[500px] w-[90vw] max-w-[650px] translate-x-[-50%] translate-y-[-50%] rounded-[6px] bg-white p-[25px] shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] focus:outline-none data-[state=open]:animate-contentShow ${outfit.variable} ${openSans.variable}`}
                 aria-describedby={undefined}
               >
                 <div className="mb-5 flex justify-between">
@@ -257,7 +297,7 @@ export default function AccountPage({ user }: AccountPageProps): ReactNode {
           </div>
           <div className="flex justify-end">
             <span
-              className="cursor-pointer text-accent-dark"
+              className="cursor-pointer text-primary-dark"
               onClick={handleLogout}
             >
               <FormattedMessage id="logout" defaultMessage="Logout" />
@@ -278,7 +318,7 @@ export default function AccountPage({ user }: AccountPageProps): ReactNode {
             <li className="flex items-center">
               <Link
                 href="/account"
-                className="text-accent flex flex-col items-center"
+                className="flex flex-col items-center text-primary"
               >
                 <PersonIcon className="h-6 w-6" />
                 <FormattedMessage id="myAccount" defaultMessage="My account" />

@@ -17,11 +17,11 @@ export const PromotionSection = (): ReactNode => {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6 }}
-      className="relative my-20 overflow-hidden rounded-2xl bg-gradient-to-br from-accent-light/40 to-accent/10 px-6 py-16 sm:px-12 lg:px-16"
+      className="relative my-20 overflow-hidden rounded-2xl bg-gradient-to-br from-primary-light/40 to-primary/10 px-6 py-16 sm:px-12 lg:px-16"
     >
       <div className="absolute inset-0 opacity-10">
-        <div className="absolute -left-4 -top-4 h-64 w-64 rounded-full bg-accent" />
-        <div className="absolute -bottom-10 -right-10 h-96 w-96 rounded-full bg-accent-light" />
+        <div className="absolute -left-4 -top-4 h-64 w-64 rounded-full bg-primary" />
+        <div className="absolute -bottom-10 -right-10 h-96 w-96 rounded-full bg-primary-light" />
       </div>
       <div className="relative">
         <div className="mx-auto max-w-2xl text-center">
@@ -56,7 +56,7 @@ export const PromotionSection = (): ReactNode => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.4 + index * 0.1 }}
-                className="relative rounded-xl bg-white/60 p-6 shadow-sm ring-1 ring-accent/5 backdrop-blur-sm"
+                className="relative rounded-xl bg-white/60 p-6 shadow-sm ring-1 ring-primary/5 backdrop-blur-sm"
               >
                 <h3 className="mt-4 text-lg font-semibold text-gray-900">
                   {feature.title}

@@ -31,33 +31,33 @@ const emojisAssociated: Record<ExpenseCategoryEnum, string> = {
 }
 
 export const colorsAssociated: Record<string, string> = {
-  attraction: '#FF5722',
-  bar: '#E65100',
-  bike: '#FF5722',
-  bus: '#E65100',
-  car: '#7986CB',
-  coffee: '#7986CB',
-  concert: '#4CAF50',
-  culture: '#795548',
-  event: '#F44336',
-  ferry: '#607D8B',
-  flight: '#673AB7',
-  food: '#4CAF50',
-  gas: '#FFEB3B',
-  grocery: '#4CAF50',
-  hotel: '#FF9800',
-  metro: '#3F51B5',
-  monument: '#E91E63',
-  movie: '#FF9800',
-  museum: '#00BCD4',
-  other: '#2196F3',
-  parking: '#607D8B',
-  restaurant: '#9C27B0',
-  shopping: '#8BC34A',
-  sport: '#FFC107',
-  taxi: '#E91E63',
-  train: '#2196F3',
-  transport: '#3F51B5',
+  attraction: '#A96A5B', // Muted reddish brown
+  bar: '#6D4423', // Muted brown
+  bike: '#A96A5B', // Similar muted reddish brown as 'attraction'
+  bus: '#705634', // Muted olive brown
+  car: '#6C7C96', // Muted steel blue
+  coffee: '#5B6652', // Muted sage green
+  concert: '#739772', // Muted green
+  culture: '#8B6A5B', // Muted taupe
+  event: '#875D5A', // Muted warm brown
+  ferry: '#7C898B', // Muted slate gray
+  flight: '#725C9C', // Muted lavender
+  food: '#6E8A6D', // Muted olive green
+  gas: '#B4A65B', // Muted goldenrod
+  grocery: '#8D9E79', // Muted gray-green
+  hotel: '#A27B4F', // Muted tan
+  metro: '#61688C', // Muted indigo
+  monument: '#89637B', // Muted plum
+  movie: '#A68852', // Muted ochre
+  museum: '#6093A3', // Muted teal
+  other: '#567985', // Muted blue-gray
+  parking: '#7B8A8E', // Muted slate
+  restaurant: '#845B8D', // Muted violet
+  shopping: '#7F8B65', // Muted moss green
+  sport: '#9B8856', // Muted mustard
+  taxi: '#9E7D70', // Muted dusty rose
+  train: '#657A96', // Muted denim
+  transport: '#5F647A', // Muted navy
 }
 
 const mappedExpensesWithEmojis = (

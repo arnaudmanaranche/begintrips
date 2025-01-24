@@ -1,65 +1,96 @@
 import type { ReactNode } from 'react'
-import { useMemo } from 'react'
 import {
-  Bar,
-  BarChart,
-  Cell,
-  ResponsiveContainer,
-  XAxis,
-  YAxis,
-} from 'recharts'
+  VictoryAxis,
+  VictoryBar,
+  VictoryChart,
+  VictoryLegend,
+  VictoryStack,
+  VictoryTheme,
+  VictoryTooltip,
+  VictoryZoomContainer,
+} from 'victory'
 
-import type { ExpensesByCategory } from '@/types'
+import type { ExpensesByDay } from '@/types'
+import { formatDate } from '@/utils/date'
 import { colorsAssociated } from '@/utils/expense-labels'
 
 interface ExpensesChartsProps {
-  expensesByCategory: ExpensesByCategory
+  expensesByDay: ExpensesByDay
+}
+
+interface TransformedData {
+  date: string
+  [key: string]: number | string
 }
 
 export function ExpensesCharts({
-  expensesByCategory,
+  expensesByDay,
 }: ExpensesChartsProps): ReactNode {
-  const labelBackgroundColors = useMemo(() => {
-    return Object.keys(expensesByCategory).map((k) => {
-      const color = colorsAssociated[k]
-      return color
-    })
-  }, [expensesByCategory])
+  const transformedData: TransformedData[] = Object.entries(expensesByDay).map(
+    ([date, expenses]) => {
+      const categories = expenses.reduce(
+        (acc: { [key: string]: number }, expense) => {
+          acc[expense.categories.name] =
+            (acc[expense.categories.name] || 0) + expense.amount
+          return acc
+        },
+        {}
+      )
 
-  const data = useMemo(() => {
-    return (
-      expensesByCategory &&
-      Object.keys(expensesByCategory).map((category) => {
-        const totalAmount = expensesByCategory[category].reduce(
-          (sum, expense) => sum + expense.amount,
-          0
+      return { date, ...categories }
+    }
+  )
+
+  const categories = [
+    ...Array.from(
+      new Set(
+        transformedData.flatMap((d) =>
+          Object.keys(d).filter((key) => key !== 'date')
         )
-
-        return {
-          name: category,
-          uv: totalAmount,
-        }
-      })
-    )
-  }, [expensesByCategory])
+      )
+    ),
+  ]
 
   return (
-    <ResponsiveContainer width="100%" height="100%">
-      <div className="flex justify-center">
-        <BarChart
-          width={Object.keys(expensesByCategory).length * 120}
-          height={200}
-          data={data}
-        >
-          <XAxis dataKey="name" />
-          <YAxis />
-          <Bar dataKey="uv" fill="black" height={400}>
-            {data.map((_, index) => (
-              <Cell key={`cell-${index}`} fill={labelBackgroundColors[index]} />
-            ))}
-          </Bar>
-        </BarChart>
-      </div>
-    </ResponsiveContainer>
+    <VictoryChart
+      domain={{ x: [0, 7] }}
+      theme={VictoryTheme.clean}
+      containerComponent={<VictoryZoomContainer />}
+    >
+      <VictoryLegend
+        x={50}
+        y={10}
+        orientation="horizontal"
+        style={{
+          labels: { fontSize: 10 },
+          border: { stroke: 'none' },
+          title: { fontSize: 12 },
+        }}
+        data={categories.map((category) => ({
+          name: category,
+          symbol: { fill: colorsAssociated[category] || '#ccc' }, // Default color if not mapped
+        }))}
+      />
+      <VictoryAxis
+        tickFormat={transformedData.map((d) => formatDate(d.date, 'dd MMM'))}
+      />
+      <VictoryAxis dependentAxis tickFormat={(x) => `$${x}`} />
+      <VictoryStack>
+        {categories.map((category) => (
+          <VictoryBar
+            key={category}
+            data={transformedData.map((d) => ({
+              x: d.date,
+              y: d[category] || 0,
+            }))}
+            labels={({ datum }) => datum.y}
+            labelComponent={<VictoryTooltip />}
+            style={{
+              data: { fill: colorsAssociated[category] || '#ccc' }, // Default color if not mapped
+            }}
+          />
+        ))}
+      </VictoryStack>
+    </VictoryChart>
   )
 }

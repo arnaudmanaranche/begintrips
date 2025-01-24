@@ -26,7 +26,7 @@ export function Footer(): ReactNode {
               <li>
                 <Link
                   href="/blog"
-                  className="text-sm text-gray-600 hover:text-accent"
+                  className="text-sm text-gray-600 hover:text-primary"
                 >
                   <FormattedMessage id="blog" defaultMessage="Blog" />
                 </Link>
@@ -34,7 +34,7 @@ export function Footer(): ReactNode {
               <li>
                 <Link
                   href="/#faq"
-                  className="text-sm text-gray-600 hover:text-accent"
+                  className="text-sm text-gray-600 hover:text-primary"
                 >
                   <FormattedMessage id="faq" defaultMessage="FAQ" />
                 </Link>
@@ -49,7 +49,7 @@ export function Footer(): ReactNode {
               <li>
                 <Link
                   href="/privacy-policy"
-                  className="text-sm text-gray-600 hover:text-accent"
+                  className="text-sm text-gray-600 hover:text-primary"
                 >
                   <FormattedMessage
                     id="privacyPolicy"
@@ -60,7 +60,7 @@ export function Footer(): ReactNode {
               <li>
                 <Link
                   href="/terms-of-service"
-                  className="text-sm text-gray-600 hover:text-accent"
+                  className="text-sm text-gray-600 hover:text-primary"
                 >
                   <FormattedMessage
                     id="termsOfService"
@@ -78,7 +78,7 @@ export function Footer(): ReactNode {
               <li>
                 <Link
                   href="https://www.linkedin.com/company/begintrips/"
-                  className="text-sm text-gray-600 hover:text-accent"
+                  className="text-sm text-gray-600 hover:text-primary"
                   rel="noreferrer"
                   target="_blank"
                 >
@@ -88,7 +88,7 @@ export function Footer(): ReactNode {
               <li>
                 <Link
                   href="https://www.instagram.com/begintrips_/"
-                  className="text-sm text-gray-600 hover:text-accent"
+                  className="text-sm text-gray-600 hover:text-primary"
                   rel="noreferrer"
                   target="_blank"
                 >

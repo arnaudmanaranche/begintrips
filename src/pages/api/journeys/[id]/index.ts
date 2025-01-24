@@ -2,10 +2,7 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 
 import createClient from '@/libs/supabase/api'
 import type { ExpenseWithCategories } from '@/types'
-import {
-  groupedExpensesByCategory,
-  groupedExpensesByDay,
-} from '@/utils/groupe-expenses'
+import { groupedExpensesByDay } from '@/utils/groupe-expenses'
 
 export default async function handler(
   req: NextApiRequest,
@@ -33,6 +30,11 @@ export default async function handler(
 
     const locale = req.headers['accept-language']?.split('-')[0] || 'en'
 
+    const formattedDestination = {
+      id: '',
+      name: '',
+    }
+
     try {
       const response = await fetch(
         `https://api.mapbox.com/search/geocode/v6/forward?q=${journey.destination}&language=${locale}&access_token=${process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN}`
@@ -41,7 +43,8 @@ export default async function handler(
       const data = await response.json()
 
       if (data.features.length > 0) {
-        journey.destination = data.features[0]?.properties.name
+        formattedDestination.id = journey.destination
+        formattedDestination.name = data.features[0]?.properties.name
       } else {
         return res.status(500).json({
           message: `Error fetching origin for journey ${id}`,
@@ -84,13 +87,55 @@ export default async function handler(
       expenses: expenses.flatMap((e) => e) as ExpenseWithCategories[],
     })
 
-    const expensesByCategory = groupedExpensesByCategory({
-      expenses: expenses as ExpenseWithCategories[],
+    const calendarExpenses = expenses.map((expense) => {
+      return {
+        id: expense.id,
+        title: expense.name,
+        start: expense.startDate,
+        amount: expense.amount,
+        category_id: expense.category_id,
+        categories: {
+          name: expense.categories?.name,
+        },
+        end: expense.endDate,
+        calendarId: 'personal',
+      }
     })
 
-    res
-      .status(200)
-      .json({ journey, days, budgetSpent, expensesByCategory, expensesByDay })
+    res.status(200).json({
+      journey: {
+        ...journey,
+        destination: formattedDestination,
+      },
+      days,
+      budgetSpent,
+      expensesByDay,
+      calendarExpenses,
+    })
+  } else if (req.method === 'PATCH') {
+    const { destination, budget, departureDate, returnDate } = req.body
+
+    const { error } = await supabase
+      .from('journeys')
+      .update({
+        destination,
+        budget,
+        departureDate,
+        returnDate,
+      })
+      .eq('id', id!)
+      .eq('userId', user?.id as string)
+      .select('*')
+      .single()
+
+    if (error) {
+      return res.status(500).json({
+        message: 'Error updating journey',
+        cause: error,
+      })
+    }
+
+    res.status(200).json({ message: 'Journey updated' })
   } else {
     res.status(405).json({
       message: 'Method not allowed',

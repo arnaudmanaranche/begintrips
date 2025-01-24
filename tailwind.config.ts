@@ -43,21 +43,31 @@ const config = {
       },
       colors: {
         black: '#151035',
-        accent: {
-          light: '#FDBA74',
-          DEFAULT: '#F85231',
-          dark: '#EA580C',
-        },
-        neutral: {
-          light: '#F3F4F6',
-          DEFAULT: '#D1D5DB',
-          dark: '#9CA3AF',
-        },
         info: {
           light: '#BFDBFE',
           DEFAULT: '#3B82F6',
           dark: '#1D4ED8',
         },
+        primary: {
+          DEFAULT: '#F85231',
+          light: '#FF6E4E',
+          dark: '#D64326',
+        },
+        accent: {
+          base: '#113B57',
+          light: '#1A4867',
+          dark: '#0D3553',
+        },
+        neutral: {
+          base: '#4E5C69',
+          light: '#6B7985',
+          dark: '#3C4854',
+        },
+        background: {
+          light: '#F8FAFC',
+          dark: '#1E293B',
+        },
+        muted: '#485763',
       },
     },
   },

@@ -1,4 +1,5 @@
 import type { SearchBoxSuggestion, SessionToken } from '@mapbox/search-js-core'
+import { CalendarIcon } from '@radix-ui/react-icons'
 import type { User } from '@supabase/supabase-js'
 import { useMutation } from '@tanstack/react-query'
 import clsx from 'clsx'
@@ -9,7 +10,9 @@ import Head from 'next/head'
 import { useSearchParams } from 'next/navigation'
 import { useRouter } from 'next/router'
 import type { ChangeEvent, ReactNode } from 'react'
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
+import type { DateRange } from 'react-day-picker'
+import { DayPicker } from 'react-day-picker'
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl'
 
 import { createJourney } from '@/api/calls/journeys'
@@ -17,6 +20,7 @@ import { Button } from '@/components/Button/Button'
 import { Callout } from '@/components/Callout/Callout'
 import { Input } from '@/components/Input/Input'
 import { Logo } from '@/components/Logo/Logo'
+import { useMediaQuery } from '@/hooks/useMediaQuery'
 import { useSearchDestination } from '@/hooks/useSearchDestination'
 import { createClient as createServerClient } from '@/libs/supabase/server-props'
 import { useOnboardingStore } from '@/stores/onboarding.store'
@@ -126,13 +130,13 @@ export default function Onboarding(): ReactNode {
           </div>
           <div className="relative h-2 min-w-[200px] rounded-sm bg-slate-100">
             <div
-              className="absolute inset-0 z-20 h-2 rounded-sm bg-accent transition-all duration-500"
+              className="absolute inset-0 z-20 h-2 rounded-sm bg-primary transition-all duration-500"
               style={{ width: progressWidth }}
             />
           </div>
         </div>
       </header>
-      <main className="flex flex-1 items-center justify-center overflow-y-auto p-4">
+      <main className="flex flex-1 justify-center overflow-y-auto">
         <Steps step={currentStep} error={error} />
       </main>
       <footer>
@@ -308,18 +312,40 @@ function Step1({ error }: { error: ReactNode }) {
 
 function Step2({ error }: { error: ReactNode }) {
   const { journey, updateJourney } = useOnboardingStore()
-
-  const handleDepartureDateChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const selectedDepartureDate = e.target.value
-    updateJourney({ departureDate: selectedDepartureDate })
-
-    if (journey.returnDate < selectedDepartureDate) {
-      updateJourney({ returnDate: selectedDepartureDate })
+  const [showDatePicker, setShowDatePicker] = useState(false)
+  const [dateRange, setDateRange] = useState({
+    startDate: journey.departureDate
+      ? new Date(journey.departureDate)
+      : new Date(),
+    endDate: journey.returnDate ? new Date(journey.returnDate) : new Date(),
+  })
+  const datePickerRef = useRef<HTMLDivElement>(null)
+  const matches = useMediaQuery('(min-width: 1024px)')
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (
+        datePickerRef.current &&
+        !datePickerRef.current.contains(event.target as Node)
+      ) {
+        setShowDatePicker(false)
+      }
     }
-  }
 
-  const handleReturnDateChange = (e: ChangeEvent<HTMLInputElement>) => {
-    updateJourney({ returnDate: e.target.value })
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [])
+
+  const handleDateRangeChange = ({ from, to }: DateRange) => {
+    setDateRange({
+      startDate: from ?? new Date(),
+      endDate: to ?? new Date(),
+    })
+    updateJourney({
+      departureDate: from as unknown as string,
+      returnDate: to as unknown as string,
+    })
   }
 
   return (
@@ -346,35 +372,53 @@ function Step2({ error }: { error: ReactNode }) {
             <Callout.Danger>{error}</Callout.Danger>
           </motion.div>
         )}
-        <div className="flex flex-col justify-around space-x-0 space-y-10 md:flex-row md:space-x-4 md:space-y-0">
-          <Input
-            value={
-              journey.departureDate || new Date().toISOString().split('T')[0]
-            }
-            id="departureDate"
-            label={
-              <FormattedMessage
-                id="inputDepartureDateLabel"
-                defaultMessage="Departure date"
-              />
-            }
-            type="date"
-            min={journey.departureDate}
-            onChange={handleDepartureDateChange}
-          />
-          <Input
-            value={journey.returnDate || new Date().toISOString().split('T')[0]}
-            id="returnDate"
-            label={
-              <FormattedMessage
-                id="inputReturnDateLabel"
-                defaultMessage="Return date"
-              />
-            }
-            type="date"
-            min={journey.departureDate}
-            onChange={handleReturnDateChange}
-          />
+        <div className="relative flex-1">
+          <button
+            onClick={() => setShowDatePicker(!showDatePicker)}
+            className="flex w-full items-center rounded-md border border-gray-200 bg-white px-6 py-4 text-left text-gray-700 shadow-sm transition-all hover:border-primary focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
+          >
+            <CalendarIcon className="mr-2 h-5 w-5 text-gray-400" />
+            <span>
+              {journey.departureDate && journey.returnDate
+                ? `${new Date(journey.departureDate).toLocaleDateString()} - ${new Date(
+                    journey.returnDate
+                  ).toLocaleDateString()}`
+                : 'Select dates'}
+            </span>
+          </button>
+          {showDatePicker ? (
+            <div
+              ref={datePickerRef}
+              className="absolute left-0 top-full z-50 mt-2"
+            >
+              <div className="rounded-lg bg-white p-4 shadow-lg ring-1 ring-black ring-opacity-5">
+                <DayPicker
+                  mode="range"
+                  selected={{
+                    from: dateRange.startDate,
+                    to: dateRange.endDate,
+                  }}
+                  numberOfMonths={matches ? 2 : 1}
+                  disabled={{ before: new Date() }}
+                  styles={{
+                    months: {
+                      flexWrap: 'unset',
+                    },
+                  }}
+                  classNames={{
+                    selected: `bg-amber-500 border-amber-500 text-white`,
+                    range_start: `bg-amber-500 border-amber-500 text-white`,
+                    range_end: `bg-amber-500 border-amber-500 text-white`,
+                    range_middle: 'bg-[#F85231]',
+                    chevron: '',
+                  }}
+                  min={1}
+                  required
+                  onSelect={handleDateRangeChange}
+                />
+              </div>
+            </div>
+          ) : null}
         </div>
       </div>
     </Step>
@@ -410,6 +454,7 @@ function Step3({ error }: { error: ReactNode }) {
             <FormattedMessage id="inputBudgetLabel" defaultMessage="Budget" />
           }
           id="budget"
+          type="number"
           value={journey.budget ?? ''}
           placeholder="e.g 3600$"
           onChange={(e) => updateJourney({ budget: parseInt(e.target.value) })}

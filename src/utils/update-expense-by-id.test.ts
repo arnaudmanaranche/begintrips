@@ -1,8 +1,4 @@
-import type {
-  Expense,
-  ExpensesByCategory,
-  ExpenseWithCategories,
-} from '@/types'
+import type { Expense, ExpenseWithCategories } from '@/types'
 
 import { updateExpenseById } from './update-expense-by-id'
 
@@ -29,7 +25,7 @@ describe('updateExpenseById', () => {
           name: 'Expense 4',
         } as ExpenseWithCategories,
       ],
-    } as ExpensesByCategory
+    }
 
     const { updatedRecord } = updateExpenseById(expensesByCategory, '2', {
       amount: 100,

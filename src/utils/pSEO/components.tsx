@@ -20,7 +20,7 @@ export const components = {
     props: JSX.IntrinsicAttributes &
       ClassAttributes<HTMLHeadingElement> &
       HTMLAttributes<HTMLHeadingElement>
-  ): ReactNode => <h2 className="my-4 text-3xl text-accent-dark" {...props} />,
+  ): ReactNode => <h2 className="my-4 text-3xl text-primary-dark" {...props} />,
   h3: (
     props: JSX.IntrinsicAttributes &
       ClassAttributes<HTMLHeadingElement> &

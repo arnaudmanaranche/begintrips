@@ -28,13 +28,13 @@ export function Button({
   const variantClasses = {
     primary: clsx(
       isDisabled
-        ? 'cursor-not-allowed bg-gray-400/50 disabled:hover:bg-gray-400/50'
-        : 'bg-accent hover:bg-accent-dark text-white'
+        ? 'cursor-not-allowed bg-gray-400/50 disabled:hover:bg-gray-400/50 text-gray-500'
+        : 'bg-primary hover:bg-primary-dark text-white'
     ),
     ghost: clsx(
       isDisabled
         ? 'cursor-not-allowed bg-gray-400/30 disabled:hover:bg-transparent border-gray-400/30 disabled:hover:text-white'
-        : 'bg-transparent text-accent border border-accent hover:bg-accent-dark hover:text-white'
+        : 'bg-transparent text-primary border border-primary hover:bg-primary-dark hover:text-white'
     ),
   }
 

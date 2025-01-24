@@ -1,71 +1,87 @@
 import { type ReactNode } from 'react'
 import { FormattedMessage, FormattedNumber } from 'react-intl'
+import { VictoryPie, VictoryTheme, VictoryTooltip } from 'victory'
 
-export function Budget({
-  budgetSpent,
-  totalBudget,
-}: {
+import { useDrawerActions } from '@/providers/Drawer/Drawer.Provider'
+
+interface BudgetProps {
   budgetSpent: number
   totalBudget: number
-}): ReactNode {
+}
+
+export function Budget({ budgetSpent, totalBudget }: BudgetProps): ReactNode {
+  const { setCurrentType, setIsOpen } = useDrawerActions()
+
+  const currency = localStorage.getItem('currency')
+
   if (totalBudget === 0) {
     return (
-      <div className="flex w-full items-center justify-center">
-        <span className="text-lg text-black/30">
-          <FormattedMessage id="noBudget" defaultMessage="No budget yet" />
+      <div className="flex w-full flex-col items-center justify-center space-y-4 p-4 text-center">
+        <span className="text-black/30">
+          <FormattedMessage
+            id="noBudget"
+            defaultMessage="You have no budget yet. Add one to get started {setBudget}"
+            values={{
+              setBudget: (
+                <p
+                  onClick={() => {
+                    setCurrentType('EditTrip')
+                    setIsOpen(true)
+                  }}
+                  className="cursor-pointer text-primary"
+                >
+                  <FormattedMessage
+                    id="addBudget"
+                    defaultMessage="Add budget"
+                  />
+                </p>
+              ),
+            }}
+          />
         </span>
       </div>
     )
   }
 
-  const percentageSpent =
-    totalBudget > 0 ? (budgetSpent / totalBudget) * 100 : 0
+  const percentageSpent = (budgetSpent / totalBudget) * 100
+  const remainingPercentage = 100 - percentageSpent
 
-  let strokeColor = '#4CAF50'
-  if (percentageSpent > 90) {
-    strokeColor = '#F44336'
-  } else if (percentageSpent > 50) {
-    strokeColor = '#FF9800'
+  let color
+  if (percentageSpent <= 50) {
+    color = '#4CAF50' // Green
+  } else if (percentageSpent <= 80) {
+    color = '#FFA500' // Orange
+  } else {
+    color = '#FF0000' // Red
   }
 
-  const radius = 80
-  const circumference = 2 * Math.PI * radius
-  const offset = Math.min(
-    (percentageSpent / 100) * circumference,
-    circumference
-  )
+  const data = [
+    {
+      x: 'Remaining',
+      y: remainingPercentage,
+      value: totalBudget - budgetSpent,
+    },
+    { x: 'Spent', y: percentageSpent, value: budgetSpent },
+  ]
 
   return (
-    <div className="relative flex min-h-[200px] items-center justify-center">
-      <svg width="200" height="200" viewBox="0 0 200 200" className="absolute">
-        <circle
-          cx="100"
-          cy="100"
-          r="80"
-          stroke="#e0e0e0"
-          strokeWidth="10"
-          fill="none"
+    <div className="relative">
+      <svg width={280} height={200} className="mx-auto">
+        <VictoryPie
+          standalone={false}
+          width={280}
+          startAngle={90}
+          endAngle={-90}
+          data={data}
+          theme={VictoryTheme.clean}
+          colorScale={['#a5a0a0', color]}
+          labelIndicator={false}
+          labels={({ datum }) => `${datum.value}€`}
+          labelComponent={<VictoryTooltip />}
         />
       </svg>
-      <svg width="200" height="200" viewBox="0 0 200 200" className="absolute">
-        <circle
-          cx="100"
-          cy="100"
-          r="80"
-          stroke={strokeColor}
-          strokeWidth="10"
-          fill="none"
-          strokeDasharray={circumference}
-          strokeDashoffset={circumference - offset}
-        />
-      </svg>
-      <div className="absolute text-center text-gray-700">
-        <div className="text-2xl font-bold">
-          {budgetSpent > totalBudget
-            ? '100%'
-            : `${Math.round(percentageSpent)}%`}
-        </div>
-        <div className="mt-1 text-xs">
+      <div className="absolute left-0 top-0 h-max w-full text-center text-black">
+        <div className="text-lg">
           <FormattedMessage
             id="budgetSpent"
             defaultMessage={`{budgetSpent} of {totalBudget} spent`}
@@ -73,7 +89,7 @@ export function Budget({
               budgetSpent: (
                 <FormattedNumber
                   value={budgetSpent}
-                  currency="EUR"
+                  currency={currency ?? 'EUR'}
                   style="currency"
                   maximumFractionDigits={1}
                 />
@@ -81,7 +97,7 @@ export function Budget({
               totalBudget: (
                 <FormattedNumber
                   value={totalBudget}
-                  currency="EUR"
+                  currency={currency ?? 'EUR'}
                   style="currency"
                   maximumFractionDigits={1}
                 />

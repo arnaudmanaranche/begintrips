@@ -78,9 +78,12 @@ export default function MyJourneysPage({
         ) : null}
       </div>
       <div className="fixed bottom-0 left-0 right-0 bg-white lg:hidden">
-        <ul className="flex h-16  items-center justify-around ring-1 ring-slate-200">
-          <li className="flex items-center text-accent">
-            <Link href="/my-journeys" className="flex flex-col items-center">
+        <ul className="flex h-16 items-center justify-around ring-1 ring-slate-200">
+          <li className="flex items-center">
+            <Link
+              href="/my-journeys"
+              className="flex flex-col items-center text-primary"
+            >
               <PaperPlaneIcon className="h-6 w-6" />
               <span>
                 <FormattedMessage

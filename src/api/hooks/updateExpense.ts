@@ -48,21 +48,15 @@ export const useUpdateExpense = ({
         (oldData) => {
           if (!oldData) return oldData
 
-          const { updatedRecord } = updateExpenseById(
-            oldData.expensesByCategory,
-            expense.id as string,
-            expense
-          )
-
           const { updatedRecord: updatedRecord2 } = updateExpenseById(
             oldData.expensesByDay,
             expense.id as string,
-            expense
+            // @ts-expect-error TODO
+            expense as unknown
           )
 
           return {
             ...oldData,
-            expensesByCategory: updatedRecord,
             expensesByDay: updatedRecord2,
           }
         }

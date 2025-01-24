@@ -1,5 +1,4 @@
-import 'react-date-range/dist/styles.css'
-import 'react-date-range/dist/theme/default.css'
+import 'react-day-picker/style.css'
 
 import type { SearchBoxSuggestion, SessionToken } from '@mapbox/search-js-core'
 import {
@@ -17,7 +16,8 @@ import Image from 'next/image'
 import router from 'next/router'
 import type { ChangeEvent, ReactNode } from 'react'
 import { useEffect, useRef, useState } from 'react'
-import { DateRange } from 'react-date-range'
+import type { DateRange } from 'react-day-picker'
+import { DayPicker } from 'react-day-picker'
 import { FormattedMessage, FormattedNumber, useIntl } from 'react-intl'
 
 import { Button } from '@/components/Button/Button'
@@ -49,9 +49,10 @@ export default function HomePage({ user }: { user: User }): ReactNode {
       ? new Date(journey.departureDate)
       : new Date(),
     endDate: journey.returnDate ? new Date(journey.returnDate) : new Date(),
-    key: 'selection',
   })
   const [isMobile, setIsMobile] = useState(false)
+
+  const currency = localStorage.getItem('currency')
 
   useEffect(() => {
     const handleResize = () => {
@@ -92,12 +93,14 @@ export default function HomePage({ user }: { user: User }): ReactNode {
     }
   }, [])
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const handleDateRangeChange = (ranges: any) => {
-    setDateRange(ranges.selection)
+  const handleDateRangeChange = ({ from, to }: DateRange) => {
+    setDateRange({
+      startDate: from ?? new Date(),
+      endDate: to ?? new Date(),
+    })
     updateJourney({
-      departureDate: ranges.selection.startDate,
-      returnDate: ranges.selection.endDate,
+      departureDate: from as unknown as string,
+      returnDate: to as unknown as string,
     })
   }
 
@@ -173,7 +176,7 @@ export default function HomePage({ user }: { user: User }): ReactNode {
                   <div className="hidden items-center space-x-8 lg:flex">
                     <button
                       onClick={() => scrollToSection('features')}
-                      className="text-white hover:text-accent"
+                      className="text-white hover:text-primary"
                     >
                       <FormattedMessage
                         id="menuFeatures"
@@ -182,7 +185,7 @@ export default function HomePage({ user }: { user: User }): ReactNode {
                     </button>
                     <button
                       onClick={() => scrollToSection('pricing')}
-                      className="text-white hover:text-accent"
+                      className="text-white hover:text-primary"
                     >
                       <FormattedMessage
                         id="menuPricing"
@@ -191,7 +194,7 @@ export default function HomePage({ user }: { user: User }): ReactNode {
                     </button>
                     <button
                       onClick={() => scrollToSection('faq')}
-                      className="text-white hover:text-accent"
+                      className="text-white hover:text-primary"
                     >
                       <FormattedMessage id="menuFaq" defaultMessage="FAQ" />
                     </button>
@@ -245,7 +248,7 @@ export default function HomePage({ user }: { user: User }): ReactNode {
                         defaultMessage="Plan in minutes."
                       />
                       <br />
-                      <span className="bg-gradient-to-r from-accent to-accent/80 bg-clip-text font-serif">
+                      <span className="font-serif">
                         <FormattedMessage
                           id="homepageHeadline2"
                           defaultMessage="Travel stress-free"
@@ -281,7 +284,7 @@ export default function HomePage({ user }: { user: User }): ReactNode {
                           onBlur={() =>
                             setTimeout(() => setIsFocused(false), 200)
                           }
-                          className="w-full rounded-md border border-gray-200 bg-white px-6 py-4 text-lg shadow-sm transition-all focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/20"
+                          className="w-full rounded-md border border-gray-200 bg-white px-6 py-4 text-lg shadow-sm transition-all focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
                         />
                         {suggestions && suggestions.length > 0 && isFocused && (
                           <div className="absolute top-full z-10 mt-2 w-full rounded-md border border-gray-100 bg-white p-2 shadow-lg">
@@ -312,7 +315,7 @@ export default function HomePage({ user }: { user: User }): ReactNode {
                         <div className="relative flex-1">
                           <button
                             onClick={() => setShowDatePicker(!showDatePicker)}
-                            className="flex w-full items-center rounded-md border border-gray-200 bg-white px-6 py-4 text-left text-gray-700 shadow-sm transition-all hover:border-accent focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/20"
+                            className="flex w-full items-center rounded-md border border-gray-200 bg-white px-6 py-4 text-left text-gray-700 shadow-sm transition-all hover:border-primary focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
                           >
                             <CalendarIcon className="mr-2 h-5 w-5 text-gray-400" />
                             <span>
@@ -329,14 +332,29 @@ export default function HomePage({ user }: { user: User }): ReactNode {
                               className="absolute left-0 top-full z-50 mt-2"
                             >
                               <div className="rounded-lg bg-white p-4 shadow-lg ring-1 ring-black ring-opacity-5">
-                                <DateRange
-                                  ranges={[dateRange]}
-                                  onChange={handleDateRangeChange}
-                                  minDate={new Date()}
-                                  rangeColors={['#E3461E']}
-                                  showMonthAndYearPickers={false}
-                                  direction="horizontal"
-                                  months={isMobile ? 1 : 2}
+                                <DayPicker
+                                  mode="range"
+                                  selected={{
+                                    from: dateRange.startDate,
+                                    to: dateRange.endDate,
+                                  }}
+                                  numberOfMonths={isMobile ? 1 : 2}
+                                  disabled={{ before: new Date() }}
+                                  styles={{
+                                    months: {
+                                      flexWrap: 'unset',
+                                    },
+                                  }}
+                                  classNames={{
+                                    selected: `bg-amber-500 border-amber-500 text-white`,
+                                    range_start: `bg-amber-500 border-amber-500 text-white`,
+                                    range_end: `bg-amber-500 border-amber-500 text-white`,
+                                    range_middle: 'bg-[#F85231]',
+                                    chevron: '',
+                                  }}
+                                  min={1}
+                                  required
+                                  onSelect={handleDateRangeChange}
                                 />
                               </div>
                             </div>
@@ -395,7 +413,7 @@ export default function HomePage({ user }: { user: User }): ReactNode {
                     transition={{ duration: 0.5 }}
                     className={clsx(
                       'relative overflow-hidden rounded-xl p-6 transition-all',
-                      index === currentFeature ? 'ring-1 ring-accent' : ''
+                      index === currentFeature ? 'ring-1 ring-primary' : ''
                     )}
                   >
                     <h3 className="mb-3 text-xl font-semibold">
@@ -406,7 +424,7 @@ export default function HomePage({ user }: { user: User }): ReactNode {
                       <div className="absolute bottom-0 left-0 right-0">
                         <div className="h-1 w-full overflow-hidden rounded-xl bg-red-200">
                           <motion.div
-                            className="h-full rounded-xl bg-accent"
+                            className="h-full rounded-xl bg-primary"
                             initial={{ width: '0%' }}
                             animate={{ width: '100%' }}
                             transition={{
@@ -483,11 +501,11 @@ export default function HomePage({ user }: { user: User }): ReactNode {
                   transition={{ duration: 0.5, delay: index * 0.1 }}
                   className={clsx(
                     'relative rounded-2xl p-8 transition-all',
-                    plan.isMostPopular && 'border-2 border-accent shadow-md'
+                    plan.isMostPopular && 'border-2 border-primary shadow-md'
                   )}
                 >
                   {plan.isMostPopular && (
-                    <div className="absolute -top-4 left-1/2 -translate-x-1/2 rounded-full bg-accent px-4 py-1 text-sm font-medium text-white">
+                    <div className="absolute -top-4 left-1/2 -translate-x-1/2 rounded-full bg-primary px-4 py-1 text-sm font-medium text-white">
                       <FormattedMessage
                         id="pricing.mostPopular"
                         defaultMessage="Most popular"
@@ -506,7 +524,7 @@ export default function HomePage({ user }: { user: User }): ReactNode {
                         <FormattedNumber
                           value={plan.price}
                           style="currency"
-                          currency="USD"
+                          currency={currency ?? 'EUR'}
                           currencyDisplay="narrowSymbol"
                         />
                       </span>
@@ -531,7 +549,7 @@ export default function HomePage({ user }: { user: User }): ReactNode {
                       {plan.items.map((feature) => (
                         <li key={feature} className="flex gap-x-3">
                           <CheckIcon
-                            className="h-6 w-5 flex-none text-accent"
+                            className="h-6 w-5 flex-none text-primary"
                             aria-hidden="true"
                           />
                           <FormattedMessage
@@ -597,7 +615,7 @@ export default function HomePage({ user }: { user: User }): ReactNode {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.7 }}
-            className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-accent to-accent/80 px-6 py-20 text-center text-white md:px-20"
+            className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-primary to-primary/80 px-6 py-20 text-center text-white md:px-20"
           >
             <div className="absolute inset-0 opacity-10">
               <div className="absolute -left-4 -top-4 h-32 w-32 rotate-45 rounded-xl bg-white" />

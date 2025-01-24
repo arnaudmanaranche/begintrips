@@ -34,7 +34,7 @@ export function CurrentPlan({
         <div className="space-x-3 text-sm text-black/70">
           <span
             className={clsx(
-              'cursor-pointer text-accent',
+              'cursor-pointer text-primary',
               isLoading && 'cursor-not-allowed'
             )}
             onClick={onCheckout}

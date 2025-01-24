@@ -1,13 +1,10 @@
-import { PersonIcon } from '@radix-ui/react-icons'
-import type { IconProps } from '@radix-ui/react-icons/dist/types'
 import clsx from 'clsx'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import type { ForwardRefExoticComponent, RefAttributes } from 'react'
 import { type ReactNode } from 'react'
 import { FormattedMessage } from 'react-intl'
 
-import { jounryeNavigationItems } from '@/utils/navigationItems'
+import { journeyNavigationItems } from '@/utils/navigationItems'
 
 function BottomBarItem({
   href,
@@ -17,38 +14,29 @@ function BottomBarItem({
   isEnabled,
 }: {
   href: string
-  icon: ForwardRefExoticComponent<IconProps & RefAttributes<SVGSVGElement>>
+  icon: (props: { isActive: boolean; isMobile: boolean }) => ReactNode
   label: ReactNode
   isActive: boolean
   isEnabled: boolean
 }): ReactNode {
-  const Icon = icon
-
   return (
     <li>
       <Link
         href={href}
         className={clsx(
           'flex flex-col items-center space-y-1 text-xs',
-          isActive ? 'text-accent' : 'text-black',
+          isActive ? 'text-primary' : 'text-black',
           !isEnabled ? 'pointer-events-none text-black/50' : ''
         )}
       >
-        <Icon
-          className={clsx(
-            'h-5 w-5',
-            isActive ? 'text-accent' : 'text-black',
-            !isEnabled ? 'text-black/50' : ''
-          )}
-        />
-        <div className="flex flex-col items-center space-x-2">
+        {icon({ isActive, isMobile: true })}
+        <div className="flex items-center space-x-2">
+          <span>{label}</span>
           {!isEnabled ? (
-            <span className="rounded-md bg-accent px-2 text-xs text-white">
+            <span className="rounded-md bg-primary px-2 text-xs text-white">
               <FormattedMessage id="soon" defaultMessage="Soon" />
             </span>
-          ) : (
-            <span>{label}</span>
-          )}
+          ) : null}
         </div>
       </Link>
     </li>
@@ -60,35 +48,63 @@ export function BottomBar(): ReactNode {
   const id = router.query.id as string
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 bg-white lg:hidden">
-      <ul className="flex h-16  items-center justify-around ring-1 ring-slate-200">
-        {jounryeNavigationItems.map((item, index) => {
+    <div className="fixed bottom-0 left-0 right-0 bg-white py-4 drop-shadow-2xl lg:hidden">
+      <ul className="flex min-h-10  items-center justify-around ring-slate-200">
+        {journeyNavigationItems.map((item, index) => {
           const href = item.href.replace('[id]', id)
-          const Icon = item.icon
           const isActive = router.pathname === item.href
 
           return (
             <BottomBarItem
               isEnabled={item.isEnabled}
-              key={`bottombar-item-${index}`}
+              key={`sidebar-item-${index}`}
               isActive={isActive}
               href={href}
-              icon={Icon}
               label={item.label}
+              icon={item.icon}
             />
           )
         })}
-        <li>
-          <Link
-            href="/account"
-            className="flex flex-col items-center space-y-1"
-          >
-            <PersonIcon className="h-6 w-6 text-black" />
-            <span className="text-xs text-black">
-              <FormattedMessage id="account" defaultMessage="Account" />
-            </span>
-          </Link>
-        </li>
+        <BottomBarItem
+          isEnabled
+          isActive={router.pathname === '/account'}
+          href="/account"
+          icon={({ isActive, isMobile }) => (
+            <svg
+              height="15"
+              width="15"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M12 2C9.23858 2 7 4.23858 7 7C7 9.76142 9.23858 12 12 12C14.7614 12 17 9.76142 17 7C17 4.23858 14.7614 2 12 2Z"
+                stroke={
+                  isActive && isMobile
+                    ? '#F85231'
+                    : isActive && !isMobile
+                      ? '#151035'
+                      : !isMobile && !isActive
+                        ? '#FFFFFF'
+                        : '#151035'
+                }
+              />
+              <path
+                d="M8 14C5.23858 14 3 16.2386 3 19C3 20.6569 4.34315 22 6 22H18C19.6569 22 21 20.6569 21 19C21 16.2386 18.7614 14 16 14H8Z"
+                stroke={
+                  isActive && isMobile
+                    ? '#F85231'
+                    : isActive && !isMobile
+                      ? '#151035'
+                      : !isMobile && !isActive
+                        ? '#FFFFFF'
+                        : '#151035'
+                }
+              />
+            </svg>
+          )}
+          label={<FormattedMessage id="account" defaultMessage="Account" />}
+        />
       </ul>
     </div>
   )

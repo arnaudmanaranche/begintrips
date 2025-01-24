@@ -1,6 +1,7 @@
 :root {
   --font-open-sans: 'Open Sans', sans-serif;
   --font-outfit: 'Outfit', serif;
+  --sx-color-primary: #1a4867 !important;
 }
 
 @tailwind base;
@@ -26,4 +27,21 @@ h6 {
 
 ::-webkit-scrollbar-track {
   background: transparent;
+}
+
+.sx__week-header {
+  z-index: 0 !important;
+}
+
+.sx__calendar {
+  border: 0 !important;
+  border-radius: 1.5rem !important;
+}
+
+.rdp-root {
+  --rdp-accent-color: #1a4867 !important;
+}
+
+.sx__event-modal.is-open {
+  display: none;
 }

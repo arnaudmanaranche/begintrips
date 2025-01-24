@@ -2,11 +2,19 @@ import { create } from 'zustand'
 import { createJSONStorage, persist } from 'zustand/middleware'
 
 interface JourneyStore {
-  checkList: { item: string; isDone: boolean; id: string }[]
+  checkList: {
+    item: string
+    isDone: boolean
+    id: string
+    isFavorite?: boolean
+    isArchived?: boolean
+  }[]
   toggleItem: (item: string) => void
   deleteItem: (item: string) => void
   addItem: (item: string, id: string) => void
   itemsChecked: number
+  toggleFavorite: (item: string) => void
+  archiveItem: (item: string) => void
 }
 
 export const useJourneyStore = create<JourneyStore>()(
@@ -55,6 +63,32 @@ export const useJourneyStore = create<JourneyStore>()(
         })
       },
       itemsChecked: 0,
+      toggleFavorite: (item) => {
+        set((state) => {
+          return {
+            ...state,
+            checkList: state.checkList.map((i) => {
+              if (i.item === item) {
+                return { ...i, isFavorite: !i.isFavorite }
+              }
+              return i
+            }),
+          }
+        })
+      },
+      archiveItem: (item) => {
+        set((state) => {
+          return {
+            ...state,
+            checkList: state.checkList.map((i) => {
+              if (i.item === item) {
+                return { ...i, isArchived: !i.isArchived }
+              }
+              return i
+            }),
+          }
+        })
+      },
     }),
     {
       name: 'journey',
