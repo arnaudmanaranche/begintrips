@@ -53,7 +53,7 @@ export function ExpensesCharts({
 
   return (
     <VictoryChart
-      domainPadding={{ x: 30 }}
+      domain={{ x: [0, 7] }}
       theme={VictoryTheme.clean}
       containerComponent={<VictoryZoomContainer />}
     >
@@ -61,7 +61,6 @@ export function ExpensesCharts({
         x={50}
         y={10}
         orientation="horizontal"
-        gutter={20}
         style={{
           labels: { fontSize: 10 },
           border: { stroke: 'none' },

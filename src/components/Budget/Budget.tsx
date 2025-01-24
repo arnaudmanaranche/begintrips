@@ -12,6 +12,8 @@ interface BudgetProps {
 export function Budget({ budgetSpent, totalBudget }: BudgetProps): ReactNode {
   const { setCurrentType, setIsOpen } = useDrawerActions()
 
+  const currency = localStorage.getItem('currency')
+
   if (totalBudget === 0) {
     return (
       <div className="flex w-full flex-col items-center justify-center space-y-4 p-4 text-center">
@@ -87,7 +89,7 @@ export function Budget({ budgetSpent, totalBudget }: BudgetProps): ReactNode {
               budgetSpent: (
                 <FormattedNumber
                   value={budgetSpent}
-                  currency="USD"
+                  currency={currency ?? 'EUR'}
                   style="currency"
                   maximumFractionDigits={1}
                 />
@@ -95,7 +97,7 @@ export function Budget({ budgetSpent, totalBudget }: BudgetProps): ReactNode {
               totalBudget: (
                 <FormattedNumber
                   value={totalBudget}
-                  currency="USD"
+                  currency={currency ?? 'EUR'}
                   style="currency"
                   maximumFractionDigits={1}
                 />

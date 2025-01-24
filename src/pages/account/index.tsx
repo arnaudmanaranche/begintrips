@@ -69,6 +69,7 @@ export default function AccountPage({ user }: AccountPageProps): ReactNode {
   const [isLoading, setIsLoading] = useState(false)
   const { resetJourney } = useOnboardingStore()
   const [open, setOpen] = useState(false)
+  const [currency, setCurrency] = useState<string | null>(null)
   const [modalType, setModalType] = useState<
     'Change password' | 'Payments' | null
   >(null)
@@ -128,6 +129,10 @@ export default function AccountPage({ user }: AccountPageProps): ReactNode {
       setIsLoading(false)
     }
   }
+
+  useEffect(() => {
+    setCurrency(localStorage.getItem('currency'))
+  }, [])
 
   return (
     <Dialog.Root
@@ -190,6 +195,27 @@ export default function AccountPage({ user }: AccountPageProps): ReactNode {
               isLoading={isLoading}
               onCheckout={handleOnCheckout}
             />
+            <div className="flex cursor-pointer items-center justify-between rounded-md bg-white p-4 ring-1 ring-slate-200">
+              <label className="text-black" htmlFor="currency">
+                <FormattedMessage
+                  id="baseCurrency"
+                  defaultMessage="Base currency"
+                />
+              </label>
+              <select
+                className="text-black/50"
+                name="currency"
+                id="currency"
+                defaultValue={currency ?? 'EUR'}
+                onChange={(e) => {
+                  localStorage.setItem('currency', e.target.value)
+                }}
+              >
+                <option value="USD">USD</option>
+                <option value="EUR">EUR</option>
+                <option value="GBP">GBP</option>
+              </select>
+            </div>
             <Dialog.Portal>
               <Dialog.Overlay className="fixed inset-0 bg-black/30 data-[state=open]:animate-overlayShow" />
               <Dialog.Content

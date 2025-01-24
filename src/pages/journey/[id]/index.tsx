@@ -11,8 +11,13 @@ import type { GetServerSideProps } from 'next'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import type { ReactNode } from 'react'
-import { useMemo } from 'react'
-import { defineMessages, FormattedMessage, useIntl } from 'react-intl'
+import { useEffect, useMemo, useState } from 'react'
+import {
+  defineMessages,
+  FormattedMessage,
+  FormattedNumber,
+  useIntl,
+} from 'react-intl'
 import { Drawer } from 'vaul'
 
 import { getJourney } from '@/api/calls/journeys'
@@ -41,6 +46,7 @@ const messages = defineMessages({
 })
 
 export default function Page({ user }: JourneyProps): ReactNode {
+  const [currency, setCurrency] = useState<string | null>(null)
   const {
     query: { id: journeyId },
     locale,
@@ -70,6 +76,10 @@ export default function Page({ user }: JourneyProps): ReactNode {
       ) + 1,
     [data?.journey?.departureDate]
   )
+
+  useEffect(() => {
+    setCurrency(localStorage.getItem('currency'))
+  }, [])
 
   return (
     <div className="max-h-screen">
@@ -210,9 +220,11 @@ export default function Page({ user }: JourneyProps): ReactNode {
                     </div>
                     <div className="flex flex-col">
                       <span className="text-sm text-gray-600">Budget</span>
-                      <span className="text-black">
-                        {data?.journey?.budget}$
-                      </span>
+                      <FormattedNumber
+                        value={data?.journey?.budget ?? 0}
+                        style="currency"
+                        currency={currency ?? 'EUR'}
+                      />
                     </div>
                     <div className="absolute right-4 top-1/2 -translate-y-1/2 opacity-0 transition-opacity group-hover:opacity-100">
                       <Drawer.Trigger
