@@ -38,7 +38,7 @@ export function Button({
     ),
   }
 
-  if (icon) {
+  if (icon && !children) {
     return (
       <button
         className={clsx(
@@ -59,7 +59,7 @@ export function Button({
   return (
     <button
       className={clsx(
-        'outline-none transition-colors',
+        'flex items-center gap-2 outline-none transition-colors',
         variantClasses[variant],
         className,
         stretch && 'w-full',
@@ -69,6 +69,7 @@ export function Button({
       disabled={isDisabled}
       aria-label={ariaLabel}
     >
+      {icon}
       {children}
     </button>
   )

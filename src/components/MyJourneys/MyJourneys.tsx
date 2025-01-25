@@ -1,3 +1,4 @@
+import { CalendarIcon, EyeOpenIcon, Pencil2Icon } from '@radix-ui/react-icons'
 import { useRouter } from 'next/router'
 import { type ReactNode } from 'react'
 import { FormattedMessage } from 'react-intl'
@@ -76,26 +77,45 @@ export default function MyJourneys({
       {journeys.map((journey) => (
         <div
           key={journey.id}
-          className="flex flex-col justify-between space-y-4 md:flex-row md:items-center md:space-y-0"
+          className="flex flex-col justify-between space-y-4 rounded-md border p-4 ring-slate-100 md:flex-row md:items-center md:space-y-0"
         >
-          <div className="flex flex-col space-y-1">
-            <span>Destination: {journey.destination}</span>
-            <span>
-              Dates:{' '}
-              {formatDate(
-                journey.departureDate,
-                'dd/MM/yyyy',
-                true,
-                router.locale
-              )}{' '}
-              -{' '}
-              {formatDate(
-                journey.returnDate,
-                'dd/MM/yyyy',
-                true,
-                router.locale
-              )}
-            </span>
+          <div className="flex flex-col space-y-4">
+            <div className="flex items-center space-x-2 text-xl font-bold">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                className="h-5 w-5"
+              >
+                <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"></path>
+                <circle cx="12" cy="10" r="3"></circle>
+              </svg>
+              <span>{journey.destination}</span>
+            </div>
+            <div className="flex items-center space-x-2">
+              <CalendarIcon />
+              <span>
+                {formatDate(
+                  journey.departureDate,
+                  'dd/MM/yyyy',
+                  true,
+                  router.locale
+                )}{' '}
+                -{' '}
+                {formatDate(
+                  journey.returnDate,
+                  'dd/MM/yyyy',
+                  true,
+                  router.locale
+                )}
+              </span>
+            </div>
           </div>
           <div className="flex space-x-2">
             <Button
@@ -103,9 +123,15 @@ export default function MyJourneys({
               isDisabled={!journey.status}
             >
               {hasJourneyPassed(new Date(journey.departureDate)) ? (
-                <FormattedMessage id="visit" defaultMessage="Visit" />
+                <div className="flex items-center gap-2">
+                  <EyeOpenIcon />
+                  <FormattedMessage id="see" defaultMessage="See" />
+                </div>
               ) : (
-                <FormattedMessage id="edit" defaultMessage="Edit" />
+                <div className="flex items-center gap-2">
+                  <Pencil2Icon />
+                  <FormattedMessage id="edit" defaultMessage="Edit" />
+                </div>
               )}
             </Button>
           </div>

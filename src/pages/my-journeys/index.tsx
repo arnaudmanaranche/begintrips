@@ -1,4 +1,8 @@
-import { PaperPlaneIcon, PersonIcon } from '@radix-ui/react-icons'
+import {
+  PaperPlaneIcon,
+  PersonIcon,
+  PlusCircledIcon,
+} from '@radix-ui/react-icons'
 import { useQuery } from '@tanstack/react-query'
 import type { GetServerSideProps } from 'next'
 import Head from 'next/head'
@@ -58,7 +62,7 @@ export default function MyJourneysPage({
       </Head>
       <NavBar />
       <div className="mx-auto flex max-w-screen-sm flex-1 flex-col justify-center gap-10 px-10 lg:px-0">
-        <p className="text-3xl">
+        <p className="text-3xl font-bold">
           <FormattedMessage id="myJourneys" defaultMessage="My journeys" />
         </p>
         <MyJourneys journeys={journeys} isLoading={isFetching} />
@@ -66,6 +70,7 @@ export default function MyJourneysPage({
       <div className="mt-14 flex justify-center pb-[80px]">
         {user.credits > 0 && journeys?.length > 0 ? (
           <Button
+            icon={<PlusCircledIcon />}
             onClick={() => {
               router.push('/onboarding')
             }}
