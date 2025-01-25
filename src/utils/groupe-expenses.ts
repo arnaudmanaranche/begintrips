@@ -1,21 +1,16 @@
 import { eachDayOfInterval, formatISO } from 'date-fns'
 
-import type {
-  DateString,
-  Day,
-  ExpensesByDay,
-  ExpenseWithCategories,
-} from '@/types'
+import type { DateString, ExpensesByDay, ExpenseWithCategories } from '@/types'
 
 export const groupedExpensesByDay = ({
   days,
   expenses,
 }: {
-  days: Partial<Day>[]
+  days: string[]
   expenses: ExpenseWithCategories[]
 }): ExpensesByDay => {
   const expensesByDay = days.reduce<ExpensesByDay>((acc, day) => {
-    const dayKey = formatISO(new Date(day.startDate!), {
+    const dayKey = formatISO(new Date(day), {
       representation: 'date',
     }) as DateString
 

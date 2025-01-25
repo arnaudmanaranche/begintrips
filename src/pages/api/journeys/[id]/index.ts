@@ -2,6 +2,7 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 
 import createClient from '@/libs/supabase/api'
 import type { ExpenseWithCategories } from '@/types'
+import { generateDateArray } from '@/utils/generate-date-array'
 import { groupedExpensesByDay } from '@/utils/groupe-expenses'
 
 export default async function handler(
@@ -67,23 +68,12 @@ export default async function handler(
       })
     }
 
-    const { data: days, error: daysError } = await supabase
-      .from('days')
-      .select('*')
-      .eq('journeyId', id!)
-
-    if (daysError) {
-      return res.status(500).json({
-        message: `Error fetching days for journey ${id}`,
-      })
-    }
-
     const budgetSpent = expenses?.reduce((acc, expense) => {
       return acc + expense.amount
     }, 0)
 
     const expensesByDay = groupedExpensesByDay({
-      days,
+      days: generateDateArray(journey.departureDate, journey.returnDate),
       expenses: expenses.flatMap((e) => e) as ExpenseWithCategories[],
     })
 
@@ -107,7 +97,6 @@ export default async function handler(
         ...journey,
         destination: formattedDestination,
       },
-      days,
       budgetSpent,
       expensesByDay,
       calendarExpenses,
@@ -127,6 +116,38 @@ export default async function handler(
       .eq('userId', user?.id as string)
       .select('*')
       .single()
+
+    const { data: expenses, error: expensesError } = await supabase
+      .from('expenses')
+      .select('*')
+      .eq('journeyId', id!)
+
+    if (expensesError) {
+      return res.status(500).json({
+        message: `Error fetching expenses for journey ${id}`,
+      })
+    }
+
+    const expensesToDelete = expenses.filter((expense) => {
+      return (
+        expense.startDate < departureDate ||
+        (expense.endDate as string) > returnDate
+      )
+    })
+
+    const { error: deleteError } = await supabase
+      .from('expenses')
+      .delete()
+      .in(
+        'id',
+        expensesToDelete.map((expense) => expense.id)
+      )
+
+    if (deleteError) {
+      return res.status(500).json({
+        message: `Error deleting expenses for journey ${id}`,
+      })
+    }
 
     if (error) {
       return res.status(500).json({

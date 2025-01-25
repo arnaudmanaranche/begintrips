@@ -1,6 +1,5 @@
 import type { AddJourneyOnboarding } from '@/stores/onboarding.store'
 import type { JourneyPage } from '@/types'
-import { isInvalidDate } from '@/utils/date'
 
 import { apiInstance } from '../config'
 
@@ -24,33 +23,6 @@ export const getJourney = async ({
   if (!data.journey.status) {
     throw new Error('Journey is not active')
   }
-
-  return data
-}
-
-export const updateJourneyDates = async ({
-  journeyId,
-  departureDate,
-  returnDate,
-}: {
-  journeyId: string
-  departureDate: string
-  returnDate: string
-}): Promise<{ message: string }> => {
-  if (
-    isInvalidDate(new Date(departureDate)) ||
-    isInvalidDate(new Date(returnDate))
-  ) {
-    throw new Error('You need to set a valid start and end date')
-  }
-
-  const { data } = await apiInstance.patch<{ message: string }>(
-    `/journeys/${journeyId}/dates`,
-    {
-      departureDate,
-      returnDate,
-    }
-  )
 
   return data
 }

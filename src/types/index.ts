@@ -9,7 +9,6 @@ export type DateString = `${number}-${number}-${number}` // Example for YYYY-MM-
 
 // READ
 export type Journey = Tables<'journeys'>
-export type Day = Tables<'days'>
 export type Expense = Tables<'expenses'>
 export type Payments = Tables<'payments'>
 type Category = Tables<'categories'>
@@ -28,7 +27,6 @@ export interface ExpenseWithCategories extends Expense {
 
 // CREATE
 export type AddJourney = TablesInsert<'journeys'>
-export type AddDay = TablesInsert<'days'>
 type AddCategory = TablesInsert<'categories'>
 export type AddExpense = TablesInsert<'expenses'>
 export interface AddExpenseWithCategories extends TablesInsert<'expenses'> {
@@ -56,7 +54,6 @@ type JourneyFormatted = Omit<Journey, 'destination'> & {
 
 export interface JourneyPage {
   budgetSpent: number
-  days: Day[]
   expensesByDay: ExpensesByDay
   calendarExpenses: {
     id: string

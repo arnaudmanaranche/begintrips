@@ -66,42 +66,13 @@ export interface Database {
           },
         ]
       }
-      days: {
-        Row: {
-          created_at: string
-          id: string
-          journeyId: string
-          startDate: string
-        }
-        Insert: {
-          created_at?: string
-          id?: string
-          journeyId: string
-          startDate: string
-        }
-        Update: {
-          created_at?: string
-          id?: string
-          journeyId?: string
-          startDate?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: 'days_journeyId_fkey'
-            columns: ['journeyId']
-            isOneToOne: false
-            referencedRelation: 'journeys'
-            referencedColumns: ['id']
-          },
-        ]
-      }
       expenses: {
         Row: {
           amount: number
           category_id: string | null
           created_at: string
           dayId: string | null
-          endDate: string
+          endDate: string | null
           id: string
           journeyId: string
           name: string
@@ -112,7 +83,7 @@ export interface Database {
           category_id?: string | null
           created_at?: string
           dayId?: string | null
-          endDate: string | null
+          endDate?: string | null
           id?: string
           journeyId: string
           name: string
@@ -123,7 +94,7 @@ export interface Database {
           category_id?: string | null
           created_at?: string
           dayId?: string | null
-          endDate: string | null
+          endDate?: string | null
           id?: string
           journeyId?: string
           name?: string
@@ -135,13 +106,6 @@ export interface Database {
             columns: ['category_id']
             isOneToOne: false
             referencedRelation: 'categories'
-            referencedColumns: ['id']
-          },
-          {
-            foreignKeyName: 'expenses_dayId_fkey'
-            columns: ['dayId']
-            isOneToOne: false
-            referencedRelation: 'days'
             referencedColumns: ['id']
           },
           {
@@ -348,14 +312,6 @@ export interface Database {
       [_ in never]: never
     }
     Functions: {
-      update_journey_dates: {
-        Args: {
-          start_date: string
-          end_date: string
-          journey_id: string
-        }
-        Returns: undefined
-      }
       update_user_credits: {
         Args: {
           user_id: string
