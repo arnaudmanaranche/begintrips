@@ -1,8 +1,4 @@
-import {
-  BarChartIcon,
-  CalendarIcon,
-  PlusCircledIcon,
-} from '@radix-ui/react-icons'
+import { CalendarIcon, PlusCircledIcon } from '@radix-ui/react-icons'
 import type { User } from '@supabase/supabase-js'
 import { useQuery } from '@tanstack/react-query'
 import { differenceInDays } from 'date-fns'
@@ -128,18 +124,17 @@ export default function Page({ user }: JourneyProps): ReactNode {
                     <div className="rounded-full p-2">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
-                        width="24"
-                        height="24"
+                        width="19"
+                        height="19"
                         viewBox="0 0 24 24"
                         fill="none"
                         stroke="currentColor"
-                        strokeWidth="2"
+                        strokeWidth="1.5"
                         strokeLinecap="round"
                         strokeLinejoin="round"
-                        className="h-5 w-5"
                       >
-                        <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"></path>
-                        <circle cx="12" cy="10" r="3"></circle>
+                        <path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0" />
+                        <circle cx="12" cy="10" r="3" />
                       </svg>
                     </div>
                     <div className="flex flex-col">
@@ -162,7 +157,7 @@ export default function Page({ user }: JourneyProps): ReactNode {
                   </div>
                   <div className="group relative flex items-center space-x-2 px-4 py-2 hover:bg-slate-100 active:bg-transparent">
                     <div className="rounded-full p-2">
-                      <CalendarIcon className="text-accent h-5 w-5" />
+                      <CalendarIcon className="h-5 w-5" />
                     </div>
                     <div className="flex flex-col">
                       <span className="text-sm text-gray-600">
@@ -205,7 +200,20 @@ export default function Page({ user }: JourneyProps): ReactNode {
                   </div>
                   <div className="group relative flex items-center space-x-2 px-4 py-2 hover:bg-slate-100 active:bg-transparent">
                     <div className="rounded-full p-2">
-                      <BarChartIcon className="text-accent h-5 w-5" />
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="19"
+                        height="19"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      >
+                        <path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1" />
+                        <path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4" />
+                      </svg>
                     </div>
                     <div className="flex flex-col">
                       <span className="text-sm text-gray-600">Budget</span>
