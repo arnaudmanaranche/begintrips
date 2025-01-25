@@ -91,7 +91,7 @@ export default function Page({ user }: JourneyProps): ReactNode {
                   id="daysLeftBeforeJourneyBegins"
                   defaultMessage="{count, plural, one {{days} day left before your journey begins.} other {{days} days left before your journey begins.}}"
                   values={{
-                    count: 0,
+                    count: daysLeftBeforeJourneyBegins,
                     days: (
                       <span className="font-medium text-primary">
                         {daysLeftBeforeJourneyBegins}
@@ -253,7 +253,7 @@ export default function Page({ user }: JourneyProps): ReactNode {
                       </p>
                     </div>
                     <button
-                      className="absolute right-6 top-6 rounded-full bg-primary px-4 py-2 text-white shadow-sm transition-shadow hover:shadow-md"
+                      className="absolute right-6 top-2 rounded-full bg-primary px-4 py-2 text-white shadow-sm transition-shadow hover:shadow-md"
                       onClick={() => {
                         setIsOpen(true)
                         setCurrentType('AddExpense')
