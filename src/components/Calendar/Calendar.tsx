@@ -5,7 +5,7 @@ import { createViewDay, createViewWeek } from '@schedule-x/calendar'
 import { createEventModalPlugin } from '@schedule-x/event-modal'
 import { createEventsServicePlugin } from '@schedule-x/events-service'
 import { ScheduleXCalendar, useCalendarApp } from '@schedule-x/react'
-import { addHours, format, isAfter, isBefore } from 'date-fns'
+import { addHours, format, isAfter, isBefore, isSameDay } from 'date-fns'
 import { useRouter } from 'next/router'
 import type { ReactNode } from 'react'
 import { useCallback, useEffect, useState } from 'react'
@@ -20,8 +20,13 @@ interface CalendarAppProps {
 
 export function Calendar({ events }: CalendarAppProps): ReactNode {
   const router = useRouter()
-  const { setIsOpen, setCurrentType, setSelectedExpense, ref } =
-    useDrawerActions()
+  const {
+    setIsOpen,
+    setCurrentType,
+    setSelectedExpense,
+    ref,
+    setIsExpenseOnSeveralDays,
+  } = useDrawerActions()
   const eventsServicePlugin = useState(() => createEventsServicePlugin())[0]
 
   const handleOnClickDateTime = useCallback(
@@ -99,6 +104,7 @@ export function Calendar({ events }: CalendarAppProps): ReactNode {
           setCurrentType('EditExpense')
           setSelectedExpense({
             startDate: format(new Date(event.start), 'yyyy-MM-dd'),
+            endDate: format(new Date(event.end), 'yyyy-MM-dd'),
             startTime: format(new Date(event.start), 'HH:mm'),
             endTime: format(new Date(event.end), 'HH:mm'),
             name: event.title as string,
@@ -109,6 +115,7 @@ export function Calendar({ events }: CalendarAppProps): ReactNode {
               name: event.categoryName,
             },
           })
+          setIsExpenseOnSeveralDays(!isSameDay(event.start, event.end))
 
           ref.current = (
             e: CalendarEventExternal,

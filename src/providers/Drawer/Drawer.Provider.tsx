@@ -60,6 +60,7 @@ interface DrawerActions {
   ref: MutableRefObject<
     (e: CalendarEventExternal, action: 'patch' | 'delete') => void
   >
+  setIsExpenseOnSeveralDays: (value: boolean) => void
 }
 
 const DrawerStateContext = createContext<DrawerState | undefined>(undefined)
@@ -113,6 +114,7 @@ export function DrawerProvider({
   const ref = useRef<
     (e: CalendarEventExternal, action?: 'patch' | 'delete') => void | null
   >(() => {})
+  const [isExpenseOnSeveralDays, setIsExpenseOnSeveralDays] = useState(false)
 
   const matches = useMediaQuery('(min-width: 1024px)')
 
@@ -121,6 +123,7 @@ export function DrawerProvider({
     setIsOpen,
     setCurrentType,
     setSelectedExpense,
+    setIsExpenseOnSeveralDays,
     ref,
   }
 
@@ -144,6 +147,7 @@ export function DrawerProvider({
               name: '',
               amount: 0,
             })
+            setIsExpenseOnSeveralDays(false)
           }}
         >
           <Drawer.Portal>
@@ -171,6 +175,7 @@ export function DrawerProvider({
                   calendarRef={ref}
                   selectedExpense={selectedExpense}
                   isEditMode={currentType === 'EditExpense'}
+                  isExpenseOnSeveralDays={isExpenseOnSeveralDays}
                 />
               )}
             </Drawer.Content>

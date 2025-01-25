@@ -47,12 +47,14 @@ interface AddExpenseViewProps {
   calendarRef: MutableRefObject<
     (e: CalendarEventExternal, action?: 'patch' | 'delete') => void
   >
+  isExpenseOnSeveralDays?: boolean
 }
 
 export function AddExpenseView({
   selectedExpense,
   isEditMode,
   calendarRef,
+  isExpenseOnSeveralDays = false,
 }: AddExpenseViewProps): ReactNode {
   const { id: journeyId } = useParams()
   const [startTime, setStartTime] = useState(
@@ -66,14 +68,14 @@ export function AddExpenseView({
     name: selectedExpense?.name ?? '',
     amount: selectedExpense?.amount ?? 0,
     startDate: `${selectedExpense.startDate ?? ''} ${startTime}`,
-    endDate: `${selectedExpense?.startDate ?? ''} ${endTime}`,
+    endDate: `${selectedExpense?.endDate ?? ''} ${endTime}`,
     category_id: selectedExpense?.category_id ?? '',
     categories: {
       name: selectedExpense?.categories?.name ?? '',
     },
     journeyId: journeyId as string,
   })
-  const [isOnSeveralDays, setOnSeveralDays] = useState(false)
+  const [isOnSeveralDays, setOnSeveralDays] = useState(isExpenseOnSeveralDays)
   const { setIsOpen, setSelectedExpense } = useDrawerActions()
 
   const { data: userFavoriteCategories } = useQuery({
@@ -148,45 +150,53 @@ export function AddExpenseView({
       const isChecked = e.target.checked
       setOnSeveralDays(isChecked)
 
-      if (isChecked && data) {
-        if (!isValidTimeFormat(newExpense.startDate)) {
-          setNewExpense((prev) => ({
-            ...prev,
-            startDate: `${formatDate(
-              new Date(data.journey.departureDate),
-              'yyyy-MM-dd'
-            )}`,
-            endDate:
-              newExpense.startDate.split(' ')[0] ===
-              formatDate(new Date(data.journey.returnDate), 'yyyy-MM-dd')
-                ? formatDate(new Date(prev.startDate), 'yyyy-MM-dd')
-                : formatDate(
-                    addDays(new Date(prev.startDate), 1),
-                    'yyyy-MM-dd'
-                  ),
-          }))
-        } else {
-          setNewExpense((prev) => ({
-            ...prev,
-            startDate: formatDate(
-              new Date(data.journey.departureDate),
-              'yyyy-MM-dd'
-            ),
-            endDate: formatDate(
-              addDays(new Date(data.journey.departureDate), 1),
-              'yyyy-MM-dd'
-            ),
-          }))
-        }
-      } else {
-        setNewExpense((prev) => ({
-          ...prev,
-          startDate: `${prev.startDate} ${startTime}`,
-          endDate: `${prev.startDate} ${endTime}`,
-        }))
+      if (data) {
+        const { departureDate, returnDate } = data.journey
+
+        setNewExpense((prev) => {
+          const formattedDepartureDate = formatDate(
+            new Date(departureDate),
+            'yyyy-MM-dd'
+          )
+
+          if (isChecked) {
+            if (!isValidTimeFormat(prev.startDate)) {
+              const nextStartDate = formattedDepartureDate
+              const nextEndDate =
+                prev.startDate.split(' ')[0] ===
+                formatDate(new Date(returnDate), 'yyyy-MM-dd')
+                  ? formattedDepartureDate
+                  : formatDate(
+                      addDays(new Date(prev.startDate), 1),
+                      'yyyy-MM-dd'
+                    )
+
+              return {
+                ...prev,
+                startDate: nextStartDate,
+                endDate: nextEndDate,
+              }
+            } else {
+              return {
+                ...prev,
+                startDate: formattedDepartureDate,
+                endDate: formatDate(
+                  addDays(new Date(departureDate), 1),
+                  'yyyy-MM-dd'
+                ),
+              }
+            }
+          } else {
+            return {
+              ...prev,
+              startDate: `${data.journey.departureDate} ${startTime}`,
+              endDate: `${data.journey.departureDate} ${endTime}`,
+            }
+          }
+        })
       }
     },
-    [data, endTime, newExpense.startDate, startTime]
+    [data, endTime, startTime]
   )
 
   const handleOnChangeStartTime = (e: ChangeEvent<HTMLInputElement>) => {

@@ -35,6 +35,7 @@ export function InputTime(props: InputTimeProps): ReactNode {
         required
         selected={selectedDates}
         onSelect={onSelectDate}
+        today={minDate}
         disabled={{
           before: minDate,
           after: maxDate,
