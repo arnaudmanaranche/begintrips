@@ -28,7 +28,7 @@ export interface ExpenseWithCategories extends Expense {
 // CREATE
 export type AddJourney = TablesInsert<'journeys'>
 type AddCategory = TablesInsert<'categories'>
-export type AddExpense = TablesInsert<'expenses'>
+
 export interface AddExpenseWithCategories extends TablesInsert<'expenses'> {
   categories: AddCategory
 }
