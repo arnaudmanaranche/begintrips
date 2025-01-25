@@ -54,3 +54,15 @@ export function isValidDateTimeFormat(dateTime: string): boolean {
   // Check if the parsed date is valid
   return isValid(parsedDate)
 }
+
+/**
+ * Checks if a string matches the format ' HH:MM'.
+ * Acceptable values are ' 00:00', ' 01:00', ..., ' 23:00'.
+ *
+ * @param input - The string to check.
+ * @returns True if the string matches the format, false otherwise.
+ */
+export function isValidTimeFormat(input: string): boolean {
+  const timeFormatRegex = /^ [0-2]\d:00$/
+  return timeFormatRegex.test(input) && parseInt(input.trim()) < 24
+}

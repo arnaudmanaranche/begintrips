@@ -21,7 +21,11 @@ import { Callout } from '@/components/Callout/Callout'
 import { InputTime } from '@/components/DateTimePicker/DateTimePicker'
 import { Input } from '@/components/Input/Input'
 import type { AddExpenseWithCategories } from '@/types'
-import { formatDate, isValidDateTimeFormat } from '@/utils/date'
+import {
+  formatDate,
+  isValidDateTimeFormat,
+  isValidTimeFormat,
+} from '@/utils/date'
 
 import { useDrawerActions } from '../Drawer.Provider'
 
@@ -51,8 +55,12 @@ export function AddExpenseView({
   calendarRef,
 }: AddExpenseViewProps): ReactNode {
   const { id: journeyId } = useParams()
-  const [startTime, setStartTime] = useState(selectedExpense.startTime ?? '')
-  const [endTime, setEndTime] = useState(selectedExpense.endTime ?? '')
+  const [startTime, setStartTime] = useState(
+    selectedExpense.startTime !== '' ? selectedExpense.startTime : '00:00'
+  )
+  const [endTime, setEndTime] = useState(
+    selectedExpense.endTime !== '' ? selectedExpense.endTime : '01:00'
+  )
   const [newExpense, setNewExpense] = useState<AddExpenseWithCategories>({
     id: selectedExpense?.id ?? '',
     name: selectedExpense?.name ?? '',
@@ -141,9 +149,13 @@ export function AddExpenseView({
       setOnSeveralDays(isChecked)
 
       if (isChecked && data) {
-        if (newExpense?.startDate !== ' ') {
+        if (!isValidTimeFormat(newExpense.startDate)) {
           setNewExpense((prev) => ({
             ...prev,
+            startDate: `${formatDate(
+              new Date(data.journey.departureDate),
+              'yyyy-MM-dd'
+            )}`,
             endDate:
               newExpense.startDate.split(' ')[0] ===
               formatDate(new Date(data.journey.returnDate), 'yyyy-MM-dd')
@@ -169,12 +181,12 @@ export function AddExpenseView({
       } else {
         setNewExpense((prev) => ({
           ...prev,
-          endDate: null,
-          startDate: prev.startDate,
+          startDate: `${prev.startDate} ${startTime}`,
+          endDate: `${prev.startDate} ${endTime}`,
         }))
       }
     },
-    [data, newExpense?.startDate]
+    [data, endTime, newExpense.startDate, startTime]
   )
 
   const handleOnChangeStartTime = (e: ChangeEvent<HTMLInputElement>) => {
@@ -336,12 +348,6 @@ export function AddExpenseView({
           </div>
           <div className="flex space-x-3">
             <div className="flex flex-grow flex-col space-y-1">
-              <label
-                htmlFor="expense-startDate"
-                className="text-accent text-xs"
-              >
-                <FormattedMessage id="date" defaultMessage="Date" />
-              </label>
               {isOnSeveralDays ? (
                 <InputTime
                   selectedDates={{
