@@ -1,12 +1,7 @@
 import '@schedule-x/theme-default/dist/index.css'
 
 import type { CalendarEventExternal } from '@schedule-x/calendar'
-import {
-  createViewDay,
-  createViewMonthAgenda,
-  createViewMonthGrid,
-  createViewWeek,
-} from '@schedule-x/calendar'
+import { createViewDay, createViewWeek } from '@schedule-x/calendar'
 import { createEventModalPlugin } from '@schedule-x/event-modal'
 import { createEventsServicePlugin } from '@schedule-x/events-service'
 import { ScheduleXCalendar, useCalendarApp } from '@schedule-x/react'
@@ -54,12 +49,7 @@ export function Calendar({ events }: CalendarAppProps): ReactNode {
 
   const calendar = useCalendarApp(
     {
-      views: [
-        createViewDay(),
-        createViewWeek(),
-        createViewMonthGrid(),
-        createViewMonthAgenda(),
-      ],
+      views: [createViewDay(), createViewWeek()],
       calendars: {
         personal: {
           colorName: 'personal',
@@ -72,13 +62,6 @@ export function Calendar({ events }: CalendarAppProps): ReactNode {
       },
       selectedDate: events.journey.departureDate,
       events: events?.calendarExpenses,
-      weekOptions: {
-        gridHeight: 1000,
-      },
-      dayBoundaries: {
-        start: '06:00',
-        end: '21:00',
-      },
       locale: router.locale === 'fr' ? 'fr-FR' : 'en-US',
       callbacks: {
         onClickDateTime(dateTime) {
