@@ -5,7 +5,7 @@ import {
   QueryClient,
   QueryClientProvider,
 } from '@tanstack/react-query'
-// import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { Analytics } from '@vercel/analytics/react'
 import { SpeedInsights } from '@vercel/speed-insights/next'
 import type { AppProps } from 'next/app'
@@ -91,7 +91,7 @@ export default function App({ Component, pageProps }: AppProps): ReactNode {
               <Analytics />
             </DrawerProvider>
           </HydrationBoundary>
-          {/* <ReactQueryDevtools buttonPosition="bottom-right" /> */}
+          <ReactQueryDevtools buttonPosition="bottom-right" />
         </QueryClientProvider>
       </IntlProvider>
     </>
