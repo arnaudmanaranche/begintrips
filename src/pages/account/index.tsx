@@ -215,19 +215,32 @@ export default function AccountPage({ user }: AccountPageProps): ReactNode {
                   defaultMessage="Base currency"
                 />
               </label>
-              <select
-                className="bg-transparent text-black/50"
-                name="currency"
-                id="currency"
-                defaultValue={currency ?? 'EUR'}
-                onChange={(e) => {
-                  localStorage.setItem('currency', e.target.value)
-                }}
-              >
-                <option value="USD">USD</option>
-                <option value="EUR">EUR</option>
-                <option value="GBP">GBP</option>
-              </select>
+              <div className="grid">
+                <select
+                  className="col-start-1 row-start-1 w-14 appearance-none bg-transparent text-black"
+                  name="currency"
+                  id="currency"
+                  defaultValue={currency ?? 'EUR'}
+                  onChange={(e) => {
+                    localStorage.setItem('currency', e.target.value)
+                  }}
+                >
+                  <option value="USD">USD</option>
+                  <option value="EUR">EUR</option>
+                  <option value="GBP">GBP</option>
+                </select>
+                <svg
+                  className="pointer-events-none relative right-1 z-10 col-start-1 row-start-1 h-4 w-4 self-center justify-self-end text-black forced-colors:hidden"
+                  viewBox="0 0 16 16"
+                  aria-hidden="true"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z"
+                    clipRule="evenodd"
+                  ></path>
+                </svg>
+              </div>
             </div>
             <Dialog.Portal>
               <Dialog.Overlay className="fixed inset-0 bg-black/30 data-[state=open]:animate-overlayShow" />

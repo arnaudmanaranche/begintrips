@@ -309,34 +309,47 @@ export function AddExpenseView({
           >
             <FormattedMessage id="categories" defaultMessage="Categories" />
           </label>
-          <select
-            id="expense-category"
-            className="focus:border-accent focus:ring-accent appearance-none rounded-md border border-gray-300 bg-transparent px-4 py-4 outline-none transition-all focus:outline-none focus:ring focus:ring-opacity-40"
-            onChange={(e) => {
-              setNewExpense({
-                ...newExpense,
-                category_id: e.target.value,
-                categories: {
-                  name: e.target.options[e.target.selectedIndex].text,
-                },
-              })
-            }}
-            defaultValue={newExpense.category_id as string}
-          >
-            <option value="" disabled>
-              <FormattedMessage
-                id="selectCategory"
-                defaultMessage="Select category"
-              />
-            </option>
-            {userFavoriteCategories?.map((category) => {
-              return (
-                <option key={category.id} value={category.id}>
-                  {category.name}
-                </option>
-              )
-            })}
-          </select>
+          <div className="grid">
+            <select
+              id="expense-category"
+              className="focus:border-accent focus:ring-accent col-start-1 row-start-1 appearance-none rounded-md border border-gray-300 bg-transparent px-4 py-4 outline-none transition-all focus:outline-none focus:ring focus:ring-opacity-40"
+              onChange={(e) => {
+                setNewExpense({
+                  ...newExpense,
+                  category_id: e.target.value,
+                  categories: {
+                    name: e.target.options[e.target.selectedIndex].text,
+                  },
+                })
+              }}
+              defaultValue={newExpense.category_id as string}
+            >
+              <option value="" disabled>
+                <FormattedMessage
+                  id="selectCategory"
+                  defaultMessage="Select a category"
+                />
+              </option>
+              {userFavoriteCategories?.map((category) => {
+                return (
+                  <option key={category.id} value={category.id}>
+                    {category.name}
+                  </option>
+                )
+              })}
+            </select>
+            <svg
+              className="pointer-events-none relative right-1 z-10 col-start-1 row-start-1 h-4 w-4 self-center justify-self-end text-black forced-colors:hidden"
+              viewBox="0 0 16 16"
+              aria-hidden="true"
+            >
+              <path
+                fillRule="evenodd"
+                d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z"
+                clipRule="evenodd"
+              ></path>
+            </svg>
+          </div>
         </div>
         <div className="space-y-4">
           <div className="flex items-center space-x-3">
