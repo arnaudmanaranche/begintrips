@@ -178,8 +178,8 @@ export default function Onboarding(): ReactNode {
                 />
               ) : currentStep === ONBOARDING_STEPS.length - 1 ? (
                 <FormattedMessage
-                  id="onboarding.letsGo"
-                  defaultMessage="Let's go!"
+                  id="onboarding.createMyJourney"
+                  defaultMessage="Create my journey"
                 />
               ) : (
                 <FormattedMessage id="onboardingNext" defaultMessage="Next" />

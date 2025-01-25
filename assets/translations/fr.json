@@ -97,7 +97,7 @@
   "journeyCategoriesDescription": "Les catégories ajoutées en favories apparaîtront en premier lors de l'ajout d'une nouvelle dépense ou activité.",
   "feedback": "Donnez votre avis",
   "daysLeftBeforeJourneyBegins": "{count, plural, one {{days} jour avant que votre voyage commence} other {{days} jours avant que votre voyage commence.}}",
-  "onboarding.letsGo": "C'est parti !",
+  "onboarding.createMyJourney": "Créer mon voyage",
   "onboarding.step2.title": "Quand prévoyez-vous d'aller à {destination} ?",
   "onboarding.step3.title": "Combien prévoyez-vous de dépenser ?",
   "onboardingChangeDates": "Modifier les dates",
