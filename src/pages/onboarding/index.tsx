@@ -65,7 +65,7 @@ export default function Onboarding(): ReactNode {
 
   const handleNextStep = () => {
     if (currentStep === 0) {
-      if (!journey.destination) {
+      if (!journey.destination.id) {
         setError(
           <FormattedMessage
             id="onboardingStep1Error"
