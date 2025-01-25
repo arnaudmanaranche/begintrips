@@ -9,13 +9,13 @@ import { defineMessages, FormattedMessage, useIntl } from 'react-intl'
 import { getUserJourneys } from '@/api/calls/users'
 import { QUERY_KEYS } from '@/api/queryKeys'
 import { AccountBottomBar } from '@/components/AccountBottomBar/AccountBottomBar'
+import { AccountHeader } from '@/components/AccountHeader/AccountHeader'
 import { Button } from '@/components/Button/Button'
 import MyJourneys from '@/components/MyJourneys/MyJourneys'
 import { NavBar } from '@/components/NavBar/NavBar'
 import { createClient as createClientServerProps } from '@/libs/supabase/server-props'
 import type { Journey, User } from '@/types'
 import { SITE_URL } from '@/utils/seo'
-
 interface MyJourneysPageProps {
   user: User
   journeys: Journey[]
@@ -41,7 +41,7 @@ export default function MyJourneysPage({
   const intl = useIntl()
 
   return (
-    <div className="relative min-h-screen flex-1 bg-[#faf9f8] pt-10 lg:pt-0">
+    <div className="relative min-h-screen flex-1 bg-[#faf9f8]">
       <Head>
         <title>{intl.formatMessage(messages.title)}</title>
         <meta name="title" content={intl.formatMessage(messages.title)} />
@@ -57,7 +57,8 @@ export default function MyJourneysPage({
         <meta name="twitter:url" content={`${SITE_URL}/my-journeys`} />
       </Head>
       <NavBar />
-      <div className="mx-auto flex max-w-screen-sm flex-1 flex-col justify-center gap-10 px-10 lg:px-0">
+      <AccountHeader />
+      <div className="mx-auto flex max-w-screen-sm flex-1 flex-col justify-center gap-10 px-10 pt-10 lg:px-0 lg:pt-0">
         <p className="text-3xl font-bold">
           <FormattedMessage id="myJourneys" defaultMessage="My journeys" />
         </p>

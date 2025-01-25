@@ -14,6 +14,7 @@ import { toast } from 'sonner'
 
 import { checkoutSession } from '@/api/calls/stripe'
 import { AccountBottomBar } from '@/components/AccountBottomBar/AccountBottomBar'
+import { AccountHeader } from '@/components/AccountHeader/AccountHeader'
 import { CurrentPlan } from '@/components/CurrentPlan/CurrentPlan'
 import { PaymentModalView } from '@/components/modals/Billing/Billing'
 import { ChangePasswordModalView } from '@/components/modals/ChangePassword/ChangePassword'
@@ -24,6 +25,7 @@ import { useOnboardingStore } from '@/stores/onboarding.store'
 import type { User } from '@/types'
 import { PLANS } from '@/utils/product-plans'
 import { SITE_URL } from '@/utils/seo'
+
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY)
 
 export interface AccountPageProps {
@@ -182,9 +184,10 @@ export default function AccountPage({ user }: AccountPageProps): ReactNode {
           content={intl.formatMessage(messages.metaDescription)}
         />
       </Head>
-      <div className="relative min-h-screen flex-1 bg-[#faf9f8] pt-10 lg:pt-0">
+      <div className="relative min-h-screen flex-1 bg-[#faf9f8]">
         <NavBar />
-        <div className="mx-auto flex max-w-screen-sm flex-1 flex-col justify-center gap-10 px-10 lg:px-0">
+        <AccountHeader />
+        <div className="mx-auto flex max-w-screen-sm flex-1 flex-col justify-center gap-10 px-10 pt-10 lg:px-0 lg:pt-0">
           <div className="flex flex-col items-center space-y-2">
             <Avatar
               name={user.email}

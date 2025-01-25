@@ -59,7 +59,7 @@ export function Button({
   return (
     <button
       className={clsx(
-        'flex items-center gap-2 outline-none transition-colors',
+        'flex items-center justify-center gap-2 outline-none transition-colors',
         variantClasses[variant],
         className,
         stretch && 'w-full',
