@@ -18,7 +18,7 @@ export function Budget({ budgetSpent, totalBudget }: BudgetProps): ReactNode {
         <span className="text-black/30">
           <FormattedMessage
             id="noBudget"
-            defaultMessage="You have no budget yet. Add one to get started {setBudget}"
+            defaultMessage="You have no budget yet. {setBudget}"
             values={{
               setBudget: (
                 <p
@@ -29,8 +29,8 @@ export function Budget({ budgetSpent, totalBudget }: BudgetProps): ReactNode {
                   className="cursor-pointer text-primary"
                 >
                   <FormattedMessage
-                    id="addBudget"
-                    defaultMessage="Add budget"
+                    id="setBudget"
+                    defaultMessage="Set a budget"
                   />
                 </p>
               ),
