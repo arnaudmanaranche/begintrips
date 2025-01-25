@@ -1,6 +1,5 @@
 import { type ReactNode } from 'react'
 import { FormattedMessage, FormattedNumber } from 'react-intl'
-import { VictoryPie, VictoryTheme, VictoryTooltip } from 'victory'
 
 import { useDrawerActions } from '@/providers/Drawer/Drawer.Provider'
 
@@ -11,7 +10,6 @@ interface BudgetProps {
 
 export function Budget({ budgetSpent, totalBudget }: BudgetProps): ReactNode {
   const { setCurrentType, setIsOpen } = useDrawerActions()
-
   const currency = localStorage.getItem('currency')
 
   if (totalBudget === 0) {
@@ -43,67 +41,71 @@ export function Budget({ budgetSpent, totalBudget }: BudgetProps): ReactNode {
     )
   }
 
-  const percentageSpent = (budgetSpent / totalBudget) * 100
-  const remainingPercentage = 100 - percentageSpent
+  const percentage = (budgetSpent / totalBudget) * 100
+  const radius = 60
+  const circumference = 2 * Math.PI * radius
+  const strokeDasharray = circumference
+  const strokeDashoffset = circumference - (percentage / 100) * circumference
 
   let color
-  if (percentageSpent <= 50) {
-    color = '#4CAF50' // Green
-  } else if (percentageSpent <= 80) {
-    color = '#FFA500' // Orange
+  if (percentage <= 50) {
+    color = '#4CAF50'
+  } else if (percentage <= 80) {
+    color = '#FFA500'
   } else {
-    color = '#FF0000' // Red
+    color = '#FF0000'
   }
 
-  const data = [
-    {
-      x: 'Remaining',
-      y: remainingPercentage,
-      value: totalBudget - budgetSpent,
-    },
-    { x: 'Spent', y: percentageSpent, value: budgetSpent },
-  ]
-
   return (
-    <div className="relative">
-      <svg width={280} height={200} className="mx-auto">
-        <VictoryPie
-          standalone={false}
-          width={280}
-          startAngle={90}
-          endAngle={-90}
-          data={data}
-          theme={VictoryTheme.clean}
-          colorScale={['#a5a0a0', color]}
-          labelIndicator={false}
-          labels={({ datum }) => `${datum.value}€`}
-          labelComponent={<VictoryTooltip />}
-        />
-      </svg>
-      <div className="absolute left-0 top-0 h-max w-full text-center text-black">
-        <div className="text-lg">
-          <FormattedMessage
-            id="budgetSpent"
-            defaultMessage={`{budgetSpent} of {totalBudget} spent`}
-            values={{
-              budgetSpent: (
-                <FormattedNumber
-                  value={budgetSpent}
-                  currency={currency ?? 'EUR'}
-                  style="currency"
-                  maximumFractionDigits={1}
-                />
-              ),
-              totalBudget: (
-                <FormattedNumber
-                  value={totalBudget}
-                  currency={currency ?? 'EUR'}
-                  style="currency"
-                  maximumFractionDigits={1}
-                />
-              ),
-            }}
-          />
+    <div className="pt-6">
+      <div className="flex flex-col items-center">
+        <div className="relative flex h-48 w-48 items-center justify-center">
+          <svg className="h-48 w-48 -rotate-90 transform" viewBox="0 0 144 144">
+            <circle
+              cx="72"
+              cy="72"
+              r={radius}
+              className="fill-none stroke-muted stroke-2"
+            />
+            <circle
+              cx="72"
+              cy="72"
+              r={radius}
+              className={`fill-none stroke-[${color}] stroke-2`}
+              strokeDasharray={strokeDasharray}
+              strokeDashoffset={strokeDashoffset}
+              strokeLinecap="round"
+            />
+          </svg>
+          <div className="absolute flex flex-col items-center">
+            <span className="text-2xl font-bold">
+              <FormattedNumber
+                value={budgetSpent}
+                style="currency"
+                currency={currency || 'EUR'}
+              />
+            </span>
+            <span className="text-muted-foreground text-sm">
+              <FormattedMessage id="spent" defaultMessage="Spent" />
+            </span>
+          </div>
+        </div>
+        <div className="mt-6 flex w-full justify-end px-4 pb-4">
+          <div className="flex flex-col items-end">
+            <span className="text-xl font-semibold">
+              <FormattedNumber
+                value={totalBudget - budgetSpent}
+                style="currency"
+                currency={currency || 'EUR'}
+              />
+            </span>
+            <span className="text-muted-foreground text-sm">
+              <FormattedMessage
+                id="leftToSpend"
+                defaultMessage="Left to spend"
+              />
+            </span>
+          </div>
         </div>
       </div>
     </div>
