@@ -81,6 +81,7 @@
   "name": "Name",
   "noBudget": "You have no budget yet. {setBudget}",
   "setBudget": "Set a budget",
+  "noBudgetSetCard": "No budget set yet",
   "noExpenses": "No expenses recorded yet. Start tracking your spending!",
   "noPayments": "No payments yet",
   "o+nfLw": "{name}",

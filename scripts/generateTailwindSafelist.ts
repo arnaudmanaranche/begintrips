@@ -26,6 +26,10 @@ const colors = [
   '#9E7D70',
   '#657A96',
   '#5F647A',
+  // Budget
+  '#4CAF50',
+  '#FFA500',
+  '#FF0000',
 ]
 
 export const generateTailwindSafelist = (): string[] => {
@@ -35,6 +39,7 @@ export const generateTailwindSafelist = (): string[] => {
     safelist.push(`bg-[${color}]`)
     safelist.push(`text-[${color}]`)
     safelist.push(`border-[${color}]`)
+    safelist.push(`stroke-[${color}]`)
   })
 
   return safelist

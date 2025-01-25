@@ -33,7 +33,9 @@ export function JourneyCard({
       )}
     >
       <h3 className="px-4 py-2 text-lg text-white">{title}</h3>
-      <div className="rounded-md border-t-[1px] bg-white pt-4">{children}</div>
+      <div className="mb-2 rounded-md border-t-[1px] bg-white pt-4">
+        {children}
+      </div>
     </div>
   )
 }

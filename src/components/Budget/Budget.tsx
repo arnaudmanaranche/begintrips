@@ -65,13 +65,13 @@ export function Budget({ budgetSpent, totalBudget }: BudgetProps): ReactNode {
               cx="72"
               cy="72"
               r={radius}
-              className="fill-none stroke-muted stroke-2"
+              className="fill-none stroke-slate-500 stroke-[6px]"
             />
             <circle
               cx="72"
               cy="72"
               r={radius}
-              className={`fill-none stroke-[${color}] stroke-2`}
+              className={`fill-none stroke-[${color}] stroke-[6px]`}
               strokeDasharray={strokeDasharray}
               strokeDashoffset={strokeDashoffset}
               strokeLinecap="round"
@@ -90,22 +90,57 @@ export function Budget({ budgetSpent, totalBudget }: BudgetProps): ReactNode {
             </span>
           </div>
         </div>
-        <div className="mt-6 flex w-full justify-end px-4 pb-4">
-          <div className="flex flex-col items-end">
-            <span className="text-xl font-semibold">
-              <FormattedNumber
-                value={totalBudget - budgetSpent}
-                style="currency"
-                currency={currency || 'EUR'}
-              />
-            </span>
-            <span className="text-muted-foreground text-sm">
-              <FormattedMessage
-                id="leftToSpend"
-                defaultMessage="Left to spend"
-              />
-            </span>
-          </div>
+        <div className="mt-6 flex w-full justify-between px-4 pb-4">
+          {budgetSpent > totalBudget ? (
+            <>
+              <div className="flex flex-col items-end text-[#FF0000]">
+                <span className="text-xl font-semibold">
+                  <FormattedNumber
+                    value={-(totalBudget - budgetSpent)}
+                    style="currency"
+                    currency={currency || 'EUR'}
+                  />
+                </span>
+                <span className="text-muted-foreground text-sm">
+                  <FormattedMessage
+                    id="overBudget"
+                    defaultMessage="Over budget"
+                  />
+                </span>
+              </div>
+              <div className="flex flex-col items-end">
+                <span className="text-xl font-semibold">
+                  <FormattedNumber
+                    value={0}
+                    style="currency"
+                    currency={currency || 'EUR'}
+                  />
+                </span>
+                <span className="text-muted-foreground text-sm">
+                  <FormattedMessage
+                    id="leftToSpend"
+                    defaultMessage="Left to spend"
+                  />
+                </span>
+              </div>
+            </>
+          ) : (
+            <div className="flex flex-col items-end">
+              <span className="text-xl font-semibold">
+                <FormattedNumber
+                  value={totalBudget - budgetSpent}
+                  style="currency"
+                  currency={currency || 'EUR'}
+                />
+              </span>
+              <span className="text-muted-foreground text-sm">
+                <FormattedMessage
+                  id="leftToSpend"
+                  defaultMessage="Left to spend"
+                />
+              </span>
+            </div>
+          )}
         </div>
       </div>
     </div>
