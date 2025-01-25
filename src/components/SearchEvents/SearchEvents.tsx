@@ -8,16 +8,15 @@ import { useState } from 'react'
 
 import { useCreateExpense } from '@/api/hooks/createExpense'
 import { useSearchEvents } from '@/libs/ticketmaster/client'
-import type { Day, Journey } from '@/types'
+import type { Journey } from '@/types'
 import { formatDate } from '@/utils/date'
 import { hasJourneyPassed } from '@/utils/has-journey-passed'
 
 interface SearchEventsProps {
   journey: Journey
-  days: Day[]
 }
 
-export function SearchEvents({ journey, days }: SearchEventsProps): ReactNode {
+export function SearchEvents({ journey }: SearchEventsProps): ReactNode {
   const { events, isLoading, error, searchEvents } = useSearchEvents()
   const router = useRouter()
   const [searchValue, setSearchValue] = useState('')
@@ -104,24 +103,8 @@ export function SearchEvents({ journey, days }: SearchEventsProps): ReactNode {
                 key={event.id}
                 className="pointer-events-auto col-span-3 space-y-2"
                 onClick={() => {
-                  const dayId = days?.find(
-                    (day) =>
-                      day.startDate ===
-                      formatDate(
-                        new Date(event.dates?.start.dateTime as string),
-                        'yyyy-MM-dd',
-                        true,
-                        router.locale
-                      )
-                  )?.id
-
-                  if (!dayId) {
-                    return
-                  }
-
                   handleCreateExpense({
                     expense: {
-                      dayId,
                       amount:
                         event.priceRanges?.[0].max ||
                         event.priceRanges?.[0].min ||
