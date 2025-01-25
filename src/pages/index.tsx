@@ -619,8 +619,7 @@ export default function HomePage({ user }: { user: User }): ReactNode {
               <div className="absolute -left-4 -top-4 h-32 w-32 rotate-45 rounded-xl bg-white" />
               <div className="absolute -bottom-4 -right-4 h-32 w-32 rotate-45 rounded-xl bg-white" />
             </div>
-
-            <div className="relative">
+            <div className="relative flex flex-col items-center">
               <h2 className="mb-6 text-4xl font-bold md:text-5xl">
                 <FormattedMessage
                   id="readyToStart"
