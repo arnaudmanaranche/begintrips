@@ -1,18 +1,14 @@
-import {
-  PaperPlaneIcon,
-  PersonIcon,
-  PlusCircledIcon,
-} from '@radix-ui/react-icons'
+import { PlusCircledIcon } from '@radix-ui/react-icons'
 import { useQuery } from '@tanstack/react-query'
 import type { GetServerSideProps } from 'next'
 import Head from 'next/head'
-import Link from 'next/link'
 import { useRouter } from 'next/router'
 import type { ReactNode } from 'react'
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl'
 
 import { getUserJourneys } from '@/api/calls/users'
 import { QUERY_KEYS } from '@/api/queryKeys'
+import { AccountBottomBar } from '@/components/AccountBottomBar/AccountBottomBar'
 import { Button } from '@/components/Button/Button'
 import MyJourneys from '@/components/MyJourneys/MyJourneys'
 import { NavBar } from '@/components/NavBar/NavBar'
@@ -45,7 +41,7 @@ export default function MyJourneysPage({
   const intl = useIntl()
 
   return (
-    <div className="relative min-h-screen flex-1 bg-white pt-10 lg:pt-0">
+    <div className="relative min-h-screen flex-1 bg-[#faf9f8] pt-10 lg:pt-0">
       <Head>
         <title>{intl.formatMessage(messages.title)}</title>
         <meta name="title" content={intl.formatMessage(messages.title)} />
@@ -82,35 +78,7 @@ export default function MyJourneysPage({
           </Button>
         ) : null}
       </div>
-      <div className="fixed bottom-0 left-0 right-0 bg-white lg:hidden">
-        <ul className="flex h-16 items-center justify-around ring-1 ring-slate-200">
-          <li className="flex items-center">
-            <Link
-              href="/my-journeys"
-              className="flex flex-col items-center text-primary"
-            >
-              <PaperPlaneIcon className="h-6 w-6" />
-              <span>
-                <FormattedMessage
-                  id="myJourneys"
-                  defaultMessage="My journeys"
-                />
-              </span>
-            </Link>
-          </li>
-          <li className="flex items-center">
-            <Link
-              href="/account"
-              className="flex flex-col items-center text-black"
-            >
-              <PersonIcon className="h-6 w-6" />
-              <span>
-                <FormattedMessage id="myAccount" defaultMessage="My account" />
-              </span>
-            </Link>
-          </li>
-        </ul>
-      </div>
+      <AccountBottomBar />
     </div>
   )
 }

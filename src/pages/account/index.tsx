@@ -1,16 +1,10 @@
 import * as Dialog from '@radix-ui/react-dialog'
-import {
-  ChevronRightIcon,
-  Cross2Icon,
-  PaperPlaneIcon,
-  PersonIcon,
-} from '@radix-ui/react-icons'
+import { ChevronRightIcon, Cross2Icon } from '@radix-ui/react-icons'
 import { loadStripe } from '@stripe/stripe-js'
 import Avatar from 'boring-avatars'
 import type { GetServerSideProps } from 'next'
 import { Open_Sans, Outfit } from 'next/font/google'
 import Head from 'next/head'
-import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
 import { useRouter } from 'next/router'
 import type { ReactNode } from 'react'
@@ -19,6 +13,7 @@ import { defineMessages, FormattedMessage, useIntl } from 'react-intl'
 import { toast } from 'sonner'
 
 import { checkoutSession } from '@/api/calls/stripe'
+import { AccountBottomBar } from '@/components/AccountBottomBar/AccountBottomBar'
 import { CurrentPlan } from '@/components/CurrentPlan/CurrentPlan'
 import { PaymentModalView } from '@/components/modals/Billing/Billing'
 import { ChangePasswordModalView } from '@/components/modals/ChangePassword/ChangePassword'
@@ -304,28 +299,7 @@ export default function AccountPage({ user }: AccountPageProps): ReactNode {
             </span>
           </div>
         </div>
-        <div className="fixed bottom-0 left-0 right-0 bg-white lg:hidden">
-          <ul className="flex h-16  items-center justify-around ring-1 ring-slate-200">
-            <li className="flex items-center">
-              <Link href="/my-journeys" className="flex flex-col items-center">
-                <PaperPlaneIcon className="h-6 w-6 text-black" />
-                <FormattedMessage
-                  id="myJourneys"
-                  defaultMessage="My journeys"
-                />
-              </Link>
-            </li>
-            <li className="flex items-center">
-              <Link
-                href="/account"
-                className="flex flex-col items-center text-primary"
-              >
-                <PersonIcon className="h-6 w-6" />
-                <FormattedMessage id="myAccount" defaultMessage="My account" />
-              </Link>
-            </li>
-          </ul>
-        </div>
+        <AccountBottomBar />
       </div>
     </Dialog.Root>
   )
