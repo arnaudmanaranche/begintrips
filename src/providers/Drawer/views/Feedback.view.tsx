@@ -38,11 +38,16 @@ export function FeedbackView(): ReactNode {
           className="mb-2 text-2xl font-medium text-zinc-900"
           asChild
         >
-          <h3>Give us feedback</h3>
+          <h3>
+            <FormattedMessage id="feedbackTitle" defaultMessage="Feedback" />
+          </h3>
         </Drawer.Title>
         <Drawer.Description className="mb-2 text-zinc-600">
-          We are always looking for ways to improve our service. Please let us
-          know how we can improve your experience.
+          <FormattedMessage
+            id="feedbackDescription"
+            defaultMessage="We are always looking for ways to improve our service. Please let us
+          know how we can improve your experience."
+          />
         </Drawer.Description>
         <form
           onSubmit={(e) => {
@@ -53,7 +58,7 @@ export function FeedbackView(): ReactNode {
           <textarea
             name="comment"
             id="comment"
-            placeholder="Your message"
+            placeholder="Message"
             value={comment}
             rows={4}
             onChange={(e) => setComment(e.target.value)}
