@@ -18,29 +18,36 @@ export const groupedExpensesByDay = ({
     return acc
   }, {})
 
-  if (expenses) {
-    expenses.forEach((expense) => {
-      const startDate = new Date(expense.startDate)
-      const endDate = expense.endDate ? new Date(expense.endDate) : startDate
+  expenses.forEach((expense) => {
+    const startDate = new Date(expense.startDate)
+    const endDate = expense.endDate ? new Date(expense.endDate) : startDate
 
-      const daysInRange = eachDayOfInterval({
-        start: startDate,
-        end: endDate,
-      })
-
-      daysInRange.forEach((date) => {
-        const dayKey = formatISO(date, {
-          representation: 'date',
-        }) as DateString
-
-        if (expensesByDay[dayKey]) {
-          expensesByDay[dayKey].push(expense)
-        } else {
-          expensesByDay[dayKey] = [expense]
-        }
-      })
+    const daysInRange = eachDayOfInterval({
+      start: startDate,
+      end: endDate,
     })
-  }
+
+    const dailyPrice = parseFloat(
+      (expense.amount / daysInRange.length).toFixed(2)
+    )
+
+    daysInRange.forEach((date) => {
+      const dayKey = formatISO(date, {
+        representation: 'date',
+      }) as DateString
+
+      const splitExpense = {
+        ...expense,
+        amount: dailyPrice,
+      }
+
+      if (expensesByDay[dayKey]) {
+        expensesByDay[dayKey].push(splitExpense)
+      } else {
+        expensesByDay[dayKey] = [splitExpense]
+      }
+    })
+  })
 
   return expensesByDay
 }
