@@ -136,7 +136,7 @@ export default function Onboarding(): ReactNode {
           </div>
         </div>
       </header>
-      <main className="flex flex-1 justify-center overflow-y-auto">
+      <main className="flex flex-1 justify-center overflow-y-auto px-4">
         <Steps step={currentStep} error={error} />
       </main>
       <footer>
@@ -215,7 +215,9 @@ function Step({ children, title }: StepProps) {
       exit={{ opacity: 0 }}
       transition={{ duration: 0.3 }}
     >
-      <h2 className="text-center text-5xl font-bold uppercase">{title}</h2>
+      <h2 className="text-center text-3xl font-bold uppercase lg:text-5xl">
+        {title}
+      </h2>
       <div className="pb-2 pt-4">{children}</div>
     </motion.div>
   )
