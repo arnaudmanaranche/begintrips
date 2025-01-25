@@ -1,10 +1,13 @@
 import type { SearchBoxSuggestion, SessionToken } from '@mapbox/search-js-core'
+import { CalendarIcon } from '@radix-ui/react-icons'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useQuery } from '@tanstack/react-query'
 import { motion } from 'framer-motion'
 import { useParams } from 'next/navigation'
 import type { ChangeEvent, ReactNode } from 'react'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
+import type { DateRange } from 'react-day-picker'
+import { DayPicker } from 'react-day-picker'
 import { FormattedMessage } from 'react-intl'
 import { Drawer } from 'vaul'
 
@@ -12,6 +15,7 @@ import { getJourney, updateJourney } from '@/api/calls/journeys'
 import { QUERY_KEYS } from '@/api/queryKeys'
 import { Button } from '@/components/Button/Button'
 import { Input } from '@/components/Input/Input'
+import { useMediaQuery } from '@/hooks/useMediaQuery'
 import { useSearchDestination } from '@/hooks/useSearchDestination'
 import type { Journey } from '@/types'
 
@@ -42,10 +46,39 @@ export function EditTripView(): ReactNode {
   const [suggestions, setSuggestions] = useState<SearchBoxSuggestion[]>()
   const [isEdited, setIsEdited] = useState(false)
 
+  const [showDatePicker, setShowDatePicker] = useState(false)
+
+  const datePickerRef = useRef<HTMLDivElement>(null)
+  const matches = useMediaQuery('(min-width: 1024px)')
+
   const { data, isPending: isFetchingJourney } = useQuery({
     queryKey: QUERY_KEYS.JOURNEY(journeyId as string),
     queryFn: () => getJourney({ journeyId: journeyId as string }),
   })
+
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (
+        datePickerRef.current &&
+        !datePickerRef.current.contains(event.target as Node)
+      ) {
+        setShowDatePicker(false)
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [])
+
+  const handleDateRangeChange = ({ from, to }: DateRange) => {
+    setTrip((prev) => ({
+      ...prev,
+      departureDate: from as unknown as string,
+      returnDate: to as unknown as string,
+    }))
+  }
 
   useEffect(() => {
     if (data) {
@@ -126,7 +159,9 @@ export function EditTripView(): ReactNode {
   return (
     <div className="flex h-full w-full grow flex-col space-y-4 rounded-[16px] bg-white p-5">
       <Drawer.Title className="mb-2 text-2xl font-medium text-zinc-900" asChild>
-        <h3>Edit trip</h3>
+        <h3>
+          <FormattedMessage id="editTrip" defaultMessage="Edit trip" />
+        </h3>
       </Drawer.Title>
       <form
         onSubmit={(e) => {
@@ -181,30 +216,54 @@ export function EditTripView(): ReactNode {
               : null}
           </motion.ul>
         </div>
-        <Input
-          label={
-            <FormattedMessage
-              id="inputDepartureDateLabel"
-              defaultMessage="Departure date"
-            />
-          }
-          value={trip.departureDate}
-          id="departureDate"
-          type="date"
-          onChange={(e) => setTrip({ ...trip, departureDate: e.target.value })}
-        />
-        <Input
-          label={
-            <FormattedMessage
-              id="inputReturnDateLabel"
-              defaultMessage="Return"
-            />
-          }
-          value={trip.returnDate}
-          id="returnDate"
-          type="date"
-          onChange={(e) => setTrip({ ...trip, returnDate: e.target.value })}
-        />
+        <div className="relative flex-1">
+          <button
+            onClick={() => setShowDatePicker(!showDatePicker)}
+            className="flex w-full items-center rounded-md border border-gray-200 bg-white px-6 py-4 text-left text-gray-700 shadow-sm transition-all hover:border-primary focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
+          >
+            <CalendarIcon className="mr-2 h-5 w-5 text-gray-400" />
+            <span>
+              {trip.departureDate && trip.returnDate
+                ? `${new Date(trip.departureDate).toLocaleDateString()} - ${new Date(
+                    trip.returnDate
+                  ).toLocaleDateString()}`
+                : 'Select dates'}
+            </span>
+          </button>
+          {showDatePicker ? (
+            <div
+              ref={datePickerRef}
+              className="absolute bottom-full z-50 mt-2 lg:right-0 lg:top-full"
+            >
+              <div className="rounded-lg bg-white p-4 shadow-lg ring-1 ring-black ring-opacity-5">
+                <DayPicker
+                  mode="range"
+                  selected={{
+                    from: trip.departureDate as unknown as Date,
+                    to: trip.returnDate as unknown as Date,
+                  }}
+                  numberOfMonths={matches ? 2 : 1}
+                  disabled={{ before: new Date() }}
+                  styles={{
+                    months: {
+                      flexWrap: 'unset',
+                    },
+                  }}
+                  classNames={{
+                    selected: `bg-amber-500 border-amber-500 text-white`,
+                    range_start: `bg-amber-500 border-amber-500 text-white`,
+                    range_end: `bg-amber-500 border-amber-500 text-white`,
+                    range_middle: 'bg-[#F85231]',
+                    chevron: '',
+                  }}
+                  min={1}
+                  required
+                  onSelect={handleDateRangeChange}
+                />
+              </div>
+            </div>
+          ) : null}
+        </div>
         <Input
           label={
             <FormattedMessage id="inputBudgetLabel" defaultMessage="Budget" />
@@ -220,9 +279,9 @@ export function EditTripView(): ReactNode {
           className="bg-accent w-full rounded-md px-4 py-2 text-white"
         >
           {isFetchingJourney ? (
-            <FormattedMessage id="sendFeedback" defaultMessage="Editing..." />
+            <FormattedMessage id="editingTrip" defaultMessage="Editing..." />
           ) : (
-            <FormattedMessage id="sendFeedback" defaultMessage="Edit my trip" />
+            <FormattedMessage id="editTrip" defaultMessage="Edit my trip" />
           )}
         </Button>
       </form>
