@@ -289,7 +289,7 @@ export function AddExpenseView({
           </label>
           <select
             id="expense-category"
-            className="focus:border-accent focus:ring-accent appearance-none rounded-md border border-gray-300 px-4 py-4 outline-none transition-all focus:outline-none focus:ring focus:ring-opacity-40"
+            className="focus:border-accent focus:ring-accent appearance-none rounded-md border border-gray-300 bg-transparent px-4 py-4 outline-none transition-all focus:outline-none focus:ring focus:ring-opacity-40"
             onChange={(e) => {
               setNewExpense({
                 ...newExpense,

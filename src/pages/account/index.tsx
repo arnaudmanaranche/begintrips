@@ -216,7 +216,7 @@ export default function AccountPage({ user }: AccountPageProps): ReactNode {
                 />
               </label>
               <select
-                className="text-black/50"
+                className="bg-transparent text-black/50"
                 name="currency"
                 id="currency"
                 defaultValue={currency ?? 'EUR'}
