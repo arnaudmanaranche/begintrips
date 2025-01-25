@@ -58,7 +58,7 @@ export function Sidebar(): ReactNode {
     <aside className="fixed left-0 top-0 z-40 hidden h-screen w-64 flex-col bg-[#113B57] text-white lg:flex">
       <div>
         <div className="px-6 pt-5">
-          <Logo href="/my-journeys" />
+          <Logo href="/my-journeys" size="40" />
         </div>
         <ul className="mx-4 flex flex-1 flex-col justify-start space-y-2 pt-10">
           {journeyNavigationItems.map((item, index) => {
