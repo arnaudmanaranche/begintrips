@@ -45,3 +45,7 @@ h6 {
 .sx__event-modal.is-open {
   display: none;
 }
+
+input[type='time'] {
+  background-color: transparent;
+}
