@@ -38,7 +38,7 @@ export const Input = ({
         className={clsx(
           'w-full rounded-lg border bg-white px-4 py-3 text-gray-700 transition-all duration-300 focus:outline-none',
           isDisabled
-            ? 'cursor-not-allowed bg-gray-100'
+            ? 'cursor-not-allowed disabled:bg-gray-100 disabled:text-gray-400 disabled:hover:border-gray-200'
             : 'focus:border-accent focus:ring-accent focus:ring focus:ring-opacity-40',
           isFocused || value ? 'border-accent' : 'border-gray-300'
         )}
@@ -48,6 +48,7 @@ export const Input = ({
         htmlFor={id}
         className={clsx(
           'pointer-events-none absolute left-3 transition-all duration-300',
+          isDisabled && 'bg-gray-100 text-gray-400',
           isFocused || value || type === 'number'
             ? 'text-accent -top-2 bg-white px-1 text-xs'
             : 'top-3 text-gray-500'

@@ -22,6 +22,7 @@ import { createClient } from '@/libs/supabase/server-props'
 import { useDrawerActions } from '@/providers/Drawer/Drawer.Provider'
 import type { ExpensesByDay } from '@/types'
 import { formatDate } from '@/utils/date'
+import { hasJourneyPassed } from '@/utils/has-journey-passed'
 import { useSiteTitle } from '@/utils/seo'
 
 interface JourneyProps {
@@ -143,17 +144,20 @@ export default function Page({ user }: JourneyProps): ReactNode {
                         {data?.journey?.destination.name}
                       </span>
                     </div>
-                    <div className="absolute right-4 top-1/2 hidden -translate-y-1/2 opacity-0 transition-opacity group-hover:opacity-100 lg:flex">
-                      <Drawer.Trigger
-                        className="cursor-pointer rounded bg-primary px-2 py-1 text-xs text-white"
-                        onClick={() => {
-                          setIsOpen(true)
-                          setCurrentType('EditTrip')
-                        }}
-                      >
-                        <FormattedMessage id="edit" defaultMessage="Edit" />
-                      </Drawer.Trigger>
-                    </div>
+                    {data &&
+                    !hasJourneyPassed(new Date(data.journey.departureDate)) ? (
+                      <div className="absolute right-4 top-1/2 hidden -translate-y-1/2 opacity-0 transition-opacity group-hover:opacity-100 lg:flex">
+                        <Drawer.Trigger
+                          className="cursor-pointer rounded bg-primary px-2 py-1 text-xs text-white"
+                          onClick={() => {
+                            setIsOpen(true)
+                            setCurrentType('EditTrip')
+                          }}
+                        >
+                          <FormattedMessage id="edit" defaultMessage="Edit" />
+                        </Drawer.Trigger>
+                      </div>
+                    ) : null}
                   </div>
                   <div className="group relative flex items-center space-x-2 px-4 py-2 hover:bg-slate-100 active:bg-transparent">
                     <div className="rounded-full p-2">
@@ -186,17 +190,20 @@ export default function Page({ user }: JourneyProps): ReactNode {
                           : ''}
                       </span>
                     </div>
-                    <div className="absolute right-4 top-1/2 hidden -translate-y-1/2 opacity-0 transition-opacity group-hover:opacity-100 lg:flex">
-                      <Drawer.Trigger
-                        className="cursor-pointer rounded bg-primary px-2 py-1 text-xs text-white"
-                        onClick={() => {
-                          setIsOpen(true)
-                          setCurrentType('EditTrip')
-                        }}
-                      >
-                        <FormattedMessage id="edit" defaultMessage="Edit" />
-                      </Drawer.Trigger>
-                    </div>
+                    {data &&
+                    !hasJourneyPassed(new Date(data.journey.departureDate)) ? (
+                      <div className="absolute right-4 top-1/2 hidden -translate-y-1/2 opacity-0 transition-opacity group-hover:opacity-100 lg:flex">
+                        <Drawer.Trigger
+                          className="cursor-pointer rounded bg-primary px-2 py-1 text-xs text-white"
+                          onClick={() => {
+                            setIsOpen(true)
+                            setCurrentType('EditTrip')
+                          }}
+                        >
+                          <FormattedMessage id="edit" defaultMessage="Edit" />
+                        </Drawer.Trigger>
+                      </div>
+                    ) : null}
                   </div>
                   <div className="group relative flex items-center space-x-2 px-4 py-2 hover:bg-slate-100 active:bg-transparent">
                     <div className="rounded-full p-2">

@@ -18,6 +18,7 @@ import { Input } from '@/components/Input/Input'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
 import { useSearchDestination } from '@/hooks/useSearchDestination'
 import type { Journey } from '@/types'
+import { hasJourneyPassed } from '@/utils/has-journey-passed'
 
 import { useDrawerActions } from '../Drawer.Provider'
 
@@ -178,6 +179,7 @@ export function EditTripView(): ReactNode {
               />
             }
             value={trip.destination.name}
+            isDisabled={hasJourneyPassed(new Date(trip.departureDate))}
             id="destination"
             type="text"
             onChange={(e) => handleChange(e)}
@@ -219,7 +221,8 @@ export function EditTripView(): ReactNode {
         <div className="relative flex-1">
           <button
             onClick={() => setShowDatePicker(!showDatePicker)}
-            className="flex w-full items-center rounded-md border border-gray-200 bg-white px-6 py-4 text-left text-gray-700 shadow-sm transition-all hover:border-primary focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
+            className="flex w-full items-center rounded-md border border-gray-200 bg-white px-6 py-4 text-left text-gray-700 shadow-sm transition-all hover:border-primary focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 disabled:cursor-not-allowed disabled:bg-gray-100 disabled:text-gray-400 disabled:hover:border-gray-200"
+            disabled={hasJourneyPassed(new Date(trip.departureDate))}
           >
             <CalendarIcon className="mr-2 h-5 w-5 text-gray-400" />
             <span>
