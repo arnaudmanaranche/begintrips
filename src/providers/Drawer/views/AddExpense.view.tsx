@@ -58,10 +58,10 @@ export function AddExpenseView({
 }: AddExpenseViewProps): ReactNode {
   const { id: journeyId } = useParams()
   const [startTime, setStartTime] = useState(
-    selectedExpense.startTime !== '' ? selectedExpense.startTime : '00:00'
+    selectedExpense.startTime !== '' ? selectedExpense.startTime : '09:00'
   )
   const [endTime, setEndTime] = useState(
-    selectedExpense.endTime !== '' ? selectedExpense.endTime : '01:00'
+    selectedExpense.endTime !== '' ? selectedExpense.endTime : '10:00'
   )
   const [newExpense, setNewExpense] = useState<AddExpenseWithCategories>({
     id: selectedExpense?.id ?? '',
