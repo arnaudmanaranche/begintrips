@@ -447,7 +447,13 @@ export function AddExpenseView({
                 onClick={() => {
                   handleUpdateExpense(newExpense)
                 }}
-                isDisabled={isPendingUpdate || isPendingDelete}
+                isDisabled={
+                  isPendingUpdate ||
+                  isPendingDelete ||
+                  (!isOnSeveralDays &&
+                    !isValidDateTimeFormat(newExpense.startDate)) ||
+                  !isValidDateTimeFormat(newExpense.endDate!)
+                }
               >
                 {isPendingUpdate ? (
                   <FormattedMessage
@@ -472,7 +478,8 @@ export function AddExpenseView({
                 newExpense.startDate === '' ||
                 newExpense.endDate === '' ||
                 (!isOnSeveralDays &&
-                  !isValidDateTimeFormat(newExpense.startDate))
+                  !isValidDateTimeFormat(newExpense.startDate)) ||
+                !isValidDateTimeFormat(newExpense.endDate!)
               }
             >
               {isPending ? (
