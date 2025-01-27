@@ -23,7 +23,10 @@ export function FeedbackView(): ReactNode {
       })
     } catch {
       toast.error(
-        <FormattedMessage id="feedbackError" defaultMessage="Error" />
+        <FormattedMessage
+          id="feedbackError"
+          defaultMessage="An error occurred while sending your feedback. Please try again later."
+        />
       )
     } finally {
       setIsLoading(false)

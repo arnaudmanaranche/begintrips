@@ -140,6 +140,7 @@
   "returnDateLabel": "Return date",
   "selectAction": "Select action",
   "selectCategory": "Select a category",
+  "feedbackError": "An error occurred while sending your feedback. Please try again later.",
   "selectDay": "Select a day",
   "severalDays": "On several days",
   "signUp": "Sign up",

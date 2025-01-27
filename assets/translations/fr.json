@@ -73,6 +73,7 @@
   "mainFeatureExpensesDescription": "Restez au fait de votre budget avec un aperçu clair de vos dépenses, ventilées par jour et par catégorie pour une gestion facile.",
   "mainFeatureExpensesTitle": "Suivi des dépenses",
   "mainFeatureJourneyDescription": "Commencez votre aventure en créant un voyage personnalisé, adapté à votre destination, vos dates et votre budget.",
+  "feedbackError": "Une erreur est survenue lors de l'envoi de votre feedback. Veuillez réessayer plus tard.",
   "mainFeatureJourneyTitle": "Création de voyage sur mesure",
   "mainFeaturePlanningDescription": "Ajoutez et gérez facilement vos événements et dépenses quotidiens, classés pour une organisation et un suivi clairs.",
   "mainFeaturePlanningTitle": "Planification quotidienne",
