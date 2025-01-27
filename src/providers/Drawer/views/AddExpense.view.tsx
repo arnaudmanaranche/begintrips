@@ -339,7 +339,7 @@ export function AddExpenseView({
               })}
             </select>
             <svg
-              className="pointer-events-none relative right-1 z-10 col-start-1 row-start-1 h-4 w-4 self-center justify-self-end text-black forced-colors:hidden"
+              className="pointer-events-none relative right-1 col-start-1 row-start-1 h-4 w-4 self-center justify-self-end text-black forced-colors:hidden"
               viewBox="0 0 16 16"
               aria-hidden="true"
             >
