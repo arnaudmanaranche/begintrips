@@ -41,7 +41,7 @@ export function Budget({ budgetSpent, totalBudget }: BudgetProps): ReactNode {
     )
   }
 
-  const percentage = (budgetSpent / totalBudget) * 100
+  const percentage = Math.min((budgetSpent / totalBudget) * 100, 100)
   const radius = 60
   const circumference = 2 * Math.PI * radius
   const strokeDasharray = circumference
@@ -65,16 +65,21 @@ export function Budget({ budgetSpent, totalBudget }: BudgetProps): ReactNode {
               cx="72"
               cy="72"
               r={radius}
-              className="fill-none stroke-slate-500 stroke-[6px]"
+              className="fill-none stroke-slate-200 stroke-[8px]"
             />
             <circle
               cx="72"
               cy="72"
               r={radius}
-              className={`fill-none stroke-[${color}] stroke-[6px]`}
+              fill="none"
+              stroke={color}
+              strokeWidth="8"
               strokeDasharray={strokeDasharray}
               strokeDashoffset={strokeDashoffset}
               strokeLinecap="round"
+              style={{
+                transition: 'stroke-dashoffset 0.5s ease, stroke 0.5s ease',
+              }}
             />
           </svg>
           <div className="absolute flex flex-col items-center">
