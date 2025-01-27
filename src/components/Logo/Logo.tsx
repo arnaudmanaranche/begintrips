@@ -18,7 +18,7 @@ export function Logo({
     <Link href={href} className="flex items-center space-x-2">
       <Image src="/logo.svg" alt="Begintrips logo" width={size} height={size} />
       <span
-        className={clsx('font-medium', {
+        className={clsx('hidden font-medium sm:flex', {
           'text-black': isBlack,
           'text-white': !isBlack,
           'text-3xl': size === '60',
