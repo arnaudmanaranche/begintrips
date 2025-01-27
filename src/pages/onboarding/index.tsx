@@ -340,14 +340,30 @@ function Step2({ error }: { error: ReactNode }) {
   }, [])
 
   const handleDateRangeChange = ({ from, to }: DateRange) => {
-    setDateRange({
-      startDate: from ?? new Date(),
-      endDate: to ?? new Date(),
-    })
-    updateJourney({
-      departureDate: from as unknown as string,
-      returnDate: to as unknown as string,
-    })
+    if (from && dateRange.startDate > from) {
+      setDateRange({
+        startDate: from,
+        endDate: from,
+      })
+
+      updateJourney({
+        departureDate: from as unknown as string,
+        returnDate: from as unknown as string,
+      })
+    } else {
+      setDateRange({
+        startDate: from ?? new Date(),
+        endDate: to === undefined ? (from as Date) : (to as Date),
+      })
+
+      updateJourney({
+        departureDate: from as unknown as string,
+        returnDate:
+          to === undefined
+            ? (from as unknown as string)
+            : (to as unknown as string),
+      })
+    }
   }
 
   return (
@@ -408,10 +424,13 @@ function Step2({ error }: { error: ReactNode }) {
                     },
                   }}
                   classNames={{
-                    selected: `bg-amber-500 border-amber-500 text-white`,
-                    range_start: `bg-amber-500 border-amber-500 text-white`,
-                    range_end: `bg-amber-500 border-amber-500 text-white`,
-                    range_middle: 'bg-[#F85231]',
+                    selected: 'text-black',
+                    range_start:
+                      'bg-primary-light border-primary-light text-white',
+                    range_end:
+                      'bg-primary-light border-primary-light text-white',
+                    range_middle: 'bg-slate-100',
+                    today: 'text-black',
                     chevron: '',
                   }}
                   min={1}

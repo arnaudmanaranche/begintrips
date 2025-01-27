@@ -40,6 +40,13 @@ export function InputTime(props: InputTimeProps): ReactNode {
           before: minDate,
           after: maxDate,
         }}
+        classNames={{
+          selected: 'text-black',
+          range_start: 'bg-primary-light border-primary-light text-white',
+          range_end: 'bg-primary-light border-primary-light text-white',
+          range_middle: 'bg-slate-100',
+          today: 'text-black',
+        }}
       />
     )
   }
@@ -55,6 +62,10 @@ export function InputTime(props: InputTimeProps): ReactNode {
       disabled={{
         before: minDate,
         after: maxDate,
+      }}
+      classNames={{
+        selected: 'text-white bg-primary-light',
+        today: 'text-black',
       }}
     />
   )

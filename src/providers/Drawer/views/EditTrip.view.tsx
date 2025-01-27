@@ -74,11 +74,22 @@ export function EditTripView(): ReactNode {
   }, [])
 
   const handleDateRangeChange = ({ from, to }: DateRange) => {
-    setTrip((prev) => ({
-      ...prev,
-      departureDate: from as unknown as string,
-      returnDate: to as unknown as string,
-    }))
+    if (from && new Date(trip.departureDate) > from) {
+      setTrip((prev) => ({
+        ...prev,
+        departureDate: from as unknown as string,
+        returnDate: from as unknown as string,
+      }))
+    } else {
+      setTrip((prev) => ({
+        ...prev,
+        departureDate: from as unknown as string,
+        returnDate:
+          to === undefined
+            ? (from as unknown as string)
+            : (to as unknown as string),
+      }))
+    }
   }
 
   useEffect(() => {
@@ -253,10 +264,13 @@ export function EditTripView(): ReactNode {
                     },
                   }}
                   classNames={{
-                    selected: `bg-amber-500 border-amber-500 text-white`,
-                    range_start: `bg-amber-500 border-amber-500 text-white`,
-                    range_end: `bg-amber-500 border-amber-500 text-white`,
-                    range_middle: 'bg-[#F85231]',
+                    selected: 'text-black',
+                    range_start:
+                      'bg-primary-light border-primary-light text-white',
+                    range_end:
+                      'bg-primary-light border-primary-light text-white',
+                    range_middle: 'bg-slate-100',
+                    today: 'text-black',
                     chevron: '',
                   }}
                   min={1}
