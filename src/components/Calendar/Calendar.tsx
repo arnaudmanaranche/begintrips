@@ -41,6 +41,7 @@ export function Calendar({ events }: CalendarAppProps): ReactNode {
       setSelectedExpense({
         startDate: formattedStart,
         startTime: formattedStartTime,
+        endDate: formattedStart,
         endTime: formattedEndTime,
         name: '',
         amount: 0,
