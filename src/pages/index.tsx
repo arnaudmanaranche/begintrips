@@ -42,7 +42,6 @@ export default function HomePage({ user }: { user: User }): ReactNode {
   const { searchBoxRef, sessionTokenRef } = useSearchDestination()
   const [isFocused, setIsFocused] = useState(false)
   const [suggestions, setSuggestions] = useState<SearchBoxSuggestion[]>()
-  const [currentFeature, setCurrentFeature] = useState(0)
   const [showDatePicker, setShowDatePicker] = useState(false)
   const [dateRange, setDateRange] = useState({
     startDate: journey.departureDate
@@ -404,78 +403,55 @@ export default function HomePage({ user }: { user: User }): ReactNode {
               <h2 className="mb-4 text-4xl font-bold md:text-5xl">
                 <FormattedMessage
                   id="featuresTitle"
-                  defaultMessage="Everything you need to plan your perfect trip"
+                  defaultMessage="Why choose our travel planner?"
                 />
               </h2>
               <p className="mt-6 text-lg leading-8 text-gray-600">
                 <FormattedMessage
                   id="featuresSubtitle"
-                  defaultMessage="From itinerary planning to expense tracking, we've got you covered with powerful features designed to make your travel planning seamless."
+                  defaultMessage="Here's how our app makes planning your next trips easier and more seamless."
                 />
               </p>
-            </motion.div>
-            <div className="grid gap-8 md:grid-cols-2">
-              <div className="relative space-y-4">
-                {mainFeatures.map((feature, index) => (
-                  <motion.div
+              <div className="mt-16 grid gap-8 md:grid-cols-3">
+                {mainFeatures.map((feature) => (
+                  <div
                     key={feature.title}
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{
-                      opacity: index === currentFeature ? 1 : 0.5,
-                      x: 0,
-                      scale: index === currentFeature ? 1 : 0.98,
-                    }}
-                    transition={{ duration: 0.5 }}
-                    className={clsx(
-                      'relative overflow-hidden rounded-xl p-6 transition-all',
-                      index === currentFeature ? 'ring-1 ring-primary' : ''
-                    )}
+                    className="flex flex-col items-center space-y-2 rounded-md bg-gray-50 p-6"
                   >
-                    <h3 className="mb-3 text-xl font-semibold">
+                    {feature.icon}
+                    <h3 className="text-xl font-bold text-gray-800">
                       {feature.title}
                     </h3>
                     <p className="text-gray-600">{feature.description}</p>
-                    {index === currentFeature && (
-                      <div className="absolute bottom-0 left-0 right-0">
-                        <div className="h-1 w-full overflow-hidden rounded-xl bg-red-200">
-                          <motion.div
-                            className="h-full rounded-xl bg-primary"
-                            initial={{ width: '0%' }}
-                            animate={{ width: '100%' }}
-                            transition={{
-                              duration: 5,
-                              ease: 'linear',
-                              repeat: 0,
-                            }}
-                            onAnimationComplete={() => {
-                              setCurrentFeature(
-                                (prev) => (prev + 1) % mainFeatures.length
-                              )
-                            }}
-                          />
-                        </div>
-                      </div>
-                    )}
-                  </motion.div>
+                  </div>
                 ))}
               </div>
-              <div className="relative h-full max-h-[500px] items-center justify-center overflow-hidden">
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.5 }}
-                  key={currentFeature}
-                  className="overflow-hidden"
-                >
-                  <Image
-                    src={mainFeatures[currentFeature].imageUrl}
-                    alt={mainFeatures[currentFeature].title}
-                    height="100"
-                    width="800"
-                  />
-                </motion.div>
-              </div>
-            </div>
+            </motion.div>
+          </div>
+          <div
+            className="mx-auto max-w-screen-xl px-6 md:px-10"
+            style={{
+              position: 'relative',
+              boxSizing: 'content-box',
+              maxHeight: '80vh',
+              width: '100%',
+              aspectRatio: '2.188449848024316',
+              padding: '40px 0 40px 0',
+            }}
+          >
+            <iframe
+              src="https://app.supademo.com/embed/cm6gseknt193lwabo0sdcpts6?embed_v=2"
+              loading="lazy"
+              title="Begintrips Demo"
+              allow="clipboard-write"
+              style={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                width: '100%',
+                height: '100%',
+              }}
+            />
           </div>
         </section>
         <section className="relative bg-white" id="pricing">
@@ -543,7 +519,7 @@ export default function HomePage({ user }: { user: User }): ReactNode {
                           currencyDisplay="narrowSymbol"
                         />
                       </span>
-                      {plan.mode === 'payment' ? (
+                      {plan.mode === 'payment' && plan.price !== 0 ? (
                         <span className="text-sm font-semibold leading-6 text-gray-600">
                           <FormattedMessage
                             id="pricing.oneTimePayment"
