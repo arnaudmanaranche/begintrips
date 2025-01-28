@@ -8,13 +8,14 @@ import { toast } from 'sonner'
 import { Button } from '@/components/Button/Button'
 import { createClient } from '@/libs/supabase/client'
 import { EMAIL_TEMPLATES } from '@/utils/emails/get-template'
+import { isEmailValid } from '@/utils/is-valid-email'
 
 import { Callout } from '../Callout/Callout'
 import { Input } from '../Input/Input'
 
-const PASSWORD_MISSMATCH_ERROR_MESSAGE = 'Passwords do not match'
-const SIGN_UP_ERROR_MESSAGE =
-  'Unable to sign up at the moment. Please try again later.'
+const EMAIL_INVALID = 'invalidEmail'
+const PASSWORD_MISSMATCH_ERROR_MESSAGE = 'passwordsDoNotMatch'
+const SIGN_UP_ERROR_MESSAGE = 'unableToSignUp'
 
 export function SignUpForm(): ReactNode {
   const router = useRouter()
@@ -28,6 +29,12 @@ export function SignUpForm(): ReactNode {
   async function handleSignUp(e: MouseEvent<HTMLButtonElement>) {
     e.preventDefault()
     setIsLoading(true)
+
+    if (isEmailValid(email) === false) {
+      setError(EMAIL_INVALID)
+      setIsLoading(false)
+      return
+    }
 
     if (password !== confirmPassword) {
       setError(PASSWORD_MISSMATCH_ERROR_MESSAGE)
@@ -82,7 +89,9 @@ export function SignUpForm(): ReactNode {
     >
       {error ? (
         <div className="mb-8">
-          <Callout.Danger>{error}</Callout.Danger>
+          <Callout.Danger>
+            <FormattedMessage id={error} />
+          </Callout.Danger>
         </div>
       ) : null}
       <form className="flex flex-col space-y-8">

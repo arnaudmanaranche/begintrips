@@ -555,7 +555,7 @@ export default function HomePage({ user }: { user: User }): ReactNode {
                         <span className="text-sm font-semibold leading-6 text-gray-600">
                           <FormattedMessage
                             id="pricing.perMonth"
-                            defaultMessage="per month"
+                            defaultMessage="/month"
                           />
                         </span>
                       ) : null}
