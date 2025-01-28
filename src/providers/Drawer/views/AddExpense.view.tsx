@@ -451,8 +451,8 @@ export function AddExpenseView({
                   isPendingUpdate ||
                   isPendingDelete ||
                   (!isOnSeveralDays &&
-                    !isValidDateTimeFormat(newExpense.startDate)) ||
-                  !isValidDateTimeFormat(newExpense.endDate!)
+                    (!isValidDateTimeFormat(newExpense.startDate) ||
+                      !isValidDateTimeFormat(newExpense.endDate!)))
                 }
               >
                 {isPendingUpdate ? (
@@ -478,8 +478,8 @@ export function AddExpenseView({
                 newExpense.startDate === '' ||
                 newExpense.endDate === '' ||
                 (!isOnSeveralDays &&
-                  !isValidDateTimeFormat(newExpense.startDate)) ||
-                !isValidDateTimeFormat(newExpense.endDate!)
+                  (!isValidDateTimeFormat(newExpense.startDate) ||
+                    !isValidDateTimeFormat(newExpense.endDate!)))
               }
             >
               {isPending ? (
