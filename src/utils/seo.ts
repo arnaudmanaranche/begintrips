@@ -23,3 +23,10 @@ export function useSiteDescription(): string {
       'Plan your journey day by day, track your expenses by category, and keep all your travel details organized in one place',
   })
 }
+
+export const COMPETITORS_NAMES = [
+  'tripit',
+  'stippl',
+  'checkmytrip',
+  'wanderlog',
+]

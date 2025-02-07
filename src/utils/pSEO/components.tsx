@@ -41,4 +41,19 @@ export const components = {
       ClassAttributes<HTMLLIElement> &
       LiHTMLAttributes<HTMLLIElement>
   ): ReactNode => <li className="text-base" {...props} />,
+  table: (props: JSX.IntrinsicAttributes): ReactNode => (
+    <table className="w-full" {...props} />
+  ),
+  thead: (props: JSX.IntrinsicAttributes): ReactNode => (
+    <thead className="bg-slate-200" {...props} />
+  ),
+  th: (props: JSX.IntrinsicAttributes): ReactNode => (
+    <th className="w-[200px] p-4 text-left font-medium" {...props} />
+  ),
+  tr: (props: JSX.IntrinsicAttributes): ReactNode => (
+    <tr className="border-b" {...props} />
+  ),
+  td: (props: JSX.IntrinsicAttributes): ReactNode => (
+    <td className="p-4 font-medium" {...props} />
+  ),
 }

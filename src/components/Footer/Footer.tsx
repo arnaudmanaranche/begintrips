@@ -2,22 +2,13 @@ import Link from 'next/link'
 import type { ReactNode } from 'react'
 import { FormattedMessage } from 'react-intl'
 
+import { COMPETITORS_NAMES } from '@/utils/seo'
+
 export function Footer(): ReactNode {
   return (
     <footer className="bg-orange-50 bg-opacity-30 py-12">
       <div className="mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
-          <div>
-            <h3 className="mb-4 text-lg font-semibold">
-              <FormattedMessage id="aboutUs" defaultMessage="About us" />
-            </h3>
-            <p className="text-sm text-gray-600">
-              <FormattedMessage
-                id="aboutUsSubtitle"
-                defaultMessage="Begintrips is your ultimate travel companion, helping you plan and organize your journeys with ease."
-              />
-            </p>
-          </div>
           <div>
             <h3 className="mb-4 text-lg font-semibold">
               <FormattedMessage id="resources" defaultMessage="Resources" />
@@ -39,6 +30,23 @@ export function Footer(): ReactNode {
                   <FormattedMessage id="faq" defaultMessage="FAQ" />
                 </Link>
               </li>
+            </ul>
+          </div>
+          <div>
+            <h3 className="mb-4 text-lg font-semibold">
+              <FormattedMessage id="compare" defaultMessage="Compare" />
+            </h3>
+            <ul className="space-y-2">
+              {COMPETITORS_NAMES.map((name) => (
+                <li key={name}>
+                  <Link
+                    href={`/compare/${name}`}
+                    className="text-sm capitalize text-gray-600 hover:text-primary"
+                  >
+                    {name}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
           <div>

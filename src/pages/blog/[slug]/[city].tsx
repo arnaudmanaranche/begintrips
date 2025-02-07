@@ -102,7 +102,7 @@ export default function CityPage({
           </nav>
         </div>
       </section>
-      <div className="mx-auto flex max-w-4xl space-x-1 pt-20">
+      <div className="mx-auto flex max-w-4xl space-x-1 px-6 pt-20 md:px-0">
         <Link href="/blog" locale={router.locale} className="hover:underline">
           <FormattedMessage id="blog" defaultMessage="Blog" />
         </Link>
