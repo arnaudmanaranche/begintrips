@@ -64,12 +64,10 @@ export default function Page({
   )
 }
 
-export const getStaticPaths: GetStaticPaths = async () => {
-  const paths = COMPETITORS_NAMES.map((name) => ({
-    params: {
-      name,
-    },
-  }))
+export const getStaticPaths: GetStaticPaths = async ({ locales = [] }) => {
+  const paths = locales.flatMap((locale) =>
+    COMPETITORS_NAMES.map((name) => ({ params: { name }, locale }))
+  )
 
   return {
     paths,
@@ -77,10 +75,13 @@ export const getStaticPaths: GetStaticPaths = async () => {
   }
 }
 
-export const getStaticProps = (async ({ params }) => {
+export const getStaticProps = (async ({ params, locale }) => {
   const name = params?.name as string
 
-  const filePath = path.join(process.cwd(), `assets/seo/compare/${name}.mdx`)
+  const filePath = path.join(
+    process.cwd(),
+    `assets/seo/compare/${locale}/${name}.mdx`
+  )
 
   const fileContent = fs.readFileSync(filePath, 'utf-8')
 

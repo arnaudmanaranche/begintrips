@@ -5,10 +5,12 @@ import type {
   ReactNode,
 } from 'react'
 
+import { CallToAction } from '@/components/CallToAction/CallToAction'
 import { PromotionSection } from '@/components/PromotionSection/PromotionSection'
 
 export const components = {
   PromotionSection,
+  CallToAction,
   h1: (
     props: JSX.IntrinsicAttributes &
       ClassAttributes<HTMLHeadingElement> &
