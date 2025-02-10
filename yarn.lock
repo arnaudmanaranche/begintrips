@@ -1668,6 +1668,27 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@cronitorio/cronitor-rum-nextjs@npm:0.4.0":
+  version: 0.4.0
+  resolution: "@cronitorio/cronitor-rum-nextjs@npm:0.4.0"
+  dependencies:
+    "@cronitorio/cronitor-rum": "npm:^0.4.0"
+  peerDependencies:
+    next: ^13
+    react: ^18
+  checksum: 10c0/7aed802ade4fe25c4d682e9e04651f20e00f003f32055d4b592f702889a3266342eac655866892aabb80f2343fcbae3692e26b791ed60243adefec2abfb46746
+  languageName: node
+  linkType: hard
+
+"@cronitorio/cronitor-rum@npm:^0.4.0":
+  version: 0.4.1
+  resolution: "@cronitorio/cronitor-rum@npm:0.4.1"
+  dependencies:
+    web-vitals: "npm:^3.3.0"
+  checksum: 10c0/4f2cf2499b8208ab2f45b354dea678e54142e739d229ac91a1c2b0420ce1ed31367363de83c284e95ef5413b02c641eb1366dfd2cac616ac154e07777a1f3481
+  languageName: node
+  linkType: hard
+
 "@cspotcode/source-map-support@npm:^0.8.0":
   version: 0.8.1
   resolution: "@cspotcode/source-map-support@npm:0.8.1"
@@ -6024,6 +6045,7 @@ __metadata:
   resolution: "begintrips@workspace:."
   dependencies:
     "@chromatic-com/storybook": "npm:1.7.0"
+    "@cronitorio/cronitor-rum-nextjs": "npm:0.4.0"
     "@formatjs/cli": "npm:6.2.12"
     "@mapbox/search-js-core": "npm:1.0.0-beta.22"
     "@preact/signals": "npm:1.3.1"
@@ -17687,6 +17709,13 @@ __metadata:
   version: 3.3.3
   resolution: "web-streams-polyfill@npm:3.3.3"
   checksum: 10c0/64e855c47f6c8330b5436147db1c75cb7e7474d924166800e8e2aab5eb6c76aac4981a84261dd2982b3e754490900b99791c80ae1407a9fa0dcff74f82ea3a7f
+  languageName: node
+  linkType: hard
+
+"web-vitals@npm:^3.3.0":
+  version: 3.5.2
+  resolution: "web-vitals@npm:3.5.2"
+  checksum: 10c0/662b385d6e96a18677cf8726454b65f3aecfdca330df72a82f73f293a5708ba9d191964649f8d363a1e64062a826a99805ade8c573a6492b91e02275b6860308
   languageName: node
   linkType: hard
 

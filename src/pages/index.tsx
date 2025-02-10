@@ -1,5 +1,6 @@
 import 'react-day-picker/style.css'
 
+import { track } from '@cronitorio/cronitor-rum'
 import type { SearchBoxSuggestion, SessionToken } from '@mapbox/search-js-core'
 import {
   CalendarIcon,
@@ -134,6 +135,7 @@ export default function HomePage({ user }: { user: User }): ReactNode {
   }
 
   const handleSubmit = () => {
+    track('homepage_cta')
     if (!journey.destination) {
       return
     }
@@ -188,7 +190,10 @@ export default function HomePage({ user }: { user: User }): ReactNode {
                   </motion.div>
                   <div className="hidden items-center space-x-8 lg:flex">
                     <button
-                      onClick={() => scrollToSection('features')}
+                      onClick={() => {
+                        track('homepage_features')
+                        scrollToSection('features')
+                      }}
                       className="text-white hover:text-primary"
                     >
                       <FormattedMessage
@@ -197,7 +202,10 @@ export default function HomePage({ user }: { user: User }): ReactNode {
                       />
                     </button>
                     <button
-                      onClick={() => scrollToSection('pricing')}
+                      onClick={() => {
+                        track('homepage_pricing')
+                        scrollToSection('pricing')
+                      }}
                       className="text-white hover:text-primary"
                     >
                       <FormattedMessage
@@ -206,7 +214,10 @@ export default function HomePage({ user }: { user: User }): ReactNode {
                       />
                     </button>
                     <button
-                      onClick={() => scrollToSection('faq')}
+                      onClick={() => {
+                        track('homepage_faq')
+                        scrollToSection('faq')
+                      }}
                       className="text-white hover:text-primary"
                     >
                       <FormattedMessage id="menuFaq" defaultMessage="FAQ" />
@@ -216,7 +227,10 @@ export default function HomePage({ user }: { user: User }): ReactNode {
                 <div className="flex items-center space-x-4">
                   {user ? (
                     <Button
-                      onClick={() => router.push('/my-journeys')}
+                      onClick={() => {
+                        track('homepage_my_journeys')
+                        router.push('/my-journeys')
+                      }}
                       className="hidden lg:flex"
                     >
                       <FormattedMessage
@@ -225,22 +239,21 @@ export default function HomePage({ user }: { user: User }): ReactNode {
                       />
                     </Button>
                   ) : (
-                    <motion.div
-                      initial={{ opacity: 0, y: -20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.5, delay: 0.2 }}
+                    <Button
+                      onClick={() => {
+                        track('homepage_login')
+                        router.push('/welcome')
+                      }}
                       className="hidden lg:flex"
                     >
-                      <Button onClick={() => router.push('/welcome')}>
-                        <FormattedMessage
-                          id="menuLogin"
-                          defaultMessage="Login"
-                        />
-                      </Button>
-                    </motion.div>
+                      <FormattedMessage id="menuLogin" defaultMessage="Login" />
+                    </Button>
                   )}
                   <Button
-                    onClick={() => router.push('/account')}
+                    onClick={() => {
+                      track('homepage_my_journeys')
+                      router.push('/my-journeys')
+                    }}
                     className="flex lg:hidden"
                     icon={<PersonIcon />}
                     ariaLabel="My account"
@@ -293,7 +306,10 @@ export default function HomePage({ user }: { user: User }): ReactNode {
                           })}
                           value={journey.destination.name}
                           onChange={handleSearchDestination}
-                          onFocus={() => setIsFocused(true)}
+                          onFocus={() => {
+                            setIsFocused(true)
+                            track('homepage_search_destination_focus')
+                          }}
                           onBlur={() =>
                             setTimeout(() => setIsFocused(false), 200)
                           }
@@ -551,7 +567,10 @@ export default function HomePage({ user }: { user: User }): ReactNode {
                       ))}
                     </ul>
                     <Button
-                      onClick={() => router.push('/welcome')}
+                      onClick={() => {
+                        track('homepage_pricing_cta')
+                        router.push('/welcome')
+                      }}
                       isDisabled={plan.isDisabled}
                       className="mt-8"
                       stretch
@@ -626,7 +645,10 @@ export default function HomePage({ user }: { user: User }): ReactNode {
                 />
               </p>
               <Button
-                onClick={() => router.push('/welcome')}
+                onClick={() => {
+                  track('homepage_get_started')
+                  router.push('/welcome')
+                }}
                 className="bg-white text-black"
                 variant="ghost"
               >

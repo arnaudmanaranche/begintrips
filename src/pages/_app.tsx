@@ -1,5 +1,6 @@
 import '@/styles/globals.css'
 
+import { useCronitor } from '@cronitorio/cronitor-rum-nextjs'
 import {
   HydrationBoundary,
   QueryClient,
@@ -43,6 +44,7 @@ const openSans = Open_Sans({
 })
 
 export default function App({ Component, pageProps }: AppProps): ReactNode {
+  useCronitor(process.env.NEXT_PUBLIC_CRONITOR_API_KEY)
   const router = useRouter()
   const [queryClient] = useState(
     () =>

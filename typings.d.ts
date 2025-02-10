@@ -17,5 +17,7 @@ namespace NodeJS {
     // Feeedbackr
     FEEEDBACKR_APP_ID: string
     FEEEDBACKR_API_KEY: string
+    // Cronitor
+    NEXT_PUBLIC_CRONITOR_API_KEY: string
   }
 }
