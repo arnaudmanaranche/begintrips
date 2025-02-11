@@ -2,7 +2,8 @@ import { StarIcon } from '@radix-ui/react-icons'
 import type { User } from '@supabase/supabase-js'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import clsx from 'clsx'
-import { AnimatePresence, motion } from 'framer-motion'
+import { AnimatePresence } from 'motion/react'
+import * as m from 'motion/react-m'
 import type { GetServerSideProps } from 'next'
 import Head from 'next/head'
 import type { ReactNode } from 'react'
@@ -117,13 +118,13 @@ export default function JourneyCategories({
             <div className="h-[60px] w-full animate-pulse rounded-md bg-slate-200" />
           </div>
         ) : (
-          <motion.div
+          <m.div
             className="mb-[80px] grid grid-cols-2 gap-6 px-10 pt-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
             layout
           >
             <AnimatePresence>
               {data.map((category) => (
-                <motion.div
+                <m.div
                   key={category.id}
                   layout
                   initial={{ opacity: 0, scale: 0.8 }}
@@ -131,7 +132,7 @@ export default function JourneyCategories({
                   exit={{ opacity: 0, scale: 0.8 }}
                   transition={{ duration: 0.2 }}
                 >
-                  <motion.button
+                  <m.button
                     onClick={() => mutateAsync(category.id)}
                     className={clsx(
                       'bg-card text-card-foreground hover:text-accent-foreground hover:bg-accent flex w-full items-center justify-between rounded-lg border p-4 shadow-sm transition-colors',
@@ -159,11 +160,11 @@ export default function JourneyCategories({
                         )}
                       />
                     </div>
-                  </motion.button>
-                </motion.div>
+                  </m.button>
+                </m.div>
               ))}
             </AnimatePresence>
-          </motion.div>
+          </m.div>
         )}
       </DashboardLayout>
     </>

@@ -6,7 +6,7 @@ import {
   StarFilledIcon,
   StarIcon,
 } from '@radix-ui/react-icons'
-import { m as motion } from 'framer-motion'
+import * as m from 'motion/react-m'
 import type { ReactNode } from 'react'
 import { useId, useState } from 'react'
 import { useIntl } from 'react-intl'
@@ -45,7 +45,7 @@ export function Checklist(): ReactNode {
       {activeItems.length > 0 ? (
         <ul className="mb-4 space-y-3">
           {activeItems.map((element, index) => (
-            <motion.li
+            <m.li
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.3, delay: index * 0.1 }}
@@ -93,7 +93,7 @@ export function Checklist(): ReactNode {
                   <Cross1Icon className="h-4 w-4" />
                 </button>
               </div>
-            </motion.li>
+            </m.li>
           ))}
         </ul>
       ) : null}
@@ -108,7 +108,7 @@ export function Checklist(): ReactNode {
       {showArchived ? (
         <ul className="mb-4 space-y-3">
           {archivedItems.map((element, index) => (
-            <motion.li
+            <m.li
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.3, delay: index * 0.1 }}
@@ -122,7 +122,7 @@ export function Checklist(): ReactNode {
               >
                 <ArchiveIcon className="h-4 w-4" />
               </button>
-            </motion.li>
+            </m.li>
           ))}
         </ul>
       ) : null}

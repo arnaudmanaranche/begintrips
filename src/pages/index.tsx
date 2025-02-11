@@ -10,7 +10,7 @@ import {
 } from '@radix-ui/react-icons'
 import type { User } from '@supabase/supabase-js'
 import clsx from 'clsx'
-import { m as motion } from 'framer-motion'
+import * as m from 'motion/react-m'
 import type { GetServerSideProps } from 'next'
 import Head from 'next/head'
 import Image from 'next/image'
@@ -181,13 +181,13 @@ export default function HomePage({ user }: { user: User }): ReactNode {
             <div className="mx-auto flex max-w-screen-xl flex-col justify-start space-y-10 px-6 pt-10 md:px-10">
               <nav className="flex flex-row items-center justify-between md:px-10 xl:px-0">
                 <div className="flex items-center space-x-12">
-                  <motion.div
+                  <m.div
                     initial={{ opacity: 0, y: -20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5 }}
                   >
                     <Logo isBlack={false} />
-                  </motion.div>
+                  </m.div>
                   <div className="hidden items-center space-x-8 lg:flex">
                     <button
                       onClick={() => {
@@ -261,7 +261,7 @@ export default function HomePage({ user }: { user: User }): ReactNode {
                 </div>
               </nav>
               <div className="flex min-h-[71vh] grow flex-col items-center justify-center text-center md:items-start md:text-left">
-                <motion.div
+                <m.div
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.7 }}
@@ -288,8 +288,8 @@ export default function HomePage({ user }: { user: User }): ReactNode {
                       />
                     </h2>
                   </div>
-                </motion.div>
-                <motion.div
+                </m.div>
+                <m.div
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.7, delay: 0.3 }}
@@ -402,14 +402,14 @@ export default function HomePage({ user }: { user: User }): ReactNode {
                       </Button>
                     </div>
                   </div>
-                </motion.div>
+                </m.div>
               </div>
             </div>
           </div>
         </section>
         <section className="relative bg-white" id="features">
           <div className="mx-auto max-w-screen-xl px-6 md:px-10">
-            <motion.div
+            <m.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -442,7 +442,7 @@ export default function HomePage({ user }: { user: User }): ReactNode {
                   </div>
                 ))}
               </div>
-            </motion.div>
+            </m.div>
           </div>
           <div
             className="mx-auto max-w-screen-xl px-6 md:px-10"
@@ -472,7 +472,7 @@ export default function HomePage({ user }: { user: User }): ReactNode {
         </section>
         <section className="relative bg-white" id="pricing">
           <div className="mx-auto max-w-7xl px-6 lg:px-8">
-            <motion.div
+            <m.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -491,8 +491,8 @@ export default function HomePage({ user }: { user: User }): ReactNode {
                   defaultMessage="Choose the plan that best suits your travel style"
                 />
               </p>
-            </motion.div>
-            <motion.div
+            </m.div>
+            <m.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -500,7 +500,7 @@ export default function HomePage({ user }: { user: User }): ReactNode {
               className="isolate mx-auto mt-16 grid max-w-md grid-cols-1 gap-8 lg:mx-0 lg:max-w-none lg:grid-cols-3"
             >
               {Object.values(PLANS).map((plan, index) => (
-                <motion.div
+                <m.div
                   key={plan.title}
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
@@ -588,14 +588,14 @@ export default function HomePage({ user }: { user: User }): ReactNode {
                       )}
                     </Button>
                   </div>
-                </motion.div>
+                </m.div>
               ))}
-            </motion.div>
+            </m.div>
           </div>
         </section>
         <section className="relative bg-white" id="faq">
           <div className="mx-auto max-w-screen-xl px-6 md:px-10">
-            <motion.div
+            <m.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -608,7 +608,7 @@ export default function HomePage({ user }: { user: User }): ReactNode {
                   defaultMessage="Frequently Asked Questions"
                 />
               </h2>
-            </motion.div>
+            </m.div>
             <div className="space-y-8">
               {faq.map((item, index) => (
                 <div key={index} className="border-b pb-4">
@@ -620,7 +620,7 @@ export default function HomePage({ user }: { user: User }): ReactNode {
           </div>
         </section>
         <section className="mx-auto max-w-screen-xl px-6 md:px-10">
-          <motion.div
+          <m.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -658,7 +658,7 @@ export default function HomePage({ user }: { user: User }): ReactNode {
                 />
               </Button>
             </div>
-          </motion.div>
+          </m.div>
         </section>
         <Footer />
       </main>

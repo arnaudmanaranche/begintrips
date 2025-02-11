@@ -2,7 +2,7 @@ import { ChevronRightIcon } from '@radix-ui/react-icons'
 import type { CalendarEventExternal } from '@schedule-x/calendar'
 import { useQuery } from '@tanstack/react-query'
 import { addDays } from 'date-fns'
-import { m as motion } from 'framer-motion'
+import * as m from 'motion/react-m'
 import { useParams } from 'next/navigation'
 import type { ChangeEvent, MutableRefObject } from 'react'
 import { type ReactNode, useCallback, useState } from 'react'
@@ -269,7 +269,7 @@ export function AddExpenseView({
       </Drawer.Title>
       <div className="flex flex-col space-y-6">
         {isError ? (
-          <motion.div
+          <m.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             className="transition-opacity"
@@ -277,7 +277,7 @@ export function AddExpenseView({
             <Callout.Danger>
               <FormattedMessage id={error?.message} />
             </Callout.Danger>
-          </motion.div>
+          </m.div>
         ) : null}
         <Input
           label={<FormattedMessage id="inputNameLabel" defaultMessage="Name" />}

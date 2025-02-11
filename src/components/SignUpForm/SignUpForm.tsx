@@ -1,4 +1,4 @@
-import { m as motion } from 'framer-motion'
+import * as m from 'motion/react-m'
 import { useRouter } from 'next/router'
 import type { MouseEvent, ReactNode } from 'react'
 import { useState } from 'react'
@@ -82,7 +82,7 @@ export function SignUpForm(): ReactNode {
   }
 
   return (
-    <motion.div
+    <m.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       className="w-full space-y-4"
@@ -148,6 +148,6 @@ export function SignUpForm(): ReactNode {
           )}
         </Button>
       </form>
-    </motion.div>
+    </m.div>
   )
 }

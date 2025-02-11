@@ -1,5 +1,5 @@
 import { ArrowRightIcon } from '@radix-ui/react-icons'
-import { m as motion } from 'framer-motion'
+import * as m from 'motion/react-m'
 import { useRouter } from 'next/router'
 import type { ReactNode } from 'react'
 import { FormattedMessage } from 'react-intl'
@@ -13,7 +13,7 @@ export const PromotionSection = (): ReactNode => {
   const features = useMainFeatures()
 
   return (
-    <motion.div
+    <m.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6 }}
@@ -25,7 +25,7 @@ export const PromotionSection = (): ReactNode => {
       </div>
       <div className="relative">
         <div className="mx-auto max-w-2xl text-center">
-          <motion.h2
+          <m.h2
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
@@ -35,8 +35,8 @@ export const PromotionSection = (): ReactNode => {
               id="mainFeatureJourneyTitle2"
               defaultMessage="Create your custom journey"
             />
-          </motion.h2>
-          <motion.p
+          </m.h2>
+          <m.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.3 }}
@@ -46,12 +46,12 @@ export const PromotionSection = (): ReactNode => {
               id="mainFeatureJourneyDescription2"
               defaultMessage="Start your adventure by creating a personalized trip, tailored to your destination, dates, and budget."
             />
-          </motion.p>
+          </m.p>
         </div>
         <div className="mx-auto mt-12 max-w-4xl">
           <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
             {features.map((feature, index) => (
-              <motion.div
+              <m.div
                 key={feature.title}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -62,11 +62,11 @@ export const PromotionSection = (): ReactNode => {
                   {feature.title}
                 </h3>
                 <p className="mt-2 text-gray-600">{feature.description}</p>
-              </motion.div>
+              </m.div>
             ))}
           </div>
         </div>
-        <motion.div
+        <m.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.7 }}
@@ -88,8 +88,8 @@ export const PromotionSection = (): ReactNode => {
               defaultMessage="No credit card required"
             />
           </p>
-        </motion.div>
+        </m.div>
       </div>
-    </motion.div>
+    </m.div>
   )
 }

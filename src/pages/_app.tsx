@@ -9,6 +9,7 @@ import {
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { Analytics } from '@vercel/analytics/react'
 import { SpeedInsights } from '@vercel/speed-insights/next'
+import { domAnimation, LazyMotion } from 'motion/react'
 import type { AppProps } from 'next/app'
 import { Open_Sans, Outfit } from 'next/font/google'
 import Head from 'next/head'
@@ -87,7 +88,9 @@ export default function App({ Component, pageProps }: AppProps): ReactNode {
               <div
                 className={`${outfit.variable} ${openSans.variable} text-black`}
               >
-                <Component {...pageProps} />
+                <LazyMotion features={domAnimation}>
+                  <Component {...pageProps} />
+                </LazyMotion>
                 <SpeedInsights />
               </div>
               <Analytics />

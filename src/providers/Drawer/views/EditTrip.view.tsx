@@ -2,7 +2,7 @@ import type { SearchBoxSuggestion, SessionToken } from '@mapbox/search-js-core'
 import { CalendarIcon } from '@radix-ui/react-icons'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useQuery } from '@tanstack/react-query'
-import { m as motion } from 'framer-motion'
+import * as m from 'motion/react-m'
 import { useParams } from 'next/navigation'
 import type { ChangeEvent, ReactNode } from 'react'
 import { useEffect, useRef, useState } from 'react'
@@ -195,7 +195,7 @@ export function EditTripView(): ReactNode {
             type="text"
             onChange={(e) => handleChange(e)}
           />
-          <motion.ul
+          <m.ul
             className="absolute left-0 top-[100%] z-10 mt-2 max-h-[200px] w-full max-w-xl overflow-y-scroll rounded-md bg-white shadow-md"
             animate={{
               height: suggestions?.length ? 'auto' : 0,
@@ -227,7 +227,7 @@ export function EditTripView(): ReactNode {
                   )
                 })
               : null}
-          </motion.ul>
+          </m.ul>
         </div>
         <div className="relative flex-1">
           <button

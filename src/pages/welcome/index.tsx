@@ -1,5 +1,5 @@
 import { CalendarIcon, GlobeIcon } from '@radix-ui/react-icons'
-import { m as motion } from 'framer-motion'
+import * as m from 'motion/react-m'
 import type { GetServerSideProps } from 'next'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
@@ -113,7 +113,7 @@ export default function WelcomePage(): ReactNode {
       </div>
       <div className="flex min-h-screen w-full">
         <div className="flex w-full flex-col lg:flex-row">
-          <motion.div
+          <m.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6 }}
@@ -190,7 +190,7 @@ export default function WelcomePage(): ReactNode {
               ) : (
                 <div className="grid gap-6">
                   {features.map((feature, index) => (
-                    <motion.div
+                    <m.div
                       key={feature.title}
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
@@ -203,13 +203,13 @@ export default function WelcomePage(): ReactNode {
                       <p className="mt-2 text-gray-800">
                         {feature.description}
                       </p>
-                    </motion.div>
+                    </m.div>
                   ))}
                 </div>
               )}
             </div>
-          </motion.div>
-          <motion.div
+          </m.div>
+          <m.div
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6 }}
@@ -257,7 +257,7 @@ export default function WelcomePage(): ReactNode {
                 </div>
               </div>
             </div>
-          </motion.div>
+          </m.div>
         </div>
       </div>
     </main>

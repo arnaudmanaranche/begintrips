@@ -4,7 +4,7 @@ import type { User } from '@supabase/supabase-js'
 import { useMutation } from '@tanstack/react-query'
 import clsx from 'clsx'
 import { isToday } from 'date-fns'
-import { m as motion } from 'framer-motion'
+import * as m from 'motion/react-m'
 import type { GetServerSideProps } from 'next'
 import Head from 'next/head'
 import { useSearchParams } from 'next/navigation'
@@ -208,7 +208,7 @@ interface StepProps {
 
 function Step({ children, title }: StepProps) {
   return (
-    <motion.div
+    <m.div
       className="flex flex-col gap-10 transition-opacity"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
@@ -219,7 +219,7 @@ function Step({ children, title }: StepProps) {
         {title}
       </h2>
       <div className="pb-2 pt-4">{children}</div>
-    </motion.div>
+    </m.div>
   )
 }
 
@@ -265,7 +265,7 @@ function Step1({ error }: { error: ReactNode }) {
           value={journey.destination.name}
           onChange={handleSearchDestination}
         />
-        <motion.ul
+        <m.ul
           className="absolute left-0 top-[100%] mt-2 max-h-[200px] w-full max-w-xl overflow-y-scroll rounded-md bg-white shadow-md"
           animate={{
             height: suggestions?.length ? 'auto' : 0,
@@ -296,16 +296,16 @@ function Step1({ error }: { error: ReactNode }) {
                 )
               })
             : null}
-        </motion.ul>
+        </m.ul>
         {error && (
-          <motion.div
+          <m.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
           >
             <Callout.Danger>{error}</Callout.Danger>
-          </motion.div>
+          </m.div>
         )}
       </div>
     </Step>
@@ -380,7 +380,7 @@ function Step2({ error }: { error: ReactNode }) {
     >
       <div className="space-y-4">
         {error && (
-          <motion.div
+          <m.div
             className="transition-opacity"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -388,7 +388,7 @@ function Step2({ error }: { error: ReactNode }) {
             transition={{ duration: 0.3 }}
           >
             <Callout.Danger>{error}</Callout.Danger>
-          </motion.div>
+          </m.div>
         )}
         <div className="relative flex-1">
           <button
@@ -460,7 +460,7 @@ function Step3({ error }: { error: ReactNode }) {
     >
       <div className="space-y-4">
         {error ? (
-          <motion.div
+          <m.div
             className="transition-opacity"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -468,7 +468,7 @@ function Step3({ error }: { error: ReactNode }) {
             transition={{ duration: 0.3 }}
           >
             <Callout.Danger>{error}</Callout.Danger>
-          </motion.div>
+          </m.div>
         ) : null}
         <Input
           label={

@@ -1,6 +1,6 @@
 import { MagnifyingGlassIcon } from '@radix-ui/react-icons'
 import clsx from 'clsx'
-import { m as motion } from 'framer-motion'
+import * as m from 'motion/react-m'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 import type { ReactNode } from 'react'
@@ -65,7 +65,7 @@ export function SearchEvents({ journey }: SearchEventsProps): ReactNode {
           isSearchFocused ? 'visible opacity-100' : 'invisible opacity-0'
         )}
       />
-      <motion.div
+      <m.div
         className="absolute left-0 right-0 top-[100%] flex max-h-[600px] min-h-[400px] overflow-y-scroll bg-white p-10 shadow-lg"
         initial={{ opacity: 0, y: 0, visibility: 'hidden' }}
         animate={
@@ -148,7 +148,7 @@ export function SearchEvents({ journey }: SearchEventsProps): ReactNode {
             <span className="text-xl text-black/30">No events found</span>
           </div>
         )}
-      </motion.div>
+      </m.div>
     </>
   )
 }
