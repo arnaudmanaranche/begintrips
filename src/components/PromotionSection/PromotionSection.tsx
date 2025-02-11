@@ -1,5 +1,5 @@
 import { ArrowRightIcon } from '@radix-ui/react-icons'
-import { motion } from 'framer-motion'
+import { m as motion } from 'framer-motion'
 import { useRouter } from 'next/router'
 import type { ReactNode } from 'react'
 import { FormattedMessage } from 'react-intl'

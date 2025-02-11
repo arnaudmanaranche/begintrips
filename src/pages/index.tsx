@@ -10,7 +10,7 @@ import {
 } from '@radix-ui/react-icons'
 import type { User } from '@supabase/supabase-js'
 import clsx from 'clsx'
-import { motion } from 'framer-motion'
+import { m as motion } from 'framer-motion'
 import type { GetServerSideProps } from 'next'
 import Head from 'next/head'
 import Image from 'next/image'

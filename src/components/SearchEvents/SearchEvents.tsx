@@ -1,6 +1,6 @@
 import { MagnifyingGlassIcon } from '@radix-ui/react-icons'
 import clsx from 'clsx'
-import { motion } from 'framer-motion'
+import { m as motion } from 'framer-motion'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 import type { ReactNode } from 'react'

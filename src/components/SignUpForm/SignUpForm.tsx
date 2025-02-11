@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion'
+import { m as motion } from 'framer-motion'
 import { useRouter } from 'next/router'
 import type { MouseEvent, ReactNode } from 'react'
 import { useState } from 'react'

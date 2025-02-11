@@ -1,5 +1,5 @@
 import { CalendarIcon, GlobeIcon } from '@radix-ui/react-icons'
-import { motion } from 'framer-motion'
+import { m as motion } from 'framer-motion'
 import type { GetServerSideProps } from 'next'
 import Head from 'next/head'
 import { useRouter } from 'next/router'

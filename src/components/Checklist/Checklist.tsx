@@ -6,7 +6,7 @@ import {
   StarFilledIcon,
   StarIcon,
 } from '@radix-ui/react-icons'
-import { motion } from 'framer-motion'
+import { m as motion } from 'framer-motion'
 import type { ReactNode } from 'react'
 import { useId, useState } from 'react'
 import { useIntl } from 'react-intl'
