@@ -37,6 +37,29 @@ export default function Page({
         <meta name="twitter:url" content={`${PAGE_URL}`} />
         <meta name="description" content={data.metaData.description} />
         <meta name="og:description" content={data.metaData.description} />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              '@context': 'https://schema.org',
+              '@type': 'BlogPosting',
+              mainEntityOfPage: {
+                '@type': 'WebPage',
+                '@id': PAGE_URL,
+              },
+              headline: data.metaData.title,
+              description: data.metaData.description,
+              url: PAGE_URL,
+              publisher: {
+                '@type': 'Organization',
+                name: 'Begintrips',
+                url: SITE_URL,
+              },
+              datePublished: data.metaData.datePublished,
+              dateModified: data.metaData.dateModified,
+            }),
+          }}
+        />
       </Head>
       <section className="pb-4">
         <div className="mx-auto flex max-w-screen-xl flex-col justify-start space-y-16 px-10 pt-10">

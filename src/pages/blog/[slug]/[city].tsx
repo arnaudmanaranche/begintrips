@@ -28,6 +28,7 @@ export default function CityPage({
   const intl = useIntl()
 
   const PAGE_TITLE = `${data.category.title} ${capitalizeFirstLetter(data.destination.replace(/-/g, ' '))}`
+  const PAGE_URL = `${SITE_URL}/blog/${data.category.category}/${data.destination}`
 
   return (
     <main>
@@ -36,14 +37,8 @@ export default function CityPage({
         <meta name="title" content={PAGE_TITLE} />
         <meta property="og:title" content={PAGE_TITLE} />
         <meta name="twitter:title" content={PAGE_TITLE} />
-        <meta
-          property="og:url"
-          content={`${SITE_URL}/blog/${data.category.category}/${data.destination}`}
-        />
-        <meta
-          name="twitter:url"
-          content={`${SITE_URL}/blog/${data.category.category}/${data.destination}`}
-        />
+        <meta property="og:url" content={PAGE_URL} />
+        <meta name="twitter:url" content={PAGE_URL} />
         <meta name="description" content={data.metaData.description} />
         <meta name="og:description" content={data.metaData.description} />
         <script
@@ -54,10 +49,10 @@ export default function CityPage({
               '@type': 'BlogPosting',
               headline: `${data.destination.replace(/-/g, ' ')} | ${data.category.title}`,
               description: data.metaData.description,
-              url: `${SITE_URL}/blog/${data.category.category}/${data.destination}`,
+              url: PAGE_URL,
               mainEntityOfPage: {
                 '@type': 'WebPage',
-                '@id': `${SITE_URL}/blog/${data.category.category}/${data.destination}`,
+                '@id': PAGE_URL,
               },
               about: {
                 '@type': 'TouristDestination',
@@ -67,10 +62,9 @@ export default function CityPage({
               },
               publisher: {
                 '@type': 'Organization',
-                name: 'BeginTrips',
+                name: 'Begintrips',
                 url: SITE_URL,
               },
-              inLanguage: intl.locale,
               isPartOf: {
                 '@type': 'Blog',
                 name: intl.formatMessage({
@@ -79,6 +73,8 @@ export default function CityPage({
                 }),
                 url: `${SITE_URL}/blog`,
               },
+              datePublished: data.metaData.datePublished,
+              dateModified: data.metaData.dateModified,
             }),
           }}
         />
